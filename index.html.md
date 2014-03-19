@@ -32,7 +32,7 @@ end
 
 ~~~
 
-### <a id='detect-script'></a>bin/compile ###
+### <a id='compile-script'></a>bin/compile ###
 
 The `compile` script builds the droplet that will be run by the DEA and will therefore contain all the components necessary to run the application.
 
@@ -67,7 +67,7 @@ end
 
 ~~~
 
-### <a id='detect-script'></a>bin/release ###
+### <a id='release-script'></a>bin/release ###
 
 The `release` script provides feedback metadata back to Cloud Foundry indicating how the application should be executed. The script is run with one argument, the build location of the application. The script must generate a YAML file in the following format:
 
@@ -93,7 +93,7 @@ default_process_type:
 
 ## <a id='deploying-with-custom-buildpacks'></a>Deploying With a Custom Buildpack ##
 
-Once a custom buildpack has been created and pushed to a public git repository, the git URL can be passed via the cf command when pushing an application. 
+Once a custom buildpack has been created and pushed to a public git repository, the git URL can be passed via the cf command when pushing an application.
 
 For example, for a buildpack that has been pushed to Github:
 
