@@ -49,7 +49,8 @@ app.listen(process.env.VCAP_APP_PORT || 3000);
 ## <a id='start'></a> Application Start Command ##
 
 Node.js applications require a start command.
-This start command is saved with other configuration settings in `manifest.yml`.
+You can specify a Node.js applications's web start command in a Procfile or the
+application deployment manifest.
 
 You will be asked if you want to save your configuration the first time you
 deploy.
