@@ -273,6 +273,18 @@ Example:
 $ cf scale sidekiq-worker -i 2
 </pre>
 
+## <a id='rails-4'></a>  Use `rails_serv_static_assets` on Rails 4 ##
+
+By default Rails 4 returns a 404 if an asset is not handled via an external
+proxy such as Nginx.
+The `rails_serve_static_assets` gem enables your Rails server to deliver
+static assets directly, instead of returning a 404.
+You can use this capability to populate an edge cache CDN or serve files
+directly from your web application.
+The `rails_serv_static_assets` gem enables this behavior by setting the
+`config.serve_static_assets` option to "true", so you do not need to
+configure it manually.
+
 ## <a id='buildpack'></a>About the Ruby Buildpack ##
 
 For information about using and extending the Ruby buildpack in Cloud Foundry,
