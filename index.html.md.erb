@@ -20,6 +20,33 @@ Cloud Foundry has three system buildpacks: one each for [Java]
 You can create [custom buildpacks](./custom.html) to add support for the
 languages or frameworks of your choice.
 
+## <a id='auto-vs-manual'></a>Auto-configuration of Service Connections##
+
+After you create a service instance and bind it to your application, you
+configure the application to dynamically fetch the credentials for your
+service.
+These credentials are stored in the
+[VCAP_SERVICES](../deploy-apps/environment-variable.html#VCAP_SERVICES)
+environment variable.
+
+There are generally two methods for these consuming credentials.
+
+* **Auto-configuration**: Some buildpacks create a service connection for you
+by creating additional environment variables, updating config files, or passing
+system parameters to the jvm.
+* **Manual**: [Parse the JSON yourself](../devguide/deploy-apps/environment-variable.html#app). Helper libraries are
+available for some frameworks.
+
+| Runtime    | Framework  | Binding Strategy         |
+| :--------- |:---------- |:-------------            |
+| JVM / Java | <li>[Grails][g] <li>[Play Framework][p] <li>[Spring][s] | Auto-configuration<br/>Manual |
+| Ruby       | <li>[Rack, Rails, or Sinatra](./ruby-service-bindings.html) |  [Limited auto-configuration support for Rails only](./ruby-service-bindings.html#auto-config)<br/>Manual |
+| Javascript | <li>[Node.js](./node-service-bindings.html) | Manual |
+
+[g]: ./grails-service-bindings.html
+[p]: ./play-service-bindings.html
+[s]: ./spring-service-bindings.html
+
 ## <a id='java'></a>Java, Grails, Play and Spring ##
 
 * [Deploying Java applications](./java-tips.html)
