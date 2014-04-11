@@ -3,13 +3,13 @@ title: Tips for Java Developers
 ---
 _This page assumes you are using cf v6._
 
-Cloud Foundry can deploy a number of different JVM-based artifact types. For a more detailed explaination of what it supports, please see the [Java Buildpack documentation][d].
+Cloud Foundry can deploy a number of different JVM-based artifact types. For a more detailed explanation of what it supports, please see the [Java Buildpack documentation][d].
 
 ## Java Client Library  ##
 
-The Cloud Foundry Client Library provides a Java API for interacting with a Cloud Foundry instance. This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven plugin, the Cloud Foundry Gradle plugin, the [Cloud Foundry STS integration](./sts.html), and other Java-based tools.
+The Cloud Foundry Client Library provides a Java API for interacting with a Cloud Foundry instance. This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven plugin, the Cloud Foundry Gradle plugin, the [Cloud Foundry STS integration](../devguide/deploy-apps/sts.html), and other Java-based tools.
 
-For information about using this library, see the [Java Cloud Foundry Library](./java-client.html) page.
+For information about using this library, see the [Java Cloud Foundry Library](../devguide/deploy-apps/java-client.html) page.
 
 ## <a id='grails'></a>Grails ##
 Grails packages applications into WAR files for deployment into a Servlet container.
@@ -96,9 +96,9 @@ $ cf push &lt;application-name&gt; -p build/libs/&lt;application-name&gt;-&lt;ap
 ## <a id='services'></a>Binding to Services ##
 Information about binding apps to services can be found on the following pages:
 
-* [Service Bindings for Grails Applications](../services/grails-service-bindings.html)
-* [Service Bindings for Play Framework Applications](../services/play-service-bindings.html)
-* [Service Bindings for Spring Applications](../services/spring-service-bindings.html)
+* [Service Bindings for Grails Applications](./grails-service-bindings.html)
+* [Service Bindings for Play Framework Applications](./play-service-bindings.html)
+* [Service Bindings for Spring Applications](./spring-service-bindings.html)
 
 -----
 
