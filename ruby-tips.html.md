@@ -75,10 +75,10 @@ If you do not manually create the manifest file, cf will prompt you to supply
 deployment settings when you first push the application, and will create and
 save the manifest file for you, with the settings you specified interactively.
 For more information about application manifests, and supported attributes, see
-[Deploying with Application Manifests](manifest.html).
+[Deploying with Application Manifests](../devguide/deploy-apps/manifest.html).
 
 For an example of invoking a Rake database migration task at application
-startup, see [Migrating a Database on Cloud Foundry](../services/migrate-db.html#migrate-ruby-db).
+startup, see [Migrating a Database on Cloud Foundry](../devguide/services/migrate-db.html#migrate-ruby-db).
 
 ## <a id='workers'></a> Running Rails 3 Worker Tasks ##
 
