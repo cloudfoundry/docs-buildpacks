@@ -115,7 +115,7 @@ service and the syntax for instantiating your database adapter client.
 
 Before you can use your database the first time, you must create and populate
 or migrate it.
-For more information, see [Migrate a Database on Cloud Foundry](./migrate-db.html).
+For more information, see [Migrate a Database on Cloud Foundry](../devguide/services/migrate-db.html).
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 
