@@ -1,5 +1,5 @@
 ---
-title: Configure Service Connections for Node.js
+title: Environment Variables Defined by the Node Buildpack
 ---
 _This page assumes that you are using cf v6._
 
