@@ -4,7 +4,7 @@ title: Tips for Node.js Applications
 
 _This page assumes that you are using cf v6._
 
-This page will prepare you to deploy Node.js apps via the [Getting Started Guide](../devguide/deploy-app.html).
+This page will prepare you to deploy Node.js apps via the [Getting Started Guide](../devguide/deploy-apps/deploy-app.html).
 
 ## <a id='packagejson'></a> Application Package File ##
 
@@ -103,7 +103,7 @@ $ cf push my-app -b https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
 
 ## <a id='services'></a> Binding Services ##
 
-Refer to [Configure Service Connections for Node.js](../services/node-service-bindings.html).
+Refer to [Configure Service Connections for Node.js](./node-service-bindings.html).
 
 ## <a id='buildpack'></a> About the Node.js Buildpack ##
 
