@@ -2,15 +2,14 @@
 title: Buildpacks
 ---
 
-Buildpacks are a convenient way of packaging framework and/or runtime support
-for your application.
+Buildpacks are packages that provide framework and runtime support for your 
+applications.
 For example, by default Cloud Foundry does not support Python, or a Python
 framework like Django. Using a buildpack for Python and Django would allow you
 to add support for these at the deployment stage.
 
-When an application written using one of these languages and frameworks is
-pushed, the required buildpack is automatically installed on the Cloud Foundry
-Droplet Execution Agent (DEA) where the application will run.
+When you push an application, Cloud Foundry automatically installs the required 
+buildpack on the Droplet Execution Agent (DEA) where the application needs to run.
 
 Cloud Foundry has three system buildpacks: one each for [Java]
 (https://github.com/cloudfoundry/java-buildpack), [Node.js]
@@ -20,7 +19,7 @@ Cloud Foundry has three system buildpacks: one each for [Java]
 You can create [custom buildpacks](./custom.html) to add support for the
 languages or frameworks of your choice.
 
-Cloud Foundry stages application using buildpacks. Heroku developed the buildpack approach and made it available to the open source community.
+Heroku developed the buildpack approach and made it available to the open source community.
 
 Cloud Foundry uses buildpacks to transform user-provided artifacts into runnable applications.  The functionality of buildpacks varies, but many of them examine the user-provided artifact in order to properly download needed dependencies and configure applications to communicate with bound services.  Heroku developed the buildpack approach and Cloud Foundry embraces it.
 
@@ -43,7 +42,7 @@ buildpack that you can use. You can also customize existing buildpacks or write 
 [j]: ./java-tips.html
 [n]: ./node-tips.html
 [r]: ./ruby-tips.html
-[u]:../../buildpacks/
+[u]: ./custom.html
 
 ## <a id='auto-vs-manual'></a>Auto-configuration of Service Connections##
 
@@ -70,19 +69,25 @@ available for some frameworks.
 [p]: ./play-service-bindings.html
 [s]: ./spring-service-bindings.html
 
-## <a id='java'></a>Java, Grails, Play and Spring ##
+## <a id='system'></a> Working with System Buildpacks ##
+
+Refer to 
+
+### <a id='java'></a>Java ###
+
+Use the Java buildpack to work with Java, Grails, Play or Spring.
 
 * [Deploying Java applications](./java-tips.html)
 * [Configure Service Connections for Grails](grails-service-bindings.html)
 * [Configure Service Connections for Play](play-service-bindings.html)
 * [Configure Service Connections for Spring](spring-service-bindings.html)
 
-## <a id='node'></a>Node.js ##
+### <a id='node'></a>Node.js ###
 
 * [Deploying Node.js applications](./node-tips.html)
 * [Configure Service Connections for Node](node-service-bindings.html)
 
-## <a id='ruby'></a>Ruby ##
+### <a id='ruby'></a>Ruby ###
 
 * [Deploying Ruby applications](./ruby-tips.html)
 * [Configure Service Connections for Ruby](ruby-service-bindings.html)
