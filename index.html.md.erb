@@ -25,14 +25,14 @@ buildpacks do not support, there are several options you can try:
 
 Heroku developed the buildpack approach and made it available to the open source community.
 
-## <a id='auto-vs-manual'></a>Auto-configuration of Service Connections##
+## <a id='creds'></a>Credentials for Service Connections##
 
 After you create a service instance and bind it to your application, you
 configure the application to dynamically fetch the credentials for your
 service.
 These credentials are stored in the `VCAP_SERVICES` environment variable.
 
-There are generally two methods for these consuming credentials.
+There are generally two methods for consuming these credentials.
 
 * **Auto-configuration**: Some buildpacks create a service connection for you
 by creating additional environment variables, updating config files, or passing
@@ -40,15 +40,31 @@ system parameters to the jvm.
 * **Manual**: [Parse the JSON yourself](../devguide/deploy-apps/environment-variable.html#app). Helper libraries are
 available for some frameworks.
 
-| Runtime    | Framework  | Binding Strategy         |
-| :--------- |:---------- |:-------------            |
-| JVM / Java | <li>[Grails][g] <li>[Play Framework][p] <li>[Spring][s] | Auto-configuration<br/>Manual |
-| Ruby       | <li>[Rack, Rails, or Sinatra](./ruby-service-bindings.html) |  [Limited auto-configuration support for Rails only](./ruby-service-bindings.html#auto-config)<br/>Manual |
-| Javascript | <li>[Node.js](./node-service-bindings.html) | Manual |
+The table below shows which methods are available for each buildpack.
 
-[g]: ./grails-service-bindings.html
-[p]: ./play-service-bindings.html
-[s]: ./spring-service-bindings.html
+<table border="1" class="nice" >
+	<tr>
+		<th>Runtime</th>
+		<th>Framework </th>
+		<th>Binding Strategy</th>
+	</tr>
+	<tr>
+	  <td>JVM / Java </td>
+	  <td><li><a href="./grails-service-bindings.html">Grails</a> <li><a href="./play-service-bindings.html">Play Framework</a> <li> <a href="./spring-service-bindings.html">Spring</a> </td>
+	  <td>Auto-configuration<br/>Manual</td>
+	</tr>
+	<tr>
+	  <td>Ruby</td>
+	  <td><li><a href="./ruby-service-bindings.html">Rack, Rails, or Sinatra</a> </td>
+	  <td><a href="./ruby-service-bindings.html#auto-config">Limited auto-configuration support for Rails only</a><br/>Manual </td>
+	</tr>
+	<tr>
+	  <td>Javascript </td>
+	  <td><li><a href="./node-service-bindings.html">Node.js</a> </td>
+	  <td>Manual</td>
+	</tr>
+</table>
+
 
 ## <a id='system'></a> Working with the System Buildpacks ##
 
