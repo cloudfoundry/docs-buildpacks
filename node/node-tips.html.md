@@ -4,7 +4,7 @@ title: Tips for Node.js Applications
 
 _This page assumes that you are using cf v6._
 
-This topic provides Node-specific information to supplement the general guidelines in the  [Deploy an Application](../devguide/deploy-apps/deploy-app.html) topic.
+This topic provides Node-specific information to supplement the general guidelines in the  [Deploy an Application](../../devguide/deploy-apps/deploy-app.html) topic.
 
 ## <a id='packagejson'></a> Application Package File ##
 
