@@ -2,7 +2,22 @@
 title: Ruby Buildpack
 ---
 
+Use the Ruby buildpack with Ruby, Rack, Rails or Sinatra applications on Cloud Foundry.
+
+See the following topics:
 
 * [Deploying Ruby applications](./ruby-tips.html)
 * [Configure Service Connections for Ruby](./ruby-service-bindings.html)
+
+The source for the buildpack is [here](https://github.com/cloudfoundry/cf-buildpack-ruby).
+
+## <a id=''></a> Application Logging with the Ruby Buildpack ##
+
+Your application must write to STDOUT or STDERR for its logs to be included in the
+Loggregator stream.
+See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
+
+The Ruby buildpack does **not** automatically configure your app to stream logs
+to STDOUT or STDERR.
+
 

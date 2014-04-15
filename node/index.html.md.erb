@@ -2,6 +2,20 @@
 title: Node.js Buildpack
 ---
 
+Use the Node.js buildpack with Node or JavaScript applications on Cloud Foundry.
+
+See the following topics:
+
 * [Deploying Node.js applications](./node-tips.html)
 * [Configure Service Connections for Node](node-service-bindings.html)
 
+The source for the buildpack is [here](https://github.com/cloudfoundry/heroku-buildpack-nodejs).
+
+## <a id=''></a> Application Logging with the Node.js Buildpack ##
+
+Your application must write to STDOUT or STDERR for its logs to be included in the
+Loggregator stream.
+See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
+
+The Node.js buildpack does **not** automatically configure your app to stream logs
+to STDOUT or STDERR.
