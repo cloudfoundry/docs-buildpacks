@@ -126,3 +126,33 @@ The table below lists:
 | --------- | --------- | --------- |---------
 | Node.js | 0.10.0 - 0.10.6 <br> 0.10.8  - 0.10.12<br>0.8.0 - 0.8.8<br>0.8.10 - 0.8.14<br>0.8.19<br>0.8.21 -  0.8.25<br>0.6.3<br>0.6.5 - 0.6.8<br>0.6.10 - 0.6.18<br>0.6.20<br>0.4.10<br>0.4.7 | latest version of 0.10.x | To change the default version installed by the buildpack, see <br>“hacking” on https://github.com/cloudfoundry/heroku-buildpack-nodejs. <br><br>To specify the versions of Node.js and npm an application <br>requires, edit the application’s `package.json`, as described in “node.js and npm <br>versions” on https://github.com/cloudfoundry/heroku-buildpack-nodejs.
 | npm | 1.3.2<br>1.2.30<br>1.2.21 - 1.2.28<br>1.2.18<br>1.2.14 - 1.2.15<br>1.2.12<br>1.2.10<br>1.1.65<br>1.1.49<br>1.1.40 - 1.1.41<br>1.1.39<br>1.1.35 - 1.1.36<br>1.1.32<br>1.1.9<br>1.1.4<br>1.1.1<br>1.0.10 | latest version of 1.2.x | as above
+
+## <a id='env-var'></a>Accessing Environment Variables programmatically ##
+
+You can access an environment variable from a program.
+
+This example obtains the `VCAP_SERVICES` environment variable:
+
+```
+process.env.VCAP_SERVICES
+```
+
+## <a id='env-bp'></a>Variables Defined by the Node Buildpack ##
+
+These supplement the [environment variables defined by the DEA]
+(../../devguide/deploy-apps/environment-variable.html#dea-set),
+which are not framework-specific.
+
+### <a id='BUILD-DIR'></a>BUILD_DIR ###
+Directory into which Node.js is copied each time a Node.js application is run.
+
+### <a id='CACHE-DIR'></a>CACHE_DIR ###
+
+Directory that Node.js uses for caching.
+
+### <a id='PATH'></a>PATH ###
+
+The system path used by Node.js.
+
+`PATH=/home/vcap/app/bin:/home/vcap/app/node_modules/.bin:/bin:/usr/bin`
+
