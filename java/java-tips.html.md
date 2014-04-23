@@ -293,12 +293,11 @@ end
 [f]: https://github.com/cloudfoundry/java-buildpack#configuration-and-extension
 
 
+## <a id='env-var'></a>Environment Variables ##
 
-## <a id='env-var'></a>Accessing Environment Variables programmatically ##
+You can access environments variable programmatically.
 
-You can access an environment variable from a program.
-
-This example obtains the `VCAP_SERVICES` environment variable:
+For example, you can obtain `VCAP_SERVICES` like this:
 
 ```
 System.getenv("VCAP_SERVICES");

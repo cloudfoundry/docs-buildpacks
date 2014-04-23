@@ -334,24 +334,19 @@ a different version of a software resource.
 
 **This table was last updated on August 14, 2013.**
 
-## <a id='env-var'></a>Accessing Environment Variables programmatically ##
+## <a id='env-var'></a>Environment Variables ##
 
-You can access an environment variable from a program.
+You can access environments variable programmatically.
 
-This example obtains the `VCAP_SERVICES` environment variable:
+For example, you can obtain `VCAP_SERVICES` like this:
 
 ```
 ENV['VCAP_SERVICES']
 ```
 
-## <a id='env-bp'></a>Variables Defined by the Ruby Buildpack ##
-
-The subsections that follow describe the environment variables set by the Ruby
-buildpack for an application at staging time.
-
-These supplement the [environment variables defined by the DEA]
-(../../devguide/deploy-apps/environment-variable.html#dea-set),
-which are not framework-specific.
+Environment variables available to you include both those [defined by the DEA]
+(../../devguide/deploy-apps/environment-variable.html#dea-set)
+and those defined by the Ruby buildpack, described below.
 
 ### <a id='BUNDLE-BIN-PATH'></a>BUNDLE\_BIN\_PATH ###
 
