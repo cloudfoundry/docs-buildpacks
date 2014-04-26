@@ -17,17 +17,30 @@ See the following topics:
 
 The source for the buildpack is [here](https://github.com/cloudfoundry/java-buildpack).
 
-## Application Logging with the Java Buildpack ##
+## Buildpack Logging and Application Logging ##
+
+The buildpack only runs during the staging process, and therefore only logs
+what is important to staging, such as what is being downloaded, what the
+configuration is, and work that the buildpack does on your application.
+
+The Java buildpack source documentation states:
+
+* The Java buildpack logs all messages, regardless of severity to
+`<app dir>/.java-buildpack.log`.
+	It also logs messages to `$stderr`, filtered by a configured severity.
+
+* If the buildpack fails with an exception, the exception message is logged with a
+log level of `ERROR` whereas the exception stack trace is logged with a log level
+of `DEBUG` to prevent users from seeing stack traces by default.
+
+Once staging is done, the buildpack stops logging.
+Application logging is a separate concern.
 
 Your application must write to STDOUT or STDERR for its logs to be included in the
 Loggregator stream.
 See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
 
-The Java buildpack source documentation states:
 
-* The Java buildpack logs all messages, regardless of severity to `<app dir>/.java-buildpack.log`.  It also logs messages to `$stderr`, filtered by a configured severity.
-
-* If the buildpack fails with an exception, the exception message is logged with a log level of `ERROR` whereas the exception stack trace is logged with a log level of `DEBUG` to prevent users from seeing stack traces by default.
 
 
 

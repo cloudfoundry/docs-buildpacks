@@ -11,13 +11,17 @@ See the following topics:
 
 The source for the buildpack is [here](https://github.com/cloudfoundry/cf-buildpack-ruby).
 
-## Application Logging with the Ruby Buildpack ##
+## Buildpack Logging and Application Logging ##
+
+The buildpack only runs during the staging process, and therefore only logs
+what is important to staging, such as what is being downloaded, what the
+configuration is, and work that the buildpack does on your application.
+
+Once staging is done, the buildpack stops logging.
+Application logging is a separate concern.
 
 Your application must write to STDOUT or STDERR for its logs to be included in the
 Loggregator stream.
 See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
-
-The Ruby buildpack does **not** automatically configure your app to stream logs
-to STDOUT or STDERR.
 
 
