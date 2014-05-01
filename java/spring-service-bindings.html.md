@@ -164,7 +164,7 @@ class CloudPropertiesConfig extends AbstractCloudConfig {
 }
 ```
 
-### <a id='cloud'></a>The `<cloud>` Namespace ###
+### <a id='cloud'></a>The cloud Namespace ###
 
 #### Setting Up ####
 The `<cloud>` namespace offers a simple way for Spring application to connect to cloud
