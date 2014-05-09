@@ -9,11 +9,12 @@ download and how to configure applications to communicate with bound services.
 When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required
 and installs it on the Droplet Execution Agent (DEA) where the application needs to run.
 
-Cloud Foundry has three **system buildpacks**:
+Cloud Foundry has four **system buildpacks**:
 
 * [Java](./java/) for applications written in Java, Grails, Play, Spring or any other JVM-based language or framework
 * [Node.js](./node/) for applications written in Node or JavaScript
 * [Ruby](./ruby/) for applications written in Ruby, Rack, Rails or Sinatra
+* [Go](https://github.com/cloudfoundry/cf-buildpack-go) for applications written in Go.
 
 If your application uses a language or framework that Cloud Foundry
 buildpacks do not support, there are several options you can try:
