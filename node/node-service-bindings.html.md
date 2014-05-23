@@ -28,11 +28,14 @@ variable might look something like this:
 
 This example JSON is simplified; yours may contain additional properties.
 
-### <a id='cf-env'></a>Parse with cf-env ###
+### <a id='cfenv'></a>Parse with cfenv ###
 
-The `cf-env` package provides parsing of Cloud Foundry-provided environment variables, including VCAP_SERVICES, when you app is running. 
+The `cfenv` package provides access to Cloud Foundry application environment settings,
+by parsing all the relevant environment variables.  The settings are returned
+as JavaScript objects, and `cfenv` provides reasonable defaults when running
+locally, as well as when running as a Cloud Foundry application.
 
-* https://www.npmjs.org/package/cf-env
+* https://www.npmjs.org/package/cfenv
 
 ### <a id='parse-manually'></a>Manual Parsing ###
 
@@ -95,5 +98,3 @@ add all of them:
 
 You will also need to run `npm shrinkwrap` to regenerate your
 `npm-shrinkwrap.json` file after you edit `package.json`.
-
-
