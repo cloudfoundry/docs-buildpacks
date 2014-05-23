@@ -8,8 +8,8 @@ application deployed and running on Cloud Foundry.
 
 ## <a id='creds'></a>Parse VCAP_SERVICES for Credentials  ##
 
-You will need to parse the VCAP_SERVICES environment variable in your code to
-get the required connection details such as host address, port, user name, and
+You must parse the VCAP_SERVICES environment variable in your code to get the
+required connection details such as host address, port, user name, and
 password.
 
 For example, if you are using PostgreSQL, your VCAP_SERVICES environment
@@ -30,38 +30,40 @@ This example JSON is simplified; yours may contain additional properties.
 
 ### <a id='cfenv'></a>Parse with cfenv ###
 
-The `cfenv` package provides access to Cloud Foundry application environment settings,
-by parsing all the relevant environment variables.  The settings are returned
-as JavaScript objects, and `cfenv` provides reasonable defaults when running
-locally, as well as when running as a Cloud Foundry application.
+The `cfenv` package provides access to Cloud Foundry application environment
+settings by parsing all the relevant environment.
+The settings are returned as JavaScript objects.
+`cfenv` provides reasonable defaults when running locally, as well as when
+running as a Cloud Foundry application.
 
 * https://www.npmjs.org/package/cfenv
 
 ### <a id='parse-manually'></a>Manual Parsing ###
 
 First, parse the VCAP_SERVICES environment variable.
+
 For example:
 
 ~~~
 var vcap_services = JSON.parse(process.env.VCAP_SERVICES)
 ~~~
 
-Then you will need to pull out the credential information required to connect
-to your service.
-Each of the service packages require slightly different information.
-If you are working with Postgres, for example, you will need a uri to connect.
-You can assign the value of the uri to a variable as follows:
+Then pull out the credential information required to connect to your service.
+Each service packages requires different information.
+If you are working with Postgres, for example, you will need a `uri` to
+connect.
+You can assign the value of the `uri` to a variable as follows:
 
 ~~~
 var uri = vcap_services.mypostgres[0].credentials.uri
 ~~~
 
-Now you can use your credentials as you normally would in your program to
-connect to your database.
+Once assigned, you can use your credentials as you would normally in your
+program to connect to your database.
 
 ## <a id='Connecting'></a> Connecting to a Service ##
 
-You will need to include the appropriate package for the type of services your
+You must include the appropriate package for the type of services your
 application uses. For example:
 
 * Rabbit MQ via the [ampq](https://github.com/postwait/node-amqp) module
@@ -73,7 +75,7 @@ application uses. For example:
 
 ## <a id='add'></a> Add the Dependency to package.json ##
 
-Edit `package.json` and add the intended module to dependencies section.
+Edit `package.json` and add the intended module to the `dependencies` section.
 Normally, only one would be necessary, but for the sake of the example we will
 add all of them:
 
@@ -96,5 +98,5 @@ add all of them:
 }
 ~~~
 
-You will also need to run `npm shrinkwrap` to regenerate your
-`npm-shrinkwrap.json` file after you edit `package.json`.
+You must run `npm shrinkwrap` to regenerate your `npm-shrinkwrap.json` file
+after you edit `package.json`.
