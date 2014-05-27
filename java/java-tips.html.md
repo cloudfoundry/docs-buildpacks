@@ -226,7 +226,7 @@ The Java buildpack sets the Tomcat `bindOnInit` property to "false", which
 causes Tomcat to not listen for HTTP requests until the application is deployed.
 If your application takes a long to time to start, the DEA's health check may
 fail by checking application health before the application can accept requests.
-A workaround is to fork the Java buildpack and change `bindOnInit` to "false" in
+A workaround is to fork the Java buildpack and change `bindOnInit` to "true" in
 `resources/tomcat/conf/server.xml`, although this has the downside that the
 application may appear to be running (as far as Cloud Foundry is concerned)
 before it is ready to serve requests.
