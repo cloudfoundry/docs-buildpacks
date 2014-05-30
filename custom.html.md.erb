@@ -93,19 +93,19 @@ default_process_type:
 
 ### <a id='package-script'></a>bin/package ###
 
-The `package` script provides buildpack artifacts which are provided to Cloud Foundry as system buildpacks. `package` is
+The `package` script provides buildpack artifacts, which are provided to Cloud Foundry as system buildpacks. `package` is
 intended to provide a way for buildpack developers to package a buildpack with its dependencies. Implementing this is
 entirely optional. It is a Cloud Foundry extension to the [Heroku Buildpack API](https://devcenter.heroku.com/articles/buildpack-api).
 
-The result of running the package script must be a zip file which adheres to the api outlined above, using `detect`,
+The result of running the package script must be a zip file that adheres to the api outlined above, using `detect`,
 `compile`, `release`.
 
 The `package` script accepts two commands as arguments:
 
-  * `package online` which produces a zip of the buildpack, preferably excluding unnecessary content, such as tests.
-  * `package offline` which produces a zip of the buildpack with all dependencies cached.
+  * `package online` produces a zip of the buildpack, preferably excluding unnecessary content such as tests.
+  * `package offline` produces a zip of the buildpack with all dependencies cached.
 
-`package offline` promises to produce a buildpack that does not need any internet connectivity to run.
+`package offline` promises to produce a buildpack that does not need internet connectivity to run.
 
 The `package offline` command is used to produce the [system buildpacks](./index.html#system-buildpacks) bundled with
 Cloud Foundry.
