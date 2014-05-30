@@ -7,12 +7,18 @@ Buildpacks typically examine user-provided artifacts to determine what dependenc
 
 When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required and installs it on the Droplet Execution Agent (DEA) where the application needs to run.
 
+
+## System Buildpacks
+
 Cloud Foundry has four **system buildpacks**:
 
 * [Java](./java/) for applications written in Java, Grails, Play, Spring or any other JVM-based language or framework
 * [Node.js](./node/) for applications written in Node or JavaScript
 * [Ruby](./ruby/) for applications written in Ruby, Rack, Rails or Sinatra
 * [Go](https://github.com/cloudfoundry/cf-buildpack-go) for applications written in Go.
+
+
+## Other Buildpacks
 
 If your application uses a language or framework that Cloud Foundry buildpacks do not support, there are several options you can try:
 
@@ -24,3 +30,7 @@ If your application uses a language or framework that Cloud Foundry buildpacks d
 [h]: https://devcenter.heroku.com/articles/third-party-buildpacks
 
 Heroku developed the buildpack approach and made it available to the open source community.
+
+Cloud Foundry deploys often have limited access to dependencies. This occurs when the deploy is behind a firewall, or
+when administrators wish to use local mirrors/proxies. In these circumstances, Cloud Foundry provides an
+[API extension for on-premises buildpacks](./custom.html#package-script)
