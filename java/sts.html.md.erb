@@ -9,7 +9,7 @@ instance from Eclipse or Spring Tools Suite (STS).
 The plugin supports Eclipse v3.8 and v4.3 (a Java EE version is recommended),
 and STS 3.0.0 and later.
 
-This page has instructions for installing and using v1.5.1 of the plugin, which
+This page has instructions for installing and using v1.6.1 of the plugin, which
 is compatible with Cloud Foundry v2.
 
 You can use the plugin to:
@@ -24,15 +24,37 @@ You can use the plugin to:
 * View and manage deployed applications and services.
 * Start and stop applications.
 
-v1.5.1 of the plugin provides several new features:
+v1.6.1 of the plugin provides several new features:
 
-* Custom buildpack support --- When you deploy an application using the plugin, you can supply the URL of a custom buildpack.
-* Separately defined host and domain --- In this version of the plugin, you specify the components (host and domain) of an application URL separately, rather than as a complete URL.
-* Cloud Foundry server cloning --- v1.5.1 of the plugin makes it easier to work with multiple Cloud Foundry spaces. After configuring a first Cloud Foundry server instance using the plugin, you can use the new **Clone Server** command to create additional server instances that target other Cloud Foundry spaces.
+* Spring Boot support: In the Project Explorer, right-click on your Spring Boot
+project, select **Configure -> Enable as Cloud Foundry App**, then drag and drop
+the Spring Boot app to your Cloud Foundry server instance.
+
+* Support for servers using self-signed certificates: When creating a new Cloud
+Foundry server through the Eclipse Servers wizard, if "self-signed certificate"
+is detected for a cloud URL, the user is prompted whether to proceed.
+If so, the decision is persisted as a preference for that URL for any future
+server instance creation and interactions using that URL, including cloning a
+server instance to another org/space.
+
+* Application environment variables: Users can now specify environment
+variables both in the application deployment wizard, or edit them after an
+application is deployed through the Cloud Foundry server editor.
+
+* Free-form application memory choices: Restriction on application memory
+choices have been removed. Users can specify any memory choice for applications
+in MB.
+
+* Console enhancements: The Cloud Foundry console now displays progress when
+pushing, starting, or stopping an application. Application log files can be
+streamed to the console by right-clicking on the application in the Servers
+view, then selecting **Show Console**.
 
 ## <a id='install'></a>Install Cloud Foundry Eclipse Plugin ##
 
-If you have a previous version of the Cloud Foundry Eclipse Plugin installed, uninstall it before installing the new version. To uninstall the plugin:
+If you have a previous version of the Cloud Foundry Eclipse Plugin installed,
+uninstall it before installing the new version.
+To uninstall the plugin:
 
 1. Choose **About Eclipse** (or **About Spring Tools Suite**) from the Eclipse (or **Spring Tools Suite**) menu and click **Installation Details**.
 1. On the **Installation Details**, select the previous version of the plugin and click **Uninstall**.
@@ -54,7 +76,7 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to Eclipse
 
     <%= image_tag("sts/eclipse-marketplace.png") %>
 
-1. The **Confirm Selected Features** window lists the plugin --- "Cloud Foundry Integration for Eclipse" --- and the optional "SpringSource UAA Integration" component, which reports tool usage data, anonymously. If you do not want your plugin usage statistics to be reported, de-select the UAA component before clicking **Confirm**.
+1. In the **Confirm Selected Features** window, click **Confirm**.
 
     <%= image_tag("sts/confirm-selected-features.png") %>
 
@@ -74,7 +96,7 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 
     <%= image_tag("sts/extensions.png") %>
 
-1. The **Install** window lists the plugin --- "Cloud Foundry Integration for Eclipse" --- and the optional "Spring UAA Integration" component, which reports tool usage data, anonymously. If you prefer that your plugin usage statistics not be reported, de-select the UAA component beform clicking **Next**.
+1. In the **Install** window, click **Next**.
 
     <%= image_tag("sts/install.png") %>
 
@@ -93,7 +115,7 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 
 ### <a id='install-local'></a>Install from a Local Repository ###
 
-If you need to install the Cloud Foundry Eclipse Plugin locally, rather than via the Internet, you can download the source and create a repository that you can copy to the target machine and then install from it.
+If you need to install the Cloud Foundry Eclipse Plugin locally, rather than via the Internet, you can download the source, create a repository and copy it to the target machine, then install from the copied repository.
 
 *Step 1: Obtain the plugin source from GitHub.*
 
@@ -121,10 +143,8 @@ On the machine running Eclipse or Spring Tools Suite:
 1. On the **Add Repository** window, enter a name for the repository, for example "Cloud Foundry Integration", and click **Local**.
 1. On the **Open** window, browse to `org.cloudfoundry.ide.eclipse.server.site/target/site` and click **Open**.
 1. On the **Add Repository** window, click **OK**.
-1. On the **Available Software** window, checkmark: "Core/Cloud Foundry Integration" and "Resources/Cloud Foundry Integration" and click **Next**.
+1. On the **Available Software** window, check "Core/Cloud Foundry Integration" and "Resources/Cloud Foundry Integration" and click **Next**.
 1. On the **Review Licenses** window, click "I accept the terms of the license agreement" and click **Finish**.
-
-
 
 ## <a id='cloud-foundry-server'></a>Create a Cloud Foundry Server ##
 
@@ -145,7 +165,7 @@ This section has instructions for configuring a server resource that will repres
 
     <%= image_tag("sts/cloud-foundry-account.png") %>
 
-1. The **Cloud Foundry Account** window is refreshed and displays a message indicating whether or not your credentials were valid --- if they were, click **Next**.
+1. The **Cloud Foundry Account** window is refreshed and displays a message indicating whether or not your credentials were valid. Click **Next**.
 
       <%= image_tag("sts/new-server.png") %>
 
@@ -159,7 +179,7 @@ This section has instructions for configuring a server resource that will repres
 
 ## <a id='plugin-ui'></a>About the Plugin User Interface ##
 
-The paragraphs below describe the Cloud Foundry Eclipse plugin user interface. If you do not see the tabs described below, select the Pivotal Cloud Foundry server in the **Servers** view. To expose the Servers view, ensure that you are using the Java perspective, then select **Window > Show View > Other > Server > Servers**.
+The sections below describe the Cloud Foundry Eclipse plugin user interface. If you do not see the tabs described below, select the Pivotal Cloud Foundry server in the **Servers** view. To expose the Servers view, ensure that you are using the Java perspective, then select **Window > Show View > Other > Server > Servers**.
 
 The Cloud Foundry editor, outlined in red in the screenshot below, is the primary plugin user interface.
 Some workflows involve interacting with standard elements of the Eclipse user interface, such as the **Project Explorer** and the **Console** and **Servers** views.
