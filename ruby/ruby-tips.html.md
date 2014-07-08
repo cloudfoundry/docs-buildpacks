@@ -224,9 +224,9 @@ $ mkdir app/views/things
 $ touch app/views/things/index.html.erb
 </pre>
 
-~~~html
-&lt;%= @things.inspect %&gt;
-~~~
+```
+<%= @things.inspect %>
+```
 
 
 #### <a id='deploy'></a>Deploying Once, Deploying Twice ####
