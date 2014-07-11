@@ -5,7 +5,7 @@ _This page assumes that you are using cf v6._
 
 When you use the Node buildpack, you get three Node-specific environment
 variables in addition to the regular [Cloud Foundry environment variables]
-(../devguide/deploy-apps/environment-variable.html).
+(https://github.com/cloudfoundry/docs-dev-guide/blob/master/deploy-apps/environment-variable.html.md).
 
 * `BUILD_DIR` — The directory into which Node.js is copied each time a Node.js application is run.
 
