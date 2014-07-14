@@ -6,7 +6,7 @@ _This page assumes that you are using cf v6._
 
 When you use the Ruby buildpack, you get three Ruby-specific environment
 variables in addition to the regular [Cloud Foundry environment variables]
-(../devguide/deploy-apps/environment-variable.html).
+(https://github.com/cloudfoundry/docs-dev-guide/blob/master/deploy-apps/environment-variable.html.md).
 
 * `BUNDLE_BIN_PATH` — Location where Bundler installs binaries.
 

@@ -1,0 +1,39 @@
+# Buildpacks for the enterprise
+
+If you understand the need for offline buildpacks, you can skip this introduction and head over to the
+[Offline Modes documentation](./offline_modes.md).
+
+## Introduction to buildpack dependencies
+
+Buildpacks often need access to runtime binaries for the platform they are targeting.
+
+For example, depending on the source it's building from and at the time of writing,
+[Heroku's Ruby buildpack](https://github.com/heroku/heroku-buildpack-ruby) requires:
+
+  * A Ruby interpreter (out of 5 MRI, 26 JRubies, and some experimental Rubinius')
+  * Libyaml (out of 2 versions)
+  * Bundler
+  * Node
+
+The Ruby buildpack uses public accessible Amazon s3 hosting for these dependencies.
+
+## Online Cloud Foundry deployments
+
+Online deployments of Cloud Foundry, such as [Pivotal Web Services](https://run.pivotal.io/), generally work well with
+third party and Heroku buildpacks without modification. You can specify the use of these buildpacks with the `-b` option
+to the Cloud Foundry CLI.
+
+When building droplets, [the DEA](http://docs.run.pivotal.io/concepts/architecture/execution-agent.html) executes the
+buildpack within a container whose network can reach the internet entirely unimpeded.
+
+A lot of Pivotal's customers do not allow the DEA, or any of their Cloud Foundry deployment, unimpeded access to the
+internet. Security and Change Management concerns impact how an enterprise, and even small businesses, decide to
+architect their network.
+
+To satisfy these customers, Pivotal forks existing buildpacks, or rolls our own, which support the loading of
+dependencies from behind a firewall. When building your buildpack, you should consider these mechanisms, especially if
+you want your platform adopted by enterprise companies.
+
+For a breakdown of offline modes and how to implement them, go to the [Offline Modes documentation](./offline_modes.md).
+
+The Cloud Foundry specific buildpacks can be found on [the Cloud Foundry wiki](https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks).

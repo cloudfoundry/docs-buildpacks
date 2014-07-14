@@ -1,0 +1,142 @@
+# Modes of operation for 'offline' enterprise ready buildpacks
+
+When providing offline support, buildpack developers have some choices regarding the storage of dependencies:
+
+1. Package them directly in the buildpack itself.
+1. Package dependencies that the admin chooses to support.
+1. Rely on a local mirror of dependencies.
+    1. Which the admin manages/provides
+    1. Whose management is provided by the buildpack provider.
+
+The Cloud Foundry buildpack team focuses on presenting the first option, directly packaged dependencies, for all the
+Cloud Foundry buildpacks.
+
+## Package dependencies in the buildpack
+
+### Method
+
+Provide a script the administrator uses to create the buildpack as a zipfile, with dependencies included.
+The simplest implementation of this approach is to keep the dependencies in your buildpack source, however this is
+strongly discouraged. Keeping the dependencies in your source will cause you source control to balloon in size.
+
+To avoid keeping the dependencies in source control, load the dependencies and add them to your buildpack zipfile.
+
+The administrator's process should be something like:
+
+    $ # clones (or downloads) your buildpack
+    $ git clone http://your.git/repo
+    $ cd <buildpack-name>
+
+    $ # Builds a package using your script
+    $ ./package
+     ----> downloading-dependencies.... done
+     ----> creating zipfile: cobol_buildpack.zip
+
+    $ # adds the buildpack to their Cloud Foundry instance
+    $ cf create-buildpack cobol-buildpack cobol_buildpack.zip 1
+
+    $ # Pushes an app using your buildpack
+    $ cd ~/my_app
+    $ cf push my-cobol-webapp -b cobol-buildpack
+    $ ----> Success and glory!
+
+### Pros
+
+* Simple process for admins
+* Easy for buildpack maintainers to implement
+
+### Cons
+
+* Cloud Foundry admin buildpack uploads are limited to 250 MB (soon to be 1 GB)
+  * The dependencies might not fit
+* Security and functional patches to dependencies require updating the buildpack
+  * Fetch the latest buildpack
+  * Rebuild the offline package
+  * Push the new buildpack to the private Cloud Foundry instance
+
+## Package selected dependencies in the buildpack
+
+### Method
+This is a variant of the previous method, where the admin edits a configuration file such as _'dependencies.yml'_, then
+packages and uploads the buildpack. This approach is __strongly discouraged__, please see the _Cons_ section below.
+
+The administrator's process should be something like:
+
+    $ # clones (or downloads) your buildpack
+    $ git clone http://your.git/repo
+    $ cd <buildpack-name>
+
+    $ # The extra step, selecting dependencies to use
+    $ vi dependencies.yml # or copy in their favorite config etc.
+
+    $ # Builds a package using your script
+    $ ./package
+     ----> downloading-dependencies.... done
+     ----> creating zipfile: cobol_buildpack.zip
+
+    $ # adds the buildpack to their Cloud Foundry instance
+    $ cf create-buildpack cobol-buildpack cobol_buildpack.zip 1
+
+    $ # Pushes an app using your buildpack
+    $ cd ~/my_app
+    $ cf push my-cobol-webapp -b cobol-buildpack
+    $ ----> Success and glory!
+
+### Pros
+
+* Usually avoids the Cloud Foundry admin buildpack upload size limit
+  * Only if the administrator chooses a limited subset of dependencies
+  * Or if the administrator maintains different packages for different dependency sets (a poor user experience)
+
+### Cons
+
+* More complex for the buildpack maintainers
+* Security updates to dependencies require updating the buildpack (see above)
+* Proliferation of buildpacks that need maintaining:
+  * For each configuration, there is an update required for each security patch
+  * Culling orphan configurations may be difficult or impossible
+  * Administrators need to track configurations and merge them with updates to the buildpack
+  * It's possible administrators might end up with a config per app
+
+## Rely on a local mirror
+
+### Method
+The administrator provides a compatible file store of dependencies. When running the buildpack, they specify
+the location of the file store. It's preferable that the buildpack deals with missing dependencies gracefully.
+
+The Cloud Foundry buildpack team are considering approaches to standardizing and simplifying this method for
+administrators and buildpack maintainers.
+
+The administrator's process should be something like:
+
+    $ # clones (or downloads) your buildpack
+    $ git clone http://your.git/repo
+    $ cd <buildpack-name>
+
+    $ # Builds a package using your script
+    $ ./package https://our.internal.site/dependency/repo
+     ----> creating zipfile: cobol_buildpack.zip
+
+    $ # adds the buildpack to their Cloud Foundry instance
+    $ cf create-buildpack cobol-buildpack cobol_buildpack.zip 1
+
+    $ # Pushes an app using your buildpack
+    $ cd ~/my_app
+    $ cf push my-cobol-webapp -b cobol-buildpack
+     ----> deploying app
+     ----> downloading dependencies:
+        https://our.internal.site/dependency/repo/dep1.tgz.... done
+        https://our.internal.site/dependency/repo/dep2.tgz.... WARNING: dependency not found!
+
+### Pros
+
+* Avoids the Cloud Foundry admin buildpack upload size limit
+* Leaves the administrator completely in control of providing dependencies
+* Security and functional patches for dependencies can be maintained separately on the mirror
+  * Given the buildpack is designed to use newer semantically versioned dependencies
+  * The buildpack behaviour does not change with the newer functional changes
+
+### Cons
+
+* The administrator needs to set up and maintain a mirror.
+* Another config option for the buildpack maintainers to support.
