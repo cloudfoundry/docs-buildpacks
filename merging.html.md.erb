@@ -1,0 +1,15 @@
+# Merging from an upstream buildpack
+
+## Introduction
+
+The buildpacks team endeavours to provide current and dependable buildpacks. We mitigate risks by depending on 
+community-tested upstream buildpacks for patches. Doing so allows us to focus on offline capabilities. For example, the
+[Cloud Foundry Ruby buildpack](http://github.com/cloudfoundry/cf-buildpack-ruby) is a fork of the 
+[Heroku Ruby buildpack](http://github.com/heroku/heroku-buildpack-ruby). Changes made to Heroku's buildpack are pulled down into ours.
+
+## Strategy
+
+To merge upstream buildpacks, please ensure you do not use 'git rebase' as you might when doing feature branches. This
+approach is not sustainable, as you will need to confront the same merge conflicts over and over again.
+
+Use the approach [outlined on github](https://help.github.com/articles/syncing-a-fork).
