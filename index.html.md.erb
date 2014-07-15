@@ -3,9 +3,13 @@ title: Buildpacks
 ---
 
 Buildpacks provide framework and runtime support for your applications.
-Buildpacks typically examine user-provided artifacts to determine what dependencies to download and how to configure applications to communicate with bound services.
+Buildpacks typically examine user-provided artifacts to determine what dependencies to download and how to configure applications to communicate with bound services. 
 
 When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required and installs it on the Droplet Execution Agent (DEA) where the application needs to run.
+
+Cloud Foundry deployments often have limited access to dependencies. This occurs when the deploy is behind a firewall, or
+when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides an
+[API extension for on-premises buildpacks](./custom.html#package-script).
 
 ## System Buildpacks
 
@@ -51,17 +55,13 @@ This table lists Cloud Foundry system buildpacks, and for each buildpack, descri
 
 ## Other Buildpacks
 
-If your application uses a language or framework that Cloud Foundry buildpacks do not support, there are several options you can try:
+If your application uses a language or framework that Cloud Foundry buildpacks do not support, you can try the following:
 
-* [Customize](./custom.html) an existing buildpack or write your own
+* [Customize](./custom.html) an existing buildpack
+* Write your own buildpack
 * Use a [Cloud Foundry Community Buildpack][c]
-* Use a [Heroku Third-Party Buildpack][h] (these may work with Cloud Foundry but have not been verified to do so)
+* Use a [Heroku Third-Party Buildpack][h] 
 
 [c]: https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks
 [h]: https://devcenter.heroku.com/articles/third-party-buildpacks
 
-Heroku developed the buildpack approach and made it available to the open source community.
-
-Cloud Foundry deploys often have limited access to dependencies. This occurs when the deploy is behind a firewall, or
-when administrators want to use local mirrors/proxies. In these circumstances, Cloud Foundry provides an
-[API extension for on-premises buildpacks](./custom.html#package-script).
