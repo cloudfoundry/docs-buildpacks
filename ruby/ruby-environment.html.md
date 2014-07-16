@@ -2,11 +2,9 @@
 title: Environment Variables Defined by the Ruby Buildpack
 ---
 
-_This page assumes that you are using cf v6._
-
 When you use the Ruby buildpack, you get three Ruby-specific environment
 variables in addition to the regular [Cloud Foundry environment variables]
-(../devguide/deploy-apps/environment-variable.html).
+(../../devguide/deploy-apps/environment-variable.html).
 
 * `BUNDLE_BIN_PATH` — Location where Bundler installs binaries.
 
@@ -27,13 +25,13 @@ typically contain gems that are not needed when the app runs in production.
 
     `BUNDLE_WITHOUT=assets`
 
-* `DATABASE_URL` — The Ruby buildpack looks at the database\_uri for bound services to see if they
+* `DATABASE_URL` — The Ruby buildpack looks at the `database\_uri` for bound services to see if they
 match known database types.
 If there are known relational database services bound to the application, the
 buildpack sets up the `DATABASE_URL` environment variable with the first one in
 the list.
 
-    If your application depends on DATABASE\_URL being set to the connection string
+    If your application depends on `DATABASE\_URL` being set to the connection string
     for your service, and Cloud Foundry does not set it, you can set this variable
     manually.
 
