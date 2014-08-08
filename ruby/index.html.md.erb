@@ -13,15 +13,25 @@ The source for the buildpack is [here](https://github.com/cloudfoundry/cf-buildp
 
 ## Buildpack Logging and Application Logging ##
 
-The buildpack only runs during the staging process, and therefore only logs
+The buildpack only runs during the staging process, and only logs
 what is important to staging, such as what is being downloaded, what the
 configuration is, and work that the buildpack does on your application.
 
-Once staging is done, the buildpack stops logging.
+The buildpack stops logging when the staging process finishes.
 Application logging is a separate concern.
 
-Your application must write to STDOUT or STDERR for its logs to be included in the
+If you are deploying a Ruby, Rack, or Sinatra application, your application must write to STDOUT or STDERR to include its logs in the
 Loggregator stream.
 See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
 
+If you are deploying a Rails application, the buildpack may or may not automatically install the necessary plugin or gem for logging, depending on the Rails version of the application:
 
+* Rails 2: The buildpack automatically installs the `rails_log_stdout` plugin into the application.
+* Rails 3: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message.
+* Rails 4: The buildpack only issues a warning message that the `rails_12factor` gem is not present, but does not install the gem.
+
+You must install the `rails_12factor` gem in your `Gemfile` to quiet the warning message.
+
+For more information about the `rails_log_stdout` plugin, refer to the [Github README](https://github.com/ddollar/rails_log_stdout).
+
+For more information about the `rails_12factor` gem, refer to the [Github README](https://github.com/heroku/rails_12factor).
