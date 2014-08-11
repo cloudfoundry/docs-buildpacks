@@ -26,7 +26,7 @@ See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-
 
 If you are deploying a Rails application, the buildpack may or may not automatically install the necessary plugin or gem for logging, depending on the Rails version of the application:
 
-* Rails 2: The buildpack automatically installs the `rails_log_stdout` plugin into the application.
+* Rails 2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application.
 * Rails 3: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message.
 * Rails 4: The buildpack only issues a warning message that the `rails_12factor` gem is not present, but does not install the gem.
 
