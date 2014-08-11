@@ -30,7 +30,7 @@ If you are deploying a Rails application, the buildpack may or may not automatic
 * Rails 3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message.
 * Rails 4.x: The buildpack only issues a warning message that the `rails_12factor` gem is not present, but does not install the gem.
 
-You must install the `rails_12factor` gem in your `Gemfile` to quiet the warning message.
+You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message.
 
 For more information about the `rails_log_stdout` plugin, refer to the [Github README](https://github.com/ddollar/rails_log_stdout).
 
