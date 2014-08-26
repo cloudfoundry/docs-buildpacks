@@ -3,7 +3,7 @@ title: Buildpacks
 ---
 
 Buildpacks provide framework and runtime support for your applications.
-Buildpacks typically examine user-provided artifacts to determine what dependencies to download and how to configure applications to communicate with bound services. 
+Buildpacks typically examine user-provided artifacts to determine what dependencies to download and how to configure applications to communicate with bound services.
 
 When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required and installs it on the Droplet Execution Agent (DEA) where the application needs to run.
 
@@ -50,17 +50,20 @@ This table describes Cloud Foundry system buildpacks. Each buildpack row lists s
 <td>Ruby, Rack, Rails, or Sinatra</td>
 <td><a href="https://github.com/cloudfoundry/cf-buildpack-ruby">Ruby source</a></td>
 </tr>
-</table>	
+</table>
 
 
 ## Other Buildpacks
 
 If your application uses a language or framework that Cloud Foundry buildpacks do not support, you can try the following:
 
-* [Customize](./custom.html) an existing buildpack
-* Write your own buildpack
+* Customize an existing buildpack
+
+ <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that Github recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
+
+* [Write](./custom.html) your own buildpack
 * Use a [Cloud Foundry Community Buildpack][c]
-* Use a [Heroku Third-Party Buildpack][h] 
+* Use a [Heroku Third-Party Buildpack][h]
 
 [c]: https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks
 [h]: https://devcenter.heroku.com/articles/third-party-buildpacks
