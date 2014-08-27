@@ -42,7 +42,7 @@ The `url`, `host`, `port`, `databaseName`, `username`, and `password` fields in 
 ## <a id="manual"></a>Manual Configuration ##
 If you do not want to use the Cloud Foundry auto-reconfiguration, you can choose to configure the Cloud Foundry service connections manually.
 
-The best way to do the manual configuration is to use the `spring-cloud` library to get the details of the Cloud Foundry environment the application is running in. To use this library, add it to the `dependencies` section in your `BuildConfig.groovy` file.
+The best way to do the manual configuration is to use the `spring-cloud` library to get the details of the Cloud Foundry environment the application is running in. To use this library, add it to the `dependencies` section in your `BuildConfig.groovy` file. Auto-reconfiguration is disabled when a bean from the `spring-cloud` library exists.
 
 ```groovy
   repositories {
@@ -53,12 +53,12 @@ The best way to do the manual configuration is to use the `spring-cloud` library
   }
 
   dependencies {
-    compile "org.springframework.cloud:cloudfoundry-connector:0.9.5"
-    compile "org.springframework.cloud:spring-service-connector:0.9.5"
+    compile "org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.0.0.RELEASE"
+    compile "org.springframework.cloud:spring-cloud-spring-service-connector:1.0.0.RELEASE"
   }
 ```
 
-Then you can use the `spring-cloud` API in your `DataSources.groovy` file to set the connection parameters. If you were using all three types of database services as in the auto-configuration example, and the services were named "myapp-mysql", "myapp-mongodb", and "myapp-redis", your `DataSources.groovy` file might look like the one below.
+Then you can use the `spring-cloud` API in your `DataSource.groovy` file to set the connection parameters. If you were using all three types of database services as in the auto-configuration example, and the services were named "myapp-mysql", "myapp-mongodb", and "myapp-redis", your `DataSources.groovy` file might look like the one below.
 
 ```groovy
 import org.springframework.cloud.CloudFactory
