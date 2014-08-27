@@ -6,13 +6,13 @@ _This page assumes that you are using cf v6._
 This page has information specific to deploying Rack, Rails, or Sinatra
 applications.
 
-## <a id='bundler'></a> Application Bundling ##
+## <a id='bundler'></a>Application Bundling ##
 
 You need to run <a href="http://gembundler.com/">Bundler</a> to create a
 `Gemfile` and a `Gemfile.lock`.
 These files must be in your application before you push to Cloud Foundry.
 
-## <a id='config'></a> Rack Config File ##
+## <a id='config'></a>Rack Config File ##
 
 For Rack and Sinatra you need a `config.ru` file like this:
 
@@ -21,7 +21,7 @@ require './hello_world'
 run HelloWorld.new
 ~~~
 
-## <a id='precompile'></a> Asset Precompilation ##
+## <a id='precompile'></a>Asset Precompilation ##
 
 Cloud Foundry supports the Rails asset pipeline.
 If you do not precompile assets before deploying your application, Cloud
@@ -54,7 +54,7 @@ You can force live compilation by adding this line to `application.rb`.
 Rails.application.config.assets.compile = true
 ~~~
 
-## <a id='rake'></a> Running Rake Tasks ##
+## <a id='rake'></a>Running Rake Tasks ##
 
 Cloud Foundry does not provide a mechanism for running a Rake task on a
 deployed application.
@@ -77,7 +77,7 @@ save the manifest file for you, with the settings you specified interactively.
 For more information about application manifests, and supported attributes, see
 [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html).
 
-### <a id='migrate-ruby-db'></a> Example: Invoking a Rake database migration task at application startup ###
+### <a id='migrate-ruby-db'></a>Example: Invoking a Rake database migration task at application startup ###
 
 The following is an example of the "migrate frequently" method described in the
 [Migrating a Database on Cloud Foundry]
@@ -106,7 +106,7 @@ The following is an example of the "migrate frequently" method described in the
 
 3. Update the application using `cf push`.
 
-## <a id='workers'></a> Running Rails 3 Worker Tasks ##
+## <a id='workers'></a>Running Rails 3 Worker Tasks ##
 
 Often when developing a Rails 3 application, you may want delay certain tasks
 so as not to consume resource that could be used for servicing requests from
@@ -117,7 +117,7 @@ executed by a separate application.
 The guide also shows how you can scale the resource available to the worker
 application.
 
-### <a id='worker-libs'></a> Choosing a Worker Task Library ###
+### <a id='worker-libs'></a>Choosing a Worker Task Library ###
 
 The first task is to decide which worker task library to use.
 Here is a summary of the three main libraries available for Ruby / Rails:
@@ -131,7 +131,7 @@ Here is a summary of the three main libraries available for Ruby / Rails:
 For other alternatives, see
 [https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs)
 
-### <a id='example-app'></a> Creating an Example Application ###
+### <a id='example-app'></a>Creating an Example Application ###
 
 For the purposes of the example application, we will use Sidekiq.
 
@@ -184,7 +184,7 @@ class ThingWorker
     count.times do
 
       thing_uuid = UUIDTools::UUID.random_create.to_s
-      Thing.create :title => "New Thing (#{thing_uuid})", :description =>
+      Thing.create :title =>"New Thing (#{thing_uuid})", :description =>
 "Description for thing #{thing_uuid}"
     end
 
@@ -299,7 +299,7 @@ Example:
 $ cf scale sidekiq-worker -i 2
 </pre>
 
-## <a id='rails-4'></a>  Use `rails_serv_static_assets` on Rails 4 ##
+## <a id='rails-4'></a>Use rails\_serv\_static\_assets on Rails 4 ##
 
 By default Rails 4 returns a 404 if an asset is not handled via an external
 proxy such as Nginx.
@@ -308,7 +308,7 @@ static assets directly, instead of returning a 404.
 You can use this capability to populate an edge cache CDN or serve files
 directly from your web application.
 The `rails_serv_static_assets` gem enables this behavior by setting the
-`config.serve_static_assets` option to "true", so you do not need to
+`config.serve_static_assets` option to `true`, so you do not need to
 configure it manually.
 
 ## <a id='buildpack'></a>About the Ruby Buildpack ##
