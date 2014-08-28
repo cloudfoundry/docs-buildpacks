@@ -42,7 +42,7 @@ The `url`, `host`, `port`, `databaseName`, `username`, and `password` fields in 
 ## <a id="manual"></a>Manual Configuration ##
 If you do not want to use the Cloud Foundry auto-reconfiguration, you can choose to configure the Cloud Foundry service connections manually.
 
-The best way to do the manual configuration is to use the `spring-cloud` library to get the details of the Cloud Foundry environment the application is running in. To use this library, add it to the `dependencies` section in your `BuildConfig.groovy` file. Auto-reconfiguration is disabled when a bean from the `spring-cloud` library exists.
+The best way to do the manual configuration is to use the `spring-cloud` library to get the details of the Cloud Foundry environment the application is running in. To use this library, add it to the `dependencies` section in your `BuildConfig.groovy` file.
 
 ```groovy
   repositories {
@@ -58,66 +58,68 @@ The best way to do the manual configuration is to use the `spring-cloud` library
   }
 ```
 
-Then you can use the `spring-cloud` API in your `DataSource.groovy` file to set the connection parameters. If you were using all three types of database services as in the auto-configuration example, and the services were named "myapp-mysql", "myapp-mongodb", and "myapp-redis", your `DataSources.groovy` file might look like the one below.
+Then you can use the `spring-cloud` API in your `DataSource.groovy` file to set the connection parameters. If you were using all three types of database services as in the auto-configuration example, and the services were named "myapp-mysql", "myapp-mongodb", and "myapp-redis", your configuration might look like that below. Auto-reconfiguration is disabled when a bean from the `spring-cloud` library is defined.
 
 ```groovy
 import org.springframework.cloud.CloudFactory
 
-def cloud
+beans {
+    cloud(CloudFactory) { bean ->
+        bean.factoryMethod = "cloud"
+    }
+}
 
-try {
-  cloud = new CloudFactory().cloud
-} catch(e) {}
+dataSource {
+    pooled = true
+    dbCreate = 'update'
+    driverClassName = 'com.mysql.jdbc.Driver'
+}
 
 environments {
-  production {
-    dataSource {
-      pooled = true
-      dbCreate = 'update'
-      driverClassName = 'com.mysql.jdbc.Driver'
-
-      if (cloud) {
-        def dbInfo = cloud.getServiceInfo('myapp-mysql')
-        url = dbInfo.jdbcUrl
-        username = dbInfo.userName
-        password = dbInfo.password
-      } else {
-        url = 'jdbc:mysql://localhost:5432/myapp'
-        username = 'sa'
-        password = ''
-      }
-    }
-
-    grails {
-      mongo {
-        if (cloud) {
-          def mongoInfo = cloud.getServiceInfo('myapp-mongodb')
-          host = mongoInfo.host
-          port = mongoInfo.port
-          databaseName = mongoInfo.database
-          username = mongoInfo.userName
-          password = mongoInfo.password
-        } else {
-          host = 'localhost'
-          port = 27107
-          databaseName = 'foo'
-          username = 'user'
-          password = 'password'
+    production {
+        dataSource {
+            def dbInfo = cloud.getServiceInfo('myapp-mysql')
+            url = dbInfo.jdbcUrl
+            username = dbInfo.userName
+            password = dbInfo.password
         }
-      }
-      redis {
-        if (cloud) {
-          def redisInfo = cloud.getServiceInfo('myapp-redis')
-          host = redisInfo.host
-          port = redisInfo.port
-          password = redisInfo.password
-        } else {
-          host = 'localhost'
-          port = 6379
-          password = 'password'
+        grails {
+            mongo {
+                def mongoInfo = cloud.getServiceInfo('myapp-mongodb')
+                host = mongoInfo.host
+                port = mongoInfo.port
+                databaseName = mongoInfo.database
+                username = mongoInfo.userName
+                password = mongoInfo.password
+            }
+            redis {
+                def redisInfo = cloud.getServiceInfo('myapp-redis')
+                host = redisInfo.host
+                port = redisInfo.port
+                password = redisInfo.password
+            }
         }
-      }
     }
-  }
+    development {
+        dataSource {
+            url = 'jdbc:mysql://localhost:5432/myapp'
+            username = 'sa'
+            password = ''
+        }
+        grails {
+            mongo {
+                host = 'localhost'
+                port = 27107
+                databaseName = 'foo'
+                username = 'user'
+                password = 'password'
+            }
+            redis {
+                host = 'localhost'
+                port = 6379
+                password = 'password'
+            }
+        }
+    }
 }
 ```
