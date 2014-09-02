@@ -4,9 +4,9 @@ title: Getting Started Deploying Ruby on Rails Apps
 
 <%=vars.GSG_intro_sentence%>
 
-This guide is intended to walk you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%><%=vars.product_short%>. You can choose whether to push a sample app, your own app, or both.
+This guide is intended to walk you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%>. You can choose whether to push a sample app, your own app, or both.
 
-If at any time you experience a problem following the steps below, try checking the [Known Issues](../release-notes/index.html), or refer to the [Troubleshooting Application Deployment and Health](../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips. Once you have completed the steps in this guide, explore the documentation on [docs.run.pivotal.io](http://docs.run.pivotal.io/) to learn more about <%=vars.product_full%>.
+If at any time you experience a problem following the steps below, try checking the [Known Issues](./../../release-notes/index.html), or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips. Once you have completed the steps in this guide, [explore the documentation](<%=vars.product_site%>) to learn more about <%=vars.product_full%>.
 
 ## <a id='deploy-sample'></a>Deploy a RoR Sample Application ##
 
@@ -16,7 +16,7 @@ To learn how to deploy your own RoR app, see [Deploy Your RoR Application](#depl
 
 ### <a id='sample-prereqs'></a>Prerequisites ###
 
-* <%=vars.product_short%> account: Before you can deploy an application, you must first complete the tasks described in the [Getting Started Guide with Pivotal Web Services](../starting/index.html) topic.
+* <%=vars.product_short%> account: Before you can deploy an application, you must first complete the tasks described in the [Getting Started Guide with Pivotal Web Services](./../../starting/index.html) topic.
 * [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Basic RoR knowledge
 
@@ -34,7 +34,7 @@ Example: `cf push rails_sample_app -n jc0825-rails`
 
   `cf push APP_NAME` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` flag to create a unique host name for the app to avoid URL collisions with other apps.
 
-  `cf push` automatically searches for an [application manifest YAML file](../devguide/deploy-apps/manifest.html) (`manifest.yml`) and also determines the appropriate [buildpack](./index.html) for the app.  A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app. 
+  `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) (`manifest.yml`) and also determines the appropriate [buildpack](./index.html) for the app.  A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app. 
 
   The example shows the terminal output of deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then binds the app to the `rails-postgres` service you defined in Step 2, and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.
 
@@ -144,14 +144,14 @@ For information on how to configure a manifest file, refer to [Step 4: Configure
 
 ### <a id='yourapp-step3'></a>Step 3: Configure a Service Instance for Your RoR Application ###
 
-This section describes using the CLI to configure a PostgreSQL managed service instance for your app. You can use either the CLI or the [Developer Console](../console/index.html) to perform this task.
+This section describes using the CLI to configure a PostgreSQL managed service instance for your app. You can use either the CLI or the [Developer Console](./../../console/index.html) to perform this task.
 
 <%=vars.product_short%> supports two types of service instances: 
 
 * Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider. 
 * User-provided service instances enable you to bind your application to pre-provisioned external service instances.
 
-For more information on creating and using service instances, refer to the [Services Overview](../devguide/services/index.html) topic.
+For more information on creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
 
 Run `cf marketplace` to view managed and user-provided services and plans available to you. 
 
@@ -191,7 +191,7 @@ OK
 ### <a id='yourapp-step4'></a>Step 4: Configure the Manifest File  ###
 
 You can specify deployment options in a manifest that the `cf push` command uses. 
-This section describes how to bind the service that you created in the previous step to your app. For more information about application manifests, and supported attributes, refer to the [Deploying with Application Manifests](../devguide/deploy-apps/manifest.html) topic. 
+This section describes how to bind the service that you created in the previous step to your app. For more information about application manifests, and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic. 
 Add a `services` block to the `applications` block and specify the service instance you created in Step 3.
 
 <pre class="code">
@@ -206,12 +206,12 @@ applications:
     - rails-postgres
 </pre>
 
-You can also bind a service using the CLI or the [Developer Console](../console/index.html).
+You can also bind a service using the CLI or the [Developer Console](./../../console/index.html).
 
 ### <a id='yourapp-step5'></a>Step 5: Login to <%=vars.product_short%> and Target the API Endpoint   ###
 Run `cf login -a api.run.pivotal.io`, enter your login credentials, and select a space and org.
 
-For more information, refer to [Step 3: Point Your CLI to <%=vars.product_short%>](../starting/index.html#connect-api) of the Getting Started with Pivotal Web Services topic. 
+For more information, refer to [Step 3: Point Your CLI to <%=vars.product_short%>](./../../starting/index.html#connect-api) of the Getting Started with Pivotal Web Services topic. 
 
 ### <a id='yourapp-step6'></a>Step 6: (Optional) Configure a Production Server  ###
 
@@ -229,7 +229,7 @@ When you deploy your application, `cf push`:
  * Automatically searches for an application manifest YAML file (`manifest.yml`). A manifest specifies what `cf push` should do with the app.
  * Automatically determines the appropriate buildpack for the app. A buildpack provides framework and runtime support for your app.
 
-<pre class="note"><strong>Note</strong>: You must use the CLI to deploy apps. You cannot use the <a href="../console/index.html">Developer Console</a>.</pre>
+<pre class="note"><strong>Note</strong>: You must use the CLI to deploy apps. You cannot use the <a href="./../../console/index.html">Developer Console</a>.</pre>
 
 For example: `cf push my-app` creates the URL `my-app.cfapps.io`.
 
@@ -267,11 +267,11 @@ For example: `cf push my-app` creates the URL `my-app.cfapps.io`.
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the Getting Started with cf v6 topic.
 
-<pre class="note"><strong>Note</strong>: You cannot perform certain tasks in either the CLI or the <a href="../console/index.html">Developer Console</a> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands: 
+<pre class="note"><strong>Note</strong>: You cannot perform certain tasks in either the CLI or the <a href="./../../console/index.html">Developer Console</a> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands: 
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 
-For more information about specific Admin commands you can perform with the Developer Console, depending on your user role, refer to the <a href="../console/dev-console-permissions.html">Understanding Developer Console Permissions</a> topic. 
+For more information about specific Admin commands you can perform with the Developer Console, depending on your user role, refer to the <a href="./../../console/dev-console-permissions.html">Understanding Developer Console Permissions</a> topic. 
 </pre>
 
 ## <a id='console-manage'></a>Manage Your Application with the <%=vars.product_short%> Developer Console ##
@@ -283,10 +283,10 @@ You can also use the Developer Console to view and modify information about your
 * Launching the URL for an app in a browser window.
 * Viewing logs.
 
-For more information about using the Developer Console, refer to the [Using the Developer Console](../console/index.html) topics.
+For more information about using the Developer Console, refer to the [Using the Developer Console](./../../console/index.html) topics.
 
 ## <a id='troubleshoot'></a>Troubleshooting ##
-If your application fails to start on Cloud Foundry, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
+If your application fails to start on Cloud Foundry, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
 ### <a id='deploy-fails'></a>App Deploy Fails ###
 Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using CLI commands or Developer Console functionality, or you might have to delete the app and redeploy.
@@ -303,7 +303,7 @@ Common reasons why deploy an app fails include:
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
 
 ### <a id='learn-more'></a>Learn More ###
-For more information on how to develop, deploy, and manage applications with Cloud Foundry, refer to the [Developer Guide](../devguide/index.html). 
+For more information on how to develop, deploy, and manage applications with Cloud Foundry, refer to the [Developer Guide](./../../devguide/index.html). 
 
 
  
