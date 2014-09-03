@@ -6,17 +6,16 @@ title: Getting Started Deploying Ruby on Rails Apps
 
 This guide is intended to walk you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%>. You can choose whether to push a sample app, your own app, or both.
 
-If at any time you experience a problem following the steps below, try checking the <%=vars.known_issues%>, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips. Once you have completed the steps in this guide, [explore the documentation](<%=vars.product_site%>) to learn more about <%=vars.product_full%>.
+If at any time you experience a problem following the steps below, try checking the <%=vars.known_issues%>, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips.
 
 ## <a id='deploy-sample'></a>Deploy a RoR Sample Application ##
 
-This section describes how to deploy a RoR sample application named `rails_sample_app` to <%=vars.product_short%>.
+This section describes how to deploy a RoR sample application named `rails_sample_app`.
 
 To learn how to deploy your own RoR app, see [Deploy Your RoR Application](#deploy-yourapp).
 
 ### <a id='sample-prereqs'></a>Prerequisites ###
 
-<%=vars.pws_bullet%> 
 * [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Basic RoR knowledge
 
@@ -24,7 +23,12 @@ To learn how to deploy your own RoR app, see [Deploy Your RoR Application](#depl
 
 Run `git clone https://github.com/cloudfoundry-samples/rails_sample_app` to clone `rails_sample_app` from GitHub.
 
-### <a id='sample-step2'></a>Step 2: Deploy the Sample App to <%=vars.product_short%> ###
+### <a id='sample-step2'></a>Step 2: Login to <%=vars.product_short%> and Target the API Endpoint   ###
+Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. 
+
+For more information about determining the API endpoint, refer to the <%=vars.gen_GSG%> 
+
+### <a id='sample-step3'></a>Step 3: Deploy the Sample App to <%=vars.product_short%> ###
 
 1. `cd` to the cloned app directory.
 1. Run `cf create-service elephantsql turtle rails-postgres`.
@@ -77,7 +81,7 @@ urls: jmt2014-rails.cfapps.io
 
 </pre>
 
-### <a id='sample-step3'></a>Step 3: Test the Sample App ###
+### <a id='sample-step4'></a>Step 4: Test the Sample App ###
 
 You’ve deployed your first app to <%=vars.product_short%>! Now let’s access your app online using its URL.
 In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `cfapps.io`. The image shows the resulting webpage for the `rails_sample_app`.
@@ -206,12 +210,12 @@ applications:
     - rails-postgres
 </pre>
 
-You can also bind a service using the CLI<%=vars.dev_console_2%>.
+You can also bind a service using the CLI <%=vars.dev_console_2%>.
 
 ### <a id='yourapp-step5'></a>Step 5: Login to <%=vars.product_short%> and Target the API Endpoint   ###
-Run `cf login -a <%=vars.api_endpoint%>`, enter your login credentials, and select a space and org.
+Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org.
 
-For more information, refer to the  topic. 
+For more information, refer to the <%=vars.gen_GSG%> 
 
 ### <a id='yourapp-step6'></a>Step 6: (Optional) Configure a Production Server  ###
 
@@ -244,7 +248,7 @@ For example: `cf push my-app` creates the URL `my-app.cfapps.io`.
 1. Launch a new terminal window and run `cf logs APP-NAME` to simultaneously view log activity while the app deploys.
 1. Browse to your app URL.
 
-    Search for the urls field in the App started block in the output of the `cf push` command to access your app online.
+    Search for the `urls` field in the `App started` block in the output of the `cf push` command to access your app online.
 
     <pre class="terminal">
     
@@ -265,7 +269,7 @@ For example: `cf push my-app` creates the URL `my-app.cfapps.io`.
 
 ## <a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 
-Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the Getting Started with cf v6 topic.
+Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
 <pre class="note"><strong>Note</strong>: You cannot perform certain tasks in  the CLI <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands: 
 
@@ -302,7 +306,7 @@ Common reasons why deploy an app fails include:
 * `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
 
-### <a id='learn-more'></a>Learn More ###
+## <a id='learn-more'></a>Learn More ##
 For more information on how to develop, deploy, and manage applications with Cloud Foundry, refer to the [Developer Guide](./../../devguide/index.html). 
 
 
