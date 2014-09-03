@@ -40,7 +40,7 @@ Example: `cf push rails_sample_app -n jc0825-rails`
 
   `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) (`manifest.yml`) and also determines the appropriate [buildpack](./index.html) for the app.  A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app. 
 
-  The example shows the terminal output of deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then binds the app to the `rails-postgres` service you defined in Step 2, and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.
+  The example shows the terminal output of deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then binds the app to the `rails-postgres` service you defined in the previous step, and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.
 
 <pre class="terminal">
 
@@ -164,7 +164,7 @@ The example shows three of the available managed database-as-a-service providers
 <pre class="terminal">
 
 $  cf marketplace
-Getting services from marketplace in org Cloud-Apps / space development as joeclouduser@acme.com...
+Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
 OK
 
 
@@ -187,7 +187,7 @@ Choose a service and plan from the list, and provide a unique name for the servi
 <pre class="terminal">
 
 $   cf create-service elephantsql turtle rails-postgres
-Creating service rails-postgres in org Cloud-Apps / space development as joeclouduser@acme.com....
+Creating service rails-postgres in org Cloud-Apps / space development as clouduser@example.com....
 OK
 
 </pre>
@@ -271,7 +271,7 @@ For example: `cf push my-app` creates the URL `my-app.cfapps.io`.
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
-<pre class="note"><strong>Note</strong>: You cannot perform certain tasks in  the CLI <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands: 
+<pre class="note"><strong>Note</strong>: You cannot perform certain tasks in the CLI <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands: 
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 
@@ -281,11 +281,11 @@ Run `cf help` to view a complete list of commands, grouped by task categories, a
 ## <a id='console-manage'></a>Manage Your Application with the <%=vars.product_short%> Developer Console ##
 You can also use the Developer Console to view and modify information about your app, such as:
 
-* Starting, stopping, and restarting your app.
-* Creating, binding, unbinding, and deleting service instances.
-* Creating and deleting orgs and spaces.
-* Launching the URL for an app in a browser window.
-* Viewing logs.
+* Starting, stopping, and restarting your app
+* Creating, binding, unbinding, and deleting service instances
+* Creating and deleting orgs and spaces
+* Launching the URL for an app in a browser window
+* Viewing logs
 
 <%=vars.dev_console_3%> 
 
