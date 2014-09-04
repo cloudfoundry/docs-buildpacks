@@ -158,12 +158,11 @@ your application.
 ### <a id='memory'></a>Allocate Sufficient Memory ###
 
 If you do not allocate sufficient memory to a Java application when you deploy
-it, it may fail to start, or be killed by Cloud Foundry.
-Allocate enough memory to allow for Java heap, PermGen, thread stacks, and JVM
-overhead.
-The Java buildpack allocates 10% of the memory limit to PermGen.
-Memory-related JVM options are configured in `config/openjdk.yml`
-(https://github.com/cloudfoundry/java-buildpack/blob/master/config/openjdk.yml).
+it, it may fail to start, or Cloud Foundry may terminate it.  
+
+You configure memory-related JVM options in the `config/open_jdk_jre.yml` file of the [Java buildpack](https://github.com/cloudfoundry/java-buildpack). Allocate enough memory to allow for Java heap, PermGen, thread stacks, and JVM
+overhead. The Java buildpack allocates 10% of the memory limit to PermGen.
+
 When your application is running, you can use the `cf app APP_NAME` command to
 see memory utilization.
 
