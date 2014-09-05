@@ -23,18 +23,18 @@ To learn how to deploy your own RoR app, see [Deploy Your RoR Application](#depl
 
 Run `git clone https://github.com/cloudfoundry-samples/rails_sample_app` to clone `rails_sample_app` from GitHub.
 
-### <a id='sample-step2'></a>Step 2: Login to <%=vars.product_short%> and Target the API Endpoint   ###
+### <a id='sample-step2'></a>Step 2: Log in to <%=vars.product_short%> and Target the API Endpoint   ###
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
-### <a id='sample-step3'></a>Step 3: Deploy the Sample App to <%=vars.product_short%> ###
+### <a id='sample-step3'></a>Step 3: Deploy the Sample App ###
 
 1. `cd` to the cloned app directory.
 1. Run `cf create-service elephantsql turtle rails-postgres`.
-1. Run `cf push rails_sample_app -n HOST_NAME`.
+1. Run `cf push rails_sample_app -n [HOST_NAME]`.
 
 Example: `cf push rails_sample_app -n jc0825-rails`
 
-  `cf push APP_NAME` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` flag to create a unique host name for the app to avoid URL collisions with other apps.
+  `cf push [APP_NAME]` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` flag to create a unique host name for the app to avoid URL collisions with other apps.
 
   `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) (`manifest.yml`) and also determines the appropriate [buildpack](./index.html) for the app.  A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app. 
 
@@ -48,7 +48,7 @@ Using manifest file /Users/pivotal/workspace/rails_sample_app/manifest.yml
 Updating app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
 OK
 
-Using route jmt2014-rails.cfapps.io
+Using route jmt2014-rails.<%=vars.app_domain%>
 Uploading rails_sample_app...
 Uploading app files from: /Users/pivotal/workspace/rails_sample_app
 Uploading 445.7K, 217 files
@@ -72,7 +72,7 @@ OK
 requested state: started
 instances: 1/1
 usage: 256M x 1 instances
-urls: jmt2014-rails.cfapps.io
+urls: jmt2014-rails.<%=vars.app_domain%>
 
      state     since                    cpu    memory          disk   
 #0   running   2014-08-25 03:32:10 PM   0.0%   68.4M of 256M   73.4M of 1G 
@@ -82,7 +82,7 @@ urls: jmt2014-rails.cfapps.io
 ### <a id='sample-step4'></a>Step 4: Test the Sample App ###
 
 You’ve deployed your first app to <%=vars.product_short%>! Now let’s access your app online using its URL.
-In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `cfapps.io`. The image shows the resulting webpage for the `rails_sample_app`.
+In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. The image shows the resulting webpage for the `rails_sample_app`.
 
 <%= image_tag("../images/RoR_sample_webpage.png") %>
 
@@ -117,16 +117,16 @@ The following is an example of how to invoke a Rake database migration task at a
 
 1. Create a file with the Rake task name and the extension `.rake`, and store it in the `lib/tasks` directory of your application.
 
-1. Add the following code to your `<name>.rake` file:
+1. Add the following code to your rake file:
 
     <pre class="code">
-namespace :cf do
-  desc "Only run on the first application instance"
-  task :on_first_instance do
-    instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
-    exit(0) unless instance_index == 0
-  end
-end
+    namespace :cf do
+        desc "Only run on the first application instance"
+        task :on_first_instance do
+            instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
+        exit(0) unless instance_index == 0
+        end
+    end
 
     </pre>
 
@@ -177,7 +177,7 @@ mongolab         sandbox   	Fully-managed MongoDB-as-a-Service
 ...
 </pre>
 
-Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE. 
+Run `cf create-service [SERVICE] [PLAN] [SERVICE_INSTANCE]` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE. 
 
 The example shows creating a service instance named `rails-postgres` that uses the `elephantsql` service and the `turtle` plan. 
 
@@ -212,7 +212,7 @@ applications:
 
 You can also bind a service using the <%=vars.dev_console_2%>.
 
-### <a id='yourapp-step5'></a>Step 5: Login to <%=vars.product_short%> and Target the API Endpoint   ###
+### <a id='yourapp-step5'></a>Step 5: Log in to <%=vars.product_short%> and Target the API Endpoint   ###
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%> 
@@ -232,7 +232,7 @@ When you deploy your application, `cf push`:
 
  * Creates a URL that is the route to your application. The URL is in the form HOST.DOMAIN, where HOST is the APP_NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`.
 
- * Searches for an application manifest YAML file (`manifest.yml`). A manifest specifies what `cf push` should do with the app.
+ * Searches for an application manifest YAML file. A manifest specifies what `cf push` should do with the app.
  * Determines the appropriate buildpack for the app. A buildpack provides framework and runtime support for your app.
 
 <p class="note"><strong>Note</strong>: You must use the CLI to deploy apps.</p>
@@ -240,14 +240,14 @@ When you deploy your application, `cf push`:
 For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 1. `cd` to the app directory that you want to deploy.
-1. Run `cf push APP-NAME`.  
+1. Run `cf push [APP-NAME]`.  
 
     The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. You can use the following options to create a unique URL:
     * `-n` to assign a different HOST name for the app.
     * `--random-route` to create a URL that includes the app name and random words.
     * Run `cf help push` to view other options for this command.
 
-1. Launch a new terminal window and run `cf logs APP-NAME` to simultaneously view log activity while the app deploys.
+1. Launch a new terminal window and run `cf logs [APP-NAME]` to simultaneously view log activity while the app deploys.
 1. Browse to your app URL.
 
     Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
@@ -262,7 +262,7 @@ For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
     requested state: started
     instances: 1/1
     usage: 256M x 1 instances
-    urls: jmt0814-rails.cfapps.io
+    urls: jmt0814-rails.<%=vars.app_domain%>
 
 
          state     since                    cpu    memory        disk   
@@ -271,7 +271,7 @@ For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 ## <a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 
-Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
+Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
 <p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands: 
 
