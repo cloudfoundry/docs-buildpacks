@@ -23,7 +23,7 @@ To learn how to deploy your own RoR app, see [Deploy Your RoR Application](#depl
 
 Run `git clone https://github.com/cloudfoundry-samples/rails_sample_app` to clone `rails_sample_app` from GitHub.
 
-### <a id='sample-step2'></a>Step 2: Log in to <%=vars.product_short%> and Target the API Endpoint   ###
+### <a id='sample-step2'></a>Step 2: Log in and Target the API Endpoint   ###
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 ### <a id='sample-step3'></a>Step 3: Deploy the Sample App ###
@@ -97,9 +97,9 @@ This section describes how to deploy your RoR application to <%=vars.product_sho
 ### <a id='yourapp-prereqs'></a>Prerequisites ###
 
 * [Bundler](http://bundler.io) configured on your workstation
-* (Optional) [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
+* (**Optional**) [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Intermediate to advanced RoR knowledge
-* (Optional) Robust production web server for Ruby and RoR apps, such as Unicorn
+* (**Optional**) Robust production web server for Ruby and RoR apps, such as Unicorn
 * Your Rails 4.x app that runs locally on your workstation
 
 ### <a id='yourapp-step1'></a>Step 1: Add the rails_12factor Gem to Your Gemfile ###
@@ -212,7 +212,7 @@ applications:
 
 You can also bind a service using the <%=vars.dev_console_2%>.
 
-### <a id='yourapp-step5'></a>Step 5: Log in to <%=vars.product_short%> and Target the API Endpoint   ###
+### <a id='yourapp-step5'></a>Step 5: Log in and Target the API Endpoint   ###
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%> 
