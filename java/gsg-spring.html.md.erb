@@ -249,7 +249,7 @@ If your application fails to start, verify that the application starts in your l
 ### <a id='deploy-fails'></a>App Deploy Fails ###
 Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
-### <a id='unique-url'></a>App Requires a Content-Type ###
+### <a id='content-type'></a>App Requires a Content-Type ###
 
 If you specify a `Content-Encoding` header of `gzip` but do not specify a `Content-Type` within your application, <%=vars.product_short%> might send a `Content-Type` of `application/x-gzip` to the browser. This scenario might cause the deploy to fail if it conflicts with the actual encoded content of your app. To avoid this issue, be sure to explicitly set `Content-Type` within your app.
 
