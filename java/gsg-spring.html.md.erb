@@ -21,7 +21,7 @@ To learn how to deploy your own Spring app, see [Deploy Your Spring Application]
 
 ### <a id='sample-step1'></a>Step 1: Get a Sample Spring App from GitHub ###
 
-Run `git clone https://github.com/scottfrederick/spring-music.git` to clone `spring_music` app from GitHub.
+Run `git clone https://github.com/scottfrederick/spring-music.git` to clone the `spring_music` app from GitHub.
 
 ### <a id='sample-step2'></a>Step 2: Log in and Target the API Endpoint   ###
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
@@ -90,7 +90,7 @@ urls: jc0830-spring.<%=vars.app_domain%>
 ### <a id='sample-step4'></a>Step 4: Test the Sample App ###
 
 You’ve deployed your first app to <%=vars.product_short%>! Now let’s access your app online using its URL.
-In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. The image shows the resulting webpage for the `spring-music`.
+In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. The image shows the resulting webpage for the `spring-music` app.
 
 <%= image_tag("../images/spring-music-app.png") %>
 
@@ -112,17 +112,17 @@ This section describes how to deploy your Spring application to <%=vars.product_
 * Intermediate to advanced Spring knowledge
 * JDK 1.6, 1.7., or 1.8 for Java 6, 7, or 8 configured on your workstation
 
-<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.7, but you can modify the buildpack and the manifest for your app to compile to an earlier version. Refer to <a href="#yourapp-step8">Step 8: Configure the Deployment Manifest</a>.</p>
+<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. Refer to <a href="#yourapp-step8">Step 8: Configure the Deployment Manifest</a>.</p>
 
 ### <a id='yourapp-step1'></a>Step 1: Add the Cloud Foundry Java Client Library to Your Project ###
 
-The Cloud Foundry Java Client Library enables you to query and manage an account on a <%=vars.product_short%> instance. For more information on including the library with your Maven or Gradle project and the specific objects that you can query, refer to the [Cloud Foundry Java Client Library](./java-client.html) topic.
+The Cloud Foundry Java Client Library enables you to query and manage app instances and account instance information of a <%=vars.product_short%> account instance. For more information on including the library with your Maven or Gradle project and the specific objects that you can query, refer to the [Cloud Foundry Java Client Library](./java-client.html) topic.
 
 <p class="note"><strong>Note</strong>: Ensure that your Spring app runs locally before continuing with this procedure.</p>
 
 ### <a id='yourapp-step2'></a>Step 2: (Optional) Integrate a Plugin for Your Build Tool ###
 
-<%=vars.product_short%> provides plugins for Maven and Gradle that enable you to deploy and manage your apps using Maven or Gradle command-line syntax and configure security credentials. For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
+<%=vars.product_short%> provides plugins for Maven and Gradle. You can deploy and manage your apps using Maven or Gradle command-line syntax and configure security credentials. For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
 
 ### <a id='yourapp-step3'></a>Step 3: (Optional) Integrate the Cloud Foundry Eclipse Plugin for STS ###
 
@@ -152,7 +152,15 @@ The table lists build script information for Gradle and Maven and provides docum
 
 ### <a id='yourapp-step5'></a>Step 5: Allocate Sufficient Memory ###
 
-If you do not allocate sufficient memory to a Java application when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for Java heap, PermGen, thread stacks, and JVM overhead. The [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) allocates 10% of the memory limit to PermGen.
+If you do not allocate sufficient memory to a Java application when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for the following:
+
+* Java heap
+* Metaspace, if using Java 8
+* PermGen, if using Java 7 or earlier
+* thread stacks
+* JVM overhead
+
+The [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) allocates 10% of the memory limit to Metaspace.
 
 To configure memory-related JVM options for your app, you create a custom buildpack and edit the `config/open_jdk_jre.yml` file. For more information, see [Step 8: Configure the Deployment Manifest](#yourapp-step8). 
 
@@ -162,7 +170,7 @@ When your application is running, you can use the `cf app [APP_NAME]` command to
 
 ### <a id='yourapp-step6'></a>Step 6: Provide a JDBC Driver ###
 
-The Java buildpack does not bundle a JDBC driver with your application. If your application will access a SQL RDBMS, you must do the following tasks:
+The Java buildpack does not bundle a JDBC driver with your application. If your application accesses a SQL RDBMS, you must do the following:
 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
@@ -202,10 +210,10 @@ For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 1. `cd` to the app directory that you want to deploy.
 1. Run `cf push [APP-NAME] -p [PATH-TO-WAR]`.  
 
-
+    <br />
     Most Spring apps include an artifact, such as a `.jar`, `.war`, or `.zip` file. You must include the path to this file in the `cf push` command if you do not declare the path in the `applications` block of the manifest file. The example shows how to specify a path to the `.war` file for a Spring app. Refer to the [Tips for Java Developers](./java-tips.html) topic for CLI examples for specific build tools, frameworks, and languages that create an app with an artifact.
 
-
+    <br />
     The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. You can use the following options to create a unique URL:
     * `-n` to assign a different HOST name for the app.
     * `--random-route` to create a URL that includes the app name and random words.
