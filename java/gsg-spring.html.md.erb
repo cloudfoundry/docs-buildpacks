@@ -160,11 +160,11 @@ If you do not allocate sufficient memory to a Java application when you deploy i
 * Thread stacks
 * JVM overhead
 
-The [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) allocates 10% of the memory limit to Metaspace.
+The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
 
-To configure memory-related JVM options for your app, you create a custom buildpack and edit the `config/open_jdk_jre.yml` file. For more information, see [Step 8: Configure the Deployment Manifest](#yourapp-step8). 
+To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see [Step 8: Configure the Deployment Manifest](#yourapp-step8). 
 
-When your application is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
+When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
 <p class="note"><strong>Note</strong>: <%=vars.product_short%> automatically allocates 512MB to an app when you do not specify a value.</p>
 
