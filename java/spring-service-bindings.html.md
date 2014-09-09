@@ -37,12 +37,12 @@ dependency.
 	<dependency>
 	    <groupId>org.springframework.cloud</groupId>
 	    <artifactId>cloudfoundry-connector</artifactId>
-	    <version>0.9.5</version>
+	    <version>1.0.0</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.springframework.cloud</groupId>
 	    <artifactId>spring-service-connector</artifactId>
-	    <version>0.9.5</version>
+	    <version>1.0.0</version>
 	 </dependency>
 </dependencies>
 ```
@@ -113,7 +113,7 @@ class CloudConfig extends AbstractCloudConfig {
 ```
 
 Method such as `dataSource()` come in a additional overloaded variant that offer
-specifying configuration options such as the pooling parameters. Please see Javadoc
+specifying configuration options such as the pooling parameters. See Javadoc
 for more details.
 
 #### Connecting to Generic Services ####
@@ -236,7 +236,7 @@ See the Spring Framework documentation for additional information about using Sp
 
 When you deploy a Spring application to Cloud Foundry, Cloud Foundry automatically enables the `cloud` profile.
 
-### <a id='cloud-profiles-java'></a>Profiles in Java Configration ###
+### <a id='cloud-profiles-java'></a>Profiles in Java Configuration ###
 
 The `@Profile` annotation can be placed on `@Configuration` classes in a Spring
 application to set conditions under which configuration classes are invoked. By using
@@ -277,7 +277,7 @@ public class Configuration {
 
 }
 ```
-### <a id='cloud-profiles-xml'></a>Profiles in XML Configration ###
+### <a id='cloud-profiles-xml'></a>Profiles in XML Configuration ###
 In XML configuration files, you group the configuration for a specific environment using the profile attribute of a nested `<beans>` element in the appropriate Spring application context file. You can create your own custom profiles, but the ones that are most relevant in the context of Cloud Foundry are the `default` and `cloud` profiles.
 
 You should group all usages of the `<cloud:>` namespace within the `cloud` profile block to allow the application to run outside of Cloud Foundry environments. You then use the `default` profile (or a custom profile) to group the non-Cloud Foundry configuration that will be used if you deploy your application to a non-Cloud Foundry environment.
