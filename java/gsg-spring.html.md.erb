@@ -157,7 +157,7 @@ If you do not allocate sufficient memory to a Java application when you deploy i
 * Java heap
 * Metaspace, if using Java 8
 * PermGen, if using Java 7 or earlier
-* thread stacks
+* Thread stacks
 * JVM overhead
 
 The [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) allocates 10% of the memory limit to Metaspace.
@@ -192,8 +192,9 @@ Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/m
 
 ### <a id='yourapp-step9'></a>Step 9: Log in and Target the API Endpoint ###
 
-Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. 
-For more information about determining the API endpoint, refer to the <%=vars.gen_GSG%>
+Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+
+<%=vars.gen_GSG%>
 
 ### <a id='yourapp-step10'></a>Step 10: Deploy Your Application ###
 When you deploy your application, `cf push`:
