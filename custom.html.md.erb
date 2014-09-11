@@ -106,7 +106,7 @@ The `package` script accepts two commands as arguments:
   * `package online` produces a zip of the buildpack, preferably excluding unnecessary content such as tests.
   * `package offline` produces a zip of the buildpack with all dependencies cached.
 
-`package offline` promises to produce a buildpack that does not need internet connectivity to run.
+`package offline` produces a buildpack that does not need internet connectivity to run. For more information about the tradeoffs of the dependency storage options available for custom offline buildpacks, refer to the [Packaging Buildpack Dependecies](./depend-pkg-offline.html) topic.
 
 The `package offline` command is used to produce the [system buildpacks](./index.html) bundled with
 Cloud Foundry.
