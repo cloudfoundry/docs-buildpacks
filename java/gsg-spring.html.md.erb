@@ -36,7 +36,7 @@ Example: `cf push spring-music -n jc0830-spring`
 
   `cf push [APP_NAME]` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` or `--random-route` flag to create a unique URL for the app to avoid URL collisions with other apps.
 
-  `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) and also determines the appropriate [buildpack](./index.html) for the app.  A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app. 
+  `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) and also determines the appropriate [buildpack](./index.html) for the app. A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app. 
 
   The example shows the terminal output of deploying the `spring-music`. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then follows the instructions in the manifest to start one instance of the app with 512M. After the app starts, the output displays the health and status of the app.
 
@@ -262,7 +262,7 @@ Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run 
 
 If you specify a `Content-Encoding` header of `gzip` but do not specify a `Content-Type` within your application, <%=vars.product_short%> might send a `Content-Type` of `application/x-gzip` to the browser. This scenario might cause the deploy to fail if it conflicts with the actual encoded content of your app. To avoid this issue, be sure to explicitly set `Content-Type` within your app.
 
-### <a id='unique-url'></a>App Requires Unique URL ###
+### <a id='unique-url'></a>App Requires a Unique URL ###
 <%=vars.product_short%> requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
