@@ -18,6 +18,7 @@ To learn how to deploy your own Groovy app, see [Deploy Your Groovy Application]
 
 * [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Basic Groovy knowledge
+* (**Optional**) [Spring Boot CLI](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#cli) to run your Groovy app locally
 
 ### <a id='sample-step1'></a>Step 1: Get a Sample Groovy App from GitHub ###
 
@@ -29,9 +30,9 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 ### <a id='sample-step3'></a>Step 3: Deploy the Sample App ###
 
 1. `cd` to the cloned app directory.
-1. Complete all instructions in the **Running on Cloud Foundry** and **Doing a Blue-Green Demo** sections of the [cf-platform-eng/cf-bg-demo Github repo README](https://github.com/cf-platform-eng/cf-bg-demo).
+1. Complete all instructions in the **Running on Cloud Foundry** and **Doing a Blue-Green Demo** sections of the cf-platform-eng/cf-bg-demo [GitHub repo README](https://github.com/cf-platform-eng/cf-bg-demo).
 
-If you want to run the app locally using the [Spring Boot CLI](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#cli), complete the **Running Locally** section.
+If you want to run the app locally using the Spring Boot CLI, complete the **Running Locally** section.
 
   `cf push [APP_NAME]` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` or `--random-route` flag to create a unique URL for the app to avoid URL collisions with other apps.
 
@@ -105,6 +106,7 @@ This section describes how to deploy your Groovy application to <%=vars.product_
 ### <a id='yourapp-prereqs'></a>Prerequisites ###
 
 * A Groovy app that runs locally on your workstation
+* (**Optional**) [Spring Boot CLI](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#cli) to run your Groovy app locally
 * (**Optional**) [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Intermediate to advanced Groovy knowledge
 * JDK 1.6, 1.7., or 1.8 for Java 6, 7, or 8 configured on your workstation
@@ -115,17 +117,21 @@ This section describes how to deploy your Groovy application to <%=vars.product_
 
 The Cloud Foundry Java Client Library enables you to query and manage app instances and account instance information of a <%=vars.product_short%> account instance. For more information on including the library with your Maven or Gradle project and the specific objects that you can query, refer to the [Cloud Foundry Java Client Library](./java-client.html) topic.
 
-<p class="note"><strong>Note</strong>: Use the the <a href="http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#cli">Spring Boot CLI</a> to ensure that your Groovy app runs locally before continuing with this procedure.</p>
+<p class="note"><strong>Note</strong>: Ensure that your Groovy app runs locally before continuing with this procedure.</p>
 
 ### <a id='yourapp-step2'></a>Step 2: (Optional) Integrate a Plugin for Your Build Tool ###
 
-<%=vars.product_short%> provides plugins for Maven and Gradle. You can deploy and manage your apps using Maven or Gradle command-line syntax and configure security credentials. For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
+<%=vars.product_short%> provides plugins for Maven and Gradle. You can deploy and manage your apps using Maven or Gradle command-line syntax and configure security credentials. 
+
+<p class="note"><strong>Note</strong>: Because Gradle is based on Groovy and integrates with Maven, you might want to choose Gradle to build your apps.</p>
+
+For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
 
 ### <a id='yourapp-step3'></a>Step 3: Declare App Dependencies  ###
 
 Be sure to declare all the dependency tasks for your app in the build script of your chosen build tool. 
 
-The table lists build script information for Gradle and Maven and provides documentation links for each build tool. Because Gradle is based on Groovy and integrates with Maven, you might want to choose Gradle to build your apps. See the Gradle documentation for information on the following:
+The table lists build script information for Gradle and Maven and provides documentation links for each build tool. If you use Gradle because of its integration with Groovy and Maven, see the Gradle documentation for information on the following:
 
 * Dependency management 
 * Groovy plugin and quickstart guide 
@@ -179,10 +185,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * [Configure Service Connections for Grails](./grails-service-bindings.html)
 * [Configure Service Connections for Spring](./spring-service-bindings.html)
 
-If your Groovy app runs on the Play Framework and connects to a single Postgres or MySQL database instance, the <%=vars.product_short%> auto-reconfiguration functionality automatically connects your app to the service. For more information, refer to the following topics:
-
-* [Configure Service Connections for Play Framework](./play-service-bindings.html)
-* [Deploying to Cloud Foundry / App Fog](https://www.playframework.com/documentation/2.3.x/Deploying-CloudFoundry)
+If your Groovy app runs on the Play Framework and connects to a single Postgres or MySQL database instance, auto-reconfiguration functionality automatically connects your app to the service. For more information, refer to the [Configure Service Connections for Play Framework](./play-service-bindings.html) topic.
 
 ### <a id='yourapp-step7'></a>Step 7: Configure the Deployment Manifest ###
 
@@ -217,13 +220,12 @@ For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 1. Run `cf push [APP-NAME] -p [PATH-TO-WAR]`.  
 
     <br />
-    Most Groovy apps include an artifact, such as a `.jar`, `.war`, or `.zip` file. You must include the path to this file in the `cf push` command if you do not declare the path in the `applications` block of the manifest file. The example shows how to specify a path to the `.war` file for a Groovy app. Refer to the [Tips for Java Developers](./java-tips.html) topic for CLI examples for specific build tools, frameworks, and languages that create an app with an artifact.
+    Your Groovy app might include an artifact, such as a `.war` or `.distZip` file. You must include the path to this file in the `cf push` command if you do not declare the path in the `applications` block of the manifest file. The example shows how to specify a path to the `.war` file for a Groovy app. Refer to the [Tips for Java Developers](./java-tips.html) topic for how to deploy the following:
+    * Groovy apps that do and do not include an artifact
+    * Groovy apps built with either the Play Framework or the Spring Boot CLI
+    * Grails packages that include a WAR file
 
-    <br />
-    The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. You can use the following options to create a unique URL:
-    * `-n` to assign a different HOST name for the app.
-    * `--random-route` to create a URL that includes the app name and random words.
-    * Run `cf help push` to view other options for this command.
+    <p class="note"><strong>Note</strong>: The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. You can use <code>-n</code> or <code>--random-route</code> options to create a unique URL. Run <code>cf help push</code> to view other options for this command.</p>
 
 1. Launch a new terminal window and run `cf logs [APP-NAME]` to simultaneously view log activity while the app deploys.
 1. Browse to your app URL.
