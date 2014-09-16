@@ -83,6 +83,8 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to Eclipse
 1. The **Review Licenses** window appears. Click "I accept the terms of the license agreement" and click **Finish**.
 1. The **Software Updates** window appears. Click **Yes** to restart Eclipse.
 
+    See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
+
     <%= image_tag("sts/software-updates.png") %>
 
 ### <a id='install-to-sts'></a>Install to STS from Extensions Tab ###
@@ -108,10 +110,10 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 
 1. The **Software Updates** window appears. Click **Yes** to restart STS.
 
+    After STS restarts, you can see new panes in the Editor portion of the screen. See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
+
     <%= image_tag("sts/restart-sts.png") %>
 
-1. After STS restarts, you can see new panes in the Editor portion of the screen. See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
-1. Proceed to [Create a Cloud Foundry Server](#cloud-foundry-server).
 
 ### <a id='install-local'></a>Install from a Local Repository ###
 
@@ -145,38 +147,7 @@ On the machine running Eclipse or Spring Tools Suite:
 1. On the **Add Repository** window, click **OK**.
 1. On the **Available Software** window, check "Core/Cloud Foundry Integration" and "Resources/Cloud Foundry Integration" and click **Next**.
 1. On the **Review Licenses** window, click "I accept the terms of the license agreement" and click **Finish**.
-
-## <a id='cloud-foundry-server'></a>Create a Cloud Foundry Server ##
-
-This section has instructions for configuring a server resource that will represent a target Cloud Foundry space. You will create a server for each space in Cloud Foundry to which you will deploy applications. Once you create your first Cloud Foundry service instances using the instructions below, you can create additional instances using the [Clone Server](#clone) feature.
-
-1. Right-click the **Servers** view and select **New > Server**.
-1. In the **Define a New Server** window, expand the **Pivotal** folder, select **Cloud Foundry**, and click **Next**.
-
-    <p class="note"><strong>Note</strong>: Do not modify default values for <strong>Server host name</strong> or <strong>Server Runtime Environment</strong>. These fields are unused and will be removed in a future version of the plugin.</p>
-
-     <%= image_tag("sts/define-new-server.png") %>
-
-1. On the **Cloud Foundry Account** window, if you already have a Cloud Foundry account, enter the email account and password you use to log on to Cloud Foundry and click **Validate Account**.
-
-    If you do not have a Cloud Foundry account, you can click **Sign Up** to get one and complete this procedure after your account is established.
-
-    <p class="note"><strong>Note</strong>: The <strong>Register Account</strong> function is not supported by public instances of Cloud Foundry v2. By default, the **URL** field points to the Pivotal Cloud Foundry Hosted Developer Edition URL of https://api.run.pivotal.io. <%=vars.console_2%> 
-		
-
-    <%= image_tag("sts/cloud-foundry-account.png") %>
-
-1. The **Cloud Foundry Account** window is refreshed and displays a message indicating whether or not your credentials were valid. Click **Next**.
-
-      <%= image_tag("sts/new-server.png") %>
-
-1. On the **Organizations and Spaces** window, select the space you want to target, and click **Finish**.
-
-    <p class="note"><strong>Note</strong>: If you do not select a space, the server will be configured to connect to the default space, which is the first encountered in a list of your spaces.</p>
-
-    <%= image_tag("sts/orgs-and-spaces.png") %>
-
-1. Once you have successfully configured the Pivotal Cloud Foundry server, it will appear in the **Servers** view of the Eclipse or STS user interface. To familiarize yourself with the plugin user interface, see [About the Plugin User Interface](#plugin-ui). When you are ready, proceed to [Deploy an Application](#deploy-an-application).
+    See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
 
 ## <a id='plugin-ui'></a>About the Plugin User Interface ##
 
@@ -221,6 +192,40 @@ The follow panes are present when the **Applications and Services** tab is selec
 * K --- The **Services** pane lists services that are bound to the application currently selected in the **Applications** pane. Note the icon in the upper right corner of the pane --- it allows you to create a service, as described in [Create a Service](#create-service).
 
  <%= image_tag("sts/ui-apps-services-tab.png", :width =>"1150") %>
+
+
+## <a id='cloud-foundry-server'></a>Create a Cloud Foundry Server ##
+
+ This section has instructions for configuring a server resource that will represent a target Cloud Foundry space. You will create a server for each space in Cloud Foundry to which you will deploy applications. Once you create your first Cloud Foundry service instances using the instructions below, you can create additional instances using the [Clone Server](#clone) feature.
+
+ 1. Right-click the **Servers** view and select **New > Server**.
+ 1. In the **Define a New Server** window, expand the **Pivotal** folder, select **Cloud Foundry**, and click **Next**.
+
+     <p class="note"><strong>Note</strong>: Do not modify default values for <strong>Server host name</strong> or <strong>Server Runtime Environment</strong>. These fields are unused and will be removed in a future version of the plugin.</p>
+
+      <%= image_tag("sts/define-new-server.png") %>
+
+ 1. On the **Cloud Foundry Account** window, if you already have a Cloud Foundry account, enter the email account and password you use to log on to Cloud Foundry and click **Validate Account**.
+
+    <p class="note"><strong>Note</strong>: The <strong>Register Account</strong> function does not support public instances of Cloud Foundry v2.</p>
+
+     If you do not have a Cloud Foundry account, you can click **Sign Up** to get one and complete this procedure after your account is established.
+
+    <p class="note"><strong>Note</strong>: By default, the <strong>URL</strong> field points to the Pivotal Cloud Foundry Hosted Developer Edition URL of https://api.run.pivotal.io. <%=vars.console_2%></p>
+
+     <%= image_tag("sts/cloud-foundry-account.png") %>
+
+ 1. The **Cloud Foundry Account** window is refreshed and displays a message indicating whether or not your credentials were valid. Click **Next**.
+
+       <%= image_tag("sts/new-server.png") %>
+
+ 1. On the **Organizations and Spaces** window, select the space you want to target, and click **Finish**.
+
+     <p class="note"><strong>Note</strong>: If you do not select a space, the server will be configured to connect to the default space, which is the first encountered in a list of your spaces.</p>
+
+     <%= image_tag("sts/orgs-and-spaces.png") %>
+
+ 1. Once you have successfully configured the Pivotal Cloud Foundry server, it will appear in the **Servers** view of the Eclipse or STS user interface. To familiarize yourself with the plugin user interface, see [About the Plugin User Interface](#plugin-ui). When you are ready, proceed to [Deploy an Application](#deploy-an-application).
 
 ## <a id='deploy-an-application'></a>Deploy an Application ##
 
