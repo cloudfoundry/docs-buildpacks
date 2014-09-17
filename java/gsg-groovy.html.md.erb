@@ -88,12 +88,13 @@ urls: cf-bg-demo-blue-grouty-sarcode.<%=vars.app_domain%>
 
 ### <a id='sample-step4'></a>Step 4: Test the Sample App ###
 
-You’ve deployed your first app to <%=vars.product_short%>! Now let’s access your app online using its URL.
+You’ve deployed your first app to <%=vars.product_short%>!
 
-In the terminal output, the `urls` field of the `App started` block contains the app URL. Because this sample app requires that you deploy three apps and map two of those apps to a zero downtime route, you want to browse to the URL you defined in Step 5 of the README instructions. This is the `HOST_NAME` and alphanumeric suffix you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. 
-The image shows the resulting webpage of when blue and green versions of the app are mapped to the zero downtime route. Refreshing the page displays the different versions.
+In Step 5 of the README instructions, you complete mapping both blue and green app versions to the zero downtime route. The composite image below shows the result of this mapping to the zero downtime route URL `cf-bg-demo-a1426.cfapps.io`. Refreshing the webpage causes the different app versions to display and demonstrates the <%=vars.product_short%> load balancing functionality in action.
 
 <%= image_tag("../images/blue_green_demo.png") %>
+
+Now let’s access your app online using its URL. In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` and alphanumeric suffix you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Note that because you unmapped the blue app version from your zero downtime route URL in Step 6, only the green app version displays when you browse to this URL. Remap the blue app version to view both versions and test the <%=vars.product_short%> load balancing functionality.
 
 You can now use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name. 
 
