@@ -9,8 +9,7 @@ instance from Eclipse or Spring Tools Suite (STS).
 The plugin supports Eclipse v3.8 and v4.3 (a Java EE version is recommended),
 and STS 3.0.0 and later.
 
-This page has instructions for installing and using v1.6.1 of the plugin, which
-is compatible with Cloud Foundry v2.
+This page has instructions for installing and using v1.7.1 of the pluginco.
 
 You can use the plugin to:
 
@@ -24,7 +23,15 @@ You can use the plugin to:
 * View and manage deployed applications and services.
 * Start and stop applications.
 
+<<<<<<< Updated upstream
 Key notes in v1.7.1 of the plugin:
+=======
+v1.7.1 of the plugin provides several new features:
+
+* Spring Boot support: In the Project Explorer, right-click on your Spring Boot
+project, select **Configure -> Enable as Cloud Foundry App**, then drag and drop
+the Spring Boot app to your Cloud Foundry server instance.
+>>>>>>> Stashed changes
 
 * Support for servers using self-signed certificates: When creating a new Cloud
 Foundry server through the Eclipse Servers wizard, if "self-signed certificate"
@@ -220,9 +227,9 @@ The follow panes are present when the **Applications and Services** tab is selec
 
  1. On the **Cloud Foundry Account** window, if you already have a Cloud Foundry account, enter the email account and password you use to log on to Cloud Foundry and click **Validate Account**.
 
-    <p class="note"><strong>Note</strong>: The <strong>Register Account</strong> function does not support public instances of Cloud Foundry v2.</p>
+    <p class="note"><strong>Note</strong>: The <strong>Register Account</strong> button is inactive as the functionality does not support public instances of Cloud Foundry.</p>
 
-     If you do not have a Cloud Foundry account, you can click **Sign Up** to get one and complete this procedure after your account is established.
+     If you do not have a Cloud Foundry account, you can click **Sign Up** to register a new account. After you create the account you can complete this procedure.
 
     <p class="note"><strong>Note</strong>: By default, the <strong>URL</strong> field points to the Pivotal Cloud Foundry Hosted Developer Edition URL of https://api.run.pivotal.io. <%=vars.console_2%></p>
 
