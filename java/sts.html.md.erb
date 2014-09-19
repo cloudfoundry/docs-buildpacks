@@ -14,21 +14,17 @@ is compatible with Cloud Foundry v2.
 
 You can use the plugin to:
 
-* Deploy applications from an Eclipse or STS workspace to a running Cloud Foundry instance. The plugin supports Java/JVM applications and frameworks, such as:
+* Deploy applications from an Eclipse or STS workspace to a running Cloud Foundry instance. The plugin supports the following application types:
+  * Spring Boot
   * Spring
   * Java Web
   * Java standalone
   * Grails
-  * Lift
 * Create, bind, and unbind services.
 * View and manage deployed applications and services.
 * Start and stop applications.
 
-v1.6.1 of the plugin provides several new features:
-
-* Spring Boot support: In the Project Explorer, right-click on your Spring Boot
-project, select **Configure -> Enable as Cloud Foundry App**, then drag and drop
-the Spring Boot app to your Cloud Foundry server instance.
+Key notes in v1.7.1 of the plugin:
 
 * Support for servers using self-signed certificates: When creating a new Cloud
 Foundry server through the Eclipse Servers wizard, if "self-signed certificate"
@@ -45,10 +41,8 @@ application is deployed through the Cloud Foundry server editor.
 choices have been removed. Users can specify any memory choice for applications
 in MB.
 
-* Console enhancements: The Cloud Foundry console now displays progress when
-pushing, starting, or stopping an application. Application log files can be
-streamed to the console by right-clicking on the application in the Servers
-view, then selecting **Show Console**.
+* Console enhancements: The Cloud Foundry console now supports loggregator, and loggregator content
+is streamed to the Cloud Foundry console when applications are running and the application's console is open.
 
 ## <a id='install'></a>Install Cloud Foundry Eclipse Plugin ##
 
@@ -114,10 +108,29 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 
     <%= image_tag("sts/restart-sts.png") %>
 
+### <a id='install-offline'></a>Install a Release Version Offline ###
+If you need to install a release version of Cloud Foundry Eclipse Plugin in offline mode, you can download a release update site zip file and transfer it to the offline environment.
 
-### <a id='install-local'></a>Install from a Local Repository ###
+*Step 1: Download a release update site zip file.*
 
-If you need to install the Cloud Foundry Eclipse Plugin locally, rather than via the Internet, you can download the source, create a repository and copy it to the target machine, then install from the copied repository.
+* Select a release update site zip file from: https://github.com/cloudfoundry/eclipse-integration-cloudfoundry#offline-installation
+
+*Step 2: Install from local update site.*
+
+On the machine running Eclipse or Spring Tools Suite:
+
+1. In Eclipse (or STS), select **Install New Software** from the **Help** menu.
+1. On the **Available Software** window, click **Add** to the right of the **Work with** field.
+1. On the **Add Repository** window, enter a name for the repository, for example "Cloud Foundry Integration", and click **Archive**.
+1. On the **Open** window, browse to the location of the update site zip file and click **Open**.
+1. On the **Add Repository** window, click **OK**.
+1. On the **Available Software** window, check "Core/Cloud Foundry Integration" and, optionally, "Resources/Cloud Foundry Integration" and click **Next**.
+1. On the **Review Licenses** window, click "I accept the terms of the license agreement" and click **Finish**.
+    See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
+
+### <a id='install-local'></a>Install from a Local Build ###
+
+If you need to install the Cloud Foundry Eclipse Plugin from a local build, rather than a release version, you can download and build the source, create a repository and copy it to the target machine, then install from the copied repository.
 
 *Step 1: Obtain the plugin source from GitHub.*
 
@@ -145,7 +158,7 @@ On the machine running Eclipse or Spring Tools Suite:
 1. On the **Add Repository** window, enter a name for the repository, for example "Cloud Foundry Integration", and click **Local**.
 1. On the **Open** window, browse to `org.cloudfoundry.ide.eclipse.server.site/target/site` and click **Open**.
 1. On the **Add Repository** window, click **OK**.
-1. On the **Available Software** window, check "Core/Cloud Foundry Integration" and "Resources/Cloud Foundry Integration" and click **Next**.
+1. On the **Available Software** window, check "Core/Cloud Foundry Integration" and, optionally, "Resources/Cloud Foundry Integration" and click **Next**.
 1. On the **Review Licenses** window, click "I accept the terms of the license agreement" and click **Finish**.
     See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
 
@@ -273,8 +286,10 @@ Before you can bind a service to an application you must create it. To do so:
 1. Click the icon in the upper right corner of the "Services" pane.
 1. In the **Service Configuration** window:
 
+  * **Filter** --- Enter text pattern to search for a service. Matches are made against both service name and description.
+  * **Service List** --- Select a service from the list of services. The list will be updated automatically based on the filter text.
   * **Name** --- Enter a name for the service.
-  * **Type** --- Select the service type from the pull-down list.
+  * **Plan** --- Select the service plan from the pull-down list.
 
     <%= image_tag("sts/service-configuration.png") %>
 
