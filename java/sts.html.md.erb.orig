@@ -23,11 +23,18 @@ You can use the plugin to:
 * View and manage deployed applications and services.
 * Start and stop applications.
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+Key notes in v1.7.1 of the plugin:
+=======
+=======
+>>>>>>> Stashed changes
 v1.7.1 of the plugin provides several new features:
 
 * Spring Boot support: In the Project Explorer, right-click on your Spring Boot
 project, select **Configure -> Enable as Cloud Foundry App**, then drag and drop
 the Spring Boot app to your Cloud Foundry server instance.
+>>>>>>> Stashed changes
 
 * Support for servers using self-signed certificates: When creating a new Cloud
 Foundry server through the Eclipse Servers wizard, if "self-signed certificate"
