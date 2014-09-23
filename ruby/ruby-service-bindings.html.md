@@ -7,39 +7,64 @@ _This page assumes that you are using cf v6._
 After you create a service instance and bind it to an application, you must
 configure the application to connect to the service.
 
-## <a id='cf-app-utils'></a>Query VCAP_SERVICES with cf-app-utils ##
+## <a id='cf-app-utils'></a>Query `VCAP_SERVICES` with cf-app-utils ##
 
 `cf-apps-utils` is a gem that allows your application to search for credentials
 from VCAP_SERVICES by name, tag, or label.
 
 * [cf-app-utils-ruby](https://github.com/cloudfoundry/cf-app-utils-ruby)
 
-## <a id='auto-config'></a>Auto-configuration for Rails ##
+## <a id='vcap-services-defines-database-url'></a>`VCAP_SERVICES` defines `DATABASE_URL`
 
-Ruby on Rails applications often expect to find the connection string for a
-relational database stored in the environment variable `DATABASE_URL`.
-If the Ruby buildpack detects a Rails app, it looks in the `VCAP_SERVICES`
-environment variable for a service instance having the key `uri` in the
-`credentials` JSON object, whose value has a scheme matching `mysql` or
-`postgres`.
-If the buildpack finds a match, it updates `DATABASE_URL` with the value of
-`uri`.
-If multiple bound instances contain a `uri` key with matching scheme, the
-buildpack will use the first one found.
+At runtime, every Ruby application - Rails and non-Rails - is provided a `DATABASE_URL` environment variable which is populated based on the [`VCAP_SERVICES` environment variable](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES).
 
-## <a id='config-file'></a>Define Connection in Configuration File ##
+For example:
 
-For a Ruby database application, you configure the database connection
-information in the application's `database.yml` file.
-When you bind a service to an application, the service connection details are
-written to the applications's `VCAP_SERVICES` environment variable.
-`VCAP_SERVICES` lists, in JSON format, the services bound to your application
-and the credentials required to connect to each.
+    VCAP_SERVICES =
+    {
+      "elephantsql": [
+        {
+          "name": "elephantsql-c6c60",
+          "label": "elephantsql",
+          "credentials": {
+            "uri": "postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb"
+          }
+        }
+      ]
+    }
 
-In Ruby, you can read the contents of `VCAP_SERVICES` with `ENV`. For example:
+The `DATABASE_URL` variable will be:
+
+    DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
+
+Recognition of the details used to populate `DATABASE_URL` is based on the structure of `VCAP_SERVICES`. Any service containing a JSON object of the following form will be recognised by Cloud Foundry as a candidate for `DATABASE_URL`:
+
+    {
+      "some-service": [
+        {
+          "credentials": {
+            "uri": "<some database URL>"
+          }
+        }
+      ]
+    }
+
+If there are multiple candidates, the *first* candidate is used.
+
+## <a id='rails-applications-have-autoconfigured-database-yml'></a>Rails Applications Have Auto-Configured `database.yml`
+
+During staging the Ruby buildpack replaces your `database.yml` with one based on the `DATABASE_URL` variable.
+
+If you supply a `database.yml` file, *it is not used* and will be overwritten during staging.
+
+## <a id='configuring-non-rails-applications'></a>Configuring non-Rails Applications
+
+Non-Rails applications can also see the `DATABASE_URL` variable.
+
+If you have more than one service with credentials, only the first will be populated into `DATABASE_URL`. To access other credentials, you can inspect the `VCAP_SERVICES` environment variable.
 
 ~~~ruby
-my_services = JSON.parse(ENV['VCAP_SERVICES'])
+vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
 ~~~
 
 Use the hash key for the service to obtain the connection credentials
@@ -50,72 +75,13 @@ from `VCAP_SERVICES`.
 - For services that use the [v1 Service Broker API](../../services/api-v1.html), the hash key is formed by combining
 the service provider and version, in the format PROVIDER-VERSION.
 
-  Example: For service provider "p-mysql" with version "n/a", the hash key is
+  For example, given a service provider "p-mysql" with version "n/a", the hash key is
 `p-mysql-n/a`.
-
-You can obtain the credentials for the example service with these Ruby statements:
-
-~~~ruby
-  db = JSON.parse(ENV['VCAP_SERVICES'])["p-mysql-n/a"]
-  credentials = db.first["credentials"]
-  host = credentials["host"]
-  username = credentials["username"]
-  password = credentials["password"]
-  database = credentials["database"]
-  port = credentials["port"]
-~~~
-
-To configure a Rails application, you would change your `database.yml` to use
-erb syntax to set the connection values using the credentials obtained from
-`VCAP_SERVICES`.
-If you are using the p-mysql service, your `database.yml` file might look like:
-
-~~~
-<%
-  mydb = JSON.parse(ENV['VCAP_SERVICES'])["p-mysql-n/a"]
-  credentials = mydb.first["credentials"]
-%>
-
-production:
-  adapter: pg
-  encoding: utf8
-  reconnect: false
-  pool: 5
-  host: <%= credentials["host"] %>
-  username: <%= credentials["username"] %>
-  password: <%= credentials["password"] %>
-  database: <%= credentials["database"] %>
-  port: <%= credentials["port"] %>
-
-~~~
-
-If you are instantiating your adapter client directly, rather than using the
-active record pattern or another object-relation mapping (ORM) technique, your
-code would like something like this:
-
-~~~ruby
-
-mysqldb = JSON.parse(ENV['VCAP_SERVICES'])["p-mysql-n/a"]
-credentials = {
-  :host => credentials["host"],
-  :username => credentials["username"],
-  :password => credentials["password"],
-  :database => credentials["name"],
-  :port => credentials["port"]
-}
-
-client = Mysql2::Client.new credentials
-
-~~~
-
-Your code may vary from the example above, depending on the hash key for the
-service and the syntax for instantiating your database adapter client.
 
 ## <a id='migrate'></a>Seed or Migrate Database ##
 
 Before you can use your database the first time, you must create and populate
-or migrate it.
-For more information, see [Migrate a Database on Cloud Foundry](../../devguide/services/migrate-db.html).
+or migrate it. For more information, see [Migrate a Database on Cloud Foundry](../../devguide/services/migrate-db.html).
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 
