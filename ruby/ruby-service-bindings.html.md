@@ -16,7 +16,7 @@ from VCAP_SERVICES by name, tag, or label.
 
 ## <a id='vcap-services-defines-database-url'></a>`VCAP_SERVICES` defines `DATABASE_URL`
 
-At runtime, every Ruby application - Rails and non-Rails - is provided a `DATABASE_URL` environment variable which is populated based on the [`VCAP_SERVICES` environment variable](../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES).
+At runtime, every Ruby application - Rails and non-Rails - is provided a `DATABASE_URL` environment variable which is populated based on the [`VCAP_SERVICES` environment variable](../../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES).
 
 For example:
 
