@@ -7,19 +7,20 @@ _This page assumes that you are using cf v6._
 After you create a service instance and bind it to an application, you must
 configure the application to connect to the service.
 
-## <a id='cf-app-utils'></a>Query `VCAP_SERVICES` with cf-app-utils ##
+## <a id='cf-app-utils'></a>Query VCAP_SERVICES with cf-app-utils ##
 
-`cf-apps-utils` is a gem that allows your application to search for credentials
-from VCAP_SERVICES by name, tag, or label.
+The `cf-apps-utils` gem allows your application to search for credentials
+from the `VCAP_SERVICES` environment variable by name, tag, or label.
 
 * [cf-app-utils-ruby](https://github.com/cloudfoundry/cf-app-utils-ruby)
 
-## <a id='vcap-services-defines-database-url'></a>`VCAP_SERVICES` defines `DATABASE_URL`
+## <a id='vcap-services-defines-database-url'></a>VCAP_SERVICES defines DATABASE_URL
 
-At runtime, every Ruby application - Rails and non-Rails - is provided a `DATABASE_URL` environment variable which is populated based on the [`VCAP_SERVICES` environment variable](../../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES).
+At runtime, the Ruby buildpack creates a `DATABASE_URL` environment variable for every Ruby application based on the [VCAP_SERVICES](../../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable.
 
-For example:
+Example VCAP_SERVICES:
 
+<p class='terminal'>
     VCAP_SERVICES =
     {
       "elephantsql": [
@@ -32,12 +33,15 @@ For example:
         }
       ]
     }
+</p>
 
-The `DATABASE_URL` variable will be:
+Based on this `VCAP_SERVICES`, the Ruby buildpack creates the following `DATABASE_URL` environment variable:
 
+<p class='terminal'>
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
+</p>
 
-Recognition of the details used to populate `DATABASE_URL` is based on the structure of `VCAP_SERVICES`. Any service containing a JSON object of the following form will be recognised by Cloud Foundry as a candidate for `DATABASE_URL`:
+The Ruby buildpack uses the structure of the `VCAP_SERVICES` environment variable to populate `DATABASE_URL`. Any service containing a JSON object of the following form will be recognized by Cloud Foundry as a candidate for `DATABASE_URL`:
 
     {
       "some-service": [
@@ -49,13 +53,13 @@ Recognition of the details used to populate `DATABASE_URL` is based on the struc
       ]
     }
 
-If there are multiple candidates, the *first* candidate is used.
+Cloud Foundry uses the first candidate found to populate `DATABASE_URL`.
 
-## <a id='rails-applications-have-autoconfigured-database-yml'></a>Rails Applications Have Auto-Configured `database.yml`
+## <a id='rails-applications-have-autoconfigured-database-yml'></a>Rails Applications Have Auto-Configured database.yml
 
-During staging the Ruby buildpack replaces your `database.yml` with one based on the `DATABASE_URL` variable.
+During staging, the Ruby buildpack replaces your `database.yml` with one based on the `DATABASE_URL` variable.
 
-If you supply a `database.yml` file, *it is not used* and will be overwritten during staging.
+<p class='note'><strong>Note</strong>: The Ruby buildpack ignores the contents of any <code>database.yml</code> you provide and overwrites it during staging.
 
 ## <a id='configuring-non-rails-applications'></a>Configuring non-Rails Applications
 
