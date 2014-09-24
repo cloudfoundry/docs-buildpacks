@@ -7,14 +7,14 @@ _This page assumes that you are using cf v6._
 After you create a service instance and bind it to an application, you must
 configure the application to connect to the service.
 
-## <a id='cf-app-utils'></a>Query VCAP_SERVICES with cf-app-utils ##
+## <a id='cf-app-utils'></a>Query VCAP\_SERVICES with cf-app-utils ##
 
 The `cf-apps-utils` gem allows your application to search for credentials
 from the `VCAP_SERVICES` environment variable by name, tag, or label.
 
 * [cf-app-utils-ruby](https://github.com/cloudfoundry/cf-app-utils-ruby)
 
-## <a id='vcap-services-defines-database-url'></a>VCAP_SERVICES defines DATABASE_URL
+## <a id='vcap-services-defines-database-url'></a>VCAP\_SERVICES defines DATABASE\_URL
 
 At runtime, the Ruby buildpack creates a `DATABASE_URL` environment variable for every Ruby application based on the [VCAP_SERVICES](../../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable.
 
