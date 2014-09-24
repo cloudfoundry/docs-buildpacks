@@ -128,24 +128,29 @@ As an example, pushing a WAR file that is bound to a PostgreSQL database and New
 
 <pre class="terminal">
 Initialized empty Git repository in /tmp/buildpacks/java-buildpack/.git/
------> Java Buildpack source: https://github.com/cloudfoundry/java-buildpack#0928916a2dd78e9faf9469c558046eef09f60e5d
------> Downloading Open Jdk JRE 1.7.0_51 from http://.../openjdk/lucid/x86_64/openjdk-1.7.0_51.tar.gz (0.0s)
-       Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.9s)
------> Downloading New Relic Agent 3.4.1 from http://.../new-relic/new-relic-3.4.1.jar (0.4s)
------> Downloading Postgresql JDBC 9.3.1100 from http://.../postgresql-jdbc/postgresql-jdbc-9.3.1100.jar (0.0s)
------> Downloading Spring Auto Reconfiguration 0.8.7 from http://.../auto-reconfiguration/auto-reconfiguration-0.8.7.jar (0.0s)
-       Modifying /WEB-INF/web.xml for Auto Reconfiguration
------> Downloading Tomcat 7.0.50 from http://.../tomcat/tomcat-7.0.50.tar.gz (0.0s)
-       Expanding Tomcat to .java-buildpack/tomcat (0.1s)
------> Downloading Buildpack Tomcat Support 1.1.1 from http://.../tomcat-buildpack-support/tomcat-buildpack-support-1.1.1.jar (0.1s)
------> Uploading droplet (57M)
+--> Java Buildpack source: https://github.com/cloudfoundry/java-buildpack#0928916a2dd78e9faf9469c558046eef09f60e5d
+--> Downloading Open Jdk JRE 1.7.0_51 from
+      http://.../openjdk/lucid/x86_64/openjdk-1.7.0_51.tar.gz (0.0s)
+        Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.9s)
+--> Downloading New Relic Agent 3.4.1 from
+      http://.../new-relic/new-relic-3.4.1.jar (0.4s)
+--> Downloading Postgresql JDBC 9.3.1100 from
+      http://.../postgresql-jdbc/postgresql-jdbc-9.3.1100.jar (0.0s)
+--> Downloading Spring Auto Reconfiguration 0.8.7 from
+      http://.../auto-reconfiguration/auto-reconfiguration-0.8.7.jar (0.0s)
+        Modifying /WEB-INF/web.xml for Auto Reconfiguration
+--> Downloading Tomcat 7.0.50 from
+      http://.../tomcat/tomcat-7.0.50.tar.gz (0.0s)
+        Expanding Tomcat to .java-buildpack/tomcat (0.1s)
+--> Downloading Buildpack Tomcat Support 1.1.1 from
+      http://.../tomcat-buildpack-support/tomcat-buildpack-support-1.1.1.jar (0.1s)
+--> Uploading droplet (57M)
 </pre>
 
 ## <a id='configuration'></a>Configuration ##
-The buildpack is designed such that it will "just work" without any configuration. If
-you are new to Cloud Foundry you should make your first attempts without modifying the
-buildpack configuration. However, if you find that some configuration is required, it
-can be done with [a fork of the buildpack][f].
+In most cases, the buildpack should work without any configuration.
+If you are new to Cloud Foundry, we recommend that you make your first attempts without modifying the buildpack configuration.
+If the buildpack requires some configuration, use [a fork of the buildpack][f].
 
 ## <a id='java-apps'></a>Java and Grails Best Practices ##
 
@@ -167,7 +172,7 @@ If you do not allocate sufficient memory to a Java application when you deploy i
 
 The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
 
-To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, refer to the [Custom Buildpacks](../../buildpacks/custom.html) and [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topics. 
+To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, refer to the [Custom Buildpacks](../../buildpacks/custom.html) and [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topics.
 
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
@@ -202,7 +207,7 @@ unnecessary files, in addition to the WAR.
 When you push a Java application, specify the path to the WAR:
 
   <pre class="terminal">
-  cf push APP_NAME -p PathToWAR
+  $ cf push MY-APP -p /Path/To/WAR/file
   </pre>
 
  You can determine whether or not the path was specified for a previously pushed

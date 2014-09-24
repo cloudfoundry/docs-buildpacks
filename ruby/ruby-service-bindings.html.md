@@ -97,10 +97,17 @@ OK
 TMPDIR=/home/vcap/tmp
 VCAP_APP_PORT=64585
 USER=vcap
-VCAP_APPLICATION={"instance_id":"7dd14302a0804727a036b3b3f55300dc","instance_index":0,"host":"0.0.0.0","port":64585,"started_at":"2014-01-31 21:53:34 +0000","started_at_timestamp":1391205214,"start":"2014-01-31 21:53:34 +0000","state_timestamp":1391205214,"limits":{"mem":512,"disk":1024,"fds":16384},"application_version":"c1901bd3-ad2a-40f5-a8fd-204a901d038e","application_name":"my_app","application_uris":["my_app.example.com"],"version":"c1901bd3-ad2a-40f5-a8fd-204a901d038e","name":"my_app","uris":["my_app.example.com"],"users":null}
+VCAP_APPLICATION={"instance_id":"7dd14302a0804727a036b3b3f55300dc","instance_index":0,"host":"0.0.0.0",
+"port":64585,"started_at":"2014-01-31 21:53:34 +0000","started_at_timestamp":1391205214,
+"start":"2014-01-31 21:53:34 +0000","state_timestamp":1391205214,
+"limits":{"mem":512,"disk":1024,"fds":16384},"application_version":"c1901bd3-ad2a-40f5-a8fd-204a901d038e",
+"application_name":"my_app","application_uris":["my_app.example.com"],
+"version":"c1901bd3-ad2a-40f5-a8fd-204a901d038e","name":"my_app","uris":["my_app.example.com"],"users":null}
 PATH=/bin:/usr/bin
 PWD=/home/vcap
-VCAP_SERVICES={"p-mysql-n/a":[{"name":"p-mysql","label":"p-mysql-n/a","tags":["postgres","postgresql","relational"],"plan":"small_plan","credentials":{"uri":"postgres://lrraxnih:eBawTKceuvKDGZycBvYUv5Bd6B-X1m4a9t@sample.p-mysqlprovider.com:5432/lraaxnih"}}]}
+VCAP_SERVICES={"p-mysql-n/a":[{"name":"p-mysql","label":"p-mysql-n/a","tags":["postgres","postgresql",
+"relational"],"plan":"small_plan","credentials":{"uri":
+"postgres://lrraxnih:eBawTKceuvKDGZycBvYUv5Bd6B-X1m4a9t@sample.p-mysqlprovider.com:5432/lraaxnih"}}]}
 SHLVL=1
 HOME=/home/vcap/app
 PORT=64585
