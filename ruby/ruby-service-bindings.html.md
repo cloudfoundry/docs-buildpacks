@@ -20,7 +20,6 @@ At runtime, the Ruby buildpack creates a `DATABASE_URL` environment variable for
 
 Example VCAP_SERVICES:
 
-<p class='terminal'>
     VCAP_SERVICES =
     {
       "elephantsql": [
@@ -33,13 +32,10 @@ Example VCAP_SERVICES:
         }
       ]
     }
-</p>
 
 Based on this `VCAP_SERVICES`, the Ruby buildpack creates the following `DATABASE_URL` environment variable:
 
-<p class='terminal'>
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
-</p>
 
 The Ruby buildpack uses the structure of the `VCAP_SERVICES` environment variable to populate `DATABASE_URL`. Any service containing a JSON object of the following form will be recognized by Cloud Foundry as a candidate for `DATABASE_URL`:
 
