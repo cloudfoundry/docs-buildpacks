@@ -2,7 +2,7 @@
 title: Build Tool Integration
 ---
 
-_This page assumes you are using cf v6 and version 1.0.1 of either the Cloud Foundry Maven plugin or the Cloud Foundry Gradle plugin._
+_This page assumes you are using cf v6 and version 1.0.4 of either the Cloud Foundry Maven plugin or the Cloud Foundry Gradle plugin._
 
 ## <a id='maven'></a>Maven Plugin ##
 The Cloud Foundry Maven plugin allows you to deploy and manage applications with Maven goals. This plugin provides Maven users with access to the core functionality of the Cloud Foundry cf command-line tool.
@@ -15,7 +15,7 @@ To install the Cloud Foundry Maven plugin, add the `cf-maven-plugin` to the `<pl
       <plugin>
           <groupId>org.cloudfoundry</groupId>
           <artifactId>cf-maven-plugin</artifactId>
-          <version>1.0.1</version>
+          <version>1.0.4</version>
       </plugin>
   </plugins>
   ~~~
@@ -32,7 +32,7 @@ Example:
       <plugin>
           <groupId>org.cloudfoundry</groupId>
           <artifactId>cf-maven-plugin</artifactId>
-          <version>1.0.1</version>
+          <version>1.0.4</version>
           <configuration>
               <target>http://api.run.pivotal.io</target>
               <org>mycloudfoundry-org</org>
@@ -94,7 +94,7 @@ To implement this:
         <plugin>
             <groupId>org.cloudfoundry</groupId>
             <artifactId>cf-maven-plugin</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.4</version>
             <configuration>
                 <server>cloud-foundry-credentials</server>
                 . . .
@@ -139,7 +139,7 @@ To install the Cloud Foundry Gradle plugin, add the `cf-gradle-plugin` as a depe
           mavenCentral()
       }
       dependencies {
-          classpath 'org.cloudfoundry:cf-gradle-plugin:1.0.1'
+          classpath 'org.cloudfoundry:cf-gradle-plugin:1.0.4'
           . . .
       }
   }
@@ -160,12 +160,10 @@ Instead of relying on command-line parameters, you can add additional configurat
       uri = "my-app.<%=vars.app_domain%>"
       memory = 512
       instances = 1
-      env = [ "key": "value ]
+      env = [ "key": "value" ]
       serviceInfos {
           "my_rabbitmq" {
               label = "rabbitmq"
-              provider = "rabbitmq"
-              version = "n/a"
               plan = "small_plan"
               bind = true
           }
@@ -176,17 +174,17 @@ Instead of relying on command-line parameters, you can add additional configurat
 After adding and configuring the plugin you can build and push the application to Cloud Foundry with the following command:
 
 <pre class="terminal">
-$ gradle clean assemble cf-push
+$ gradle clean assemble cfPush
 </pre>
 
 ### <a id='gradle-security'></a>Security Credentials ###
 While you can include Cloud Foundry security credentials in the `build.gradle` file, a more secure method is to store the credentials in a `gradle.properties` file. This file can be placed in either the project directory or in the `~/.gradle` directory.
 
-To implement this, add `cf.username` and `cf.password` with the Cloud Foundry security credentials parameters to the `gradle.properties` file as follows:
+To implement this, add `cfUsername` and `cfPassword` with the Cloud Foundry security credentials parameters to the `gradle.properties` file as follows:
 
   ~~~
-  cf.username=user@example.com
-  cf.password=examplePassword
+  cfUsername=user@example.com
+  cfPassword=examplePassword
   ~~~
 
 (Note there are no quotes around either the username or password.)
@@ -196,21 +194,21 @@ Key functionality available with the Cloud Foundry Gradle plugin:
 
 <table border="1" class="nice" >
 <tr><th><strong>Gradle Task</strong></th><th><strong>Cloud Foundry Command</strong></th><th><strong>Syntax</strong></th></tr>
-<tr><td>cf-login</td><td>login -u USERNAME</td><td>$ gradle cf-login</td>
-<tr><td>cf-logout</td><td>logout</td><td>$ gradle cf-logout</td>
-<tr><td>cf-app</td><td>app APPNAME</td><td>$ gradle cf-app [-Pcf.application=APPNAME]</td>
-<tr><td>cf-apps</td><td>apps</td><td>$ gradle cf-apps</td>
-<tr><td>cf-target</td><td>api</td><td>$ gradle cf-target</td>
-<tr><td>cf-push</td><td>push</td><td>$ gradle cf-push [-Pcf.application=APPNAME] [-Pcf.uri=URL] [-Pcf.startApp=BOOLEAN]</td>
-<tr><td>cf-start</td><td>start APPNAME</td><td>$ gradle cf-start [-Pcf.application=APPNAME]</td>
-<tr><td>cf-stop</td><td>stop APPNAME</td><td>$ gradle cf-stop [-Pcf.application=APPNAME]</td>
-<tr><td>cf-restart</td><td>restart APPNAME</td><td>$ gradle cf-stop [-Pcf.application=APPNAME]</td>
-<tr><td>cf-delete</td><td>delete APPNAME</td><td>$ gradle cf-delete [-Pcf.application=APPNAME]</td>
-<tr><td>cf-scale</td><td>scale APPNAME -i INSTANCES</td><td>$ gradle cf-scale [-Pcf.application=APPNAME] [-Pcf.instances=INTEGER]</td>
-<tr><td>cf-env</td><td>env APPNAME</td><td>$ gradle cf-env [-Pcf.application=APPNAME]</td>
-<tr><td>cf-services</td><td>services</td><td>$ gradle cf-services</td>
-<tr><td>cf-create-service</td><td>create-service SERVICE PLAN SERVICE_INSTANCE</td><td>$ gradle cf-create-services</td>
-<tr><td>cf-delete-services</td><td>delete-service SERVICE_INSTANCE</td><td>$ gradle cf-delete-service</td>
-<tr><td>cf-bind</td><td>bind-service APPNAME SERVICE_INSTANCE</td><td>$ gradle cf-bind-services</td>
-<tr><td>cf-unbind</td><td>unbind-service APPNAME SERVICE_INSTANCE</td><td>$ gradle cf-unbind</td>
+<tr><td>cfLogin</td><td>login -u USERNAME</td><td>$ gradle cfLogin</td>
+<tr><td>cfLogout</td><td>logout</td><td>$ gradle cfLogout</td>
+<tr><td>cfApp</td><td>app APPNAME</td><td>$ gradle cfApp [-PcfApplication=APPNAME]</td>
+<tr><td>cfApps</td><td>apps</td><td>$ gradle cfApps</td>
+<tr><td>cfTarget</td><td>api</td><td>$ gradle cfTarget</td>
+<tr><td>cfPush</td><td>push</td><td>$ gradle cfPush [-PcfApplication=APPNAME] [-PcfUri=URL] [-PcfStartApp=BOOLEAN]</td>
+<tr><td>cfStart</td><td>start APPNAME</td><td>$ gradle cfStart [-PcfApplication=APPNAME]</td>
+<tr><td>cfStop</td><td>stop APPNAME</td><td>$ gradle cfStop [-PcfApplication=APPNAME]</td>
+<tr><td>cfRestart</td><td>restart APPNAME</td><td>$ gradle cfStop [-PcfApplication=APPNAME]</td>
+<tr><td>cfDelete</td><td>delete APPNAME</td><td>$ gradle cfDelete [-PcfApplication=APPNAME]</td>
+<tr><td>cfScale</td><td>scale APPNAME -i INSTANCES</td><td>$ gradle cfScale [-PcfApplication=APPNAME] [-PcfInstances=INTEGER]</td>
+<tr><td>cfEnv</td><td>env APPNAME</td><td>$ gradle cfEnv [-PcfApplication=APPNAME]</td>
+<tr><td>cfServices</td><td>services</td><td>$ gradle cfServices</td>
+<tr><td>cfCreateService</td><td>create-service SERVICE PLAN SERVICE_INSTANCE</td><td>$ gradle cfCreateServices</td>
+<tr><td>cfDeleteServices</td><td>delete-service SERVICE_INSTANCE</td><td>$ gradle cfDeleteServices</td>
+<tr><td>cfBind</td><td>bind-service APPNAME SERVICE_INSTANCE</td><td>$ gradle cfBind</td>
+<tr><td>cfUnbind</td><td>unbind-service APPNAME SERVICE_INSTANCE</td><td>$ gradle cfUnbind</td>
 </table>
