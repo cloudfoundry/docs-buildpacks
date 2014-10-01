@@ -118,7 +118,9 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
     }
   }
 
-  No user-defined env variables have been set
+  User-Provided:
+  my-env-var: 100
+  my-drain: http://drain.example.com
 </pre>
 
 ### <a id='view-logs'></a>View Logs ###
