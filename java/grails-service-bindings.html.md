@@ -52,8 +52,8 @@ The `url`, `host`, `port`, `databaseName`, `username`, and `password` fields in 
 
 ## <a id="manual"></a>Manual Configuration ##
 
-If you do not want to use Cloud Foundry auto-configuration, you can configure
-the Cloud Foundry service connections manually.
+If you do not want to use auto-configuration, you can configure the Cloud
+Foundry service connections manually.
 
 Follow the steps below to manually configure a service connection.
 
@@ -86,7 +86,7 @@ Follow the steps below to manually configure a service connection.
     }
     ````
 
-1. Add the following imports to your `DataSource.groovy` file to allow `spring-cloud` API commands:
+1. Add the following `imports` to your `DataSource.groovy` file to allow `spring-cloud` API commands:
 
     ```groovy
     import org.springframework.cloud.CloudFactory
@@ -94,8 +94,8 @@ Follow the steps below to manually configure a service connection.
     ```
 
 1. Add the following code to your `DataSource.groovy` file to enable Cloud
-Foundry's `getCloud` method to function locally or other environments outside of
-a cloud.
+Foundry's `getCloud` method to function locally or in other environments outside
+of a cloud.
 
     ```groovy
     def cloud = null
@@ -113,7 +113,11 @@ a cloud.
     password = dbInfo?.password
     ```
 
-This example `DataSource.groovy` file contains configuration information for SQL, MongoDB, and Redis services.
+The example `DataSource.groovy` file below contains the following:
+
+* The `imports` that allow `spring-cloud` API commands
+* The code that enables the `getCloud` method to function locally or in other environments outside of a cloud
+* Code to access the cloud object for SQL, MongoDB, and Redis services
 
 ```groovy
 import org.springframework.cloud.CloudFactory
