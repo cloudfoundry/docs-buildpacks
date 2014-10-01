@@ -85,42 +85,75 @@ or migrate it. For more information, see [Migrate a Database on Cloud Foundry](.
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 
-If you have trouble connecting to your service, run the `cf logs` command to view log messages for your application. The results of the `cf files my_app logs/env.log` command includes the value of the `VCAP_SERVICES` environment variable.
+To aid in troubleshooting issues connecting to your service, you can examine the
+environment variables and log messages Cloud Foundry records for your
+application.
 
-Example:
+### <a id='view-env'></a>View Environment Variables ###
+
+Use the `cf env` command to view the Cloud Foundry environment variables for your application. `cf env` displays the following environment variables:
+
+* The `VCAP_SERVICES` variables existing in the container environment
+* The user-provided variables set using the `cf set-env` command
 
 <pre class="terminal">
-  $ cf files my_app logs/env.log
-  Getting files for app my_app in or my_org / space my_space as a.user@example.com...
-OK
+  $ cf env my-app
+  Getting env variables for app my-app in org My-Org / space development as admin...
+  OK
 
-TMPDIR=/home/vcap/tmp
-VCAP_APP_PORT=64585
-USER=vcap
-VCAP_APPLICATION={"instance_id":"7dd14302a0804727a036b3b3f55300dc","instance_index":0,"host":"0.0.0.0",
-"port":64585,"started_at":"2014-01-31 21:53:34 +0000","started_at_timestamp":1391205214,
-"start":"2014-01-31 21:53:34 +0000","state_timestamp":1391205214,
-"limits":{"mem":512,"disk":1024,"fds":16384},"application_version":"c1901bd3-ad2a-40f5-a8fd-204a901d038e",
-"application_name":"my_app","application_uris":["my_app.example.com"],
-"version":"c1901bd3-ad2a-40f5-a8fd-204a901d038e","name":"my_app","uris":["my_app.example.com"],"users":null}
-PATH=/bin:/usr/bin
-PWD=/home/vcap
-VCAP_SERVICES={"p-mysql-n/a":[{"name":"p-mysql","label":"p-mysql-n/a","tags":["postgres","postgresql",
-"relational"],"plan":"small_plan","credentials":{"uri":
-"postgres://lrraxnih:eBawTKceuvKDGZycBvYUv5Bd6B-X1m4a9t@sample.p-mysqlprovider.com:5432/lraaxnih"}}]}
-SHLVL=1
-HOME=/home/vcap/app
-PORT=64585
-VCAP_APP_HOST=0.0.0.0
-DATABASE_URL=postgres://lrraxnih:eBawTKceuvKDGZycBvYUv5Bd6B-X1m4a9t@sample.p-mysqlprovider.com:5432/lraaxnih
-MEMORY_LIMIT=512m
-_=/usr/bin/env
+  System-Provided:
+  {
+    "VCAP_SERVICES": {
+      "p-mysql-n/a": [
+        {
+          "credentials": {
+      	    "uri":"postgres://lrra:e6B-X@p-mysqlprovider.example.com:5432/lraa
+          },
+          "label": "p-mysql-n/a",
+          "name": "p-mysql",
+          "syslog_drain_url": "",
+          "tags": ["postgres","postgresql","relational"]
+        }
+      ]
+    }
+  }
+
+  User-Provided:
+  my-env-var: 100
+  my-drain: http://drain.example.com
+</pre>
+
+### <a id='view-logs'></a>View Logs ###
+
+Use the `cf logs` command to view the Cloud Foundry log messages for your
+application. You can direct current logging to standard output, or you can dump
+the most recent logs to standard output.
+
+Run `cf logs APPNAME` to direct current logging to standard output:
+
+<pre class="terminal">
+  $ cf logs my-app
+  Connected, tailing logs for app my-app in org My-Org / space development as admin...
+  1:27:19.72 [App/0]  OUT [CONTAINER]  org.apache.coyote.http11.Http11Protocol  INFO  Starting ProtocolHandler ["http-bio-61013"]
+  1:27:19.77 [App/0]  OUT [CONTAINER]   org.apache.catalina.startup.Catalina     INFO  Server startup in 10427 ms
+</pre>
+
+Run `cf logs APPNAME --recent` to dump the most recent logs to standard output:
+<pre class="terminal">
+  $ cf logs my-app --recent
+  Connected, dumping recent logs for app my-app in org My-Org / space development as admin...
+  1:27:15.93 [App/0]  OUT 15,935  INFO EmbeddedDatabaseFactory:124 - Creating embedded database 'SkyNet'
+  1:27:16.31 [App/0]  OUT 16,318  INFO LocalEntityManagerFactory:287 - Building TM container EntityManagerFactory for unit 'default'
+  1:27:16.50 [App/0]  OUT 16,505  INFO Version:37 - HCANN001: Hibernate Commons Annotations {4.0.1.Final}
+  1:27:16.51 [App/0]  OUT 16,517  INFO Version:41 - HHH412: Hibernate Core {4.1.9.Final}
+  1:27:16.95 [App/0]  OUT 16,957  INFO SkyNet-Online:73 - HHH268: Transaction strategy: org.hibernate.internal.TransactionFactory
+  1:27:16.96 [App/0]  OUT 16,963  INFO InintiateTerminatorT1000Deployment:48 - HHH000397: Using TranslatorFactory
+  1:27:17.02 [App/0]  OUT 17,026  INFO Version:27 - HV001: Hibernate Validator 4.3.0.Final
 </pre>
 
 If you encounter the error "A fatal error has occurred. Please see the Bundler
 troubleshooting documentation," update your version of bundler and run `bundle
 install` again.
-
 
 <pre class="terminal">
   $ gem update bundler
