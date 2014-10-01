@@ -261,21 +261,30 @@ for an application can fail if an application starts too slowly.
 
 The current Java buildpack implementation sets the Tomcat `bindOnInit` property
 to `false`. This prevents Tomcat from listening for HTTP requests until an
-application has deployed.
+application has fully deployed.
 
 If your application does not start quickly, the DEA health check may fail
 because it checks the health of the application before the application can
 accept requests.
-By default, the DEA health check fails after 60 seconds.
+By default, the DEA health check fails after a timeout threshold of 60 seconds.
 
-To resolve this issue, use the `-t` flag with the `cf push` to increase the
-timeout threshold.
+To resolve this issue, use `cf push APPNAME` with the `-t TIMEOUT-THRESHOLD`
+option to increase the timeout threshold.
+Specify TIMEOUT-THRESHOLD in seconds.
 
 <pre class="terminal">
 $ cf push my-app -t 180
 </pre>
 
 <p class="note"><strong>Note</strong>: The timeout threshold cannot exceed 180 seconds. Specifying a timeout threshold greater than 180 seconds results in the following error: <code>Server error, status code: 400, error code: 100001, message: The app is invalid: health_check_timeout maximum_exceeded</code></p>
+
+If your Java or Grails application requires more than 180 seconds to start, you
+can fork the Java buildpack and change the value of `bindOnInit` to `true` in
+`resources/tomcat/conf/server.xml`.
+This change allows Tomcat to listen for HTTP requests before your application
+has fully deployed.
+
+<p class="note"><strong>Note</strong>: Changing the value of <code>bindOnInit</code> to <code>true</code> allows the DEA health check of your application to pass even before your application has fully deployed. In this state, Cloud Foundry might pass requests to your application before your application can serve them.</p>
 
 ## <a id='extension'></a>Extension ##
 The Java Buildpack is also designed to be easily extended.
