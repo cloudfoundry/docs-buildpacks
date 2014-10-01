@@ -272,6 +272,10 @@ Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run 
 * `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
 
+To change the default port, modify the following code block in the pong_matcher_groovy/app/src/main/groovy/matcher/pong/RedisDriver.groovy file.
+
+<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_groovy', at: 'groovyDefaultPort' %>
+
 ## <a id='learn-more'></a>Learn More ##
 For more information on how to develop, deploy, and manage applications, refer to the [Developer Guide](./../../devguide/index.html). 
 
