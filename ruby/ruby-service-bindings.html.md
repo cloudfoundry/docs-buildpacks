@@ -93,8 +93,8 @@ application.
 
 Use the `cf env` command to view the Cloud Foundry environment variables for your application. `cf env` displays the following environment variables:
 
-* The variables set using the `cf set-env` command
 * The `VCAP_SERVICES` variables existing in the container environment
+* The user-provided variables set using the `cf set-env` command
 
 <pre class="terminal">
   $ cf env my-app
