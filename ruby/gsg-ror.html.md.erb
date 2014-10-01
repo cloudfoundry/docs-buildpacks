@@ -204,19 +204,17 @@ OK
 
 </pre>
 
-<<<<<<< HEAD
 #### Bind a Service Instance ####
 
 When you bind an app to a service instance, <%=vars.product_short%> writes information about the service instance to the VCAP_SERVICES app environment variable. The app can use this information to integrate with the service instance.
 
 Most services support bindable service instances. Refer to your service provider's documentation to confirm if they support this functionality.
-=======
+
 ### Step 4: Configure the Manifest File  ###
 
 You can specify deployment options in a manifest that the `cf push` command uses.
 
 For example, this section describes how to configure the manifest to bind the service that you created in the previous step. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
->>>>>>> 0869bc7ecb81ae7f2a5880c4e6edf01e15005375
 
 You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`.
 
