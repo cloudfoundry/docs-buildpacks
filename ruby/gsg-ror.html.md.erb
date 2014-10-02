@@ -141,23 +141,20 @@ applications:
 
     </pre>
 
-
-For information on how to configure a manifest file, refer to [Step 4: Configure the Manifest File](#yourapp-step4). 
-
-### <a id='yourapp-step3'></a>Step 3: Create and Bind a Service Instance for Your RoR Application ###
+### Step 3: Create and Bind a Service Instance for Your RoR Application ###
 
 This section describes using the CLI to configure a PostgreSQL managed service instance for your app. <%=vars.dev_console_1%>
 
 <%=vars.product_short%> supports two types of service instances:
 
-* Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider. 
+* Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider.
 * User-provided service instances enable you to connect your application to pre-provisioned external service instances.
 
 For more information on creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
 
 #### Create a Service Instance ####
 
-Run `cf marketplace` to view managed and user-provided services and plans available to you. 
+Run `cf marketplace` to view managed and user-provided services and plans available to you.
 
 * Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider.
 * User-provided service instances enable you to bind your application to pre-provisioned external service instances.
@@ -215,7 +212,7 @@ Alternately, you can configure the deployment manifest file by adding a `service
 
 <%=vars.dev_console_2%>
 
-### <a id='yourapp-step4'></a>Step 4: Configure the Manifest File  ###
+### Step 4: Configure the Manifest File  ###
 
 You can specify app deployment options in a manifest that the `cf push` command uses. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
 
@@ -225,7 +222,7 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 <%=vars.gen_GSG%>
 
 
-### <a id='yourapp-step6'></a>Step 6: (Optional) Configure a Production Server  ###
+### Step 6: (Optional) Configure a Production Server  ###
 
 
 <%=vars.product_short%> uses the default Ruby web server library WEBrick for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. To set a different production web server for your app:
