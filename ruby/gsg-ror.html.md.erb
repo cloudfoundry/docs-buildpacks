@@ -104,7 +104,7 @@ This section describes how to deploy your RoR application to <%=vars.product_sho
 
 ### Step 1: Add the rails_12factor Gem to Your Gemfile ###
 
-1. Add `gem rails_12factor group: :production` to your Gemfile.
+1. Add `gem 'rails_12factor', group: :production` to your Gemfile.
 
     <p class="note"><strong>Note</strong>:  This gem includes the <code>rails&#095;serve&#095;static&#095;assets</code> gem that enables your Rails app to run in production with the static assets serving functionality. The <code>rails&#095;serve&#095;static&#095;assets</code> gem does this by automatically modifying the <code>config.serve&#095;static&#095;assets</code> configuration parameter from <code>false</code> to <code>true</code>. Do not change the value for this option. For more information, refer to the <a href="https://github.com/heroku/rails_12factor">Rails_12factor GitHub README</a>.</p>
 
