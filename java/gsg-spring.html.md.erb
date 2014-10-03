@@ -14,19 +14,19 @@ This section describes how to deploy a Spring sample application to <%=vars.prod
 
 To learn how to deploy your own Spring app, see [Deploy Your Spring Application](#deploy-yourapp).
 
-### <a id='sample-prereqs'></a>Prerequisites ###
+### Prerequisites ###
 
 * [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Basic Spring knowledge
 
-### <a id='sample-step1'></a>Step 1: Get a Sample Spring App from GitHub ###
+### Step 1: Get a Sample Spring App from GitHub ###
 
 Run `git clone https://github.com/scottfrederick/spring-music.git` to clone the `spring_music` app from GitHub.
 
-### <a id='sample-step2'></a>Step 2: Log in and Target the API Endpoint   ###
+### Step 2: Log in and Target the API Endpoint   ###
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
-### <a id='sample-step3'></a>Step 3: Deploy the Sample App ###
+### Step 3: Deploy the Sample App ###
 
 1. `cd` to the cloned app directory.
 1. Run `./gradlew assemble`.
@@ -36,7 +36,7 @@ Example: `cf push spring-music -n jc0830-spring`
 
   `cf push [APP_NAME]` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` or `--random-route` flag to create a unique URL for the app to avoid URL collisions with other apps.
 
-  `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) and also determines the appropriate [buildpack](./index.html) for the app. A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app. 
+  `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) and also determines the appropriate [buildpack](./index.html) for the app. A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app.
 
   The example shows the terminal output of deploying the `spring-music`. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then follows the instructions in the manifest to start one instance of the app with 512M. After the app starts, the output displays the health and status of the app.
 
@@ -82,12 +82,12 @@ instances: 1/1
 usage: 512M x 1 instances
 urls: jc0830-spring.<%=vars.app_domain%>
 
-     state     since                    cpu    memory           disk   
-#0   running   2014-08-28 06:31:37 PM   0.0%   277.8M of 512M   137.9M of 1G 
+     state     since                    cpu    memory           disk
+#0   running   2014-08-28 06:31:37 PM   0.0%   277.8M of 512M   137.9M of 1G
 
 </pre>
 
-### <a id='sample-step4'></a>Step 4: Test the Sample App ###
+### Step 4: Test the Sample App ###
 
 You’ve deployed your first app to <%=vars.product_short%>! Now let’s access your app online using its URL.
 In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. The image shows the resulting webpage for the `spring-music` app.
@@ -96,7 +96,7 @@ In the terminal output, the `urls` field of the `App started` block contains the
 
 You can now use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could:
 
-* Increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name. 
+* Increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 * Create and bind a database service to the app and restart the app to detect the new service. For more information, refer to the [Creating and binding services](https://github.com/scottfrederick/spring-music) section of the `spring-music` GitHub README.
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
@@ -105,36 +105,36 @@ See the [Manage Your Application with the cf CLI](#cli-manage) section for more 
 
 This section describes how to deploy your Spring application to <%=vars.product_short%>.
 
-### <a id='yourapp-prereqs'></a>Prerequisites ###
+### Prerequisites ###
 
 * A Spring app that runs locally on your workstation
 * (**Optional**) [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Intermediate to advanced Spring knowledge
 * JDK 1.6, 1.7., or 1.8 for Java 6, 7, or 8 configured on your workstation
 
-<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. Refer to <a href="#yourapp-step8">Step 8: Configure the Deployment Manifest</a>.</p>
+<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. For more information, refer to the <a href="../custom.html">Custom Buildpacks</a> topic.</p>
 
-### <a id='yourapp-step1'></a>Step 1: Add the Cloud Foundry Java Client Library to Your Project ###
+### Step 1: Add the Cloud Foundry Java Client Library to Your Project ###
 
 The Cloud Foundry Java Client Library enables you to query and manage app instances and account instance information of a <%=vars.product_short%> account instance. For more information on including the library with your Maven or Gradle project and the specific objects that you can query, refer to the [Cloud Foundry Java Client Library](./java-client.html) topic.
 
 <p class="note"><strong>Note</strong>: Ensure that your Spring app runs locally before continuing with this procedure.</p>
 
-### <a id='yourapp-step2'></a>Step 2: (Optional) Integrate a Plugin for Your Build Tool ###
+### Step 2: (Optional) Integrate a Plugin for Your Build Tool ###
 
 <%=vars.product_short%> provides plugins for Maven and Gradle. You can deploy and manage your apps using Maven or Gradle command-line syntax and configure security credentials. For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
 
-### <a id='yourapp-step3'></a>Step 3: (Optional) Integrate the Cloud Foundry Eclipse Plugin for STS ###
+### Step 3: (Optional) Integrate the Cloud Foundry Eclipse Plugin for STS ###
 
 <%=vars.product_short%> provides an Eclipse plugin extension that enables you to deploy and manage Spring applications on a Cloud Foundry instance from the Spring Tools Suite (STS), version 3.0.0 and later. For more information, refer to the [Cloud Foundry Eclipse Plugin](./sts.html) topic. You must follow the instructions in the [Install to STS from the Extensions Tab](./sts.html#install-to-sts) and [Create a Cloud Foundry Server](./sts.html#cloud-foundry-server) sections before you can deploy and manage your apps with the plugin.
 
-### <a id='yourapp-step4'></a>Step 4: Declare App Dependencies  ###
+### Step 4: Declare App Dependencies  ###
 
-Be sure to declare all the dependency tasks for your app in the build script of your chosen build tool. 
+Be sure to declare all the dependency tasks for your app in the build script of your chosen build tool.
 
-The [Spring Getting Started Guides](https://spring.io/guides) demonstrate features and functionality you can add to your app, such as consuming RESTful services or integrating data. These guides contain Gradle and Maven build script examples with dependencies. You can copy the code for the dependencies into your build script. 
+The [Spring Getting Started Guides](https://spring.io/guides) demonstrate features and functionality you can add to your app, such as consuming RESTful services or integrating data. These guides contain Gradle and Maven build script examples with dependencies. You can copy the code for the dependencies into your build script.
 
-The table lists build script information for Gradle and Maven and provides documentation links for each build tool. 
+The table lists build script information for Gradle and Maven and provides documentation links for each build tool.
 
 <table border="1" class="nice">
 <tr>
@@ -150,7 +150,7 @@ The table lists build script information for Gradle and Maven and provides docum
 </tr>
 </table>
 
-### <a id='yourapp-step5'></a>Step 5: Allocate Sufficient Memory ###
+### Step 5: Allocate Sufficient Memory ###
 
 If you do not allocate sufficient memory to a Java application when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for the following:
 
@@ -162,26 +162,26 @@ If you do not allocate sufficient memory to a Java application when you deploy i
 
 The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
 
-To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see [Step 8: Configure the Deployment Manifest](#yourapp-step8). 
+To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information, see the [Custom Buildpacks](../custom.html) topic.
 
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
 <p class="note"><strong>Note</strong>: <%=vars.product_short%> automatically allocates 512MB to an app when you do not specify a value.</p>
 
-### <a id='yourapp-step6'></a>Step 6: Provide a JDBC Driver ###
+### Step 6: Provide a JDBC Driver ###
 
 The Java buildpack does not bundle a JDBC driver with your application. If your application accesses a SQL RDBMS, you must do the following:
 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-### <a id='yourapp-step7'></a>Step 7: Configure Service Connections for Your Spring App ###
+### Step 7: Configure Service Connections for Your Spring App ###
 
-<%=vars.product_short%> provides extensive support for connecting a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information on creating and binding a service connection for your app, refer to the [Configure Service Connections for Spring](./spring-service-bindings.html) topic. 
+<%=vars.product_short%> provides extensive support for connecting a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information on creating and binding a service connection for your app, refer to the [Configure Service Connections for Spring](./spring-service-bindings.html) topic.
 
-### <a id='yourapp-step8'></a>Step 8: Configure the Deployment Manifest ###
+### Step 8: Configure the Deployment Manifest ###
 
-You can specify deployment options in a manifest file `manifest.yml` that the `cf push` command uses when deploying your app. 
+You can specify deployment options in a manifest file `manifest.yml` that the `cf push` command uses when deploying your app.
 
 For example, you can set memory-related JVM options or a specific Java version in a custom buildpack and configure your manifest to use your custom buildpack:
 
@@ -190,13 +190,13 @@ For example, you can set memory-related JVM options or a specific Java version i
 
 Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic for more information.
 
-### <a id='yourapp-step9'></a>Step 9: Log in and Target the API Endpoint ###
+### Step 9: Log in and Target the API Endpoint ###
 
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%>
 
-### <a id='yourapp-step10'></a>Step 10: Deploy Your Application ###
+### Step 10: Deploy Your Application ###
 When you deploy your application, `cf push`:
 
  * Creates a URL that is the route to your application. The URL is in the form HOST.DOMAIN, where HOST is the APP_NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`.
@@ -209,7 +209,7 @@ When you deploy your application, `cf push`:
 For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 1. `cd` to the app directory that you want to deploy.
-1. Run `cf push [APP-NAME] -p [PATH-TO-WAR]`.  
+1. Run `cf push [APP-NAME] -p [PATH-TO-WAR]`.
 
     <br />
     Most Spring apps include an artifact, such as a `.jar`, `.war`, or `.zip` file. You must include the path to this file in the `cf push` command if you do not declare the path in the `applications` block of the manifest file. The example shows how to specify a path to the `.war` file for a Spring app. Refer to the [Tips for Java Developers](./java-tips.html) topic for CLI examples for specific build tools, frameworks, and languages that create an app with an artifact.
@@ -226,7 +226,7 @@ For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
     Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
     <pre class="terminal">
-    
+
 	App started
 
 	Showing health and status for app spring-music in org Cloud-Apps / space development as clouduser@example.com...
@@ -237,7 +237,7 @@ For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 	usage: 512M x 1 instances
 	urls: jc0830-spring.<%=vars.app_domain%>
 
-	     state     since                    cpu    memory           disk   
+	     state     since                    cpu    memory           disk
 	#0   running   2014-08-28 06:31:37 PM   0.0%   277.8M of 512M   137.9M of 1G
     </pre>
 
@@ -245,35 +245,31 @@ For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
-<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands: 
+<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 
-<%=vars.dev_console_note%> 
+<%=vars.dev_console_note%>
 </p>
 
 ## <a id='troubleshoot'></a>Troubleshooting ##
 If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
-### <a id='deploy-fails'></a>App Deploy Fails ###
+### App Deploy Fails ###
 Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
-### <a id='content-type'></a>App Requires a Content-Type ###
+### App Requires a Content-Type ###
 
 If you specify a `Content-Encoding` header of `gzip` but do not specify a `Content-Type` within your application, <%=vars.product_short%> might send a `Content-Type` of `application/x-gzip` to the browser. This scenario might cause the deploy to fail if it conflicts with the actual encoded content of your app. To avoid this issue, be sure to explicitly set `Content-Type` within your app.
 
-### <a id='unique-url'></a>App Requires a Unique URL ###
+### App Requires a Unique URL ###
 <%=vars.product_short%> requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
 
-## <a id='learn-more'></a>Learn More ##
-For more information on how to develop, deploy, and manage applications, refer to the [Developer Guide](./../../devguide/index.html). 
 
 
- 
- 
- 
- 
- 
+
+
+
