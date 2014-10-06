@@ -75,11 +75,6 @@ For more information on creating and using service instances, refer to the [Serv
 
 Run `cf marketplace` to view managed and user-provided services and plans available to you.
 
-* Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider.
-* User-provided service instances enable you to bind your application to pre-provisioned external service instances.
-
-For more information on creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
-
 The example shows three of the available managed database-as-a-service providers and their offered plans: `cleardb` MySQL, `elephantsql` PostgreSQL as a Service, and `mongolab` MongoDB-as-a-Service.
 
 <pre class="terminal">
@@ -129,7 +124,7 @@ $ cf bind-service my-rails-app rails-postgres
 
 Alternately, you can configure the deployment manifest file by adding a `services` block to the `applications` block and specifying the service instance. For more information, see the next step.
 
-<%=vars.dev_console_2%>
+<%=vars.dev_console_5%>
 
 ### Step 4: Configure the Manifest File  ###
 
