@@ -110,9 +110,9 @@ This section describes how to deploy your Groovy application to <%=vars.product_
 * (**Optional**) [Spring Boot CLI](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#cli) to run your Groovy app locally
 * (**Optional**) [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Intermediate to advanced Groovy knowledge
-* JDK 1.6, 1.7., or 1.8 for Java 6, 7, or 8 configured on your workstation
+* JDK 1.6, 1.7, or 1.8 for Java 6, 7, or 8 configured on your workstation
 
-<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. Refer to <a href="#yourapp-step8">Step 8: Configure the Deployment Manifest</a>.</p>
+<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. Refer to <a href="#yourapp-step7">Step 7: Configure the Deployment Manifest</a>.</p>
 
 ### <a id='yourapp-step1'></a>Step 1: Add the Cloud Foundry Java Client Library to Your Project ###
 
@@ -137,8 +137,6 @@ The table lists build script information for Gradle and Maven and provides docum
 * Dependency management 
 * Groovy plugin and quickstart guide 
 * Maven integration and publishing plugins
-
-The table lists build script information for Gradle and Maven and provides documentation links for each build tool. 
 
 <table border="1" class="nice">
 <tr>
@@ -166,7 +164,7 @@ If you do not allocate sufficient memory to a Java application when you deploy i
 
 The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
 
-To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see [Step 8: Configure the Deployment Manifest](#yourapp-step8). 
+To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see [Step 7: Configure the Deployment Manifest](#yourapp-step7). 
 
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 

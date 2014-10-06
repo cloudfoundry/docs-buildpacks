@@ -38,7 +38,7 @@ Example: `cf push spring-music -n jc0830-spring`
 
   `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) and also determines the appropriate [buildpack](./index.html) for the app. A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app.
 
-  The example shows the terminal output of deploying the `spring-music`. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then follows the instructions in the manifest to start one instance of the app with 512M. After the app starts, the output displays the health and status of the app.
+  The example shows the terminal output of deploying the `spring-music` app. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then follows the instructions in the manifest to start one instance of the app with 512M. After the app starts, the output displays the health and status of the app.
 
 <pre class="terminal">
 
@@ -110,7 +110,7 @@ This section describes how to deploy your Spring application to <%=vars.product_
 * A Spring app that runs locally on your workstation
 * (**Optional**) [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
 * Intermediate to advanced Spring knowledge
-* JDK 1.6, 1.7., or 1.8 for Java 6, 7, or 8 configured on your workstation
+* JDK 1.6, 1.7, or 1.8 for Java 6, 7, or 8 configured on your workstation
 
 <p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. For more information, refer to the <a href="../custom.html">Custom Buildpacks</a> topic.</p>
 
