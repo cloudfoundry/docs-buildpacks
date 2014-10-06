@@ -8,87 +8,6 @@ This guide is intended to walk you through deploying a Ruby on Rails (RoR) app t
 
 If at any time you experience a problem following the steps below, try checking the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips.
 
-## <a id='deploy-sample'></a>Deploy a RoR Sample Application ##
-
-This section describes how to deploy a RoR sample application named `rails_sample_app`.
-
-To learn how to deploy your own RoR app, see [Deploy Your RoR Application](#deploy-yourapp).
-
-### Prerequisites ###
-
-* [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
-* Basic RoR knowledge
-
-### Step 1: Get a Sample RoR App from GitHub ###
-
-Run `git clone https://github.com/cloudfoundry-samples/rails_sample_app` to clone `rails_sample_app` from GitHub.
-
-### Step 2: Log in and Target the API Endpoint   ###
-Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
-
-### Step 3: Deploy the Sample App ###
-
-1. `cd` to the cloned app directory.
-1. Run `cf create-service elephantsql turtle rails-postgres`.
-1. Run `cf push rails_sample_app -n [HOST_NAME]`.
-
-Example: `cf push rails_sample_app -n jc0825-rails`
-
-  `cf push [APP_NAME]` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` flag to create a unique host name for the app to avoid URL collisions with other apps.
-
-  `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) (`manifest.yml`) and also determines the appropriate [buildpack](./index.html) for the app.  A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app.
-
-  The example shows the terminal output of deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then binds the app to the `rails-postgres` service you defined in the previous step, and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.
-
-<pre class="terminal">
-
-$ cf push rails_sample_app -n jmt2014-rails
-Using manifest file /Users/pivotal/workspace/rails_sample_app/manifest.yml
-
-Updating app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-Using route jmt2014-rails.<%=vars.app_domain%>
-Uploading rails_sample_app...
-Uploading app files from: /Users/pivotal/workspace/rails_sample_app
-Uploading 445.7K, 217 files
-OK
-Binding service rails-postgres to app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-Starting app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-...
-
-0 of 1 instances running, 1 starting
-1 of 1 instances running
-
-App started
-
-Showing health and status for app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-requested state: started
-instances: 1/1
-usage: 256M x 1 instances
-urls: jmt2014-rails.<%=vars.app_domain%>
-
-     state     since                    cpu    memory          disk
-#0   running   2014-08-25 03:32:10 PM   0.0%   68.4M of 256M   73.4M of 1G
-
-</pre>
-
-### Step 4: Test the Sample App ###
-
-You’ve deployed your first app to <%=vars.product_short%>! Now let’s access your app online using its URL.
-In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. The image shows the resulting webpage for the `rails_sample_app`.
-
-<%= image_tag("../images/RoR_sample_webpage.png") %>
-
-You can now use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `rails_sample_app/manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
-
-See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
 ## <a id='deploy-yourapp'></a>Deploy Your RoR Application ##
 
@@ -273,6 +192,90 @@ For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
          state     since                    cpu    memory        disk
     #0   running   2014-08-13 02:45:51 PM   0.0%   69M of 256M   72.7M of 1G
     </pre>
+
+## <a id='deploy-sample'></a>Deploy a RoR Sample Application ##
+
+This section describes how to deploy a RoR sample application named `rails_sample_app`.
+
+To learn how to deploy your own RoR app, see [Deploy Your RoR Application](#deploy-yourapp).
+
+### Prerequisites ###
+
+* [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
+* Basic RoR knowledge
+
+### Step 1: Get a Sample RoR App from GitHub ###
+
+Run `git clone https://github.com/cloudfoundry-samples/rails_sample_app` to clone `rails_sample_app` from GitHub.
+
+### Step 2: Log in and Target the API Endpoint   ###
+
+Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+
+### Step 3: Deploy the Sample App ###
+
+1. `cd` to the cloned app directory.
+1. Run `cf create-service elephantsql turtle rails-postgres`.
+1. Run `cf push rails_sample_app -n [HOST_NAME]`.
+
+Example: `cf push rails_sample_app -n jc0825-rails`
+
+`cf push [APP_NAME]` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` flag to create a unique host name for the app to avoid URL collisions with other apps.
+
+`cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) (`manifest.yml`) and also determines the appropriate [buildpack](./index.html) for the app.  A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app.
+
+The example shows the terminal output of deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then binds the app to the `rails-postgres` service you defined in the previous step, and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.
+
+<pre class="terminal">
+
+	$ cf push rails_sample_app -n jmt2014-rails
+	Using manifest file /Users/pivotal/workspace/rails_sample_app/manifest.yml
+
+	Updating app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
+	OK
+
+	Using route jmt2014-rails.<%=vars.app_domain%>
+	Uploading rails_sample_app...
+	Uploading app files from: /Users/pivotal/workspace/rails_sample_app
+	Uploading 445.7K, 217 files
+	OK
+	Binding service rails-postgres to app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
+	OK
+
+	Starting app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
+	OK
+
+	...
+
+	0 of 1 instances running, 1 starting
+	1 of 1 instances running
+
+	App started
+
+	Showing health and status for app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
+	OK
+
+	requested state: started
+	instances: 1/1
+	usage: 256M x 1 instances
+	urls: jmt2014-rails.<%=vars.app_domain%>
+
+	     state     since                    cpu    memory          disk
+	#0   running   2014-08-25 03:32:10 PM   0.0%   68.4M of 256M   73.4M of 1G
+
+</pre>
+
+### Step 4: Test the Sample App ###
+
+You’ve deployed your first app to <%=vars.product_short%>! Now let’s access your app online using its URL.
+In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. The image shows the resulting webpage for the `rails_sample_app`.
+
+<%= image_tag("../images/RoR_sample_webpage.png") %>
+
+You can now use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `rails_sample_app/manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
+
+See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
+
 
 ## <a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 
