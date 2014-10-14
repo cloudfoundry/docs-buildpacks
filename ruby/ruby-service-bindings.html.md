@@ -81,7 +81,7 @@ the service provider and version, in the format PROVIDER-VERSION.
 ## <a id='migrate'></a>Seed or Migrate Database ##
 
 Before you can use your database the first time, you must create and populate
-or migrate it. For more information, see [Migrate a Database on Cloud Foundry](../../devguide/services/migrate-db.html).
+or migrate it. For more information, see [Migrating a Database in Cloud Foundry](../../devguide/services/migrate-db.html).
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 

@@ -80,7 +80,7 @@ For more information about application manifests, and supported attributes, see
 ### <a id='migrate-ruby-db'></a>Example: Invoking a Rake database migration task at application startup ###
 
 The following is an example of the "migrate frequently" method described in the
-[Migrating a Database on Cloud Foundry]
+[Migrating a Database in Cloud Foundry]
 (../../devguide/services/migrate-db.html#frequent-migration) topic.
 
 1. Create a Rake task to limit an idempotent command to the first instance of a deployed application:
