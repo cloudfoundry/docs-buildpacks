@@ -138,13 +138,38 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 
 ### Step 6: (Optional) Configure a Production Server  ###
 
+<%=vars.product_short%> uses the default standard Ruby web server library WEBrick for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn.
 
-<%=vars.product_short%> uses the default Ruby web server library WEBrick for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. To set a different production web server for your app:
+To instruct <%=vars.product_short%> to use a web server other than WEBrick, you configure a text file called a _Procfile_. A Procfile enables you to declare required runtime processes, called _process_ _types_, for your web app. Specifically for RoR web apps, you can declare `web` and `worker` process types. Process managers in a server use the process types to run and manage the workload. 
 
-1. Modify your app to use the production web server.
-1. Configure the `web` setting in a Procfile to point to the production web server.
+When you deploy, <%=vars.product_short%>  determines if a Procfile exists and uses the Procfile to configure your app with the specified production web server settings. 
 
-When you deploy, `cf push` detects that your app requires the Cloud Foundry Ruby [buildpack](./index.html), and that buildpack uses the modified Procfile to configure your app with the changed production web server settings. For an example of how to configure an application and a Procfile to use a different web server, refer to the [Heroku Deploying Rails Applications with Unicorn](https://devcenter.heroku.com/articles/rails-unicorn) topic.
+To set a different production web server for your app:
+
+1. Add the gem for the web server to your Gemfile. 
+
+1. In the `config/` directory of your app, create a new configuration file or modify an existing file for your app to use the web server.
+    Refer to your web server documentation for how to configure this file.
+
+    Example Puma config file:
+    <pre class="code">
+    &#35; config/puma.rb
+    threads 8,32
+    workers 3
+
+    on_worker_boot do
+      # things workers do
+    end
+    </pre>
+
+
+1. In the root directory of your app, create a Procfile and add a line for a `web` process type that points to your web server. 
+
+    Example Procfile:
+    <pre class="code">
+    web: bundle exec puma -e $RAILS_ENV -p 1234 -S ~/puma -C config/puma.rb
+    </pre>
+
 
 ### Step 7: Deploy Your Application ###
 When you deploy your application, `cf push`:
