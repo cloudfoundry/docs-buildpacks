@@ -9,7 +9,7 @@ instance from Eclipse or Spring Tools Suite (STS).
 The plugin supports Eclipse v3.8 and v4.3 (a Java EE version is recommended),
 and STS 3.0.0 and later.
 
-This page has instructions for installing and using v1.7.1 of the plugin.
+This page has instructions for installing and using v1.7.2 of the plugin.
 
 You can use the plugin to:
 
@@ -23,29 +23,15 @@ You can use the plugin to:
 * View and manage deployed applications and services.
 * Start and stop applications.
 
-v1.7.1 of the plugin provides several new features:
+v1.7.2 of this plugin provides several updates and changes:
 
-* Spring Boot support: In the Project Explorer, right-click on your Spring Boot
-project, select **Configure -> Enable as Cloud Foundry App**, then drag and drop
-the Spring Boot app to your Cloud Foundry server instance.
+1. Cloud Foundry Eclipse is now enabled for NLS and Internationalization.
 
-* Support for servers using self-signed certificates: When creating a new Cloud
-Foundry server through the Eclipse Servers wizard, if "self-signed certificate"
-is detected for a cloud URL, the user is prompted whether to proceed.
-If so, the decision is persisted as a preference for that URL for any future
-server instance creation and interactions using that URL, including cloning a
-server instance to another org/space.
+1. A "New Service Binding" wizard that allows service instances to be bound to applications. This wizard serves as an alternative to binding through the existing drag-and-drop feature.
 
-* Application environment variables: Users can now specify environment
-variables both in the application deployment wizard, or edit them after an
-application is deployed through the Cloud Foundry server editor.
+1. Improvements in loggregator streaming to the console.
 
-* Free-form application memory choices: Restriction on application memory
-choices have been removed. Users can specify any memory choice for applications
-in MB.
-
-* Console enhancements: The Cloud Foundry console now supports loggregator, and loggregator content
-is streamed to the Cloud Foundry console when applications are running and the application's console is open.
+1. Improvements in deploying Spring Boot and Getting Started projects with templates.
 
 ## <a id='install'></a>Install Cloud Foundry Eclipse Plugin ##
 
