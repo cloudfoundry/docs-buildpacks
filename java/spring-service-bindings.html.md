@@ -159,7 +159,7 @@ See the Spring Framework documentation for additional information about using Sp
 
 When you deploy a Spring application to Cloud Foundry, Cloud Foundry automatically enables the `cloud` profile.
 
-<p class="note"><strong>Note</strong>: Cloud Foundry auto-reconfiguration requires the Spring application to be version 3.1 or later and include the spring context jar to deploy applications on PWS and PCF. If you are using an earlier version, you will need to update your framework or use a custom buildpack.</p>
+<p class="note"><strong>Note</strong>: Cloud Foundry auto-reconfiguration requires the Spring application to be version 3.1 or later and include the Spring context JAR. If you are using an earlier version, update your framework or use a custom buildpack.</p>
 
 ### <a id='cloud-profiles-java'></a>Profiles in Java Configuration ###
 

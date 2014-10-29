@@ -30,15 +30,15 @@ The Java buildpack source documentation states:
 `<app dir>/.java-buildpack.log`.
 	It also logs messages to `$stderr`, filtered by a configured severity.
 
-* If the buildpack fails with an exception, the exception message is logged with a
-log level of `ERROR` whereas the exception stack trace is logged with a log level
-of `DEBUG` to prevent users from seeing stack traces by default.
+* If the buildpack fails with an exception, the exception message is logged with
+a log level of `ERROR` whereas the exception stack trace is logged with a log
+level of `DEBUG` to prevent users from seeing stack traces by default.
 
 Once staging is done, the buildpack stops logging.
 Application logging is a separate concern.
 
-Your application must write to STDOUT or STDERR for its logs to be included in the
-Loggregator stream.
+Your application must write to STDOUT or STDERR for its logs to be included in
+the Loggregator stream.
 See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
 
 
