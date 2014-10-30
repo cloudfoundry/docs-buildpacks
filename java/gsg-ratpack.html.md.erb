@@ -86,7 +86,33 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> sample app does not require a JDBC driver.</p>
 
-### Step 6: Create and Bind a Service Instance for a Ratpack Application ###
+### Step 6: (Optional) Configure a Procfile  ###
+
+A _Procfile_ enables you to declare required runtime processes, called _process_ _types_, for your web app. Process managers in a server use the process types to run and manage the workload.
+
+When you deploy, <%=vars.product_short%> determines if a Procfile exists and uses the Procfile to configure your app with the specified settings.
+
+In a Procfile, you declare one process type per line and use the following syntax, as shown in the example below:
+
+* `PROCESS_TYPE` is the command name in the format of an alphanumeric string. 
+* `COMMAND` is the command line to launch the process.
+
+Example process type syntax:
+<pre class="code">
+PROCESS_TYPE: COMMAND
+</pre>
+
+You create a Procfile and add a command line for a `web` process type. Store the Procfile in the root directory of your app. The example shows a process type that starts the launch script created by the build process. 
+
+
+Example Procfile:
+<pre class="code">
+web: build/install/[PROJECT\_NAME]/bin/[PROJECT\_NAME]
+</pre>
+	
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.</p>
+
+### Step 7: Create and Bind a Service Instance for a Ratpack Application ###
 
 This section describes using the CLI to configure a Redis managed service instance for an app. <%=vars.dev_console_1%>
 
@@ -153,7 +179,7 @@ applications:
 
 </p>
 
-### Step 7: Configure the Deployment Manifest ###
+### Step 8: Configure the Deployment Manifest ###
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app. 
 
@@ -166,7 +192,7 @@ Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/m
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_groovy</code> sample app does not require any additional configuration to deploy the app.</p>
 
-### Step 8: Log in and Target the API Endpoint ###
+### Step 9: Log in and Target the API Endpoint ###
 
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
@@ -174,7 +200,7 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 
   <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
 
-### Step 9: Deploy the Application ###
+### Step 10: Deploy the Application ###
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
@@ -255,7 +281,7 @@ urls: groovy-ratpack-app.cfapps.io
 </pre>	
 
 
-### Step 10: Test Your Deployed App ###
+### Step 11: Test Your Deployed App ###
 
 You’ve deployed an app to <%=vars.product_short%>! 
 
