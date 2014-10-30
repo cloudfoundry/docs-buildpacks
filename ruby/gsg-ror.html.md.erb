@@ -4,15 +4,16 @@ title: Getting Started Deploying Ruby on Rails Apps
 
 <%=vars.GSG_intro_sentence%>
 
-This guide is intended to walk you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%>. If at any time you experience a problem following the steps below, check the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips.
+This guide is intended to walk you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%>. If you experience a problem following the steps below, check the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
+<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/rails_sample_app</code> to clone the <code>rails_sample_app</code> from GitHub, and follow the instructions in the Sample App Step boxes.</p>
+
+<p class="note"><strong>Note</strong>: Ensure that your RoR app runs locally before continuing with this procedure.</p>
 
 ## <a id='deploy-yourapp'></a>Deploy a RoR Application ##
 
 This section describes how to deploy a RoR application to <%=vars.product_short%>, and uses output from a sample app to show specific steps of the deployment process. 
 
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/rails_sample_app</code> to clone the <code>rails_sample_app</code> from GitHub, and follow the instructions in the Sample App Step boxes.</p>
-	
 ### Prerequisites ###
 
 * A Rails 4.x app that runs locally on your workstation
@@ -64,7 +65,7 @@ applications:
 
 ### Step 3: Create and Bind a Service Instance for a RoR Application ###
 
-This section describes using the CLI to configure a PostgreSQL managed service instance for your app. <%=vars.dev_console_1%>
+This section describes using the CLI to configure a PostgreSQL managed service instance for an app. <%=vars.dev_console_1%>
 
 <%=vars.product_short%> supports two types of service instances:
 
@@ -113,23 +114,11 @@ Most services support bindable service instances. Refer to your service provider
 
 You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`.
 
-For example, to bind the `rails-postgres` service that we created in the previous example:
-
-<pre class="terminal">
-$ cf bind-service my-rails-app rails-postgres
-</pre>
-
-Alternately, you can configure the deployment manifest file by adding a `services` block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see the next step.
+Alternately, you can configure the deployment manifest file by adding a `services` block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see the Sample App Step.
 
 <%=vars.dev_console_5%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The manifest for the sample app contains a <code>services</code> subblock in the <code>applications</code>block. This binds the <code>rails-postgres</code> service instance you created in the previous step.</p>
-
-### Step 4: Configure the Manifest File  ###
-
-You can specify app deployment options in a manifest that the `cf push` command uses. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
-
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. You can open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> subblock in the <code>applications</code> block, as the example shows.
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The manifest for the sample app contains a <code>services</code> sub-block in the <code>applications</code>block, as the example below shows. This binds the <code>rails-postgres</code> service instance you created in the previous step.
 
 <pre class="code">
 ---
@@ -138,9 +127,14 @@ applications:
   services:
     - rails-postgres
 </pre>
-
 </p>
 
+### Step 4: Configure the Manifest File  ###
+
+You can specify app deployment options in a manifest that the `cf push` command uses. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for <code>rails_sample_app</code> does not require any additional configuration to deploy the app.
+</p>
 
 ### Step 5: Log in and Target the API Endpoint ###
 
@@ -212,7 +206,7 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 
 * `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words.
-* Run `cf help push` to view other options for this command.
+* `cf help push` to view other options for this command.
 
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
 
@@ -274,7 +268,7 @@ Let’s access your app online using its URL. In the terminal output, the `urls`
 
 You’ve deployed an app to <%=vars.product_short%>! 
 
-You can now use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
+Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
