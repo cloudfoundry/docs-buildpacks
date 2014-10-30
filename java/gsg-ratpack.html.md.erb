@@ -4,9 +4,11 @@ title: Getting Started Deploying Ratpack Apps
 
 <%=vars.GSG_intro_sentence%>
 
-This guide is intended to walk you through deploying a Ratpack framework app to <%=vars.product_full%>. If at any time you experience a problem following the steps below, try checking the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips.
+This guide is intended to walk you through deploying a Ratpack app to <%=vars.product_full%>. If you experience a problem following the steps below,  check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
 <p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone git@github.com:camelpunch/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample App Step boxes.</p>
+
+<p class="note"><strong>Note</strong>: Ensure that your Ratpack app runs locally before continuing with this procedure.</p>
 
 ## <a id='deploy-yourapp'></a>Deploy a Ratpack Application ##
 
@@ -15,17 +17,17 @@ This section describes how to deploy a Ratpack application to <%=vars.product_sh
 ### Prerequisites ###
 
 * A Ratpack app that runs locally on your workstation
-* * Intermediate to advanced Ratpack knowledge
+* Intermediate to advanced Ratpack knowledge
 * The [cf Command Line Interface (CLI)](../../devguide/installcf/install-go-cli.html)
-* JDK 1.6, 1.7, or 1.8 for Java 6, 7, or 8 configured on your workstation CONFIRM TBD; THINK IT HAS TO BE AT LEAST 1.7
+* JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation.    
 
-<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. Refer to <a href="#yourapp-step7">Step 7: Configure the Deployment Manifest</a>.</p>
+<p class="note"><strong>Note</strong>: You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to <a href="#yourapp-step7">Step 7: Configure the Deployment Manifest</a>.</p>
 
 ### Step 1: Add the Cloud Foundry Java Client Library to Your Project ###
 
-The Cloud Foundry Java Client Library enables you to query and manage app instances and account instance information of a <%=vars.product_short%> account instance. For more information on including the library with your Gradle or Maven project and the specific objects that you can query, refer to the [Cloud Foundry Java Client Library](./java-client.html) topic.
+The Cloud Foundry Java Client Library enables you to query and manage app instances and account instance information of a <%=vars.product_short%> account instance. For more information on including this library with your Gradle or Maven project and the specific objects that you can query, refer to the [Cloud Foundry Java Client Library](./java-client.html) topic.
 
-<p class="note"><strong>Note</strong>: Ensure that your Ratpack app runs locally before continuing with this procedure.</p>
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The sample app does not include the Cloud Foundry Java Client Library.</p>
 
 ### Step 2: (Optional) Integrate a Plugin for Your Build Tool ###
 
@@ -33,9 +35,11 @@ The Cloud Foundry Java Client Library enables you to query and manage app instan
 
 For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
 
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> sample app includes a <code>build.gradle</code> file.</p>
+
 ### Step 3: Declare App Dependencies  ###
 
-Be sure to declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle and Maven and provides documentation links for each build tool.
+Declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle and Maven and provides documentation links for each build tool.
 
 <table border="1" class="nice">
 <tr>
@@ -50,6 +54,8 @@ Be sure to declare all the dependency tasks for your app in the build script of 
   <td>Maven</td><td><code>pom.xml</code></td><td><a href="http://maven.apache.org/guides/">Apache Maven Project Documentation</a></td>
 </tr>
 </table>
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app.</p>
 
 ### Step 4: Allocate Sufficient Memory ###
 
@@ -67,7 +73,9 @@ To configure memory-related JRE options for your app, you create a custom buildp
 
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
-<p class="note"><strong>Note</strong>: <%=vars.product_short%> automatically allocates 512MB to an app when you do not specify a value.</p>
+<p class="note"><strong>Note</strong>: <%=vars.product_short%> automatically allocates 512 MB to an app when you do not specify a value.</p>
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.</p>
 
 ### Step 5: Provide a JDBC Driver ###
 
@@ -76,32 +84,64 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-### Step 6: Configure Service Connections for Your Ratpack App ###
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> sample app does not require a JDBC driver.</p>
 
-TBD: REDO ENTIRE SECTION. HOW DO YOU CONFIGURE SERVICES FOR AN APP RUNNING ON RATPACK??
+### Step 6: Create and Bind a Service Instance for a Ratpack Application ###
 
-TBD: NEED CREATE SERVICE AND BIND SERVICE SECTIONS
+This section describes using the CLI to configure a Redis managed service instance for an app. <%=vars.dev_console_1%>
 
-TBD: THE SAMPLE APP CREATES "baby-redis"
+<%=vars.product_short%> supports two types of service instances:
 
+* Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider.
+* User-provided service instances enable you to connect your application to pre-provisioned external service instances.
 
-<%=vars.product_short%> provides extensive support for connecting a Ratpack app that runs on Grails or Spring to to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information on creating and binding a service connection for your app, refer to the appropriate framework topic:
+For more information on creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
 
-* [Configure Service Connections for Grails](./grails-service-bindings.html)
-* [Configure Service Connections for Spring](./spring-service-bindings.html)
+#### Create a Service Instance ####
 
-If your Ratpack app runs on the Play Framework and connects to a single Postgres or MySQL database instance, auto-reconfiguration functionality automatically connects your app to the service. For more information, refer to the [Configure Service Connections for Play Framework](./play-service-bindings.html) topic.
+Run `cf marketplace` to view managed and user-provided services and plans available to you.
+
+The example shows two of the available managed database-as-a-service providers and their offered plans: `elephantsql` PostgreSQL as a Service and `rediscloud` Enterprise-Class Redis for Developers.
+
+<pre class="terminal">
+$  cf marketplace
+Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
+OK
+
+service       plans        description
+...
+
+elephantsql   turtle, panda, elephant      PostgreSQL as a Service
+...
+rediscloud    25mb, 100mb, 1gb, 10gb, 50gb Enterprise-Class Redis for Developers
+...
+
+</pre>
+
+Run `cf create-service [SERVICE] [PLAN] [SERVICE_INSTANCE]` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
 
 <p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 25mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>25mb</code> plan, as the example below shows.
 
 <pre class="terminal">
-$   cf create-service rediscloud 25mb baby-redis
-Creating service rails-postgres in org Cloud-Apps / space development as clouduser@example.com....
+$ cf create-service rediscloud 25mb baby-redis
+Creating service baby-redis in org Cloud-Apps / space development as clouduser@example.com....
 OK
 </pre>
 </p>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. You can open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> subblock in the <code>applications</code> block, as the example shows.
+#### Bind a Service Instance ####
+
+When you bind an app to a service instance, <%=vars.product_short%> writes information about the service instance to the VCAP_SERVICES app environment variable. The app can use this information to integrate with the service instance.
+
+Most services support bindable service instances. Refer to your service provider's documentation to confirm if they support this functionality.
+
+You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`.
+
+Alternately, you can configure the deployment manifest file by adding a `services` sub-block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see the Sample App step.
+
+<%=vars.dev_console_5%>
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
 
 <pre class="code">
 ---
@@ -115,7 +155,7 @@ applications:
 
 ### Step 7: Configure the Deployment Manifest ###
 
-You can specify deployment options in a manifest file `manifest.yml` that the `cf push` command uses when deploying your app. 
+You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app. 
 
 For example, you can set memory-related JVM options or a specific Java version in a custom buildpack and configure your manifest to use your custom buildpack:
 
@@ -124,7 +164,7 @@ For example, you can set memory-related JVM options or a specific Java version i
 
 Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic for more information.
 
-TBD: FIX THE MANIFEST FILE FOR DISTZIP PATH AND SERVICE NAME
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_groovy</code> sample app does not require any additional configuration to deploy the app.</p>
 
 ### Step 8: Log in and Target the API Endpoint ###
 
@@ -134,41 +174,39 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 
   <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
 
-
-### Step 9: Deploy Your Application ###
+### Step 9: Deploy the Application ###
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
-From the root directory of your application, run `cf push [APP-NAME] -p [PATH-TO-.distZip]` to deploy your application. 
+From the root directory of your application, run `cf push [APP-NAME] -p [PATH-TO-FILE.distZip]` to deploy your application. 
 
-<p class="note"><strong>Note</strong>: You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the `cf push` command if you do not declare the path in the `applications` block of the manifest file. For more information, refer to the <a href="./java-tips.html">Tips for Java Developers</a> topic.</p>
+<p class="note"><strong>Note</strong>: You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="./java-tips.html">Tips for Java Developers</a> topic.</p>
 
 `cf push [APP-NAME]` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your [APP-NAME] and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. Use the following options to help create a unique URL:
 
-* `-n` to assign a different HOST name for the app.
-* `--random-route` to create a URL that includes the app name and random words.
-* Run `cf help push` to view other options for this command.
+* `-n` to assign a different HOST name for the app
+* `--random-route` to create a URL that includes the app name and random words
+* `cf help push` to view other options for this command
 
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
 
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
-
-	
 <p class="tip"><strong>Sample App Step</strong><br />
-<ol>
-<li>Build the app. Change to the <code>app</code>directory, and run <code>./gradlew distZip</code>.</li>
-<li>Push the app. Run <code>cf push pong_matcher_groovy -n [HOST_NAME]</code>.
+1. Change to the <code>app</code>directory, and run <code>./gradlew distZip</code> to build the app.
+<br />
+2. Run <code>cf push pong_matcher_groovy -n [HOST_NAME]</code> to push the app.
 <br /><br />
 Example: <code>cf push pong_matcher_groovy -n groovy-ratpack-app</code>
-<p class="note"><strong>Note</strong>: You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.</p>
-</li>
-</ol>
-
-The example below shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
 </p>
+
+<p class="note"><strong>Note</strong>: You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
+</p>
+
+The example below shows the terminal output of deploying the <code>pong\_matcher\_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
+
 
 <pre class="terminal">
 
@@ -217,7 +255,53 @@ urls: groovy-ratpack-app.cfapps.io
 </pre>	
 
 
-TBD: NEED TO INCLUDE INSTRUCTIONS FOR EXPORTING THE TEST HOST AND FOLLOWING THE INTERACTION  ON SAMPLE APP'S GITHUB PAGE.
+### Step 10: Test Your Deployed App ###
+
+You’ve deployed an app to <%=vars.product_short%>! 
+
+Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
+
+See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
+
+<p class="tip"><strong>Sample App Step</strong><br />
+To test the sample app, do the following:
+<br /><br />
+1. To export the test host, run <code>export HOST=SAMPLE_APP_URL</code>, substituting the URL for your app for <code>SAMPLE_APP_URL</code>.
+<br /><br />
+2. To clear the database from any previous tests, run:
+<br />
+<code>curl -v -X DELETE $HOST/all</code>
+<br />
+You should get a response of <code:>200</code>.
+<br /><br />
+3. To request a match as "andrew", run:
+<br />
+<code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/firstrequest -d '{"player": "andrew"}'</code>
+<br />
+You should again get a response of <code>200</code>.
+<br /><br />
+4. To request a match as a different player, run:
+<br />
+<code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/secondrequest -d '{"player": "navratilova"}'</code>
+<br /><br />
+5. To check the status of the first match request, run:
+<br />
+<code>curl -v -X GET $HOST/match_requests/firstrequest</code> 
+<br />
+The last line of the output shows the <code>match_id</code>.
+<br /><br />
+6. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
+<br />
+<code>curl -v -H "Content-Type: application/json" -X POST $HOST/results -d '
+{
+    "match_id":"MATCH_ID",
+    "winner":"andrew",
+    "loser":"navratilova"
+}'</code>
+<br />
+You should receive a <code>201 Created</code> response.
+</p>
+
 
 ## <a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 
@@ -244,101 +328,3 @@ Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run 
 
 
 
-## Deploy a Ratpack Sample Application ##
-
-This section describes how to deploy a Ratpack sample application to <%=vars.product_short%>.
-
-To learn how to deploy your own Ratpack app, see [Deploy Your Ratpack Application](#deploy-yourapp).
-
-### Prerequisites ###
-
-* [Git](http://git-scm.com) configured on your workstation and a [GitHub](https://github.com) account
-* Basic Ratpack knowledge
-* (**Optional**) [Spring Boot CLI](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#cli) to run your Ratpack app locally
-
-### Step 1: Get a Sample Ratpack App from GitHub ###
-
-Run `git clone https://github.com/cf-platform-eng/cf-bg-demo.git` to clone the `cf-bg-demo` app from GitHub.
-
-### Step 2: Log in and Target the API Endpoint   ###
-Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
-
-### Step 3: Deploy the Sample App ###
-
-1. `cd` to the cloned app directory.
-1. Complete all the steps in the **Doing a Blue-Green Demo** section of the [cf-platform-eng/cf-bg-demo README](https://github.com/cf-platform-eng/cf-bg-demo).
-
-If you want to run the app locally using the Spring Boot CLI, complete the **Running Locally** section.
-
-  `cf push [APP_NAME]` pushes the specified app from the current directory to <%=vars.product_short%>. Use the `-n` or `--random-route` flag to create a unique URL for the app to avoid URL collisions with other apps.
-
-  `cf push` automatically searches for an [application manifest YAML file](./../../devguide/deploy-apps/manifest.html) and also determines the appropriate [buildpack](./index.html) for the app. A manifest specifies what `cf push` should do with the app and the buildpack provides framework and runtime support for your app. 
-
-  The example shows the terminal output of deploying the initial blue version of the app. Because this sample application does not have a manifest, the `-m` and `-b` flags substitute for the manifest and set the memory and buildpack location for the app. `cf push` uses these settings to create the app, create and bind and the route, and upload the app to <%=vars.product_short%>. It then starts one instance of the app with 512M. After the app starts, the output displays the health and status of the app.
-
-<pre class="terminal">
-$ cf push -m 512M -b https://github.com/cloudfoundry/java-buildpack --random-route cf-bg-demo-blue
-
-Creating app cf-bg-demo-blue in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-Creating route cf-bg-demo-blue-grouty-sarcode.<%=vars.app_domain%>...
-OK
-
-Binding cf-bg-demo-blue-grouty-sarcode.cfapps.io to cf-bg-demo-blue...
-OK
-
-Uploading cf-bg-demo-blue...
-Uploading app files from: /Users/pivotal/workspace/cf-bg-demo
-Uploading 262.9K, 19 files
-OK
-
-Starting app cf-bg-demo-blue in org Cloud-Apps / space development as clouduser@example.com...
-OK
------> Downloaded app package (576K)
-Cloning into '/tmp/buildpacks/java-buildpack'...
------> Java Buildpack Version: 840da8b | https://github.com/cloudfoundry/java-buildpack#840da8b
------> Downloading Open Jdk JRE 1.7.0_65 from http://download.run.pivotal.io/openjdk/lucid/x86_64/openjdk-1.7.0_65.tar.gz (1.2s)
-       Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.1s)
------> Downloading Spring Boot CLI 1.1.5_RELEASE from http://download.run.pivotal.io/spring-boot-cli/spring-boot-cli-1.1.5_RELEASE.tar.gz (0.4s)
-       Expanding Spring Boot CLI to .java-buildpack/spring_boot_cli (0.1s)
------> Uploading droplet (39M)
-
-0 of 1 instances running, 1 starting
-0 of 1 instances running, 1 starting
-1 of 1 instances running
-
-App started
-
-Showing health and status for app cf-bg-demo-blue in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-requested state: started
-instances: 1/1
-usage: 512M x 1 instances
-urls: cf-bg-demo-blue-grouty-sarcode.<%=vars.app_domain%>
-
-	     state     since                    cpu    memory           disk   
-	#0   running   2014-08-26 11:46:54 AM   0.0%   325.2M of 512M   114.5M of 1G
-</pre>
-
-### Step 4: Test the Sample App ###
-
-You’ve deployed your first app to <%=vars.product_short%>!
-
-In Step 5 of the README instructions, you complete mapping both blue and green app versions to the zero downtime route. The composite image below shows the result of this mapping to the zero downtime route URL `cf-bg-demo-a1426.cfapps.io`. Refreshing the webpage causes the different app versions to display and demonstrates the <%=vars.product_short%> load balancing functionality in action.
-
-<%= image_tag("../images/blue_green_demo.png") %>
-
-Now let’s access your app online using its URL. In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` and alphanumeric suffix you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Note that because you unmapped the blue app version from your zero downtime route URL in Step 6, only the green app version displays when you browse to this URL. Remap the blue app version to view both versions and test the <%=vars.product_short%> load balancing functionality.
-
-You can now use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name. 
-
-See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
-
-
- 
- 
- 
- 
- 
