@@ -19,7 +19,7 @@ This section describes how to deploy a Ratpack application to <%=vars.product_sh
 * A Ratpack app that runs locally on your workstation
 * Intermediate to advanced Ratpack knowledge
 * The [cf Command Line Interface (CLI)](../../devguide/installcf/install-go-cli.html)
-* JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation.    
+* JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
 
 <p class="note"><strong>Note</strong>: You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to <a href="#yourapp-step7">Step 7: Configure the Deployment Manifest</a>.</p>
 
@@ -167,7 +167,7 @@ Alternately, you can configure the deployment manifest file by adding a `service
 
 <%=vars.dev_console_5%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
 
 <pre class="code">
 ---
