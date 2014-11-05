@@ -31,7 +31,7 @@ The Cloud Foundry Java Client Library enables you to query and manage app instan
 
 ### Step 2: (Optional) Integrate a Plugin for Your Build Tool ###
 
-<%=vars.product_short%> provides plugins for Gradle and Maven. You can deploy and manage your apps using Gradle or Maven command-line syntax and configure security credentials. 
+<%=vars.product_short%> provides plugins for Gradle and Maven. You can deploy and manage your apps using Gradle or Maven command-line syntax and configure security credentials.
 
 For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
 
@@ -55,11 +55,8 @@ Declare all the dependency tasks for your app in the build script of your chosen
 </tr>
 </table>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app, as shown in the example below.
-
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app.
 </p>
-
-<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_groovy', at: 'ratpack-dependencies' %>
 
 ### Step 4: Allocate Sufficient Memory ###
 
@@ -73,7 +70,7 @@ If you do not allocate sufficient memory to a Java application when you deploy i
 
 The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
 
-To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see [Step 7: Configure the Deployment Manifest](#yourapp-step7). 
+To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see [Step 7: Configure the Deployment Manifest](#yourapp-step7).
 
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
@@ -98,7 +95,7 @@ When you deploy, <%=vars.product_short%> determines if a Procfile exists and use
 
 In a Procfile, you declare one process type per line and use the following syntax, as shown in the example below:
 
-* `PROCESS_TYPE` is the command name in the format of an alphanumeric string. 
+* `PROCESS_TYPE` is the command name in the format of an alphanumeric string.
 * `COMMAND` is the command line to launch the process.
 
 Example process type syntax:
@@ -106,14 +103,14 @@ Example process type syntax:
 PROCESS_TYPE: COMMAND
 </pre>
 
-You create a Procfile and add a command line for a `web` process type. Store the Procfile in the root directory of your app. The example shows a process type that starts the launch script created by the build process. 
+You create a Procfile and add a command line for a `web` process type. Store the Procfile in the root directory of your app. The example shows a process type that starts the launch script created by the build process.
 
 
 Example Procfile:
 <pre class="code">
 web: build/install/[PROJECT\_NAME]/bin/[PROJECT\_NAME]
 </pre>
-	
+
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.</p>
 
 ### Step 7: Create and Bind a Service Instance for a Ratpack Application ###
@@ -185,7 +182,7 @@ applications:
 
 ### Step 8: Configure the Deployment Manifest ###
 
-You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app. 
+You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
 For example, you can set memory-related JVM options or a specific Java version in a custom buildpack and configure your manifest to use your custom buildpack:
 
@@ -208,7 +205,7 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
-From the root directory of your application, run `cf push [APP-NAME] -p [PATH-TO-FILE.distZip]` to deploy your application. 
+From the root directory of your application, run `cf push [APP-NAME] -p [PATH-TO-FILE.distZip]` to deploy your application.
 
 <p class="note"><strong>Note</strong>: You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="./java-tips.html">Tips for Java Developers</a> topic.</p>
 
@@ -280,14 +277,14 @@ instances: 1/1
 usage: 512M x 1 instances
 urls: groovy-ratpack-app.cfapps.io
 
-     state     since                    cpu    memory           disk   
+     state     since                    cpu    memory           disk
 #0   running   2014-10-28 04:48:58 PM   0.0%   193.5M of 512M   111.7M of 1G
-</pre>	
+</pre>
 
 
 ### Step 11: Test Your Deployed App ###
 
-You’ve deployed an app to <%=vars.product_short%>! 
+You’ve deployed an app to <%=vars.product_short%>!
 
 Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
@@ -316,7 +313,7 @@ You should again get a response of <code>200</code>.
 <br /><br />
 5. To check the status of the first match request, run:
 <br />
-<code>curl -v -X GET $HOST/match_requests/firstrequest</code> 
+<code>curl -v -X GET $HOST/match_requests/firstrequest</code>
 <br />
 The last line of the output shows the <code>match_id</code>.
 <br /><br />
@@ -337,11 +334,11 @@ You should receive a <code>201 Created</code> response.
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
-<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands: 
+<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 
-<%=vars.dev_console_note%> 
+<%=vars.dev_console_note%>
 </p>
 
 ## <a id='troubleshoot'></a>Troubleshooting ##
