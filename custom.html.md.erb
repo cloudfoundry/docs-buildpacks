@@ -129,5 +129,11 @@ Alternatively, it is possible to use a private git repository (with https and us
 $ cf push my-new-app -b https://username:password@github.com/johndoe/my-buildpack.git
 </pre>
 
+By default, Cloud Foundry will use the master branch of the buildpack's git repository. A different branch can be specified through the git url in the following manner:
+
+<pre class="terminal">
+$ cf push my-new-app -b https://username:password@github.com/johndoe/my-buildpack.git#my-branch-name
+</pre>
+
 The application will then be deployed to Cloud Foundry, and the buildpack will be cloned from the repository and applied to the application (provided that the `detect` script returns `0`).
 
