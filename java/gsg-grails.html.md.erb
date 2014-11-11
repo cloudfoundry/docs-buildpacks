@@ -1,0 +1,374 @@
+---
+title: Getting Started Deploying Grails Apps
+---
+
+<%=vars.GSG_intro_sentence%>
+
+This guide is intended to walk you through deploying a Grails app to <%=vars.product_full%>.
+If you experience a problem following the steps below, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
+
+<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone git@github.com:camelpunch/pong_matcher_grails.git</code> to clone the <code>pong_matcher_grails</code> app from GitHub, and follow the instructions in the Sample App Step boxes.</p>
+
+<p class="note"><strong>Note</strong>: Ensure that your Grails app runs locally before continuing with this procedure.</p>
+
+##<a id='deploy-yourapp'></a>Deploy a Grails Application ##
+
+This section describes how to deploy a Grails application to <%=vars.product_short%>.
+
+### Prerequisites ###
+
+* A Grails app that runs locally on your workstation
+* Intermediate to advanced Grails knowledge
+* The [cf Command Line Interface (CLI)](../../devguide/installcf/install-go-cli.html)
+* JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
+
+<p class="note"><strong>Note</strong>: You can develop Grails applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to <a href="#configure-manifest">Step 8: Configure the Deployment Manifest</a>.</p>
+
+TBD: ARE MOST GRAILS APPS WRITTEN IN GROOVY?
+
+### Step 1: Add the Cloud Foundry Java Client Library to Your Project ###
+
+The Cloud Foundry Java Client Library enables you to query and manage app
+instances and account instance information of a <%=vars.product_short%> account
+instance.
+For more information on including this library with your Gradle or Maven project
+and the specific objects that you can query, refer to the [Cloud Foundry Java Client Library](./java-client.html) topic.
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The sample app does not include the Cloud Foundry Java Client Library.</p>
+
+### Step 2: (Optional) Integrate a Plugin for Your Build Tool ###
+
+<%=vars.product_short%> provides plugins for Gradle and Maven. You can deploy and manage your apps using Gradle or Maven command-line syntax and configure security credentials.
+
+For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> sample app includes a <code>Dockerfile</code> file.</p>
+
+### Step 3: Declare App Dependencies ###
+
+Declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle and Maven and provides documentation links for each build tool.
+
+<table border="1" class="nice">
+<tr>
+  <th><strong>Build Tool</strong></th>
+  <th><strong>Build Script</strong></th>
+    <th><strong>Documentation</strong></th>
+</tr>
+<tr>
+  <td>Gradle</td><td><code>build.gradle</code></td><td><a href="http://www.gradle.org/docs/current/userguide/userguide.html">Gradle User Guide</a></td>
+</tr>
+<tr>
+  <td>Maven</td><td><code>pom.xml</code></td><td><a href="http://maven.apache.org/guides/">Apache Maven Project Documentation</a></td>
+</tr>
+</table>
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails/app/grails-app/conf/BuildConfig.groovy</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app.
+</p>
+
+TBD: TALK TO ANDREW ABOUT USE OF DOCKERFILE
+
+### Step 4: Allocate Sufficient Memory ###
+
+If you do not allocate sufficient memory to a Java application when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for the following:
+
+* Java heap
+* Metaspace, if using Java 8
+* PermGen, if using Java 7 or earlier
+* Thread stacks
+* JVM overhead
+
+The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
+
+To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see [Step 8: Configure the Deployment Manifest](#configure-manifest).
+
+When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
+
+<p class="note"><strong>Note</strong>: <%=vars.product_short%> automatically allocates 512 MB to an app when you do not specify a value.</p>
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_grails</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 1 GB to the app.</p>
+
+### Step 5: Provide a JDBC Driver ###
+
+The Java buildpack does not bundle a JDBC driver with your application. If your application accesses a SQL RDBMS, you must do the following:
+
+* Include the appropriate driver in your application.
+* Create a dependency task for the driver in the build script for your build tool or IDE.
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> sample app declares a MySQL JDBC driver in the <code>pong_matcher_grails/app/grails-app/conf/DataSource.groovy</code> file because it uses ClearDB, which is a database-as-service for MySQL-powered apps.</p>
+
+### Step 6: (Optional) Configure a Procfile ###
+
+A _Procfile_ enables you to declare required runtime processes, called _process_ _types_, for your web app. Process managers in a server use the process types to run and manage the workload.
+
+When you deploy, <%=vars.product_short%> determines if a Procfile exists and uses the Procfile to configure your app with the specified settings.
+
+In a Procfile, you declare one process type per line and use the following syntax, as shown in the example below:
+
+* `PROCESS_TYPE` is the command name in the format of an alphanumeric string.
+* `COMMAND` is the command line to launch the process.
+
+Example process type syntax:
+<pre class="code">
+PROCESS_TYPE: COMMAND
+</pre>
+
+You create a Procfile and add a command line for a `web` process type. Store the Procfile in the root directory of your app. The example shows a process type that starts the launch script created by the build process.
+
+
+Example Procfile:
+<pre class="code">
+web: build/install/[PROJECT\_NAME]/bin/[PROJECT\_NAME]
+</pre>
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> app does not require a Procfile.</p>
+
+### Step 7: Create and Bind a Service Instance for a Grails Application ###
+
+This section describes using the CLI to configure a ClearDB managed service instance for an app. <%=vars.dev_console_1%>
+
+<%=vars.product_short%> supports two types of service instances:
+
+* Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider.
+* User-provided service instances enable you to connect your application to pre-provisioned external service instances.
+
+For more information on creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
+
+#### Create a Service Instance ####
+
+Run `cf marketplace` to view managed and user-provided services and plans available to you.
+
+The example shows two of the available managed database-as-a-service providers and their offered plans: `cleardb` database-as-a-service for MySQL-powered apps and `elephantsql` PostgreSQL as a Service.
+
+<pre class="terminal">
+$ cf marketplace
+Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
+OK
+
+service       plans        description
+...
+
+cleardb   spark, boost, amp      Highly available MySQL for your apps
+...
+elephantsql   turtle, panda, elephant      PostgreSQL as a Service
+...
+
+</pre>
+
+Run `cf create-service [SERVICE] [PLAN] [SERVICE_INSTANCE]` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
+
+<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>mysql</code> plan, as the example below shows.
+
+<pre class="terminal">
+$ cf create-service cleardb spark mysql
+Creating service mysql in org Cloud-Apps / space development as clouduser@example.com....
+OK
+</pre>
+</p>
+
+#### Bind a Service Instance ####
+
+When you bind an app to a service instance, <%=vars.product_short%> writes information about the service instance to the VCAP_SERVICES app environment variable. The app can use this information to integrate with the service instance.
+
+Most services support bindable service instances. Refer to your service provider's documentation to confirm if they support this functionality.
+
+You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`.
+
+Alternately, you can configure the deployment manifest file by adding a `services` sub-block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see the Sample App step.
+
+<%=vars.dev_console_5%>
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
+
+<pre class="code">
+---
+applications:
+...
+  services:
+    - mysql
+</pre>
+</p>
+
+### Step 8: Configure the Deployment Manifest ###
+
+You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
+
+For example, you can set memory-related JVM options or a specific Java version in a custom buildpack and configure your manifest to use your custom buildpack:
+
+1. Fork the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) and edit `config/open_jdk_jre.yml`.
+1. Set the `buildpack` attribute in the manifest to the buildpack URL or name.
+
+Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic for more information.
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app.</p>
+
+### Step 9: Log in and Target the API Endpoint ###
+
+Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+
+<%=vars.gen_GSG%>
+
+  <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
+
+### Step 10: Deploy the Application ###
+
+<p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
+
+From the root directory of your application, run `cf push [APP-NAME] -p [PATH-TO-FILE.war]` to deploy your application.
+
+<p class="note"><strong>Note</strong>: You must deploy the <code>.war</code> artifact for a Grails app, and you must include the path to the <code>.war</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="./java-tips#grails.html">Grails section</a> in the Tips for Java Developers topic.</p>
+
+`cf push [APP-NAME]` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your [APP-NAME] and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
+
+The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. Use the following options to help create a unique URL:
+
+* `-n` to assign a different HOST name for the app
+* `--random-route` to create a URL that includes the app name and random words
+* `cf help push` to view other options for this command
+
+If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
+
+Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
+
+<p class="tip"><strong>Sample App Step</strong><br />
+1. Change to the <code>app</code>directory, and run <code>./grailsw war</code> to build the app.
+<br />
+2. Run <code>cf push pong_matcher_grails -n [HOST_NAME]</code> to push the app.
+<br /><br />
+Example: <code>cf push pong_matcher_grails -n my-grails-app</code>
+</p>
+
+<p class="note"><strong>Note</strong>: You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
+</p>
+
+The example below shows the terminal output of deploying the <code>pong\_matcher\_grails</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>mysql</code> service and follows the instructions in the manifest to start two instances of the app, allocating 1 GB of memory between the instances. After the instances start, the output displays the health and status of the instances.
+
+<pre class="terminal">
+$ |master ✓| → cf push pong_matcher_grails -n my-grails-app
+Using manifest file /Users/example/workspace/pong_matcher_grails/app/manifest.yml
+
+Creating app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...
+OK
+
+Creating route my-grails-app.cfapps.io...
+OK
+
+Binding my-grails-app.cfapps.io to pong_matcher_grails...
+OK
+
+Uploading pong_matcher_grails...
+Uploading app files from: /Users/example/workspace/pong_matcher_grails/app/target/pong_matcher_grails-0.1.war
+Uploading 4.8M, 704 files
+OK
+Binding service mysql to app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...
+OK
+
+Starting app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...
+OK
+-----> Downloaded app package (38M)
+-----> Java Buildpack Version: v2.5 | https://github.com/cloudfoundry/java-buildpack.git#840500e
+-----> Downloading Open Jdk JRE 1.8.0_25 from https://download.run.pivotal.io/openjdk/lucid/x86_64/openjdk-1.8.0_25.tar.gz (1.5s)
+       Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.1s)
+-----> Downloading Spring Auto Reconfiguration 1.5.0_RELEASE from https://download.run.pivotal.io/auto-reconfiguration/auto-reconfiguration-1.5.0_RELEASE.jar (0.0s)
+       Modifying /WEB-INF/web.xml for Auto Reconfiguration
+-----> Downloading Tomcat Instance 8.0.14 from https://download.run.pivotal.io/tomcat/tomcat-8.0.14.tar.gz (0.4s)
+       Expanding Tomcat to .java-buildpack/tomcat (0.1s)
+-----> Downloading Tomcat Lifecycle Support 2.4.0_RELEASE from https://download.run.pivotal.io/tomcat-lifecycle-support/tomcat-lifecycle-support-2.4.0_RELEASE.jar (0.0s)
+-----> Downloading Tomcat Logging Support 2.4.0_RELEASE from https://download.run.pivotal.io/tomcat-logging-support/tomcat-logging-support-2.4.0_RELEASE.jar (0.0s)
+-----> Downloading Tomcat Access Logging Support 2.4.0_RELEASE from https://download.run.pivotal.io/tomcat-access-logging-support/tomcat-access-logging-support-2.4.0_RELEASE.jar (0.0s)
+
+-----> Uploading droplet (83M)
+
+0 of 2 instances running, 2 starting
+0 of 2 instances running, 2 starting
+0 of 2 instances running, 2 starting
+2 of 2 instances running
+
+App started
+
+Showing health and status for app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...
+OK
+
+requested state: started
+instances: 2/2
+usage: 1G x 2 instances
+urls: my-grails-app.cfapps.io
+
+     state     since                    cpu    memory         disk   
+#0   running   2014-11-10 05:07:33 PM   0.0%   686.4M of 1G   153.6M of 1G   
+#1   running   2014-11-10 05:07:36 PM   0.0%   677.2M of 1G   153.6M of 1G
+</pre>
+
+
+### Step 11: Test Your Deployed App ###
+
+You’ve deployed an app to <%=vars.product_short%>!
+
+Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
+
+See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
+
+<p class="tip"><strong>Sample App Step</strong><br />
+To test the sample app, do the following:
+<br /><br />
+1. To export the test host, run <code>export HOST=SAMPLE_APP_URL</code>, substituting the URL for your app for <code>SAMPLE_APP_URL</code>.
+<br /><br />
+2. To clear the database from any previous tests, run:
+<br />
+<code>curl -v -X DELETE $HOST/all</code>
+<br />
+You should get a response of <code:>200</code>.
+<br /><br />
+3. To request a match as "andrew", run:
+<br />
+<code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/firstrequest -d '{"player": "andrew"}'</code>
+<br />
+You should again get a response of <code>200</code>.
+<br /><br />
+4. To request a match as a different player, run:
+<br />
+<code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/secondrequest -d '{"player": "navratilova"}'</code>
+<br /><br />
+5. To check the status of the first match request, run:
+<br />
+<code>curl -v -X GET $HOST/match_requests/firstrequest</code>
+<br />
+The last line of the output shows the <code>match_id</code>.
+<br /><br />
+6. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
+<br />
+<code>curl -v -H "Content-Type: application/json" -X POST $HOST/results -d '
+{
+    "match_id":"MATCH_ID",
+    "winner":"andrew",
+    "loser":"navratilova"
+}'</code>
+<br />
+You should receive a <code>201 Created</code> response.
+</p>
+
+
+##<a id='cli-manage'></a>Manage Your Application with the cf CLI ##
+
+Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
+
+<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
+
+<code>error code: 10003, message: You are not authorized to perform the requested action</code>
+
+<%=vars.dev_console_note%>
+</p>
+
+##<a id='troubleshoot'></a>Troubleshooting ##
+If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
+
+### App Deploy Fails ###
+Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
+
+### App Requires a Unique URL ###
+<%=vars.product_short%> requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
+
+* `-n` to assign a different HOST name for the app.
+* `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
+
+
+
