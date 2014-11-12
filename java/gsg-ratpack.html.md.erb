@@ -22,7 +22,7 @@ This section describes how to deploy a Ratpack application to <%=vars.product_sh
 * The [cf Command Line Interface (CLI)](../../devguide/installcf/install-go-cli.html)
 * JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
 
-<p class="note"><strong>Note</strong>: You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to <a href="#configure-manifest">Step 8: Configure the Deployment Manifest</a>.</p>
+<p class="note"><strong>Note</strong>: You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to Step 8: Configure the Deployment Manifest.</p>
 
 ### Step 1: Add the Cloud Foundry Java Client Library to Your Project ###
 
@@ -60,8 +60,10 @@ Declare all the dependency tasks for your app in the build script of your chosen
 </tr>
 </table>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app.
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app, as the example below shows.
 </p>
+
+<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_groovy', at: 'ratpack-dependencies' %>
 
 ### Step 4: Allocate Sufficient Memory ###
 
@@ -75,7 +77,7 @@ If you do not allocate sufficient memory to a Java application when you deploy i
 
 The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
 
-To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see [Step 8: Configure the Deployment Manifest](#configure-manifest).
+To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see Step 8: Configure the Deployment Manifest.
 
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
@@ -184,7 +186,7 @@ applications:
 </pre>
 </p>
 
-###<a id='configure-manifest'>Step 8: Configure the Deployment Manifest ###
+### Step 8: Configure the Deployment Manifest ###
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
