@@ -1,7 +1,7 @@
 ---
 title: Configure Service Connections for Node.js
 ---
-_This page assumes that you are using cf v6._
+_This page assumes that you are using cf CLI v6._
 
 This guide is for developers who wish to bind a data source to a Node.js
 application deployed and running on Cloud Foundry.

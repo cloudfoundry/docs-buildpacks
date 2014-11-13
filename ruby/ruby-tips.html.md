@@ -1,7 +1,7 @@
 ---
 title: Tips for Ruby Developers
 ---
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 This page has information specific to deploying Rack, Rails, or Sinatra
 applications.
@@ -71,7 +71,7 @@ should already exist.
 There are two ways to create a manifest.
 You can manually create the file and save it in the application's root
 directory before you deploy the application for the first time.
-If you do not manually create the manifest file, cf will prompt you to supply
+If you do not manually create the manifest file, the cf CLI will prompt you to supply
 deployment settings when you first push the application, and will create and
 save the manifest file for you, with the settings you specified interactively.
 For more information about application manifests, and supported attributes, see
@@ -276,7 +276,7 @@ $ cf push -f web-manifest.yml
 $ cf push -f worker-manifest.yml
 </pre>
 
-If `cf` asks for a URL for the worker application, select "none".
+If the cf CLI asks for a URL for the worker application, select "none".
 
 ### <a id='test'></a>Test the Application ###
 

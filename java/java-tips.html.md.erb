@@ -1,7 +1,7 @@
 ---
 title: Tips for Java Developers
 ---
-_This page assumes that you are using cf v6._
+_This page assumes you are using cf CLI v6._
 
 Cloud Foundry can deploy a number of different JVM-based artifact types.
 For a more detailed explanation of what it supports, see the [Java Buildpack documentation][d].
@@ -223,10 +223,10 @@ before the upload completes.
 A workaround is to copy the WAR to a server that is closer to the Cloud Foundry
 instance, and push it from there.
 
-* Out-of-date cf client: Upload of a large WAR large is faster and hence less
-likely to fail if you are using a recent version of cf.
-If you are using an older version of the cf client to upload a large, and having
-problems, try updating to the latest version of cf.
+* Out-of-date cf CLI client: Upload of a large WAR is faster and hence less
+likely to fail if you are using a recent version of the cf CLI.
+If you are using an older version of the cf CLI client to upload a large WAR, and having
+problems, try updating to the latest version of the cf CLI.
 
 * Incorrect WAR targeting: By default, `cf push` uploads everything in the
 current directory.
