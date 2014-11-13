@@ -40,7 +40,7 @@ and the specific objects that you can query, refer to the [Cloud Foundry Java Cl
 
 For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> sample app includes <code>Dockerfile</code> and <code>BuildConfig.groovy</code> files to build the app and does not require additional external plugin integration.</p>
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> sample app does not require additional external plugin integration because the app uses the <a href="http://grails.org/doc/latest/guide/single.html#wrapper">Grails Wrapper</a> functionality. In Step 10: Deploy the Application, you run a command to build the app using a wrapper script.</p>
 
 ### Step 3: Declare App Dependencies ###
 
@@ -66,7 +66,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails/app/grails-app/conf/BuildConfig.groovy</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app, as the example below shows.
 </p>
 
-
+<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_grails', at: 'gsg-grails-s3' %>
 
 ### Step 4: Allocate Sufficient Memory ###
 
@@ -97,7 +97,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> sample app declares a MySQL JDBC driver in the <code>pong_matcher_grails/app/grails-app/conf/DataSource.groovy</code> file because the app uses ClearDB, which is a database-as-service for MySQL-powered apps. The example below shows this declaration.</p>
 
-
+<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_grails', at: 'gsg-grails-s5' %>
 
 ### Step 6: (Optional) Configure a Procfile ###
 
