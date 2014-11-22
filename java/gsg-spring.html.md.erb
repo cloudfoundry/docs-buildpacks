@@ -8,7 +8,7 @@ This guide is intended to walk you through deploying a Spring app to <%=vars.pro
 
 If at any time you experience a problem following the steps below, try checking the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips.
 
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/camelpunch/pong_matcher_spring.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample App Step boxes.</p>
+<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/camelpunch/pong_matcher_spring.git</code> to clone the <code>pong_matcher_spring</code> app from GitHub, and follow the instructions in the Sample App Step boxes.</p>
 
 <p class="note"><strong>Note</strong>: Ensure that your Spring app runs locally before continuing with this procedure.</p>
 
@@ -67,8 +67,10 @@ The table lists build script information for Gradle and Maven and provides docum
 </tr>
 </table>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_spring/pom.xml</code> file contains the dependencies for the <code>pong_matcher_spring</code> sample app, as the example below shows.
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pom.xml</code> file contains the dependencies for the <code>pong_matcher_spring</code> sample app, as the example below shows.
 </p>
+
+<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_spring', at: 'gsg-spring-s3' %>
 
 
 ### Step 5: Allocate Sufficient Memory ###
@@ -87,11 +89,7 @@ To configure memory-related JRE options for your app, you create a custom buildp
 
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
-<p class="note"><strong>Note</strong>: <%=vars.product_short%> automatically allocates 512 MB to an app when you do not specify a value.</p>
-
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_spring</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 1 GB to the app.</p>
-
-TBD: MANIFEST DOESN'T HAVE MEMORY VALUE; APP STARTS WITH 1 GB
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. <%=vars.product_short%> allocates 1 GB to the app.</p>
 
 ### Step 6: Provide a JDBC Driver ###
 
@@ -100,9 +98,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_spring</code> sample app, the <code>driverClassName</code> and <code>url</code> sub-blocks of the <code>datasource</code> block declare a JDBC driver, and the <code>pong-matcher-spring.iml</code> file includes the JDBC driver as a dependency.</p>
-
-TBD: CONFIRM THE ABOVE IS CORRECT
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>pong_matcher_spring</code> sample app, the <code>src/main/resources/application.yml</code> file declares the JDBC driver, and the <code>pom.xml</code> file includes the JDBC driver as a dependency.</p>
 
 ### Step 7: Configure Service Connections for a Spring App ###
 
