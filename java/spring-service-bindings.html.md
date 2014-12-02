@@ -259,7 +259,7 @@ The following sections describe Spring auto-reconfiguration and manual configura
 ### <a id='rdbms'></a>MySQL and Postgres ###
 
 #### <a id='mysql-auto-reconfig'></a>Auto-Reconfiguration ####
-Auto-reconfiguration occurs if Cloud Foundry detects a `javax.sql.DataSource` bean in the Spring application context. The following snippet of a Spring application context file shows an example of defining this type of bean which Cloud Foundry detects and potentially auto-reconfigure:
+Auto-reconfiguration occurs if Cloud Foundry detects a `javax.sql.DataSource` bean in the Spring application context. The following snippet of a Spring application context file shows an example of defining this type of bean which Cloud Foundry will detect and potentially auto-reconfigure:
 
 ```xml
 <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
