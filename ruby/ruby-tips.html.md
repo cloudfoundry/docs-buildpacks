@@ -101,7 +101,7 @@ The following is an example of the "migrate frequently" method described in the
    ---
     applications:
     - name: my-rails-app
-      command: bundle exec rake cf:on_first_instance db:migrate && rails s
+      command: bundle exec rake cf:on_first_instance db:migrate && bundle exec rails s -p $PORT -e $RAILS_ENV
     ~~~
 
 3. Update the application using `cf push`.
