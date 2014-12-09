@@ -12,7 +12,7 @@ This guide is intended to walk you through deploying a Ruby on Rails (RoR) app t
 
 ## <a id='deploy-yourapp'></a>Deploy a RoR Application ##
 
-This section describes how to deploy a RoR application to <%=vars.product_short%>, and uses output from a sample app to show specific steps of the deployment process. 
+This section describes how to deploy a RoR application to <%=vars.product_short%>, and uses output from a sample app to show specific steps of the deployment process.
 
 ### Prerequisites ###
 
@@ -165,7 +165,7 @@ Example process type syntax:
 
 To set a different production web server for your app:
 
-1. Add the gem for the web server to your Gemfile. 
+1. Add the gem for the web server to your Gemfile.
 
 1. In the `config` directory of your app, create a new configuration file or modify an existing file.
 
@@ -182,7 +182,7 @@ To set a different production web server for your app:
     end
 </pre>
 
-1. In the root directory of your app, create a Procfile and add a command line for a `web` process type that points to your web server. 
+1. In the root directory of your app, create a Procfile and add a command line for a `web` process type that points to your web server.
 
     The example below shows a command that starts a Puma web server and specifies the app runtime environment, TCP port, and paths to the server state information and configuration files.
     Refer to your web server documentation for how to configure the specific command for a process type.
@@ -191,14 +191,14 @@ To set a different production web server for your app:
     <pre class="code">
     web: bundle exec puma -e $RAILS_ENV -p 1234 -S ~/puma -C config/puma.rb
     </pre>
-	
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>rails_sample_app</code> does not require a production server.</p>	
+
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>rails_sample_app</code> does not require a production server.</p>
 
 ### Step 7: Deploy an App ###
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
-From the root directory of your application, run `cf push [APP-NAME]` to deploy your application. 
+From the root directory of your application, run `cf push [APP-NAME]` to deploy your application.
 
 `cf push [APP-NAME]` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your [APP-NAME] and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
@@ -266,7 +266,7 @@ Let’s access your app online using its URL. In the terminal output, the `urls`
 
 ### Step 8: Test a Deployed App ###
 
-You’ve deployed an app to <%=vars.product_short%>! 
+You’ve deployed an app to <%=vars.product_short%>!
 
 Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
@@ -295,7 +295,7 @@ Common reasons deploying an app fails include:
 * You did not successfully create a unique URL for the app. Refer to the troubleshooting tip App Requires Unique URL.
 
 ### App Requires Unique URL ###
-<%=vars.product_short%> requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
+<%=vars.product_short%> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
