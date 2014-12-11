@@ -10,7 +10,7 @@ If you experience a problem following the steps below, check the
 <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html)
 topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone	https://github.com/camelpunch/pong_matcher_ruby</code> to clone the <code>pong_matcher_ruby</code> app from GitHub, and follow the instructions in the Sample App Step boxes.</p>
+<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone	https://github.com/camelpunch/pong_matcher_ruby</code> to clone the <code>pong_matcher_ruby</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
 
 <p class="note"><strong>Note</strong>: Ensure that your Ruby app runs locally before continuing with this procedure.</p>
 
@@ -142,7 +142,7 @@ Sample App Step.
 
 <%=vars.dev_console_5%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The manifest for the sample app contains a <code>services</code> sub-block in the <code>applications</code>block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The manifest for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.
 
 <pre class="code">
 ---
@@ -233,7 +233,7 @@ To set a different production web server for your app:
     web: bundle exec puma -e $RUBY_ENV -p 1234 -S ~/puma -C puma.rb
     </pre>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_ruby</code> does not require a production server.</p>
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_ruby</code> app does not require a production server.</p>
 
 ### Step 6: Deploy an App ###
 
@@ -263,9 +263,9 @@ Once your app deploys, browse to your app URL.
 Search for the `urls` field in the `App started` block in the output of the `cf push` command.
 Use the URL to access your app online.
 
-<p class=”note”><strong>Note</strong>: The <code>pong_matcher_ruby</code> app does not include a web interface. Use <code>curl</code> to interact with it.</p>
+<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf push pong_matcher_ruby -n HOST_NAME</code>.<br /><br />Example: <code>cf push pong_matcher_ruby -n pongmatch-ex12</code> <br /><br />The example below shows the terminal output of deploying the <code>pong_matcher_ruby</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>redis</code> service and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.</p>
 
-<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf push pong_matcher_ruby -n HOST_NAME</code>.<br /><br />Example: <code>cf push pong_matcher_ruby -n pongmatch-ex12</code> <br /><br />The example below shows the terminal output of deploying the <code>pong_matcher_ruby</code>. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>redis</code> service and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.</p>
+<p class="note"><strong>Note</strong>: The <code>pong_matcher_ruby</code> app does not include a web interface. To interact with the  <code>pong_matcher_ruby</code> app, see the interaction instructions on GitHub: <a href="https://github.com/camelpunch/pong_matcher_ruby">https://github.com/camelpunch/pong_matcher_ruby</a>.</p>
 
 <pre class="terminal">
 
@@ -307,9 +307,6 @@ Use the URL to access your app online.
     #0   running   2014-12-09 10:04:40 AM   0.0%   35.2M of 256M   45.8M of 1G
 
 </pre>
-
-<p class="tip"><strong>Sample App Step</strong><br />To interact with <code>pong_matcher_ruby</code>, see the interaction instructions on GitHub: <a href="https://github.com/camelpunch/pong_matcher_ruby">https://github.com/camelpunch/pong_matcher_ruby</a></p>
-
 
 ### Step 7: Test a Deployed App ###
 
