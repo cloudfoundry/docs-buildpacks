@@ -258,26 +258,24 @@ When you push a Java application, specify the path to the WAR:
 
 Because of the way that Cloud Foundry deploys your applications and isolates them, it is not possible to connect to your application with the remote Java debugger. Instead, instruct the application to connect to your local machine.
 
-Here are the instructions for setting up remote debugging when using bosh-lite or a CloudFoundry installation that can connect directly to your local machine.
+Here are the instructions for setting up remote debugging when using bosh-lite or a CloudFoundry installation.
 
-1. Open [Eclipse](./sts.html) and your project.
-1. Right click on your project, go to **Debug** as and pick **Debug Configurations**.
+1. Open your project in [Eclipse](./sts.html).
+1. Right-click on your project, go to **Debug as** and pick **Debug Configurations**.
 1. Create a new **Remote Java Application**.
 1. Make sure your project is selected, pick **Standard (Socket Listen)** from the **Connection Type** drop down and set a port. Make sure this port is open if you are running a firewall.
-1. Press the **Debug** button.
+1. Click **Debug**.
 
 The debugger should now be running. If you switch to the Debug perspective, you should see your application listed in the Debug panel and it should say `Waiting for vm to connect at port`.
 
-The next step is to push your application to Cloud Foundry and instruct it to connect to the debugger running on your local machine. Here are the steps to accomplish that using the Spring Music app as an example.
-
+Next, push your application to Cloud Foundry and instruct Cloud Foundry to connect to the debugger running on your local machine using the following instructions:
 1. Edit your manifest.yml file. Set the instances count to 1. If you set this greater than one, multiple applications try to connect to your debugger.
-1. Also in manifest.yml, add the env section and setup a variable called **JAVA\_OPTS**. Add the remote debugger configuration which looks like this: `-agentlib:jdwp=transport=dt_socket,address=<your-ip>:<your-port>`.
+1. Also in manifest.yml, add the [`env` section](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) and create a variable called `JAVA_OPTS`.
+1. Add the remote debugger configuration to the `JAVA_OPTS` variable: `-agentlib:jdwp=transport=dt_socket,address=<your-ip>:<your-port>`.
 1. Save the manifest.yml file.
 1. Run `cf push`.
 
-When that completes, your application has started successfully and you see that the application is now connected to the debugger running in your IDE. From here, you can add breakpoints and interrogate the application just as you would if it were running locally.
-
-If this does not work, try running `cf logs  --recent` to investigate what happened when the application started. If there was a connection problem, you’ll see it in the output.
+Upon completion, you should see that your application has started and is now connected to the debugger running in your IDE. You can now add breakpoints and interrogate the application just as you would if it were running locally.
 
 ### <a id='slow-start'></a>Slow Starting Java or Grails Apps ###
 
