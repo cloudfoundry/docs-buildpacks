@@ -393,7 +393,7 @@ Cloud Foundry creates an `org.springframework.amqp.rabbit.connection.CachingConn
 
 #### <a id='rabbitmq-man-java-reconfig'></a>Manual Configuration in Java ####
 To configure a RabbitMQ service in Java configuration, create a
-`@Configuration` class with a `@Bean` method to return an 
+`@Configuration` class with a `@Bean` method to return an
 `org.springframework.amqp.rabbit.connection.ConnectionFactory` bean from the Spring AMQP library. The bean can be created by helper classes in the `spring-cloud` library, as shown here:
 
 ```
@@ -403,9 +403,9 @@ public class RabbitConfig {
     public ConnectionFactory rabbitConnectionFactory() {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
-        RabbitServiceInfo serviceInfo = (RabbitServiceInfo) cloud.getServiceInfo("my-rabbit");
+        AmqpServiceInfo serviceInfo = (AmqpServiceInfo) cloud.getServiceInfo("my-rabbit");
     String serviceID = serviceInfo.getID();
-    return cloud.getServiceConnector(serviceID, DataSource.class, null);
+    return cloud.getServiceConnector(serviceID, ConnectionFactory.class, null);
     }
 
     @Bean
