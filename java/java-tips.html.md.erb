@@ -269,6 +269,7 @@ Here are the instructions for setting up remote debugging when using bosh-lite o
 The debugger should now be running. If you switch to the Debug perspective, you should see your application listed in the Debug panel and it should say `Waiting for vm to connect at port`.
 
 Next, push your application to Cloud Foundry and instruct Cloud Foundry to connect to the debugger running on your local machine using the following instructions:
+
 1. Edit your manifest.yml file. Set the instances count to 1. If you set this greater than one, multiple applications try to connect to your debugger.
 1. Also in manifest.yml, add the [`env` section](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) and create a variable called `JAVA_OPTS`.
 1. Add the remote debugger configuration to the `JAVA_OPTS` variable: `-agentlib:jdwp=transport=dt_socket,address=<your-ip>:<your-port>`.
