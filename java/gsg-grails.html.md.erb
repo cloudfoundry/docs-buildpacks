@@ -7,7 +7,7 @@ title: Getting Started Deploying Grails Apps
 This guide is intended to walk you through deploying a Grails app to <%=vars.product_full%>.
 If you experience a problem following the steps below, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/camelpunch/pong_matcher_grails.git</code> to clone the <code>pong_matcher_grails</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
+<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_grails.git</code> to clone the <code>pong_matcher_grails</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
 
 <p class="note"><strong>Note</strong>: Ensure that your Grails app runs locally before continuing with this procedure.</p>
 
@@ -66,7 +66,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails/app/grails-app/conf/BuildConfig.groovy</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app, as the example below shows.
 </p>
 
-<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_grails', at: 'gsg-grails-s3' %>
+<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_grails', at: 'gsg-grails-s3' %>
 
 ### Step 4: Allocate Sufficient Memory ###
 
@@ -95,7 +95,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> sample app declares a MySQL JDBC driver in the <code>pong_matcher_grails/app/grails-app/conf/DataSource.groovy</code> file because the app uses ClearDB, which is a database-as-service for MySQL-powered apps. The example below shows this declaration.</p>
 
-<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_grails', at: 'gsg-grails-s5' %>
+<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_grails', at: 'gsg-grails-s5' %>
 
 ### Step 6: (Optional) Configure a Procfile ###
 

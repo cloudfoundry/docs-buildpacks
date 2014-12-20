@@ -7,7 +7,7 @@ title: Getting Started Deploying Ratpack Apps
 This guide is intended to walk you through deploying a Ratpack app to <%=vars.product_full%>.
 If you experience a problem following the steps below, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/camelpunch/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
+<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
 
 <p class="note"><strong>Note</strong>: Ensure that your Ratpack app runs locally before continuing with this procedure.</p>
 
@@ -63,7 +63,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app, as the example below shows.
 </p>
 
-<%= yield_for_code_snippet from: 'camelpunch/pong_matcher_groovy', at: 'ratpack-dependencies' %>
+<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_groovy', at: 'ratpack-dependencies' %>
 
 ### Step 4: Allocate Sufficient Memory ###
 
