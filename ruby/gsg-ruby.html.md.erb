@@ -142,16 +142,9 @@ Sample App Step.
 
 <%=vars.dev_console_5%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The manifest for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The manifest for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.</p>
 
-<pre class="code">
----
-applications:
-...
-  services:
-    - redis
-</pre>
-</p>
+<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_ruby', at: 'ruby-2b' %>
 
 ### Step 3: Configure the Manifest File  ###
 
