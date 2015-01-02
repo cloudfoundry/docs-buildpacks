@@ -163,11 +163,6 @@ applications:
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
-For example, you can set memory-related JVM options or a specific Java version in a custom buildpack and configure your manifest to use your custom buildpack:
-
-1. Fork the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) and edit `config/open_jdk_jre.yml`.
-1. Set the `buildpack` attribute in the manifest to the buildpack URL or name.
-
 Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic for more information.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_groovy</code> sample app does not require any additional configuration to deploy the app.</p>
