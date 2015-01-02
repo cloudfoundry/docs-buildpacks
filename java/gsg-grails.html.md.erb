@@ -24,15 +24,7 @@ This section describes how to deploy a Grails application to <%=vars.product_sho
 
 <p class="note"><strong>Note</strong>: You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to Step 8: Configure the Deployment Manifest.</p>
 
-### Step 1: (Optional) Integrate a Plugin for Your Build Tool ###
-
-<%=vars.product_short%> provides plugins for Gradle and Maven. You can deploy and manage your apps using Gradle or Maven command-line syntax and configure security credentials.
-
-For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
-
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> sample app does not require additional external plugin integration because the app uses the <a href="http://grails.org/doc/latest/guide/single.html#wrapper">Grails Wrapper</a> functionality. In Step 10: Deploy the Application, you run a command to build the app using a wrapper script.</p>
-
-### Step 2: Declare App Dependencies ###
+### Step 1: Declare App Dependencies ###
 
 Declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle, Grails, and Maven and provides documentation links for each build tool.
 
@@ -58,7 +50,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
 
 <%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_grails', at: 'gsg-grails-s3' %>
 
-### Step 3: Allocate Sufficient Memory ###
+### Step 2: Allocate Sufficient Memory ###
 
 If you do not allocate sufficient memory to a Java application when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for the following:
 
@@ -76,7 +68,7 @@ When your app is running, you can use the `cf app [APP_NAME]` command to see mem
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_grails</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 1 GB to the app.</p>
 
-### Step 4: Provide a JDBC Driver ###
+### Step 3: Provide a JDBC Driver ###
 
 The Java buildpack does not bundle a JDBC driver with your application. If your application accesses a SQL RDBMS, you must do the following:
 
@@ -87,7 +79,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_grails', at: 'gsg-grails-s5' %>
 
-### Step 5: (Optional) Configure a Procfile ###
+### Step 4: (Optional) Configure a Procfile ###
 
 A _Procfile_ enables you to declare required runtime processes, called _process_ _types_, for your web app. Process managers in a server use the process types to run and manage the workload.
 
@@ -113,7 +105,7 @@ web: build/install/[PROJECT\_NAME]/bin/[PROJECT\_NAME]
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> app does not require a Procfile.</p>
 
-### Step 6: Create and Bind a Service Instance for a Grails Application ###
+### Step 5: Create and Bind a Service Instance for a Grails Application ###
 
 This section describes using the CLI to configure a ClearDB managed service instance for an app. <%=vars.dev_console_1%>
 
@@ -179,7 +171,7 @@ applications:
 </pre>
 </p>
 
-### Step 7: Configure the Deployment Manifest ###
+### Step 6: Configure the Deployment Manifest ###
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
@@ -192,7 +184,7 @@ Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/m
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app.</p>
 
-### Step 8: Log in and Target the API Endpoint ###
+### Step 7: Log in and Target the API Endpoint ###
 
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
@@ -200,7 +192,7 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 
   <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
 
-### Step 9: Deploy the Application ###
+### Step 8: Deploy the Application ###
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
@@ -290,7 +282,7 @@ urls: my-grails-app.cfapps.io
 </pre>
 
 
-### Step 10: Test Your Deployed App ###
+### Step 9: Test Your Deployed App ###
 
 You’ve deployed an app to <%=vars.product_short%>!
 
@@ -336,6 +328,15 @@ The last line of the output shows the <code>match_id</code>.
 <br />
 You should receive a <code>201 Created</code> response.
 </p>
+
+## <a id='alternative'></a>Alternative Methods for Pushing Apps ##
+
+### Integrate a Plugin for Your Build Tool ###
+
+<%=vars.product_short%> provides plugins for Maven and Gradle. You can deploy and manage your apps using Maven or Gradle command-line syntax and configure security credentials.
+
+For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
+
 
 
 ##<a id='cli-manage'></a>Manage Your Application with the cf CLI ##
