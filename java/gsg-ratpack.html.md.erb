@@ -49,18 +49,11 @@ Declare all the dependency tasks for your app in the build script of your chosen
 
 ### Step 2: Allocate Sufficient Memory ###
 
-If you do not allocate sufficient memory to a Java application when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for the following:
+Use the `cf push -m` command to specify the amount of memory that should be allocated to the application. Memory allocated this way is done in preset amounts of '64M', '128M', '256M', '512M', '1G', or '2G'. For example:
 
-* Java heap
-* Metaspace, if using Java 8
-* PermGen, if using Java 7 or earlier
-* Thread stacks
-* JVM overhead
-
-The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
-
-To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information on configuring custom buildpacks and manifests, see Step 8: Configure the Deployment Manifest.
-
+```
+cf push -m 128M
+```
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.</p>
