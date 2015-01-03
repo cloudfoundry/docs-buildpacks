@@ -4,38 +4,30 @@ title: Getting Started Deploying Ruby on Rails Apps
 
 <%=vars.GSG_intro_sentence%>
 
-This guide is intended to walk you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%>. If you experience a problem following the steps below, check the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
-
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/rails_sample_app</code> to clone the <code>rails_sample_app</code> from GitHub, and follow the instructions in the Sample App Step sections.</p>
+This guide walks you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%>.
 
 <p class="note"><strong>Note</strong>: Ensure that your RoR app runs locally before continuing with this procedure.</p>
 
 ## <a id='deploy-yourapp'></a>Deploy a RoR Application ##
 
-This section describes how to deploy a RoR application to <%=vars.product_short%>, and uses output from a sample app to show specific steps of the deployment process.
-
 ### Prerequisites ###
 
-* A Rails 4.x app that runs locally on your workstation
+* A Rails 4.x app that runs locally
 * [Bundler](http://bundler.io) configured on your workstation
 * Intermediate to advanced RoR knowledge
 * The [cf Command Line Interface (CLI)](../../devguide/installcf/install-go-cli.html)
 - (**Optional**) Robust production web server for Ruby and RoR apps, such as Unicorn
 
-### Step 1: Add the rails_12factor Gem to Your Gemfile ###
+### Step 1: Configure Automatically Invoked Rake Tasks for Deployed Applications ###
 
-1. Add `gem 'rails_12factor', group: :production` to your Gemfile.
+For <%=vars.product_short%> to automatically invoke a Rake task while an app is deployed, you must:
 
-    <p class="note"><strong>Note</strong>: This gem includes the <code>rails&#095;serve&#095;static&#095;assets</code> gem that enables your Rails app to run in production with the static assets serving functionality. The <code>rails&#095;serve&#095;static&#095;assets</code> gem does this by automatically modifying the <code>config.serve&#095;static&#095;assets</code> configuration parameter from <code>false</code> to <code>true</code>. Do not change the value for this option. For more information, refer to the <a href="https://github.com/heroku/rails_12factor">Rails_12factor GitHub README</a>.</p>
+ * include the Rake task in your app, and
+ * configure the application start command using the `command` attribute in the application manifest.
 
-1. Run `bundle install` to update your Gemfile.
-
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. This gem is already included in the <code>rails_sample_app</code> Gemfile.</p>
-
-### Step 2: (Optional) Configure Automatically Invoked Rake Tasks for Deployed Applications ###
-
-<%=vars.product_short%> does not provide a way to run a Rake task on a deployed application. For <%=vars.product_short%> to automatically invoke a Rake task while an app is deployed, you must include the Rake task in your application and also configure the application start command with the `command` attribute in the application manifest, `manifest.yml`.
 The following is an example of how to invoke a Rake database migration task at application startup.
+
+<p class="Note"><strong>Note</strong>: If your application does not require any Rake tasks, skip this step.</p>
 
 1. Create a file with the Rake task name and the extension `.rake`, and store it in the `lib/tasks` directory of your application.
 
@@ -61,18 +53,9 @@ applications:
       command: bundle exec rake cf:on_first_instance db:migrate && rails s -p $PORT
     </pre>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>rails_sample_app</code> has no Rake tasks.</p>
+### Step 2: Create and Bind a Service Instance for a RoR Application ###
 
-### Step 3: Create and Bind a Service Instance for a RoR Application ###
-
-This section describes using the CLI to configure a PostgreSQL managed service instance for an app. <%=vars.dev_console_1%>
-
-<%=vars.product_short%> supports two types of service instances:
-
-* Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider.
-* User-provided service instances enable you to connect your application to pre-provisioned external service instances.
-
-For more information on creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
+This section describes using the CLI to configure a PostgreSQL managed service instance for an app. <%=vars.dev_console_1%> For more information on creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
 
 #### Create a Service Instance ####
 
@@ -97,106 +80,34 @@ mongolab         sandbox   	Fully-managed MongoDB-as-a-Service
 
 Run `cf create-service [SERVICE] [PLAN] [SERVICE_INSTANCE]` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
 
-<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service elephantsql turtle rails-postgres</code>. This creates a service instance named <code>rails-postgres</code> that uses the <code>elephantsql</code> service and the <code>turtle</code> plan, as the example below shows.
-
-<pre class="terminal">
-$   cf create-service elephantsql turtle rails-postgres
-Creating service rails-postgres in org Cloud-Apps / space development as clouduser@example.com....
-OK
-</pre>
-</p>
-
 #### Bind a Service Instance ####
 
 When you bind an app to a service instance, <%=vars.product_short%> writes information about the service instance to the VCAP_SERVICES app environment variable. The app can use this information to integrate with the service instance.
 
 Most services support bindable service instances. Refer to your service provider's documentation to confirm if they support this functionality.
 
-You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`.
-
-Alternately, you can configure the deployment manifest file by adding a `services` block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see the Sample App Step.
+To bind a service to an application, run `cf bind-service APPLICATION SERVICE_INSTANCE`.
 
 <%=vars.dev_console_5%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The manifest for the sample app contains a <code>services</code> sub-block in the <code>applications</code>block, as the example below shows. This binds the <code>rails-postgres</code> service instance you created in the previous step.
 
-<pre class="code">
----
-applications:
-...
-  services:
-    - rails-postgres
-</pre>
-</p>
+### Step 3: Configure Deployment Options  ###
 
-### Step 4: Configure the Manifest File  ###
+#### Configure the Deployment Manifest ####
 
 You can specify app deployment options in a manifest that the `cf push` command uses. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for <code>rails_sample_app</code> does not require any additional configuration to deploy the app.
-</p>
+#### Configure a Production Server ####
 
-### Step 5: Log in and Target the API Endpoint ###
+<%=vars.product_short%> uses the default standard Ruby web server library WEBrick for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configure a Production Server](./ruby-prod-server.html) topic for help configuring server other than WEBrick.
+
+### Step 4: Log in and Target the API Endpoint ###
 
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
   <%=vars.gen_GSG%>
 
-  <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
-
-
-### Step 6: (Optional) Configure a Production Server  ###
-
-<%=vars.product_short%> uses the default standard Ruby web server library WEBrick for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn.
-
-To instruct <%=vars.product_short%> to use a web server other than WEBrick, you configure a text file called a _Procfile_. A Procfile enables you to declare required runtime processes, called _process_ _types_, for your web app. Process managers in a server use the process types to run and manage the workload.
-
-When you deploy, <%=vars.product_short%> determines if a Procfile exists and uses the Procfile to configure your app with the specified production web server settings.
-
-In a Procfile, you declare one process type per line and use the following syntax, as shown in the example below:
-
-* `PROCESS_TYPE` is the command name in the format of an alphanumeric string. Specifically for RoR web apps, you can declare `web` and `worker` process types.
-* `COMMAND` is the command line to launch the process.
-
-Example process type syntax:
-    <pre class="code">
-    PROCESS_TYPE: COMMAND
-</pre>
-
-To set a different production web server for your app:
-
-1. Add the gem for the web server to your Gemfile.
-
-1. In the `config` directory of your app, create a new configuration file or modify an existing file.
-
-    Refer to your web server documentation for how to configure this file.
-
-    Example Puma config file:
-    <pre class="code">
-    &#35; config/puma.rb
-    threads 8,32
-    workers 3
-
-    on\_worker\_boot do
-      # things workers do
-    end
-</pre>
-
-1. In the root directory of your app, create a Procfile and add a command line for a `web` process type that points to your web server.
-
-    The example below shows a command that starts a Puma web server and specifies the app runtime environment, TCP port, and paths to the server state information and configuration files.
-    Refer to your web server documentation for how to configure the specific command for a process type.
-
-    Example Procfile:
-    <pre class="code">
-    web: bundle exec puma -e $RAILS_ENV -p 1234 -S ~/puma -C config/puma.rb
-    </pre>
-
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>rails_sample_app</code> does not require a production server.</p>
-
-### Step 7: Deploy an App ###
-
-<p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
+### Step 5: Deploy Your App ###
 
 From the root directory of your application, run `cf push [APP-NAME]` to deploy your application.
 
@@ -210,69 +121,20 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
 
-Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
-
-<p class="tip"><strong>Sample App Step</strong><br />
-Run <code>cf push rails_sample_app -n [HOST_NAME]</code>.
-<br /><br />
-Example: <code>cf push rails_sample_app -n jc0825-rails</code>
-<br /><br />
-The example below shows the terminal output of deploying the <code>rails_sample_app</code>. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>rails-postgres</code> service and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.
-</p>
-
-<pre class="terminal">
-
-	$ cf push rails_sample_app -n jmt2014-rails
-	Using manifest file /Users/pivotal/workspace/rails_sample_app/manifest.yml
-
-	Updating app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
-	OK
-
-	Using route jmt2014-rails.<%=vars.app_domain%>
-	Uploading rails_sample_app...
-	Uploading app files from: /Users/pivotal/workspace/rails_sample_app
-	Uploading 445.7K, 217 files
-	OK
-	Binding service rails-postgres to app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
-	OK
-
-	Starting app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
-	OK
-
-	...
-
-	0 of 1 instances running, 1 starting
-	1 of 1 instances running
-
-	App started
-
-	Showing health and status for app rails_sample_app in org Cloud-Apps / space development as clouduser@example.com...
-	OK
-
-	requested state: started
-	instances: 1/1
-	usage: 256M x 1 instances
-	urls: jmt2014-rails.<%=vars.app_domain%>
-
-	     state     since                    cpu    memory          disk
-	#0   running   2014-08-25 03:32:10 PM   0.0%   68.4M of 256M   73.4M of 1G
-
-</pre>
-
-Let’s access your app online using its URL. In the terminal output, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. The image shows the resulting webpage:
-
-<%= image_tag("../images/RoR_sample_webpage.png") %>
+In the terminal output of the `cf push` command, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Once your app deploys, use this URL to access the app online.
 
 
-### Step 8: Test a Deployed App ###
+##<a id="next"></a>Next Steps ##
 
-You’ve deployed an app to <%=vars.product_short%>!
+You’ve deployed an app to <%=vars.product_short%>! Consult the sections below for information about what to do next.
+
+###<a id="test"></a> Test a Deployed App ###
 
 Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-## <a id='cli-manage'></a>Manage Your Application with the cf CLI ##
+### <a id='cli-manage'></a>Manage Your Application with the cf CLI ###
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
@@ -283,22 +145,10 @@ Run `cf help` to view a complete list of commands, grouped by task categories, a
 <%=vars.dev_console_note%>
 </p>
 
-## <a id='troubleshoot'></a>Troubleshooting ##
+### <a id='troubleshoot'></a>Troubleshooting ###
 If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
-### App Deploy Fails ###
-Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
-Common reasons deploying an app fails include:
-
-* You did not successfully create and bind a needed service instance to the app, such as a PostgreSQL or MongoDB service instance. Refer to Step 3: Create and Bind a Service Instance for a RoR Application.
-* You did not successfully create a unique URL for the app. Refer to the troubleshooting tip App Requires Unique URL.
-
-### App Requires Unique URL ###
-<%=vars.product_short%> requires that each app that you deploy has a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can resolve this issue by running `cf push` with either of the following flags to create a unique URL:
-
-* `-n` to assign a different HOST name for the app.
-* `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
 
 
 
