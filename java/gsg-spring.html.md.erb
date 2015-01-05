@@ -69,10 +69,6 @@ If you do not allocate sufficient memory to a Java application when you deploy i
 * Thread stacks
 * JVM overhead
 
-The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
-
-To configure memory-related JRE options for your app, you create a custom buildpack and specify this buildpack in your deployment manifest. For more information, see the [Custom Buildpacks](../custom.html) topic.
-
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The Cloud Foundry Java buildpack uses settings declared in the sample app to allocate 1 GB of memory to the app.</p>
@@ -112,11 +108,6 @@ applications:
 ### Step 5: Configure the Deployment Manifest ###
 
 You can specify deployment options in a manifest file `manifest.yml` that the `cf push` command uses when deploying your app.
-
-For example, you can set memory-related JVM options or a specific Java version in a custom buildpack and configure your manifest to use your custom buildpack:
-
-1. Fork the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) and edit `config/open_jdk_jre.yml`.
-1. Set the `buildpack` attribute in the manifest to the buildpack URL or name.
 
 Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic for more information.
 
