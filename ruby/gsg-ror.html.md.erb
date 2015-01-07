@@ -4,7 +4,7 @@ title: Getting Started Deploying Ruby on Rails Apps
 
 <%=vars.GSG_intro_sentence%>
 
-This guide walks you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%>.
+This guide walks you through deploying a Ruby on Rails (RoR) app to <%=vars.product_full%>. To deploy a sample RoR app, refer to the [Deploy a Sample Ruby on Rails App](./sample-ror.html) topic.
 
 <p class="note"><strong>Note</strong>: Ensure that your RoR app runs locally before continuing with this procedure.</p>
 
@@ -27,7 +27,7 @@ For <%=vars.product_short%> to automatically invoke a Rake task while an app is 
 
 The following is an example of how to invoke a Rake database migration task at application startup.
 
-<p class="Note"><strong>Note</strong>: If your application does not require any Rake tasks, skip this step.</p>
+<p class="note"><strong>Note</strong>: If your application does not require any Rake tasks, skip this step.</p>
 
 1. Create a file with the Rake task name and the extension `.rake`, and store it in the `lib/tasks` directory of your application.
 
@@ -84,7 +84,7 @@ Run `cf create-service [SERVICE] [PLAN] [SERVICE_INSTANCE]` to create a service 
 
 When you bind an app to a service instance, <%=vars.product_short%> writes information about the service instance to the VCAP_SERVICES app environment variable. The app can use this information to integrate with the service instance.
 
-Most services support bindable service instances. Refer to your service provider's documentation to confirm if they support this functionality.
+Most services support bindable service instances. Refer to your service provider's documentation to confirm whether they support this functionality.
 
 To bind a service to an application, run `cf bind-service APPLICATION SERVICE_INSTANCE`.
 
@@ -99,7 +99,7 @@ You can specify app deployment options in a manifest that the `cf push` command 
 
 #### Configure a Production Server ####
 
-<%=vars.product_short%> uses the default standard Ruby web server library WEBrick for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configure a Production Server](./ruby-prod-server.html) topic for help configuring server other than WEBrick.
+<%=vars.product_short%> uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configure a Production Server](./ruby-prod-server.html) topic for help configuring a server other than WEBrick.
 
 ### Step 4: Log in and Target the API Endpoint ###
 
@@ -119,7 +119,7 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 * `--random-route` to create a URL that includes the app name and random words.
 * `cf help push` to view other options for this command.
 
-If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
+To view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
 
 In the terminal output of the `cf push` command, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Once your app deploys, use this URL to access the app online.
 
