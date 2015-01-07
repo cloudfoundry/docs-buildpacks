@@ -61,14 +61,6 @@ Use the `cf push -m` command to specify the amount of memory that should be allo
 cf push -m 128M
 ```
 
-If you do not allocate sufficient memory to a Java application when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for the following:
-
-* Java heap
-* Metaspace, if using Java 8
-* PermGen, if using Java 7 or earlier
-* Thread stacks
-* JVM overhead
-
 When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The Cloud Foundry Java buildpack uses settings declared in the sample app to allocate 1 GB of memory to the app.</p>
