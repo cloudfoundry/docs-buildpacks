@@ -1,0 +1,34 @@
+---
+title: Configure Rake Tasks for Deployed Apps
+---
+
+For <%=vars.product_short%> to automatically invoke a Rake task while a Ruby or Ruby on Rails app is deployed, you must:
+
+ * Include the Rake task in your app.
+ * Configure the application start command using the `command` attribute in the application manifest.
+
+The following is an example of how to invoke a Rake database migration task at application startup.
+
+1. Create a file with the Rake task name and the extension `.rake`, and store it in the `lib/tasks` directory of your application.
+
+1. Add the following code to your rake file:
+
+    <pre class="code">
+    namespace :cf do
+        desc "Only run on the first application instance"
+        task :on_first_instance do
+            instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
+        exit(0) unless instance_index == 0
+        end
+    end
+    </pre>
+
+    This Rake task limits an idempotent command to the first instance of a deployed application.
+
+1. Add the task to the `manifest.yml` file with the `command` attribute, referencing the idempotent command `rake db:migrate` chained with a start command.
+
+    <pre class="code">
+applications:
+ &#8208; name: my-rails-app
+      command: bundle exec rake cf:on_first_instance db:migrate && rails s -p $PORT
+    </pre>

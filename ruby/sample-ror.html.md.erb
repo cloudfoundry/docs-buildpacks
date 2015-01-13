@@ -37,7 +37,7 @@ Run `cf create-service elephantsql turtle rails-postgres`. This creates a servic
 
 ### Step 4: Deploy the App ###
 
-From the root directory of your application, run `cf push rails_sample_app -n [HOST_NAME]` to deploy the app.
+From the root directory of your application, run `cf push rails_sample_app -n [HOST]` to deploy the app.
 
 Example: `cf push rails_sample_app -n jc0825-rails`
 
@@ -51,7 +51,7 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
 
-In the terminal output of the `cf push` command, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Once your app deploys, use this URL to access the app online.
+In the terminal output of the `cf push` command, the `urls` field of the `App started` block contains the app URL. This is the `HOST` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Once your app deploys, use this URL to access the app online.
 
 
 The example below shows the terminal output of deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the `rails-postgres` service and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.

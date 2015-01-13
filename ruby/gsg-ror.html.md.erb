@@ -8,9 +8,7 @@ This guide walks you through deploying a Ruby on Rails (RoR) app to <%=vars.prod
 
 <p class="note"><strong>Note</strong>: Ensure that your RoR app runs locally before continuing with this procedure.</p>
 
-## <a id='deploy-yourapp'></a>Deploy a RoR Application ##
-
-### Prerequisites ###
+## <a id='prerequisites'></a>Prerequisites ##
 
 * A Rails 4.x app that runs locally
 * [Bundler](http://bundler.io) configured on your workstation
@@ -18,69 +16,17 @@ This guide walks you through deploying a Ruby on Rails (RoR) app to <%=vars.prod
 * The [cf Command Line Interface (CLI)](../../devguide/installcf/install-go-cli.html)
 - (**Optional**) Robust production web server for Ruby and RoR apps, such as Unicorn
 
-### Step 1: Configure Automatically Invoked Rake Tasks for Deployed Applications ###
-
-For <%=vars.product_short%> to automatically invoke a Rake task while an app is deployed, you must:
-
- * include the Rake task in your app, and
- * configure the application start command using the `command` attribute in the application manifest.
-
-The following is an example of how to invoke a Rake database migration task at application startup.
-
-<p class="note"><strong>Note</strong>: If your application does not require any Rake tasks, skip this step.</p>
-
-1. Create a file with the Rake task name and the extension `.rake`, and store it in the `lib/tasks` directory of your application.
-
-1. Add the following code to your rake file:
-
-    <pre class="code">
-    namespace :cf do
-        desc "Only run on the first application instance"
-        task :on_first_instance do
-            instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
-        exit(0) unless instance_index == 0
-        end
-    end
-    </pre>
-
-    This Rake task limits an idempotent command to the first instance of a deployed application.
-
-1. Add the task to the `manifest.yml` file with the `command` attribute, referencing the idempotent command `rake db:migrate` chained with a start command.
-
-    <pre class="code">
-applications:
- &#8208; name: my-rails-app
-      command: bundle exec rake cf:on_first_instance db:migrate && rails s -p $PORT
-    </pre>
-
-### Step 2: Create and Bind a Service Instance for a RoR Application ###
+## <a id="service-instance"></a> Step 1: Create and Bind a Service Instance for a RoR Application ##
 
 This section describes using the CLI to configure a PostgreSQL managed service instance for an app. <%=vars.dev_console_1%> For more information on creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
 
-#### Create a Service Instance ####
+### Create a Service Instance ###
 
 Run `cf marketplace` to view managed and user-provided services and plans available to you.
 
-The example shows three of the available managed database-as-a-service providers and their offered plans: `cleardb` MySQL, `elephantsql` PostgreSQL as a Service, and `mongolab` MongoDB-as-a-Service.
-
-<pre class="terminal">
-$  cf marketplace
-Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-service          plans 	description
-...
-cleardb          spark, boost, amp, shock  	Highly available MySQL for your Apps
-...
-elephantsql      turtle, panda, hippo, elephant   PostgreSQL as a Service
-...
-mongolab         sandbox   	Fully-managed MongoDB-as-a-Service
-...
-</pre>
-
 Run `cf create-service [SERVICE] [PLAN] [SERVICE_INSTANCE]` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
 
-#### Bind a Service Instance ####
+### Bind a Service Instance ###
 
 When you bind an app to a service instance, <%=vars.product_short%> writes information about the service instance to the VCAP_SERVICES app environment variable. The app can use this information to integrate with the service instance.
 
@@ -91,25 +37,25 @@ To bind a service to an application, run `cf bind-service APPLICATION SERVICE_IN
 <%=vars.dev_console_5%>
 
 
-### Step 3: Configure Deployment Options  ###
+## <a id="deployment-options"></a> Step 2: Configure Deployment Options  ##
 
-#### Configure the Deployment Manifest ####
+### Configure the Deployment Manifest ###
 
 You can specify app deployment options in a manifest that the `cf push` command uses. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
 
-#### Configure a Production Server ####
+### Configure a Production Server ###
 
 <%=vars.product_short%> uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configure a Production Server](./ruby-prod-server.html) topic for help configuring a server other than WEBrick.
 
-### Step 4: Log in and Target the API Endpoint ###
+## <a id="login"></a> Step 3: Log in and Target the API Endpoint ##
 
 Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
   <%=vars.gen_GSG%>
 
-### Step 5: Deploy Your App ###
+## <a id="deploy"></a> Step 4: Deploy Your App ##
 
-From the root directory of your application, run `cf push [APP-NAME]` to deploy your application.
+From the root directory of your application, run `cf push [APP-NAME] --random-route` to deploy your application.
 
 `cf push [APP-NAME]` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your [APP-NAME] and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
@@ -128,13 +74,13 @@ In the terminal output of the `cf push` command, the `urls` field of the `App st
 
 You’ve deployed an app to <%=vars.product_short%>! Consult the sections below for information about what to do next.
 
-###<a id="test"></a> Test a Deployed App ###
+### Test a Deployed App ###
 
 Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-### <a id='cli-manage'></a>Manage Your Application with the cf CLI ###
+### Manage Your Application with the cf CLI ###
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
@@ -145,7 +91,7 @@ Run `cf help` to view a complete list of commands, grouped by task categories, a
 <%=vars.dev_console_note%>
 </p>
 
-### <a id='troubleshoot'></a>Troubleshooting ###
+### Troubleshooting ###
 If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
 
