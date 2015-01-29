@@ -93,26 +93,10 @@ default_process_type:
 
 ~~~
 
-### <a id='package-script'></a>bin/package ###
+## <a id='disconnected-environments'> Partially or completely disconnected environments ##
 
-The `package` script provides buildpack artifacts, which are provided to Cloud Foundry as system buildpacks. `package` is
-intended to provide a way for buildpack developers to package a buildpack with its dependencies. Implementing this is
-entirely optional. It is a Cloud Foundry extension to the [Heroku Buildpack API](https://devcenter.heroku.com/articles/buildpack-api).
-
-The result of running the package script must be a zip file that adheres to the api outlined above, using `detect`,
-`compile`, `release`.
-
-The `package` script accepts two commands as arguments:
-
-  * `package online` produces a zip of the buildpack, preferably excluding unnecessary content such as tests.
-  * `package offline` produces a zip of the buildpack with all dependencies cached.
-
-`package offline` produces a buildpack that does not need internet connectivity to run. For more information about the tradeoffs of the dependency storage options available for custom offline buildpacks, refer to the [Packaging Buildpack Dependecies](./depend-pkg-offline.html) topic.
-
-The `package offline` command is used to produce the [system buildpacks](./index.html) bundled with
-Cloud Foundry.
-
-For an example implementation, see the [Cloud Foundry Ruby buildpack](https://github.com/cloudfoundry/cf-buildpack-ruby/blob/master/bin/package).
+Cloud Foundry buildpacks work with limited or no internet connectivity. You can enable the same support in
+your custom buildpack by using the [Buildpack Packager](https://github.com/cf-buildpacks/buildpack-packager) application.
 
 ## <a id='deploying-with-custom-buildpacks'></a>Deploying With a Custom Buildpack ##
 
