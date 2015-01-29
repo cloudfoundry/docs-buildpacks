@@ -8,8 +8,8 @@ Buildpacks typically examine user-provided artifacts to determine what dependenc
 When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required and installs it on the Droplet Execution Agent (DEA) where the application needs to run.
 
 Cloud Foundry deployments often have limited access to dependencies. This occurs when the deploy is behind a firewall, or
-when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides an
-[API extension for on-premises buildpacks](./custom.html#package-script).
+when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a
+[Buildpack Packager](https://github.com/cf-buildpacks/buildpack-packager) application.
 
 ## System Buildpacks
 
@@ -24,7 +24,7 @@ This table describes Cloud Foundry system buildpacks. Each buildpack row lists s
 <tr>
 <td>Go</td>
 <td><p><i>NA</i></p></td>
-<td><a href="https://github.com/cloudfoundry/cf-buildpack-go">Go source</a></td>
+<td><a href="https://github.com/cloudfoundry/go-buildpack">Go source</a></td>
 </tr>
 <td><a href="./java/index.html">Java</a></td>
 <td>Grails, Play, Spring, or any other JVM-based language or framework</td>
@@ -33,22 +33,22 @@ This table describes Cloud Foundry system buildpacks. Each buildpack row lists s
 <tr>
 <td><a href="./node/index.html">Node.js</a></td>
 <td>Node or JavaScript</td>
-<td><a href="https://github.com/cloudfoundry/cf-buildpack-nodejs">Node.js source</a></td>
+<td><a href="https://github.com/cloudfoundry/nodejs-buildpack">Node.js source</a></td>
 </tr>
 <tr>
 <td>PHP</td>
 <td><p><i>NA</i></p></td>
-<td><a href="https://github.com/cloudfoundry/cf-buildpack-php">PHP source</a></td>
+<td><a href="https://github.com/cloudfoundry/php-buildpack">PHP source</a></td>
 </tr>
 <tr>
 <td>Python </td>
 <td><p><i>NA</i></p></td>
-<td><a href="https://github.com/cloudfoundry/cf-buildpack-python">Python source</a></td>
+<td><a href="https://github.com/cloudfoundry/python-buildpack">Python source</a></td>
 </tr>
 <tr>
 <td><a href="./ruby/index.html">Ruby</a></td>
 <td>Ruby, Rack, Rails, or Sinatra</td>
-<td><a href="https://github.com/cloudfoundry/cf-buildpack-ruby">Ruby source</a></td>
+<td><a href="https://github.com/cloudfoundry/ruby-buildpack">Ruby source</a></td>
 </tr>
 </table>
 
