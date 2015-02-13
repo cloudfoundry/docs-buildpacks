@@ -1,0 +1,52 @@
+## Composer
+
+Composer is activated when you supply a `composer.json` or `composer.lock` file. A `composer.lock` is not required, but is strongly recommended for consistent deployments.
+
+You can require dependencies to packages and extensions.  Extensions should be prefixed with the standard `ext-`.  If you reference an extension that is available to the build pack, it will automatically be installed.  See the main [README] for a list of supported extensions.
+
+If you specify a version of PHP to use in your `composer.json` or `composer.lock` file, the build pack will take the version and install it.  This will override the version information you set in the `options.json` file.
+
+The following format is supported for PHP version numbers.  This is a small subset of the format supported by Composer.
+
+|   Example   |  Expected Version                 |
+------------- | ----------------------------------|
+|   5.3.*     |  latest 5.4.x release (5.3 is not supported) |
+|   >=5.3     |  latest 5.4.x release (5.3 is not supported) |
+|   5.4.*     |  latest 5.4.x release |
+|   >=5.4     |  latest 5.4.x release |
+|   5.5.*     |  latest 5.5.x release |
+|   >=5.5     |  latest 5.5.x release |
+|   5.4.x     |  specific 5.4.x release that is listed |
+|   5.5.x     |  specific 5.5.x release that is listed |
+
+### Configuration
+
+The build pack tries to run with a good set of default values for Composer.  If you'd like to adjust things further, you can do so by adding a `.bp-config/options.json` file to your application and setting any of the following values in it.
+
+|      Variable     |   Explanation                                        |
+------------------- | -----------------------------------------------------|
+| COMPOSER\_VERSION  | The version of Composer to use.  It defaults to the latest bundled with the buildpack. |
+| COMPOSER\_INSTALL\_OPTIONS | A list of options that should be passed to `composer install`.  This defaults to `--no-interaction --no-dev --no-progress`.  The `--no-progress` option must be used due to the way the build pack calls Composer. |
+| COMPOSER\_VENDOR\_DIR | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to create the `vendor` directory.  Defaults to `{BUILD_DIR}/{LIBDIR}/vendor`. |
+| COMPOSER\_BIN\_DIR | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to place executables from packages.  Defaults to `{BUILD_DIR}/php/bin`. |
+| COMPOSER\_CACHE\_DIR | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to place its cache files.  Generally you should not change this value.  The default is `{CACHE_DIR}/composer` which is a sub directory of the cache folder passed into the build pack (meaning that Composer cache files will be restored on subsequent application pushes. |
+
+
+### Staging Environment
+
+Composer runs in the buildpack staging environment. Variables that have been set with `cf set-env` or with [a `manifest.yml env:` block](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) will be visible to Composer.
+
+For example:
+
+    $ cf push a\_symfony\_app --no-start
+    $ cf set-env a\_symfony\_app SYMFONY\_ENV "prod"
+    $ cf start a\_symfony\_app
+
+In this example, `a\_symfony\_app` will be supplied with an environment variable, `SYMFONY\_ENV`, that will be visible to Composer and any scripts started by Composer.
+
+#### Non-configurable Environment Variables
+
+There are two special variables that cannot be configured: `LD\_LIBRARY\_PATH` and `PHPRC`. This is because these variables have different values at staging time and run time, but any variable set by a user is injected into both environments.
+
+[Composer]:https://getcomposer.org
+[README]:https://github.com/cloudfoundry/php-buildpack#supported-software
