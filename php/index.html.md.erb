@@ -2,7 +2,7 @@
 title: PHP Buildpack
 ---
 
-Use the PHP Buildpack with PHP applications including Wordpress, Cake, Symfony and Zend frameworks.
+Use the PHP Buildpack with PHP applications including Wordpress, Cake, Symfony, and Zend frameworks.
 
 The PHP buildpack supports HHVM and PHP engines.
 
@@ -16,13 +16,13 @@ The source for the buildpack is [here](https://github.com/cloudfoundry/php-build
 
 ## Buildpack Logging and Application Logging ##
 
-The buildpack only runs during the staging process, and only logs
-what is important to staging, such as what is being downloaded, what the
-configuration is, and work that the buildpack does on your application.
+The buildpack runs only during the staging process. The buildpack logs
+only what is important to staging, such as what is being downloaded, the
+configuration, and work that the buildpack does on your application.
 
 The buildpack stops logging when the staging process finishes.
 Application logging is a separate concern.
 
-If you are deploying a PHP application, your application must write to STDOUT or STDERR to include its logs in the Loggregator stream.
+If you are deploying a PHP application, your application must write to stdout or stderr to include its logs in the Loggregator stream.
 
 See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
