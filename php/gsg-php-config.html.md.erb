@@ -87,7 +87,7 @@ Include conf/extra/httpd-my-special-config.conf # This line includes your additi
 
 PHP extensions are easily enabled by setting the `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` option in `.bp-config/options.json`.  Use these options to install bundled PHP extensions. 
 
-### <a id="modules"></a> PHP Modules
+### <a id="php-modules"></a> PHP Modules
 
 The following modules can be included by adding it to the `PHP_MODULES` list:
   - `cli`, installs `php` and `phar`
@@ -97,7 +97,7 @@ The following modules can be included by adding it to the `PHP_MODULES` list:
 
   By default, the buildpack installs the `cli` module when you push a stand alone application, and it installs the `fpm` module when you run a web application. You must specify `cgi` and `pear` if you want them installed.
 
-## <a id="extensions"></a> Extensions
+## <a id="buildpack-extensions"></a>Buildpack Extensions
 
 The buildpack comes with extensions for its default behavior. These are the [HTTPD], [Nginx], [PHP] and [NewRelic] extensions. 
 
