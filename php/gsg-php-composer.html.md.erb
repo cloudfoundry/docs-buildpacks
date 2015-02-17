@@ -61,15 +61,15 @@ To supply the token, you can use:
 
 ## <a id="staging-environment"></a> Staging Environment
 
-Composer runs in the buildpack staging environment. Variables set with `cf set-env` or with [a `manifest.yml env:` block](../../devguide/deploy-apps/manifest.html#env-block) are visible to Composer.
+Composer runs in the buildpack staging environment. Variables set with `cf set-env` or with [a manifest.yml 'env:' block](../../devguide/deploy-apps/manifest.html#env-block) are visible to Composer.
 
 For example:
 
-    $ cf push a\_symfony\_app --no-start
-    $ cf set-env a\_symfony\_app SYMFONY\_ENV "prod"
-    $ cf start a\_symfony\_app
+    $ cf push a_symfony_app --no-start
+    $ cf set-env a_symfony_app SYMFONY_ENV "prod"
+    $ cf start a_symfony_app
 
-In this example, `a\_symfony\_app` is supplied with an environment variable, `SYMFONY\_ENV`, which is visible to Composer and any scripts started by Composer.
+In this example, `a_symfony_app` is supplied with an environment variable, `SYMFONY_ENV`, which is visible to Composer and any scripts started by Composer.
 
 ### Non-configurable Environment Variables
 
