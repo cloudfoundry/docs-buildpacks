@@ -4,11 +4,11 @@ title: Composer
 
 Composer is activated when you supply a `composer.json` or `composer.lock` file. A `composer.lock` is not required, but is strongly recommended for consistent deployments.
 
-You can require dependencies to packages and extensions.  Extensions should be prefixed with the standard `ext-`.  If you reference an extension that is available to the build pack, it will automatically be installed.  See the main [README] for a list of supported extensions.
+You can require dependencies for packages and extensions.  Extensions must be prefixed with the standard `ext-`.  If you reference an extension that is available to the build pack, it will automatically be installed.  See the main [README] for a list of supported extensions.
 
-If you specify a version of PHP to use in your `composer.json` or `composer.lock` file, the build pack will take the version and install it.  This will override the version information you set in the `options.json` file.
+The buildpack uses the version of PHP specified in your `composer.json` or `composer.lock` file. Composer settings override the version set in the `options.json` file.
 
-The following format is supported for PHP version numbers.  This is a small subset of the format supported by Composer.
+The PHP buildpack supports a subset of the version formats supported by Composer. The buildpack supported formats are:
 
 |   Example   |  Expected Version                 |
 ------------- | ----------------------------------|
@@ -23,20 +23,20 @@ The following format is supported for PHP version numbers.  This is a small subs
 
 ## <a id="configuration"></a> Configuration
 
-The build pack tries to run with a good set of default values for Composer.  If you'd like to adjust things further, you can do so by adding a `.bp-config/options.json` file to your application and setting any of the following values in it.
+The build pack runs with a set of default values for Composer. You can adjust these values by adding a `.bp-config/options.json` file to your application and setting any of the following values in it.
 
-|      Variable     |   Explanation                                        |
-------------------- | -----------------------------------------------------|
-| COMPOSER\_VERSION  | The version of Composer to use.  It defaults to the latest bundled with the buildpack. |
-| COMPOSER\_INSTALL\_OPTIONS | A list of options that should be passed to `composer install`.  This defaults to `--no-interaction --no-dev --no-progress`.  The `--no-progress` option must be used due to the way the build pack calls Composer. |
-| COMPOSER\_VENDOR\_DIR | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to create the `vendor` directory.  Defaults to `{BUILD_DIR}/{LIBDIR}/vendor`. |
-| COMPOSER\_BIN\_DIR | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to place executables from packages.  Defaults to `{BUILD_DIR}/php/bin`. |
-| COMPOSER\_CACHE\_DIR | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to place its cache files.  Generally you should not change this value.  The default is `{CACHE_DIR}/composer` which is a sub directory of the cache folder passed into the build pack (meaning that Composer cache files will be restored on subsequent application pushes. |
+| Variable                     | Explanation                                                                                                                                                                                                                                                                                                                                                                                             |
+| ---------------------------- | -----------------------------------------------------                                                                                                                                                                                                                                                                                                                                                   |
+| COMPOSER\_VERSION            | The version of Composer to use.  It defaults to the latest bundled with the buildpack.                                                                                                                                                                                                                                                                                                                  |
+| COMPOSER\_INSTALL\_OPTIONS   | A list of options that should be passed to `composer install`.  This defaults to `--no-interaction --no-dev --no-progress`.  The `--no-progress` option must be used due to the way the buildpack calls Composer.                                                                                                                                                                                      |
+| COMPOSER\_VENDOR\_DIR        | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to create the `vendor` directory.  Defaults to `{BUILD_DIR}/{LIBDIR}/vendor`.                                                                                                                                                                                               |
+| COMPOSER\_BIN\_DIR           | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to place executables from packages.  Defaults to `{BUILD_DIR}/php/bin`.                                                                                                                                                                                                     |
+| COMPOSER\_CACHE\_DIR         | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to place its cache files.  Generally you should not change this value.  The default is `{CACHE_DIR}/composer` which is a sub directory of the cache folder passed in to the buildpack. Composer cache files will be restored on subsequent application pushes. |
 
 
 ## <a id="staging-environment"></a> Staging Environment
 
-Composer runs in the buildpack staging environment. Variables that have been set with `cf set-env` or with [a `manifest.yml env:` block](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) will be visible to Composer.
+Composer runs in the buildpack staging environment. Variables set with `cf set-env` or with [a `manifest.yml env:` block](../../devguide/deploy-apps/manifest.html#env-block) are visible to Composer.
 
 For example:
 
@@ -44,11 +44,11 @@ For example:
     $ cf set-env a\_symfony\_app SYMFONY\_ENV "prod"
     $ cf start a\_symfony\_app
 
-In this example, `a\_symfony\_app` will be supplied with an environment variable, `SYMFONY\_ENV`, that will be visible to Composer and any scripts started by Composer.
+In this example, `a\_symfony\_app` is supplied with an environment variable, `SYMFONY\_ENV`, which is visible to Composer and any scripts started by Composer.
 
 ### Non-configurable Environment Variables
 
-There are two special variables that cannot be configured: `LD\_LIBRARY\_PATH` and `PHPRC`. This is because these variables have different values at staging time and run time, but any variable set by a user is injected into both environments.
+User assigned environment variables are applied to staging and runtime. Unfortunately, `LD_LIBRARY_PATH` and `PHPRC` must be different for staging and runtime. The buildpack takes care of setting these variables, which means user values for these variables are ignored.
 
 [Composer]:https://getcomposer.org
 [README]:https://github.com/cloudfoundry/php-buildpack#supported-software
