@@ -4,7 +4,7 @@ title: Deploying and Developing PHP Apps
 
 <%=vars.GSG_intro_sentence%>
 
-This document is intended to document the process of deploying PHP applications to <%=vars.product_full%>. If you experience a problem with deploying PHP apps, check the [Troubleshooting](#troubleshooting) section below.
+This document is intended to guide you through the process of deploying PHP applications to <%=vars.product_full%>. If you experience a problem with deploying PHP apps, check the [Troubleshooting](#troubleshooting) section below.
 
 ## <a id="getting-started"></a>Getting Started ##
 
@@ -23,33 +23,36 @@ cat << EOF > index.php
   phpinfo();
 ?>
 EOF
-cf push -m 128M -b https://github.com/cloudfoundry/php-buildpack.git my-php-app
+cf push my-php-app -m 128M
 ```
 
-Please note that you should change *my-php-app* to some unique name, otherwise you'll get an error and the push will fail.
+Change *my-php-app* to some unique name, otherwise you'll get an error and the push will fail.
 
-The example above will create and push a test application, "my-php-app", to Cloud Foundry.  The `-b` argument instructs CF to use this buildpack.  The remainder of the options and arguments are not specific to the buildpack, for questions on those consult the output of `cf help push`.
+The example above will create and push a test application, "my-php-app", to Cloud Foundry.
 
 Here's a breakdown of what happens when you run the example above.
 
   - On your workstation...
     - It'll create a new directory and one PHP file, which calls `phpinfo()`
-    - Run `cf` to push your application.  This will create a new application with a memory limit of 128M (more than enough here) and upload our test file.
+    - Run `cf` to push your application. This will create a new application with a memory limit of 128M (more than enough here) and upload our test file.
   - On Cloud Foundry...
+    - The buildpack detects that your app is a php app
     - The buildpack is executed.
-    - Application files are copied to the `htdocs` folder.
+      - Application files are copied to the `htdocs` folder.
     - Apache HTTPD & PHP 5.4 are downloaded, configured with the buildpack defaults and run.
-    - Your application is accessible at the URL http://<app-name>.cfapps.io (assuming your targeted towards Pivotal Web Services)
+    - Your application is accessible at the default route. Use ```cf app
+    my-php-app``` to view the url of your new app.
 
 ## <a id="caveats"></a>Caveats ##
 
-The PHP buildpack currently doesn't work with custom commands (the `-c` argument to `cf push` or a `command:` key in an application manifest).
+The PHP buildpack doesn't work with custom commands (the `-c` argument to `cf push` or a `command:` key in an application manifest).
 
-As an alternative, the `ADDITIONAL_PREPROCESS_CMDS` [configuration option] can specify commands that should run prior to your app, like migration scripts, and `APP_START_CMD` to specify an alternate PHP script to run, when running a stand-alone PHP app.
+As an alternative, the `ADDITIONAL_PREPROCESS_CMDS` [configuration option] specifies commands that run prior to your app. Use this option to specify migration scripts etc.
+Use the `APP_START_CMD` configuration option to specify an alternate PHP script to run to start your app.
 
 ## <a id="folder-structure"></a>Folder Structure ##
 
-The easiest way to use the buildpack is to put your assets and PHP files into a directory and push it to <%=vars.product_short%>.  When you do this, the build pack will take your files and automatically move them into the `WEBDIR` (defaults to `htdocs`) folder, which is the directory where your chosen web server looks for the files.
+The easiest way to use the buildpack is to put your assets and PHP files into a directory and push it to <%=vars.product_short%>. This way, the build pack will take your files and automatically move them into the `WEBDIR` (defaults to `htdocs`) folder, which is the directory where your chosen web server looks for the files.
 
 ### URL Rewriting
 
@@ -138,20 +141,21 @@ The `.extensions` directory should also exist at the root of your project direct
 
 ## <a id="troubleshooting"></a>Troubleshooting ##
 
-The build pack should work in most situations, although nothings perfect so you may need to debug it.  There are a couple easy ways to debug the build pack.
+There are a couple of easy ways to debug the build pack.
 
- 1. Check the output from the build pack.  It writes some basic information to stdout, like the files that are being downloaded.  Additionally, it will write more information should something fail, specifically you'll see a stack trace explaining why.
+  0. Check the output from the build pack.  It writes some basic information to stdout, like the files that are being downloaded.  It writes information should something fail, specifically, stack traces.
 
- 1. Check the logs from the build pack.  The build pack writes logs to disk and you can retrieve them with the `cf files` command.
+  0. Check the logs from the build pack.  The build pack writes logs to disk. Retrieve them with the `cf files` command.
 
     ```
     cf files <app> app/.bp/logs/bp.log
     ```
 
- The output from this log is a little more detailed than what is written to stdout, but does skip some information which might be helpful to understand the state of the build pack when it fails.
+  This log is more detailed than the stdout output, however it is still terse.
 
- 1. To get the most information from the build pack, you can put it into debug mode.  To do this, simply set the `BP_DEBUG` environment variable to `true` (or anything really, it just needs to be set).  This will instruct the build pack to set it's log level to DEBUG and it'll write to stdout.  The combination of these two should provide quite a bit of detail about the state of the build pack as it runs.
+  0. Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the build pack to set it's log level to DEBUG and it'll write to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
 
+[Environment Variables documentation]:../../devguide/deploy-apps/manifest.html#env-block
 [application configuration files]:./gsg-php-config.html
 [include_path]:http://us1.php.net/manual/en/ini.core.php#ini.include-path
 [extensions]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/development.md#extensions
