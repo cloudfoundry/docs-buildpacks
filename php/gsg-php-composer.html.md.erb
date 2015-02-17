@@ -1,4 +1,6 @@
-## Composer
+---
+title: Composer
+---
 
 Composer is activated when you supply a `composer.json` or `composer.lock` file. A `composer.lock` is not required, but is strongly recommended for consistent deployments.
 
@@ -19,7 +21,7 @@ The following format is supported for PHP version numbers.  This is a small subs
 |   5.4.x     |  specific 5.4.x release that is listed |
 |   5.5.x     |  specific 5.5.x release that is listed |
 
-### Configuration
+## <a id="configuration"></a> Configuration
 
 The build pack tries to run with a good set of default values for Composer.  If you'd like to adjust things further, you can do so by adding a `.bp-config/options.json` file to your application and setting any of the following values in it.
 
@@ -32,7 +34,7 @@ The build pack tries to run with a good set of default values for Composer.  If 
 | COMPOSER\_CACHE\_DIR | Allows you to override the default value used by the build pack.  This is passed through to Composer and instructs it where to place its cache files.  Generally you should not change this value.  The default is `{CACHE_DIR}/composer` which is a sub directory of the cache folder passed into the build pack (meaning that Composer cache files will be restored on subsequent application pushes. |
 
 
-### Staging Environment
+## <a id="staging-environment"></a> Staging Environment
 
 Composer runs in the buildpack staging environment. Variables that have been set with `cf set-env` or with [a `manifest.yml env:` block](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) will be visible to Composer.
 
@@ -44,7 +46,7 @@ For example:
 
 In this example, `a\_symfony\_app` will be supplied with an environment variable, `SYMFONY\_ENV`, that will be visible to Composer and any scripts started by Composer.
 
-#### Non-configurable Environment Variables
+### Non-configurable Environment Variables
 
 There are two special variables that cannot be configured: `LD\_LIBRARY\_PATH` and `PHPRC`. This is because these variables have different values at staging time and run time, but any variable set by a user is injected into both environments.
 

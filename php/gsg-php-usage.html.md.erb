@@ -6,7 +6,7 @@ title: Deploying and Developing PHP Apps
 
 This document is intended to document the process of deploying PHP applications to <%=vars.product_full%>. If you experience a problem with deploying PHP apps, check the [Troubleshooting](#troubleshooting) section below.
 
-## <a href="getting-started"></a>Getting Started ##
+## <a id="getting-started"></a>Getting Started ##
 
 ### Prerequisites
 
@@ -41,13 +41,13 @@ Here's a breakdown of what happens when you run the example above.
     - Apache HTTPD & PHP 5.4 are downloaded, configured with the buildpack defaults and run.
     - Your application is accessible at the URL http://<app-name>.cfapps.io (assuming your targeted towards Pivotal Web Services)
 
-## <a href="caveats"></a>Caveats ##
+## <a id="caveats"></a>Caveats ##
 
 The PHP buildpack currently doesn't work with custom commands (the `-c` argument to `cf push` or a `command:` key in an application manifest).
 
 As an alternative, the `ADDITIONAL_PREPROCESS_CMDS` [configuration option] can specify commands that should run prior to your app, like migration scripts, and `APP_START_CMD` to specify an alternate PHP script to run, when running a stand-alone PHP app.
 
-## <a href="folder-structure"></a>Folder Structure ##
+## <a id="folder-structure"></a>Folder Structure ##
 
 The easiest way to use the buildpack is to put your assets and PHP files into a directory and push it to <%=vars.product_short%>.  When you do this, the build pack will take your files and automatically move them into the `WEBDIR` (defaults to `htdocs`) folder, which is the directory where your chosen web server looks for the files.
 
@@ -136,7 +136,7 @@ The `.bp-config` directory should exist at the root of your project directory an
 
 The `.extensions` directory should also exist at the root of your project directory and it is the location of application specific custom extensions.  Application specific custom extensions allow you, the developer, to override or enhance the behavior of the build pack.  This link explains [extensions] in more detail.
 
-## <a href="troubleshooting"></a>Troubleshooting ##
+## <a id="troubleshooting"></a>Troubleshooting ##
 
 The build pack should work in most situations, although nothings perfect so you may need to debug it.  There are a couple easy ways to debug the build pack.
 
