@@ -27,47 +27,8 @@ steps of the deployment process.
 * Basic to intermediate Ruby knowledge
 * The [cf Command Line Interface (CLI)](../../devguide/installcf/install-go-cli.html) installed on your
 workstation
-* (Optional) A robust production web server for Ruby apps, such as Unicorn
 
-### Step 1: (Optional) Configure Automatically-Invoked Rake Tasks for Deployed Applications ###
-
-<%=vars.product_short%> does not provide a way to run a Rake task on a deployed
-application.
-For <%=vars.product_short%> to automatically invoke a Rake task while an app is
-deployed, you must include the Rake task in your application and configure the
-application start command with the `command` attribute in the application
-manifest, `manifest.yml`.
-
-The following is an example of how to invoke a Rake database migration task at application startup.
-
-1. Add the following code to the Rakefile for your app:
-
-    <pre class="code">
-    namespace :cf do
-        desc "Only run on the first application instance"
-        task :on_first_instance do
-            instance_index = JSON.parse(ENV["VCAP_APPLICATION"])["instance_index"] rescue nil
-        exit(0) unless instance_index == 0
-        end
-    end
-    </pre>
-
-    This Rake task limits an idempotent command to the first instance of a
-	deployed application.
-
-1. Add the task to the `manifest.yml` file with the `command` attribute,
-referencing the idempotent command `rake db:migrate` chained with a start
-command.
-
-    <pre class="code">
-    applications:
-     &#8208; name: my-ruby-app
-          command: bundle exec rake cf:on_first_instance db:migrate && ruby server.rb
-    </pre>
-
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_ruby</code> app has no Rake tasks.</p>
-
-### Step 2: Create and Bind a Service Instance for a Ruby Application ###
+### Step 1: Create and Bind a Service Instance for a Ruby Application ###
 
 This section describes using the CLI to configure a Redis Cloud managed service
 instance for an app. <%=vars.dev_console_1%>
@@ -146,16 +107,19 @@ Sample App Step.
 
 <%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_ruby', at: 'ruby-2b' %>
 
-### Step 3: Configure the Manifest File  ###
+### <a id="deployment-options"></a> Step 2: Configure Deployment Options  ###
 
-You can specify app deployment options in a manifest that the `cf push` command
-uses.
-For more information about application manifests and supported attributes, refer
-to the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic.
+#### Configure the Deployment Manifest ####
+
+You can specify app deployment options in a manifest that the `cf push` command uses. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
+
+#### Configure a Production Server ####
+
+<%=vars.product_short%> uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configure a Production Server](./ruby-prod-server.html) topic for help configuring a server other than WEBrick.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for <code>pong_matcher_ruby</code> does not require any additional configuration to deploy the app.</p>
 
-### Step 4: Log in and Target the API Endpoint ###
+### Step 3: Log in and Target the API Endpoint ###
 
 Run `cf login -a API_ENDPOINT`, enter your login credentials, and select a space
 and org.
@@ -163,72 +127,10 @@ The API endpoint is <%=vars.api_endpoint%>.
 
   <%=vars.gen_GSG%>
 
+
   <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
 
-### Step 5: (Optional) Configure a Production Server  ###
-
-<%=vars.product_short%> uses the default standard Ruby web server library
-WEBrick for Ruby apps.
-However, <%=vars.product_short%> can support a more robust production web
-server, such as Phusion Passenger, Puma, Thin, or Unicorn.
-
-To instruct <%=vars.product_short%> to use a web server other than WEBrick, you
-configure a text file called a _Procfile_.
-A Procfile enables you to declare required runtime processes, called _process types_, for your web app.
-Process managers in a server use the process types to run and manage the
-workload.
-
-When you deploy, <%=vars.product_short%> determines if a Procfile exists and
-uses the Procfile to configure your app with the specified production web server
-settings.
-
-In a Procfile, you declare one process type per line and use the following
-syntax, as shown in the example below:
-
-* `PROCESS_TYPE` is the command name in the format of an alphanumeric string.
-For Ruby web apps, you can declare `web` and `worker` process types.
-* `COMMAND` is the command line to launch the process.
-
-Example process type syntax:
-<pre class="code">
-PROCESS_TYPE: COMMAND
-</pre>
-
-To set a different production web server for your app:
-
-1. Add the gem for the web server to your Gemfile.
-
-1. In the root directory of your app, create a new configuration file or modify an existing file.
-
-    Refer to your web server documentation for how to configure this file.
-
-    Example Puma config file:
-    <pre class="code">
-    &#35; puma.rb
-    threads 8,32
-    workers 3
-
-    on\_worker\_boot do
-      # things workers do
-    end
-    </pre>
-
-1. In the root directory of your app, create a Procfile and add a command line for a `web` process type that points to your web server.
-
-    The example below shows a command that starts a Puma web server and
-	specifies the app runtime environment, TCP port, and paths to the server
-	state information and configuration files.
-    Refer to your web server documentation for how to configure the specific
-	command for a process type.
-
-    Example Procfile:
-    <pre class="code">
-    web: bundle exec puma -e $RUBY_ENV -p 1234 -S ~/puma -C puma.rb
-    </pre>
-
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_ruby</code> app does not require a production server.</p>
-
-### Step 6: Deploy an App ###
+### Step 4: Deploy an App ###
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
@@ -301,7 +203,7 @@ Use the URL to access your app online.
 
 </pre>
 
-### Step 7: Test a Deployed App ###
+### Step 5: Test a Deployed App ###
 
 You’ve deployed an app to <%=vars.product_short%>!
 
