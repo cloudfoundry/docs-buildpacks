@@ -43,14 +43,6 @@ Here is a breakdown of what happens when you run the example above:
     - Your application is accessible at the default route. Use ```cf app
     my-php-app``` to view the url of your new app.
 
-## <a id="caveats"></a>Caveats ##
-
-The PHP buildpack does not work with custom commands (the `-c` argument to `cf push` or a `command` key in an application manifest).
-
-As an alternative, the `ADDITIONAL_PREPROCESS_CMDS` [configuration option] specifies commands that run prior to your app. For example, use this option to specify migration scripts.
-
-Use the `APP_START_CMD` configuration option to specify an alternate PHP script to run to start your app.
-
 ## <a id="folder-structure"></a>Folder Structure ##
 
 The easiest way to use the buildpack is to put your assets and PHP files into a directory and push it to <%=vars.product_short%>. This way, the buildpack will take your files and automatically move them into the `WEBDIR` (defaults to `htdocs`) folder, which is the directory where your chosen web server looks for the files.
