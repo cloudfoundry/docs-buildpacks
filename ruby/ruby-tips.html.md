@@ -129,7 +129,7 @@ Here is a summary of the three main libraries available for Ruby / Rails:
 | [Sidekiq](https://github.com/mperham/sidekiq) | Uses threads to handle many messages at the same time in the same process. It does not require Rails but will integrate tightly with Rails 3 to make background message processing dead simple. This library is also Redis-backed and is actually somewhat compatible with Resque messaging.
 
 For other alternatives, see
-[https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs)
+https://www.ruby-toolbox.com/categories/Background_Jobs
 
 ### <a id='example-app'></a>Creating an Example Application ###
 
