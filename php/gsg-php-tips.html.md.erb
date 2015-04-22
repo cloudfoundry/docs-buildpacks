@@ -1,0 +1,30 @@
+---
+title: Tips for PHP Developers
+---
+
+## <a id='buildpack'></a>About the PHP Buildpack ##
+
+For information about using and extending the PHP buildpack in Cloud Foundry,
+see [the php-buildpack Github repo](https://github.com/cloudfoundry/php-buildpack).
+
+The table below below lists:
+
+* **Resource** --- The software installed by the Cloud Foundry PHP buildpack,
+when appropriate.
+* **Available Versions** --- The versions of each software resource that are
+available from the buildpack.
+* **Installed by Default** --- The version of each software resource that is
+installed by default.
+* **To Install a Different Version** --- How to change the buildpack to install
+a different version of a software resource.
+
+As of [version 3.2.0](https://github.com/cloudfoundry/php-buildpack/releases/tag/v3.2.0), the PHP buildpack's available dependencies are:
+
+| Resource | Available Versions | Installed by Default | To Install a Different Version |
+| --------- | --------- | --------- |--------- |
+| PHP | <ul><li>5.6.7<li>5.6.6<li>5.5.23<li>5.5.22<li>5.4.39<li>5.4.38</ul> | 5.4.39 | Specify the version as the value for the `PHP_VERSION` key in your app's `.bp-config/options.json` file. |
+| HHVM | cflinuxfs2 stack only: <ul><li>3.6.1<li>3.6.0<li>3.5.1<li>3.5.0<li>5.4.39<li>5.4.38</ul><br>lucid64 stack only: <ul><li>3.2.0</ul> | lucid64: 3.2.0<br><br>cflinuxfs2: 3.6.0 | Specify `'PHP_VM': 'hhvm'` and `HHVM_VERSION` in `.bp_config/options.json`. |
+| httpd (Apache) | 2.4.12 | 2.4.12 | Not supported. |
+| nginx | <ul><li>1.7.10<li>1.6.2<li>1.5.13</ul> | 1.6.2 | Specify `'WEB_SERVER': 'nginx'` and `NGINX_VERSION` in `.bp_config/options.json`. |
+| Composer | 1.0.0-alpha10 | 1.0.0-alpha10 | Not supported. |
+

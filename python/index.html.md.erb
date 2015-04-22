@@ -1,0 +1,25 @@
+---
+title: Python Buildpack
+---
+
+## <a id='buildpack'></a>About the Python Buildpack ##
+
+For information about using and extending the Python buildpack in Cloud Foundry,
+see [the python-buildpack Github repo](https://github.com/cloudfoundry/python-buildpack).
+
+The table below below lists:
+
+* **Resource** --- The software installed by the Cloud Foundry Python buildpack,
+when appropriate.
+* **Available Versions** --- The versions of each software resource that are
+available from the buildpack.
+* **Installed by Default** --- The version of each software resource that is
+installed by default.
+* **To Install a Different Version** --- How to change the buildpack to install
+a different version of a software resource.
+
+As of [version 1.3.0](https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.3.0), the Python buildpack's available dependencies are:
+
+| Resource | Available Versions | Installed by Default | To Install a Different Version |
+| --------- | --------- | --------- |--------- |
+| Python | <ul><li>3.4.3<li>3.4.2<li>3.3.6<li>3.3.5<li>3.2.5<li>3.2.4<li>2.7.9<li>2.7.8</ul> | 2.7.9 | Specify the version in runtime.txt |
