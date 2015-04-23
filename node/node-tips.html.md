@@ -11,7 +11,7 @@ This topic provides Node-specific information to supplement the general guidelin
 Cloud Foundry expects a `package.json` in your Node.js application.
 You can specify the version of Node.js you want to use in the `engine` node of
 your `package.json` file.
-As of July, 2013, Cloud Foundry uses 0.10.x as the default.
+As of April, 2015, and build pack version 1.3 Cloud Foundry uses 0.12.2 as the default. See [the github](https://github.com/cloudfoundry/nodejs-buildpack) page for the most up to date information.
 
 Example `package.json` file:
 
@@ -27,8 +27,8 @@ Example `package.json` file:
     "swig": "1.3.2",
   },
   "engines": {
-    "node": "0.10.x",
-    "npm": "1.3.x"
+    "node": "0.12.2",
+    "npm": "2.7.4"
   }
 }
 ~~~
@@ -92,14 +92,14 @@ manifest:
 ---
 applications:
 - name: my-app
-  buildpack: https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
 ... the rest of your settings ...
 ~~~
 
 Alternately, specify the buildpack on the command line with `cf push -b`:
 
 <pre class="termainl">
-$ cf push my-app -b https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
+$ cf push my-app -b https://github.com/cloudfoundry/nodejs-buildpack
 </pre>
 
 ## <a id='services'></a> Binding Services ##
@@ -109,7 +109,7 @@ Refer to [Configure Service Connections for Node.js](./node-service-bindings.htm
 ## <a id='buildpack'></a> About the Node.js Buildpack ##
 
 For information about using and extending the Node.js buildpack in Cloud
-Foundry, see https://github.com/cloudfoundry/heroku-buildpack-nodejs.
+Foundry, see https://github.com/cloudfoundry/nodejs-buildpack
 
 The table below lists:
 
@@ -120,12 +120,12 @@ The table below lists:
 
 ----------------------------
 
- **This page was last updated on August 2, 2013.**
+ **This page was last updated on April 23, 2015 based on version 1.3 of the build pack. Run `cf buildpacks` to verify your version.**
 
 | Resource | Available Versions | Installed by Default| To Install a Different Version
 | --------- | --------- | --------- |---------
-| Node.js | 0.10.0 - 0.10.6 <br> 0.10.8  - 0.10.12<br>0.8.0 - 0.8.8<br>0.8.10 - 0.8.14<br>0.8.19<br>0.8.21 -  0.8.25<br>0.6.3<br>0.6.5 - 0.6.8<br>0.6.10 - 0.6.18<br>0.6.20<br>0.4.10<br>0.4.7 | latest version of 0.10.x | To change the default version installed by the buildpack, see <br>“hacking” on https://github.com/cloudfoundry/heroku-buildpack-nodejs. <br><br>To specify the versions of Node.js and npm an application <br>requires, edit the application’s `package.json`, as described in “node.js and npm <br>versions” on https://github.com/cloudfoundry/heroku-buildpack-nodejs.
-| npm | 1.3.2<br>1.2.30<br>1.2.21 - 1.2.28<br>1.2.18<br>1.2.14 - 1.2.15<br>1.2.12<br>1.2.10<br>1.1.65<br>1.1.49<br>1.1.40 - 1.1.41<br>1.1.39<br>1.1.35 - 1.1.36<br>1.1.32<br>1.1.9<br>1.1.4<br>1.1.1<br>1.0.10 | latest version of 1.2.x | as above
+| Node.js | 0.8.27 <br> 0.8.28 <br>0.9.11<br>0.9.12<br>0.10.37<br>0.10.38<br>0.11.15<br>0.11.16<br>0.12.1<br>0.12.2| latest version of 0.12.2 | To change the default version installed by the buildpack, see <br>“Supported binary dependencies” on https://github.com/cloudfoundry/nodejs-buildpack. <br><br>To specify the versions of Node.js and npm an application <br>requires, edit the application’s `package.json`, as described in “Specifying a node version” on  https://github.com/cloudfoundry/nodejs-buildpack.
+| npm | 2.7.4-1.3.2 | latest version of 2.7.4 | as above
 
 ## <a id='env-var'></a>Environment Variables ##
 
