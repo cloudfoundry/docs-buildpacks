@@ -124,8 +124,8 @@ As of [version 1.3.1](https://github.com/cloudfoundry/nodejs-buildpack/releases/
 
 | Resource | Available Versions | Installed by Default | To Install a Different Version
 | --------- | --------- | --------- |---------
-| Node.js | 0.12.2<br>0.12.1<br>0.11.16<br>0.11.15<br>0.10.38<br>0.10.37<br>0.9.12<br>0.9.11<br>0.8.28<br>0.8.27 | 0.12.2 | To change the default version installed by the buildpack, see <br>“hacking” on https://github.com/cloudfoundry/heroku-buildpack-nodejs. <br><br>To specify the versions of Node.js and npm an application <br>requires, edit the application’s `package.json`, as described in “node.js and npm <br>versions” on https://github.com/cloudfoundry/heroku-buildpack-nodejs.
-| npm | 2.7.4-1.3.2 | 2.7.4 | Edit the application’s `package.json`, as described in “node.js and npm <br>versions” on https://github.com/cloudfoundry/heroku-buildpack-nodejs.
+| Node.js | 0.12.2<br>0.12.1<br>0.11.16<br>0.11.15<br>0.10.38<br>0.10.37<br>0.9.12<br>0.9.11<br>0.8.28<br>0.8.27 | 0.12.2 | To change the default version installed by the buildpack, see “hacking” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack). <br><br>To specify the versions of Node.js and npm an application requires, edit the application’s `package.json`, as described in “node.js and npm versions” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack).
+| npm | 2.7.4-1.3.2 | 2.7.4 | Edit the application’s `package.json`, as described in “node.js and npm <br>versions” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack).
 
 * The buildpack will use the version of npm bootstrapped with the node version your app is using.
 
