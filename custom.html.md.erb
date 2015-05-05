@@ -93,10 +93,40 @@ default_process_types:
 
 ~~~
 
-## <a id='disconnected-environments'> Partially or completely disconnected environments ##
+## <a id='disconnected-environments'></a> Packaging Custom Buildpacks ##
 
-Cloud Foundry buildpacks work with limited or no internet connectivity. You can enable the same support in
-your custom buildpack by using the [Buildpack Packager](https://github.com/cf-buildpacks/buildpack-packager) application.
+### Partially or completely disconnected environments
+
+Cloud Foundry buildpacks work with limited or no internet connectivity. A Cloud Foundry operator can enable the same support in
+your custom buildpack by using the [Buildpack Packager](https://github.com/cloudfoundry-incubator/buildpack-packager) application.
+
+#### Using buildpack-packager
+1. Create a manifest.yml in your buildpack.
+1. Run the packager in cached mode: `buildpack-packager cached`
+
+The packager will add (almost) everything in your buildpack directory into a zip file. It will exclude anything marked for exclusion in your manifest.
+
+In cached mode, the packager will download and add dependencies as described in the manifest.
+
+Option Flags
+
+`--force-download`
+
+By default, buildpack-packager stores the dependencies that it downloads while building a cached buildpack in a local cache at `~/.buildpack-packager`. This is in order to avoid redownloading them when repackaging similar buildpacks. Running `buildpack-packager cached` with the the `--force-download` option will force the packager to download dependencies from the s3 host and ignore the local cache. When packaging an uncached buildpack, `--force-download` does nothing.
+
+`--use-custom-manifest`
+
+If you would like to include a different manifest file in your packaged buildpack, you may call buildpack-packager with the the --use-custom-manifest [path/to/manifest.yml] option. buildpack-packager will generate a buildpack with the specified manifest. If you are building a cached buildpack, buildpack-packager will vendor dependencies from the specified manifest as well.
+
+You can find more documentation at the [buildpack-packager Github repo](https://github.com/cloudfoundry-incubator/buildpack-packager).
+
+#### Uploading the buildpack
+
+Once you have packaged your buildpack using `buildpack-packager`, you can upload the resulting `.zip` file to your instance of Cloud Foundry:
+
+`cf create-buildpack [BUILDPACK_NAME] [BUILDPACK_ZIP_PATH] [POSITION]`
+
+You can find more documentation at the [buildpack admin guide](/adminguide/buildpacks.html).
 
 ## <a id='deploying-with-custom-buildpacks'></a>Deploying With a Custom Buildpack ##
 
