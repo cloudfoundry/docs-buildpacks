@@ -314,7 +314,7 @@ configure it manually.
 ## <a id='buildpack'></a>About the Ruby Buildpack ##
 
 For information about using and extending the Ruby buildpack in Cloud Foundry,
-see https://github.com/cloudfoundry/heroku-buildpack-ruby.
+see [the ruby-buildpack Github repo](https://github.com/cloudfoundry/ruby-buildpack).
 
 The table below below lists:
 
@@ -327,12 +327,14 @@ installed by default.
 * **To Install a Different Version** --- How to change the buildpack to install
 a different version of a software resource.
 
+As of [version 1.4.0](https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.4.0), the Ruby buildpack's available dependencies are:
+
 | Resource | Available Versions | Installed by Default | To Install a Different Version
 | --------- | --------- | --------- |---------
-| Ruby | 1.8.7  patchlevel 374, Rubygems 1.8.24 <br><br>1.9.2  patchlevel 320, Rubygems 1.3.7.1 <br><br>1.9.3  patchlevel 448, Rubygems 1.8.24 <br><br>2.0.0 patchlevel 247, Rubygems 2.0.3 | The latest security patch release of 1.9.3 | Specify desired version in application gem file.
-| Bundler | 1.2.1 <br><br>1.3.0.pre.5<br><br>1.3.2 | 1.3.2 | Not supported.
-
-**This table was last updated on August 14, 2013.**
+| Ruby | 2.2.2<br>2.2.1<br>2.1.6<br>2.1.5<br>2.0.0<br>1.9.3<br><br>lucid64 stack only:<br>1.8.7 | 2.0.0 | Specify desired version in application gem file.
+| JRuby | 1.7.19<br>Ruby versions:<ul><li>1.9.3<li>2.0.0</ul>9.0.0.0<br>Ruby versions:<ul><li>2.2.0</ul><br>The JVM for lucid64 is 8u20. The JVM for cflinuxfs2 is 8u40.| (none) | Specify desired version in application gem file. |
+| Bundler | 1.7.12 | 1.7.12 | Not supported. |
+| Node.js | 0.12.2 | 0.12.2 | Not supported. |
 
 ## <a id='env-var'></a>Environment Variables ##
 
