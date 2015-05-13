@@ -2,7 +2,7 @@
 title: Build Tool Integration
 ---
 
-_This page assumes you are using cf CLI v6 and version 1.0.4 of either the Cloud Foundry Maven plugin or the Cloud Foundry Gradle plugin._
+_This page assumes you are using cf CLI v6 and version 1.1.2 of either the Cloud Foundry Maven plugin or the Cloud Foundry Gradle plugin._
 
 ## <a id='maven'></a>Maven Plugin ##
 The Cloud Foundry Maven plugin allows you to deploy and manage applications with Maven goals. This plugin provides Maven users with access to the core functionality of the Cloud Foundry cf command-line tool.
@@ -15,7 +15,7 @@ To install the Cloud Foundry Maven plugin, add the `cf-maven-plugin` to the `<pl
       <plugin>
           <groupId>org.cloudfoundry</groupId>
           <artifactId>cf-maven-plugin</artifactId>
-          <version>1.0.4</version>
+          <version>1.1.2</version>
       </plugin>
   </plugins>
   ~~~
@@ -32,7 +32,7 @@ Example:
       <plugin>
           <groupId>org.cloudfoundry</groupId>
           <artifactId>cf-maven-plugin</artifactId>
-          <version>1.0.4</version>
+          <version>1.1.2</version>
           <configuration>
               <target>http://api.run.pivotal.io</target>
               <org>mycloudfoundry-org</org>
@@ -94,7 +94,7 @@ To implement this:
         <plugin>
             <groupId>org.cloudfoundry</groupId>
             <artifactId>cf-maven-plugin</artifactId>
-            <version>1.0.4</version>
+            <version>1.1.2</version>
             <configuration>
                 <server>cloud-foundry-credentials</server>
                 . . .
@@ -139,7 +139,7 @@ To install the Cloud Foundry Gradle plugin, add the `cf-gradle-plugin` as a depe
           mavenCentral()
       }
       dependencies {
-          classpath 'org.cloudfoundry:cf-gradle-plugin:1.0.4'
+          classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.2'
           . . .
       }
   }
