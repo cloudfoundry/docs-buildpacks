@@ -1,0 +1,26 @@
+---
+title: New Relic
+---
+
+[New Relic](http://newrelic.com/) collects analytics about application and client-side performance.
+
+## <a id="configuration"></a> Configuration
+
+There are two ways to configure New Relic for the PHP buildpack.
+
+### With a CF service
+
+Bind a NewRelic service to the app. The build pack will automatically see this and it will set up NewRelic.
+
+   It should work as long as the VCAP_SERVICES environment variable contains a service called `newrelic`. That service dict has a key called `credentials` and that, in turn, has a key called `licenseKey`.
+
+   *WARNING:* It won't currently work with user provided services.
+
+### With a Licence key
+
+If you already have a New Relic account, this is the preferred method.
+
+1. Go to New Relic to find your [license key](https://docs.newrelic.com/docs/accounts-partnerships/accounts/account-setup/license-key).
+1. Set the environment variable `NEWRELIC_LICENSE`; either through the [manifest.yml file](/devguide/deploy-apps/manifest.html#env-block) or with `cf set-env`.  The value of this should contain your NewRelic license key.
+
+[README]:https://github.com/cloudfoundry/php-buildpack#supported-software
