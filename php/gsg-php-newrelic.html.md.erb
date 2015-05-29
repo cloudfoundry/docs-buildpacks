@@ -6,13 +6,13 @@ title: New Relic
 
 ## <a id="configuration"></a> Configuration
 
-There are two different ways to configure New Relic for the PHP buildpack.
+There are two ways to configure New Relic for the PHP buildpack.
 
 ### With a CF service
 
-Bind a NewRelic service to the app, the build pack will automatically see this and it'll setup NewRelic.
+Bind a NewRelic service to the app. The build pack will automatically see this and it will set up NewRelic.
 
-   It should generally work as long as the VCAP_SERVICES environment variable contains a service called `newrelic`, that service dict has a key called `credentials` and that in turn has a key called `licenseKey`.
+   It should work as long as the VCAP_SERVICES environment variable contains a service called `newrelic`. That service dict has a key called `credentials` and that, in turn, has a key called `licenseKey`.
 
    *WARNING:* It won't currently work with user provided services.
 
