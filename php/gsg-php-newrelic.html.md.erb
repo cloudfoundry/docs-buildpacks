@@ -16,11 +16,12 @@ Bind a NewRelic service to the app. The buildpack will automatically detect and 
 
    *WARNING:* This will not work with user provided services.
 
-### With a Licence key
+### With a License Key
 
 If you already have a New Relic account, use this method.
 
 1. Go to the New Relic website to find your [license key](https://docs.newrelic.com/docs/accounts-partnerships/accounts/account-setup/license-key).
-1. Set the environment variable `NEWRELIC_LICENSE` either through the [manifest.yml file](./devguide/deploy-apps/manifest.html#env-block) or with `cf set-env`.  The value of this should contain your NewRelic license key.
+1. Set the value of the environment variable `NEWRELIC_LICENSE` to your NewRelic license key, either through the [manifest.yml file](../../devguide/deploy-apps/manifest.html#env-block) or with the `cf set-env` command.
 
-[README]:https://github.com/cloudfoundry/php-buildpack#supported-software
+For more information, see
+[https://github.com/cloudfoundry/php-buildpack#supported-software](https://github.com/cloudfoundry/php-buildpack#supported-software)
