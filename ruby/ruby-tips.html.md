@@ -106,32 +106,45 @@ The following is an example of the "migrate frequently" method described in the
 
 3. Update the application using `cf push`.
 
-## <a id='workers'></a>Running Rails 3 Worker Tasks ##
+## <a id='workers'></a>Rails 3 Worker Tasks ##
 
-Often when developing a Rails 3 application, you may want delay certain tasks
-so as not to consume resource that could be used for servicing requests from
-your user.
 This section shows you how to create and deploy an example Rails application
-that will make use of a worker library to defer a task, this task will then be
-executed by a separate application.
-The guide also shows how you can scale the resource available to the worker
+that uses a worker library to defer a task that a separate application executes.
+
+The guide also describes how to scale the resources available to the worker
 application.
 
-### <a id='worker-libs'></a>Choosing a Worker Task Library ###
+<p class="note"><strong>Note</strong>: Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the application manifest, to suppress route creation and remove existing routes.</p>
 
-The first task is to decide which worker task library to use.
-Here is a summary of the three main libraries available for Ruby / Rails:
+### <a id='worker-libs'></a>Choose a Worker Task Library ###
 
-| Library | Description
-| :------------------ | :-------
-| [Delayed::Job](https://github.com/collectiveidea/delayed_job) | A direct extraction from [Shopify](http://www.shopify.com/) where the job table is responsible for a multitude of core tasks.
-| [Resque](https://github.com/defunkt/resque) | A Redis-backed library for creating background jobs, placing those jobs on multiple queues, and processing them later.
-| [Sidekiq](https://github.com/mperham/sidekiq) | Uses threads to handle many messages at the same time in the same process. It does not require Rails but will integrate tightly with Rails 3 to make background message processing dead simple. This library is also Redis-backed and is actually somewhat compatible with Resque messaging.
+You must choose a worker task library.
+The table below summarizes the three main libraries available for Ruby / Rails:
+
+<table border="1" class="nice">
+  <tr>
+    <th>Library</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+ <td><a href="https://github.com/collectiveidea/delayed_job">Delayed::Job</a></td>
+    <td>A direct extraction from <a href="http://www.shopify.com/">Shopify</a> where the job table is responsible for a multitude of core tasks.</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/defunkt/resque">Resque</a></td>
+    <td>A Redis-backed library for creating background jobs, placing those jobs on multiple queues, and processing them later.</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/mperham/sidekiq">Sidekiq</a></td>
+    <td>Uses threads to handle many messages at the same time in the same process. It does not require Rails but will integrate tightly with Rails 3 to make background message processing dead simple. This library is also Redis-backed and is actually somewhat compatible with Resque messaging.</td>
+  </tr>
+
+</table>
 
 For other alternatives, see
-https://www.ruby-toolbox.com/categories/Background_Jobs
+[https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs).
 
-### <a id='example-app'></a>Creating an Example Application ###
+### <a id='example-app'></a>Create an Example Application ###
 
 For the purposes of the example application, we will use Sidekiq.
 
@@ -229,7 +242,7 @@ $ touch app/views/things/index.html.erb
 ```
 
 
-#### <a id='deploy'></a>Deploying Once, Deploying Twice ####
+#### <a id='deploy'></a>Deploy the Application ####
 
 This application needs to be deployed twice for it to work, once as a Rails web
 application and once as a standalone Ruby application.
@@ -311,7 +324,7 @@ The `rails_serv_static_assets` gem enables this behavior by setting the
 `config.serve_static_assets` option to `true`, so you do not need to
 configure it manually.
 
-## <a id='buildpack'></a>About the Ruby Buildpack ##
+## <a id='buildpack'></a>Additional Ruby Buildpack Information ##
 
 For information about using and extending the Ruby buildpack in Cloud Foundry,
 see [the ruby-buildpack Github repo](https://github.com/cloudfoundry/ruby-buildpack).
