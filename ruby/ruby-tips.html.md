@@ -138,7 +138,6 @@ The table below summarizes the three main libraries available for Ruby / Rails:
     <td><a href="https://github.com/mperham/sidekiq">Sidekiq</a></td>
     <td>Uses threads to handle many messages at the same time in the same process. It does not require Rails but will integrate tightly with Rails 3 to make background message processing dead simple. This library is also Redis-backed and is actually somewhat compatible with Resque messaging.</td>
   </tr>
-
 </table>
 
 For other alternatives, see
@@ -329,31 +328,55 @@ configure it manually.
 For information about using and extending the Ruby buildpack in Cloud Foundry,
 see [the ruby-buildpack Github repo](https://github.com/cloudfoundry/ruby-buildpack).
 
-The table below below lists:
+The table below lists the following for [version 1.4.0](https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.4.0) of
+the Ruby buildpack:
 
-* **Resource** --- The software installed by the Cloud Foundry Ruby buildpack,
+* **Resource**: The software installed by the Cloud Foundry Ruby buildpack,
 when appropriate.
-* **Available Versions** --- The versions of each software resource that are
+* **Available Versions**: The versions of each software resource that are
 available from the buildpack.
-* **Installed by Default** --- The version of each software resource that is
+* **Installed by Default**: The version of each software resource that is
 installed by default.
-* **To Install a Different Version** --- How to change the buildpack to install
+* **To Install a Different Version**: How to change the buildpack to install
 a different version of a software resource.
 
-As of [version 1.4.0](https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.4.0), the Ruby buildpack's available dependencies are:
-
-| Resource | Available Versions | Installed by Default | To Install a Different Version
-| --------- | --------- | --------- |---------
-| Ruby | 2.2.2<br>2.2.1<br>2.1.6<br>2.1.5<br>2.0.0<br>1.9.3<br><br>lucid64 stack only:<br>1.8.7 | 2.0.0 | Specify desired version in application gem file.
-| JRuby | 1.7.19<br>Ruby versions:<ul><li>1.9.3<li>2.0.0</ul>9.0.0.0<br>Ruby versions:<ul><li>2.2.0</ul><br>The JVM for lucid64 is 8u20. The JVM for cflinuxfs2 is 8u40.| (none) | Specify desired version in application gem file. |
-| Bundler | 1.7.12 | 1.7.12 | Not supported. |
-| Node.js | 0.12.2 | 0.12.2 | Not supported. |
+<table border="1" class="nice">
+  <tr>
+    <th>Resource</th>
+    <th>Available Versions</th>
+    <th>Installed by Default</th>
+    <th>To Install a Different Version</th>
+  </tr>
+  <tr>
+    <td>Ruby</td>
+    <td>2.2.2<br>2.2.1<br>2.1.6<br>2.1.5<br>2.0.0<br>1.9.3<br><br>lucid64 stack only:<br>1.8.7</td>
+    <td>2.0.0</td>
+    <td>Specify desired version in application gem file</td>
+  </tr>
+  <tr>
+    <td>JRuby</td>
+    <td>1.7.19<br>Ruby versions:<ul><li>1.9.3<li>2.0.0</ul>9.0.0.0<br>Ruby versions:<ul><li>2.2.0</ul><br>The JVM for lucid64 is 8u20. The JVM for cflinuxfs2 is 8u40.</td>
+    <td>none</td>
+    <td>Specify desired version in application gem file.</td>
+  </tr>
+  <tr>
+    <td>Bundler</td>
+    <td>1.7.12</td>
+    <td>1.7.12</td>
+    <td>Not supported</td>
+  </tr>
+  <tr>
+    <td>Node.js</td>
+    <td>0.12.2</td>
+    <td>0.12.2</td>
+    <td>Not supported</td>
+  </tr>
+</table>
 
 ## <a id='env-var'></a>Environment Variables ##
 
-You can access environments variable programmatically.
-
-For example, you can obtain `VCAP_SERVICES` like this:
+You can access environments variable programmatically. For example, you can
+obtain `VCAP_SERVICES` as follows:
 
 ```
 ENV['VCAP_SERVICES']
@@ -361,7 +384,7 @@ ENV['VCAP_SERVICES']
 
 Environment variables available to you include both those [defined by the DEA]
 (../../devguide/deploy-apps/environment-variable.html#dea-set)
-and those defined by the Ruby buildpack, described below.
+and those defined by the Ruby buildpack, as described below.
 
 ### <a id='BUNDLE-BIN-PATH'></a>BUNDLE\_BIN\_PATH ###
 
