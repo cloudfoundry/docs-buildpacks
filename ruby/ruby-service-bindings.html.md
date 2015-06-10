@@ -2,7 +2,7 @@
 title: Configure Service Connections for Ruby
 ---
 
-_This page assumes you are using cf CLI v6._
+_This page assumes that you are using cf CLI v6._
 
 After you create a service instance and bind it to an application, you must
 configure the application to connect to the service.
@@ -14,9 +14,11 @@ from the `VCAP_SERVICES` environment variable by name, tag, or label.
 
 * [cf-app-utils-ruby](https://github.com/cloudfoundry/cf-app-utils-ruby)
 
-## <a id='vcap-services-defines-database-url'></a>VCAP\_SERVICES defines DATABASE\_URL
+## <a id='vcap-services-defines-database-url'></a>VCAP\_SERVICES defines DATABASE\_URL ##
 
-At runtime, the Ruby buildpack creates a `DATABASE_URL` environment variable for every Ruby application based on the [VCAP_SERVICES](../../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable.
+At runtime, the Ruby buildpack creates a `DATABASE_URL` environment variable for 
+every Ruby application based on the 
+[VCAP_SERVICES](../../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable.
 
 Example VCAP_SERVICES:
 
@@ -37,7 +39,10 @@ Based on this `VCAP_SERVICES`, the Ruby buildpack creates the following `DATABAS
 
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
 
-The Ruby buildpack uses the structure of the `VCAP_SERVICES` environment variable to populate `DATABASE_URL`. Any service containing a JSON object of the following form will be recognized by Cloud Foundry as a candidate for `DATABASE_URL`:
+The Ruby buildpack uses the structure of the `VCAP_SERVICES` environment 
+variable to populate `DATABASE_URL`. 
+Any service containing a JSON object of the following form will be recognized by 
+Cloud Foundry as a candidate for `DATABASE_URL`:
 
     {
       "some-service": [
@@ -51,47 +56,57 @@ The Ruby buildpack uses the structure of the `VCAP_SERVICES` environment variabl
 
 Cloud Foundry uses the first candidate found to populate `DATABASE_URL`.
 
-## <a id='rails-applications-have-autoconfigured-database-yml'></a>Rails Applications Have Auto-Configured database.yml
+## <a id='rails-applications-have-autoconfigured-database-yml'></a>Rails Applications Have Auto-Configured database.yml ##
 
-During staging, the Ruby buildpack replaces your `database.yml` with one based on the `DATABASE_URL` variable.
+During staging, the Ruby buildpack replaces your `database.yml` with one based 
+on the `DATABASE_URL` variable.
 
-<p class='note'><strong>Note</strong>: The Ruby buildpack ignores the contents of any <code>database.yml</code> you provide and overwrites it during staging.
+<p class='note'><strong>Note</strong>: The Ruby buildpack ignores the contents 
+  of any <code>database.yml</code> that you provide and overwrites it during 
+  staging.</p>
 
-## <a id='configuring-non-rails-applications'></a>Configuring non-Rails Applications
+## <a id='configuring-non-rails-applications'></a>Configuring Non-Rails Applications ##
 
-Non-Rails applications can also see the `DATABASE_URL` variable.
+Non-Rails applications can also access the `DATABASE_URL` variable.
 
-If you have more than one service with credentials, only the first will be populated into `DATABASE_URL`. To access other credentials, you can inspect the `VCAP_SERVICES` environment variable.
+If you have more than one service with credentials, only the first will be 
+populated into `DATABASE_URL`. 
+To access other credentials, you can inspect the `VCAP_SERVICES` environment 
+variable.
 
 ~~~ruby
 vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
 ~~~
 
-Use the hash key for the service to obtain the connection credentials
-from `VCAP_SERVICES`.
+Use the hash key for the service to obtain the connection credentials from 
+`VCAP_SERVICES`.
 
-- For services that use the [v2 Service Broker API](../../services/api.html), the hash key is the name of the service.
+- For services that use the <%= vars.api_v2_format %>, the hash key is the name 
+  of the service.
 
-- For services that use the [v1 Service Broker API](../../services/api-v1.html), the hash key is formed by combining
-the service provider and version, in the format PROVIDER-VERSION.
+- For services that use the <%= vars.api_v1_format %>, the hash key is formed by 
+  combining the service provider and version, in the format PROVIDER-VERSION.
 
-  For example, given a service provider "p-mysql" with version "n/a", the hash key is
-`p-mysql-n/a`.
+  For example, given a service provider "p-mysql" with version "n/a", the hash 
+  key is `p-mysql-n/a`.
 
 ## <a id='migrate'></a>Seed or Migrate Database ##
 
 Before you can use your database the first time, you must create and populate
-or migrate it. For more information, see [Migrating a Database in Cloud Foundry](../../devguide/services/migrate-db.html).
+or migrate it. 
+For more information, see [Migrating a Database in Cloud Foundry](../../devguide/services/migrate-db.html).
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 
-To aid in troubleshooting issues connecting to your service, you can examine the
-environment variables and log messages Cloud Foundry records for your
+To aid in troubleshooting issues connecting to your service, you can examine the 
+environment variables and log messages Cloud Foundry records for your 
 application.
 
 ### <a id='view-env'></a>View Environment Variables ###
 
-Use the `cf env` command to view the Cloud Foundry environment variables for your application. `cf env` displays the following environment variables:
+Use the `cf env` command to view the Cloud Foundry environment variables for 
+your application. 
+`cf env` displays the following environment variables:
 
 * The `VCAP_SERVICES` variables existing in the container environment
 * The user-provided variables set using the `cf set-env` command
@@ -126,8 +141,9 @@ Use the `cf env` command to view the Cloud Foundry environment variables for you
 ### <a id='view-logs'></a>View Logs ###
 
 Use the `cf logs` command to view the Cloud Foundry log messages for your
-application. You can direct current logging to standard output, or you can dump
-the most recent logs to standard output.
+application. 
+You can direct current logging to standard output, or you can dump the most 
+recent logs to standard output.
 
 Run `cf logs APPNAME` to direct current logging to standard output:
 
@@ -152,8 +168,7 @@ Run `cf logs APPNAME --recent` to dump the most recent logs to standard output:
 </pre>
 
 If you encounter the error "A fatal error has occurred. Please see the Bundler
-troubleshooting documentation," update your version of bundler and run `bundle
-install` again.
+troubleshooting documentation," update your version of bundler and run `bundle install` again.
 
 <pre class="terminal">
   $ gem update bundler
