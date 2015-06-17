@@ -35,14 +35,14 @@ Example `package.json` file:
 
 ## <a id='port'></a> Application Port ##
 
-You need to use the VCAP\_APP\_PORT environment variable to determine which
+You need to use the PORT environment variable to determine which
 port your application should listen on.
 In order to also run your application locally, you may want to make port 3000
 the default:
 
 ~~~javascript
 
-app.listen(process.env.VCAP_APP_PORT || 3000);
+app.listen(process.env.PORT || 3000);
 
 ~~~
 
