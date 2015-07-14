@@ -17,14 +17,14 @@ Example `package.json` file:
 
 ~~~JSON
 {
-  "name": "default-nodejs-app",
+  "name": "first",
   "version": "0.0.1",
-  "author": "Your Name",
+  "author": "Demo",
   "dependencies": {
     "express": "3.4.8",
     "consolidate": "0.10.0",
     "express": "3.4.8",
-    "swig": "1.3.2",
+    "swig": "1.3.2"
   },
   "engines": {
     "node": "0.12.2",
@@ -32,6 +32,7 @@ Example `package.json` file:
   }
 }
 ~~~
+
 
 ## <a id='port'></a> Application Port ##
 
@@ -42,7 +43,7 @@ the default:
 
 ~~~javascript
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.VCAP_APP_PORT || 3000);
 
 ~~~
 
@@ -156,4 +157,4 @@ The system path used by Node.js.
 
 `PATH=/home/vcap/app/bin:/home/vcap/app/node_modules/.bin:/bin:/usr/bin`
 
- 
+
