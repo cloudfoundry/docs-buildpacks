@@ -37,13 +37,17 @@ The table lists build script information for Gradle and Maven and provides docum
 <tr>
   <th><strong>Build Tool</strong></th>
   <th><strong>Build Script</strong></th>
-    <th><strong>Documentation</strong></th>
+  <th><strong>Documentation</strong></th>
 </tr>
 <tr>
-  <td>Gradle</td><td><code>build.gradle</code></td><td><a href="http://www.gradle.org/docs/current/userguide/userguide.html">Gradle User Guide</a></td>
+  <td>Gradle</td>
+  <td><code>build.gradle</code></td>
+  <td><a href="http://www.gradle.org/docs/current/userguide/userguide.html">Gradle User Guide</a></td>
 </tr>
 <tr>
-  <td>Maven</td><td><code>pom.xml</code></td><td><a href="http://maven.apache.org/guides/">Apache Maven Project Documentation</a></td>
+  <td>Maven</td>
+  <td><code>pom.xml</code></td>
+  <td><a href="http://maven.apache.org/guides/">Apache Maven Project Documentation</a></td>
 </tr>
 </table>
 
@@ -58,10 +62,10 @@ The table lists build script information for Gradle and Maven and provides docum
 Use the `cf push -m` command to specify the amount of memory that should be allocated to the application. Memory allocated this way is done in preset amounts of `64M`, `128M`, `256M`, `512M`, `1G`, or `2G`. For example:
 
 ```
-cf push -m 128M
+$ cf push -m 128M
 ```
 
-When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
+When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The Cloud Foundry Java buildpack uses settings declared in the sample app to allocate 1 GB of memory to the app.</p>
 
@@ -82,7 +86,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <pre class="terminal">
 $ cf create-service cleardb spark mysql
-Creating service mysql in org Cloud-Apps / space development as clouduser@example.com....
+Creating service mysql in org Cloud-Apps / space development as a.user@example.com....
 OK
 </pre>
 
@@ -107,7 +111,7 @@ Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/m
 
 ### Step 6: Log in and Target the API Endpoint ###
 
-Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%>
 
@@ -117,11 +121,11 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
-From the root directory of your application, run `cf push [APP-NAME] -p [PATH-TO-FILE.war]` to deploy your application.
+From the root directory of your application, run `cf push APP-NAME -p PATH-TO-FILE.war` to deploy your application.
 
 <p class="note"><strong>Note</strong>: Most Spring apps include an artifact, such as a <code>.jar</code>, <code>.war</code>, or <code>.zip</code> file. You must include the path to this file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. The example shows how to specify a path to the <code>.war</code> file for a Spring app. Refer to the <a href="./java-tips.html">Tips for Java Developers</a> topic for CLI examples for specific build tools, frameworks, and languages that create an app with an artifact.</p>
 
-`cf push [APP-NAME]` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your [APP-NAME] and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
+`cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. Use the following options to help create a unique URL:
 
@@ -129,7 +133,7 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 * `--random-route` to create a URL that includes the app name and random words
 * `cf help push` to view other options for this command
 
-If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
+If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
@@ -138,7 +142,7 @@ Once your app deploys, browse to your app URL. Search for the `urls` field in th
 <br />
 2. Change to the <code>app</code>directory, and run <code>mvn package</code> to build the app.
 <br />
-3. Run <code>cf push pong_matcher_spring -n [HOST_NAME]</code> to push the app.
+3. Run <code>cf push pong_matcher_spring -n HOSTNAME</code> to push the app.
 <br /><br />
 Example: <code>cf push pong_matcher_spring -n my-spring-app</code>
 </p>
@@ -149,10 +153,10 @@ Example: <code>cf push pong_matcher_spring -n my-spring-app</code>
 The example below shows the terminal output of deploying the <code>pong\_matcher\_spring</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>mysql</code> service and starts one instance of the app with 1 GB of memory. After the app starts, the output displays the health and status of the app.
 
 <pre class="terminal">
-$  |master ✓| → cf push pong_matcher_spring -n spring1119
+$ cf push pong_matcher_spring -n spring1119
 Using manifest file /Users/example/workspace/pong_matcher_spring/manifest.yml
 
-Creating app pong_matcher_spring in org Cloud-Apps / space development as clouduser@example.com...
+Creating app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
 OK
 
 Creating route spring1119.cfapps.io...
@@ -165,10 +169,10 @@ Uploading pong_matcher_spring...
 Uploading app files from: /Users/example/workspace/pong_matcher_spring/target/pong-matcher-spring-1.0.0.BUILD-SNAPSHOT.jar
 Uploading 797.5K, 116 files
 OK
-Binding service mysql to app pong_matcher_spring in org Cloud-Apps / space development as clouduser@example.com...
+Binding service mysql to app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
 OK
 
-Starting app pong_matcher_spring in org Cloud-Apps / space development as clouduser@example.com...
+Starting app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
 OK
 -----> Downloaded app package (25M)
 -----> Downloading Open Jdk JRE 1.8.0_25 from https://download.run.pivotal.io/openjdk/lucid/x86_64/openjdk-1.8.0_25.tar.gz (1.2s)
@@ -178,12 +182,11 @@ OK
 -----> Uploading droplet (63M)
 
 0 of 1 instances running, 1 starting
-0 of 1 instances running, 1 starting
 1 of 1 instances running
 
 App started
 
-Showing health and status for app pong_matcher_spring in org Cloud-Apps / space development as clouduser@example.com...
+Showing health and status for app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
 OK
 
 requested state: started
@@ -206,7 +209,7 @@ See the [Manage Your Application with the cf CLI](#cli-manage) section for more 
 <p class="tip"><strong>Sample App Step</strong><br />
 To test the sample app, do the following:
 <br /><br />
-1. To export the test host, run <code>export HOST=SAMPLE_APP_URL</code>, substituting the URL for your app for <code>SAMPLE_APP_URL</code>.
+1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
 <br /><br />
 2. To clear the database from any previous tests, run:
 <br />
@@ -252,17 +255,17 @@ For more information, refer to the [Build Tool Integration](./build-tool-int.htm
 
 ### Alternative Method 2: Integrate the Cloud Foundry Eclipse Plugin for STS ###
 
-<%=vars.product_short%> provides an Eclipse plugin extension that enables you to 
-deploy and manage Spring applications on a Cloud Foundry instance from the 
-Spring Tool Suite (STS), version 3.0.0 and later. 
-For more information, refer to the [Cloud Foundry Eclipse Plugin](./sts.html) 
-topic. 
-You must follow the instructions in the [Install to STS from the IDE Extensions Tab](./sts.html#install-to-sts) and [Create a Cloud Foundry Server](./sts.html#cloud-foundry-server) sections before you can deploy and 
+<%=vars.product_short%> provides an Eclipse plugin extension that enables you to
+deploy and manage Spring applications on a Cloud Foundry instance from the
+Spring Tool Suite (STS), version 3.0.0 and later.
+For more information, refer to the [Cloud Foundry Eclipse Plugin](./sts.html)
+topic.
+You must follow the instructions in the [Install to STS from the IDE Extensions Tab](./sts.html#install-to-sts) and [Create a Cloud Foundry Server](./sts.html#cloud-foundry-server) sections before you can deploy and
 manage your apps with the plugin.
 
 ## <a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 
-Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
+Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
 <p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
 
@@ -275,6 +278,7 @@ Run `cf help` to view a complete list of commands, grouped by task categories, a
 If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
 ### App Deploy Fails ###
+
 Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
 ### App Requires a Content-Type ###
@@ -282,6 +286,7 @@ Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run 
 If you specify a `Content-Encoding` header of `gzip` but do not specify a `Content-Type` within your application, <%=vars.product_short%> might send a `Content-Type` of `application/x-gzip` to the browser. This scenario might cause the deploy to fail if it conflicts with the actual encoded content of your app. To avoid this issue, be sure to explicitly set `Content-Type` within your app.
 
 ### App Requires a Unique URL ###
+
 <%=vars.product_short%> requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
