@@ -274,6 +274,7 @@ applications:
   instances: 1
   path: .
   command: bundle exec sidekiq
+  no-route: true
   services:
   - sidekiq-redis:
   - sidekiq-mysql:
