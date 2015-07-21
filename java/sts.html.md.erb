@@ -11,9 +11,9 @@ and STS 3.0.0 and later.
 
 This page has instructions for installing and using v1.7.2 of the plugin.
 
-You can use the plugin to:
+You can use the plugin to perform the following actions:
 
-* Deploy applications from an Eclipse or STS workspace to a running Cloud Foundry instance. The plugin supports the following application types:
+* Deploy applications from an Eclipse or STS workspace to a running Cloud Foundry instance. The Cloud Foundry Eclipse plugin supports the following application types:
   * Spring Boot
   * Spring
   * Java Web
@@ -23,7 +23,7 @@ You can use the plugin to:
 * View and manage deployed applications and services.
 * Start and stop applications.
 
-v1.7.2 of this plugin provides several updates and changes:
+v1.7.2 of this plugin provides the following updates and changes:
 
 * Cloud Foundry Eclipse is now enabled for NLS and Internationalization.
 * A "New Service Binding" wizard that allows service instances to be bound to applications. This wizard serves as an alternative to binding through the existing drag-and-drop feature.
@@ -47,12 +47,13 @@ Follow the installation instructions appropriate for your environment:
 
 ### <a id='install-to-eclipse'></a>Install to Eclipse from Marketplace ###
 
-Follow these instructions to install the Cloud Foundry Eclipse Plugin to Eclipse from the Eclipse Marketplace.
+Follow the instructions below to install the Cloud Foundry Eclipse Plugin to
+Eclipse from the Eclipse Marketplace.
 
 1. Start Eclipse.
-1. Select **Eclipse Marketplace** from the Eclipse **Help** menu.
-1. On the marketplace window, enter "Cloud Foundry" in the **Find** field, and click **Go**.
-1. In the search results, click the **Install** control next to the listing for Cloud Foundry Integration.
+1. From the Eclipse **Help** menu, select **Eclipse Marketplace**.
+1. In the Eclipse Marketplace window, enter "Cloud Foundry" in the **Find** field. Click **Go**.
+1. In the search results, next to the listing for Cloud Foundry Integration, click **Install**.
 
     <%= image_tag("sts/eclipse-marketplace.png") %>
 
@@ -60,10 +61,11 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to Eclipse
 
     <%= image_tag("sts/confirm-selected-features.png") %>
 
-1. The **Review Licenses** window appears. Click "I accept the terms of the license agreement" and click **Finish**.
-1. The **Software Updates** window appears. Click **Yes** to restart Eclipse.
+1. The **Review Licenses** window appears. Select "I accept the terms of the license agreement" and click **Finish**.
 
-    See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
+    <%= image_tag("sts/accept-license.png") %>
+
+1. The **Software Updates** window appears. Click **Yes** to restart Eclipse.
 
     <%= image_tag("sts/software-updates.png") %>
 
@@ -89,8 +91,6 @@ Follow these instructions to install the Cloud Foundry Eclipse Plugin to STS fro
 1. The **Review Licenses** window appears. Click "I accept the terms of the license agreement" and click **Finish** to perform the installation.
 
 1. The **Software Updates** window appears. Click **Yes** to restart STS.
-
-    After STS restarts, you can see new panes in the Editor portion of the screen. See [About the Plugin User Interface](#plugin-ui) below for a description of the plugin tabs and the information in each.
 
     <%= image_tag("sts/restart-sts.png") %>
 
