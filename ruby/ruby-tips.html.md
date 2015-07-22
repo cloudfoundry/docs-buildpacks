@@ -329,51 +329,9 @@ configure it manually.
 For information about using and extending the Ruby buildpack in Cloud Foundry,
 see [the ruby-buildpack Github repo](https://github.com/cloudfoundry/ruby-buildpack).
 
-The table below lists the following for [version 1.4.0](https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.4.0) of
-the Ruby buildpack:
-
-* **Resource**: The software installed by the Cloud Foundry Ruby buildpack,
-when appropriate.
-* **Available Versions**: The versions of each software resource that are
-available from the buildpack.
-* **Installed by Default**: The version of each software resource that is
-installed by default.
-* **To Install a Different Version**: How to change the buildpack to install
-a different version of a software resource.
-
-<table border="1" class="nice">
-  <tr>
-    <th>Resource</th>
-    <th>Available Versions</th>
-    <th>Installed by Default</th>
-    <th>To Install a Different Version</th>
-  </tr>
-  <tr>
-    <td>Ruby</td>
-    <td>2.2.2<br>2.2.1<br>2.1.6<br>2.1.5<br>2.0.0<br>1.9.3<br><br>lucid64 stack only:<br>1.8.7</td>
-    <td>2.0.0</td>
-    <td>Specify desired version in application gem file</td>
-  </tr>
-  <tr>
-    <td>JRuby</td>
-    <td>1.7.19<br>Ruby versions:<ul><li>1.9.3<li>2.0.0</ul>9.0.0.0<br>Ruby versions:<ul><li>2.2.0</ul><br>The JVM for lucid64 is 8u20. The JVM for cflinuxfs2 is 8u40.</td>
-    <td>none</td>
-    <td>Specify desired version in application gem file.</td>
-  </tr>
-  <tr>
-    <td>Bundler</td>
-    <td>1.7.12</td>
-    <td>1.7.12</td>
-    <td>Not supported</td>
-  </tr>
-  <tr>
-    <td>Node.js</td>
-    <td>0.12.2</td>
-    <td>0.12.2</td>
-    <td>Not supported</td>
-  </tr>
-</table>
-
+The current information for the buildpack can be found at it's [Github release page](https://github.com/cloudfoundry/ruby-buildpack/releases).
+The buildpack currently uses a default ruby version of `2.2.2`. To override this value for your app, simply put a ruby declaration in your Gemfile as normal. The same applies to using a jruby interpreter as well.
+ 
 ## <a id='env-var'></a>Environment Variables ##
 
 You can access environments variable programmatically. For example, you can
