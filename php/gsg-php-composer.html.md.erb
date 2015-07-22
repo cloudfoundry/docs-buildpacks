@@ -33,6 +33,8 @@ The buildpack runs with a set of default values for Composer. You can adjust the
 | COMPOSER\_BIN\_DIR           | Allows you to override the default value used by the buildpack. This is passed through to Composer and instructs it where to place executables from packages. Defaults to `{BUILD_DIR}/php/bin`.                                                                                                                                                                                                     |
 | COMPOSER\_CACHE\_DIR         | Allows you to override the default value used by the buildpack. This is passed through to Composer and instructs it where to place its cache files. Generally you should not change this value. The default is `{CACHE_DIR}/composer` which is a subdirectory of the cache folder passed in to the buildpack. Composer cache files will be restored on subsequent application pushes. |
 
+By default, the PHP buildpack will utilize composer files (json, lock) that reside inside the root directory or the directory specified as `WEBDIR` in your `options.json`. In the event that you have your composer files inside your app but not in the default directories, then you can specify this custom location via an environment variable for your app called `COMPOSER_PATH` (relative to the app root directory). Please note that your composer lock and json files must be in the same directory.
+
 ## <a id="github-api-limits"></a> Github API Request Limits
 
 Composer uses Github's API to retrieve zip files for installation into the application folder. If you do not vendor dependencies before pushing an app, Composer will fetch dependencies during staging using the Github API.
