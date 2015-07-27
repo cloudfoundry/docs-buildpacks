@@ -329,8 +329,8 @@ configure it manually.
 For information about using and extending the Ruby buildpack in Cloud Foundry,
 see [the ruby-buildpack Github repo](https://github.com/cloudfoundry/ruby-buildpack).
 
-The current information for the buildpack can be found at it's [Github release page](https://github.com/cloudfoundry/ruby-buildpack/releases).
-The buildpack currently uses a default ruby version of `2.2.2`. To override this value for your app, simply put a ruby declaration in your Gemfile as normal. The same applies to using a jruby interpreter as well.
+The current information for the buildpack can be found at its [Github release page](https://github.com/cloudfoundry/ruby-buildpack/releases).
+The buildpack currently uses a default ruby version of `2.2.2`. To override this value for your app, simply put a ruby declaration in your Gemfile. The same applies to using a jruby interpreter as well.
  
 ## <a id='env-var'></a>Environment Variables ##
 

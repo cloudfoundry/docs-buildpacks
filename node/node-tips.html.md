@@ -112,7 +112,7 @@ Refer to [Configure Service Connections for Node.js](./node-service-bindings.htm
 For information about using and extending the Node.js buildpack in Cloud
 Foundry, see https://github.com/cloudfoundry/nodejs-buildpack
 
-The current information for the buildpack can be found at it's [Github release page](https://github.com/cloudfoundry/nodejs-buildpack/releases).
+The current information for the buildpack can be found at its [Github release page](https://github.com/cloudfoundry/nodejs-buildpack/releases).
 The buildpack currently uses a default node.js version of `0.12.7`. To specify the versions of Node.js and npm an application requires, edit the application’s `package.json`, as described in “node.js and npm versions” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack).
  
 ## <a id='env-var'></a>Environment Variables ##
