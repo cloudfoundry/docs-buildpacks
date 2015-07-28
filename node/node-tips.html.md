@@ -112,24 +112,9 @@ Refer to [Configure Service Connections for Node.js](./node-service-bindings.htm
 For information about using and extending the Node.js buildpack in Cloud
 Foundry, see https://github.com/cloudfoundry/nodejs-buildpack
 
-The table below lists:
-
-* **Resource** --- The software installed by the buildpack.
-* **Available Versions** --- The versions of each software resource that are available from the buildpack.
-* **Installed by Default** --- The version of each software resource that is installed by default.
-* **To Install a Different Version** --- How to change the buildpack to install a different version of a software resource.
-
-----------------------------
-
-As of [version 1.3.1](https://github.com/cloudfoundry/nodejs-buildpack/releases/tag/v1.3.1), the Node.js buildpack's available dependencies are:
-
-| Resource | Available Versions | Installed by Default | To Install a Different Version
-| --------- | --------- | --------- |---------
-| Node.js | 0.12.2<br>0.12.1<br>0.11.16<br>0.11.15<br>0.10.38<br>0.10.37<br>0.9.12<br>0.9.11<br>0.8.28<br>0.8.27 | 0.12.2 | To change the default version installed by the buildpack, see “hacking” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack). <br><br>To specify the versions of Node.js and npm an application requires, edit the application’s `package.json`, as described in “node.js and npm versions” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack).
-| npm | 2.7.4-1.3.2 | 2.7.4 | Edit the application’s `package.json`, as described in “node.js and npm <br>versions” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack).
-
-* The buildpack will use the version of npm bootstrapped with the node version your app is using.
-
+The current information for the buildpack can be found at its [Github release page](https://github.com/cloudfoundry/nodejs-buildpack/releases).
+The buildpack currently uses a default node.js version of `0.12.7`. To specify the versions of Node.js and npm an application requires, edit the application’s `package.json`, as described in “node.js and npm versions” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack).
+ 
 ## <a id='env-var'></a>Environment Variables ##
 
 You can access environments variable programmatically.
