@@ -4,14 +4,16 @@ title: Tips for Node.js Applications
 
 _This page assumes you are using cf CLI v6._
 
-This topic provides Node-specific information to supplement the general guidelines in the  [Deploy an Application](../../devguide/deploy-apps/deploy-app.html) topic.
+This topic provides Node-specific information to supplement the general guidelines in the [Deploy an Application](../../devguide/deploy-apps/deploy-app.html) topic.
 
 ## <a id='packagejson'></a> Application Package File ##
 
 Cloud Foundry expects a `package.json` in your Node.js application.
 You can specify the version of Node.js you want to use in the `engine` node of
 your `package.json` file.
-As of April, 2015, and build pack version 1.3 Cloud Foundry uses 0.12.2 as the default. See [the github](https://github.com/cloudfoundry/nodejs-buildpack) page for the most up to date information.
+As of April, 2015, and build pack version 1.3, Cloud Foundry uses 0.12.2 as the
+default.
+See the GitHub [Node.js buildpack page](https://github.com/cloudfoundry/nodejs-buildpack) for current information.
 
 Example `package.json` file:
 
@@ -33,11 +35,10 @@ Example `package.json` file:
 }
 ~~~
 
-
 ## <a id='port'></a> Application Port ##
 
-You need to use the PORT environment variable to determine which
-port your application should listen on.
+You must use the PORT environment variable to determine which port your
+application should listen on.
 In order to also run your application locally, you may want to make port 3000
 the default:
 
@@ -50,8 +51,8 @@ app.listen(process.env.VCAP_APP_PORT || 3000);
 ## <a id='start'></a> Application Start Command ##
 
 Node.js applications require a start command.
-You can specify a Node.js applications's web start command in a Procfile or the
-application deployment manifest.
+You can specify a Node.js applications's web start command in a Procfile or in
+the application deployment manifest.
 
 You will be asked if you want to save your configuration the first time you
 deploy.
@@ -69,7 +70,7 @@ applications:
 
 Alternately, specify the start command with `cf push -c`.
 
-<pre class="termainl">
+<pre class="terminal">
 $ cf push my-app -c "node my-app.js"
 </pre>
 
@@ -99,7 +100,7 @@ applications:
 
 Alternately, specify the buildpack on the command line with `cf push -b`:
 
-<pre class="termainl">
+<pre class="terminal">
 $ cf push my-app -b https://github.com/cloudfoundry/nodejs-buildpack
 </pre>
 
@@ -110,11 +111,12 @@ Refer to [Configure Service Connections for Node.js](./node-service-bindings.htm
 ## <a id='buildpack'></a> About the Node.js Buildpack ##
 
 For information about using and extending the Node.js buildpack in Cloud
-Foundry, see https://github.com/cloudfoundry/nodejs-buildpack
+Foundry, see the [nodejs-buildpack repo](https://github.com/cloudfoundry/nodejs-buildpack).
 
-The current information for the buildpack can be found at its [Github release page](https://github.com/cloudfoundry/nodejs-buildpack/releases).
-The buildpack currently uses a default node.js version of `0.12.7`. To specify the versions of Node.js and npm an application requires, edit the application’s `package.json`, as described in “node.js and npm versions” on [our Github repo](https://github.com/cloudfoundry/nodejs-buildpack).
- 
+You can find current information about this buildpack on the Node.js buildpack [release page](https://github.com/cloudfoundry/nodejs-buildpack/releases) in GitHub.
+
+The buildpack uses a default Node.js version of `0.12.7`. To specify the versions of Node.js and npm an application requires, edit the application’s `package.json`, as described in "node.js and npm versions" in the [nodejs-buildpack repo](https://github.com/cloudfoundry/nodejs-buildpack).
+
 ## <a id='env-var'></a>Environment Variables ##
 
 You can access environments variable programmatically.
@@ -127,7 +129,7 @@ process.env.VCAP_SERVICES
 
 Environment variables available to you include both those [defined by the DEA]
 (../../devguide/deploy-apps/environment-variable.html#dea-set)
-and those defined by the Node.js buildpack, described below.
+and those defined by the Node.js buildpack, as described below.
 
 ### <a id='BUILD-DIR'></a>BUILD_DIR ###
 Directory into which Node.js is copied each time a Node.js application is run.
@@ -141,5 +143,3 @@ Directory that Node.js uses for caching.
 The system path used by Node.js.
 
 `PATH=/home/vcap/app/bin:/home/vcap/app/node_modules/.bin:/bin:/usr/bin`
-
-

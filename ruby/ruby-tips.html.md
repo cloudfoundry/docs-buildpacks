@@ -8,13 +8,13 @@ applications.
 
 ## <a id='bundler'></a>Application Bundling ##
 
-You need to run <a href="http://gembundler.com/">Bundler</a> to create a
-`Gemfile` and a `Gemfile.lock`.
+You must run <a href="http://gembundler.com/">Bundler</a> to create a `Gemfile`
+and a `Gemfile.lock`.
 These files must be in your application before you push to Cloud Foundry.
 
 ## <a id='config'></a>Rack Config File ##
 
-For Rack and Sinatra you need a `config.ru` file like this:
+For Rack and Sinatra, you must have a `config.ru` file. For example:
 
 ~~~ruby
 require './hello_world'
@@ -24,12 +24,11 @@ run HelloWorld.new
 ## <a id='precompile'></a>Asset Precompilation ##
 
 Cloud Foundry supports the Rails asset pipeline.
-If you do not precompile assets before deploying your application, Cloud
-Foundry will precompile them when staging the application.
-Precompiling before deploying reduces the time it takes to stage an
-application.
+If you do not precompile assets before deploying your application, Cloud Foundry
+will precompile them when staging the application.
+Precompiling before deploying reduces the time it takes to stage an application.
 
-Use this command to precompile assets before deployment:
+Use the following command to precompile assets before deployment:
 
 <pre class="terminal">
 rake assets:precompile
@@ -38,17 +37,17 @@ rake assets:precompile
 Note that the Rake precompile task reinitializes the Rails application.
 This could pose a problem if initialization requires service connections or
 environment checks that are unavailable during staging.
-To prevent reinitialization during precompilation, add this line to
+To prevent reinitialization during precompilation, add the following line to
 `application.rb`:
 
 ~~~ruby
 config.assets.initialize_on_precompile = false
 ~~~
 
-If the `assets:precompile` task fails, Cloud Foundry uses live compilation
-mode, the alternative to asset precompilation.
+If the `assets:precompile` task fails, Cloud Foundry uses live compilation mode,
+the alternative to asset precompilation.
 In this mode, assets are compiled when they are loaded for the first time.
-You can force live compilation by adding this line to `application.rb`.
+You can force live compilation by adding the following line to `application.rb`.
 
 ~~~ruby
 Rails.application.config.assets.compile = true
@@ -56,24 +55,25 @@ Rails.application.config.assets.compile = true
 
 ## <a id='rake'></a>Running Rake Tasks ##
 
-Cloud Foundry does not provide a mechanism for running a Rake task on a
-deployed application.
+Cloud Foundry does not provide a mechanism for running a Rake task on a deployed
+application.
 If you need to run a Rake task that must be performed in the Cloud Foundry
-environment (rather than locally before deploying or redeploying), you can
-configure the command that Cloud Foundry uses to start the application to
-invoke the Rake task.
+environment, rather than locally before deploying or redeploying, you can
+configure the command that Cloud Foundry uses to start the application to invoke
+the Rake task.
 
-An application's start command is configured in the application's manifest
-file, `manifest.yml`, with the `command` attribute.
+An application's start command is configured in the application's manifest file,
+`manifest.yml`, using the `command` attribute.
 
-If you have previously deployed the application, the application manifest
-should already exist.
+If you have previously deployed the application, the application manifest should
+already exist.
 There are two ways to create a manifest.
-You can manually create the file and save it in the application's root
-directory before you deploy the application for the first time.
-If you do not manually create the manifest file, the cf CLI will prompt you to supply
-deployment settings when you first push the application, and will create and
-save the manifest file for you, with the settings you specified interactively.
+You can manually create the file and save it in the application's root directory
+before you deploy the application for the first time.
+If you do not manually create the manifest file, the cf CLI will prompt you to
+supply deployment settings when you first push the application, and will create
+and save the manifest file for you, with the settings you specified
+interactively.
 For more information about application manifests, and supported attributes, see
 [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html).
 
@@ -327,11 +327,16 @@ configure it manually.
 ## <a id='buildpack'></a>Additional Ruby Buildpack Information ##
 
 For information about using and extending the Ruby buildpack in Cloud Foundry,
-see [the ruby-buildpack Github repo](https://github.com/cloudfoundry/ruby-buildpack).
+see the [ruby-buildpack GitHub repo](https://github.com/cloudfoundry/ruby-buildpack).
 
-The current information for the buildpack can be found at its [Github release page](https://github.com/cloudfoundry/ruby-buildpack/releases).
-The buildpack currently uses a default ruby version of `2.2.2`. To override this value for your app, simply put a ruby declaration in your Gemfile. The same applies to using a jruby interpreter as well.
- 
+You can find current information about this buildpack on the Ruby buildpack
+[release page](https://github.com/cloudfoundry/ruby-buildpack/releases) in
+GitHub.
+
+The buildpack uses a default Ruby version of `2.2.2`.
+To override this value for your app, add a Ruby declaration in the Gemfile.
+This also applies to using a JRuby interpreter.
+
 ## <a id='env-var'></a>Environment Variables ##
 
 You can access environments variable programmatically. For example, you can
@@ -353,7 +358,7 @@ Location where Bundler installs binaries.
 
 ### <a id='BUNDLE-GEMFILE'></a>BUNDLE_GEMFILE ###
 
-Path to application’s gemfile.
+Path to application's Gemfile.
 
 `BUNDLE_GEMFILE:/home/vcap/app/Gemfile`
 
