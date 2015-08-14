@@ -15,7 +15,7 @@ Cloud Foundry auto-reconfigures applications only if the following items are tru
 
 With auto-reconfiguration, Cloud Foundry creates the database or connection factory bean itself, using its own values for properties such as host, port, username and so on. For example, if you have a single `javax.sql.DataSource` bean in your application context that Cloud Foundry auto-reconfigures and binds to its own database service, Cloud Foundry does not use the username, password and driver URL you originally specified. Instead, it uses its own internal values. This is transparent to the application, which really only cares about having a relational database to which it can write data but does not really care what the specific properties are that created the database. Also note that if you have customized the configuration of a service, such as the pool size or connection properties, Cloud Foundry auto-reconfiguration ignores the customizations.
 
-For more information on auto-reconfiguration of specific services types, see the [Service-Specific Details](#services) section.
+For more information about auto-reconfiguration of specific services types, see the [Service-Specific Details](#services) section.
 
 ## <a id='manual'></a>Manual Configuration ##
 
