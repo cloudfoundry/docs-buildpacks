@@ -56,12 +56,12 @@ Cloud Foundry as a candidate for `DATABASE_URL`:
 
 Cloud Foundry uses the first candidate found to populate `DATABASE_URL`.
 
-## <a id='rails-applications-have-autoconfigured-database-yml'></a>Rails Applications Have Auto-Configured database.yml ##
+## <a id='older-rails-applications-have-autoconfigured-database-yml'></a>Older Rails Applications Have Auto-Configured database.yml ##
 
-During staging, the Ruby buildpack replaces your `database.yml` with one based 
+On Rails < 4, the Ruby buildpack replaces your `database.yml` with one based 
 on the `DATABASE_URL` variable.
 
-<p class='note'><strong>Note</strong>: The Ruby buildpack ignores the contents 
+<p class='note'><strong>Note</strong>: On Rails < 4, the Ruby buildpack ignores the contents 
   of any <code>database.yml</code> that you provide and overwrites it during 
   staging.</p>
 
