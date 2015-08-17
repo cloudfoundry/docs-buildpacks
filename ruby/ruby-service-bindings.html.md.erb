@@ -4,20 +4,20 @@ title: Configure Service Connections for Ruby
 
 _This page assumes that you are using cf CLI v6._
 
-After you create a service instance and bind it to an application, you must
+After you create a service instance and bind it to an application, you must 
 configure the application to connect to the service.
 
 ## <a id='cf-app-utils'></a>Query VCAP\_SERVICES with cf-app-utils ##
 
-The `cf-apps-utils` gem allows your application to search for credentials
-from the `VCAP_SERVICES` environment variable by name, tag, or label.
+The `cf-apps-utils` gem allows your application to search for credentials from 
+the `VCAP_SERVICES` environment variable by name, tag, or label.
 
 * [cf-app-utils-ruby](https://github.com/cloudfoundry/cf-app-utils-ruby)
 
 ## <a id='vcap-services-defines-database-url'></a>VCAP\_SERVICES defines DATABASE\_URL ##
 
-At runtime, the Ruby buildpack creates a `DATABASE_URL` environment variable for 
-every Ruby application based on the 
+At runtime, the Ruby buildpack creates a `DATABASE_URL` environment variable 
+for every Ruby application based on the 
 [VCAP_SERVICES](../../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable.
 
 Example VCAP_SERVICES:
@@ -35,14 +35,15 @@ Example VCAP_SERVICES:
       ]
     }
 
-Based on this `VCAP_SERVICES`, the Ruby buildpack creates the following `DATABASE_URL` environment variable:
+Based on this `VCAP_SERVICES`, the Ruby buildpack creates the following 
+`DATABASE_URL` environment variable:
 
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
 
 The Ruby buildpack uses the structure of the `VCAP_SERVICES` environment 
 variable to populate `DATABASE_URL`. 
-Any service containing a JSON object of the following form will be recognized by 
-Cloud Foundry as a candidate for `DATABASE_URL`:
+Any service containing a JSON object with the following form will be recognized 
+by Cloud Foundry as a candidate for `DATABASE_URL`:
 
     {
       "some-service": [
@@ -61,9 +62,7 @@ Cloud Foundry uses the first candidate found to populate `DATABASE_URL`.
 On Rails < 4, the Ruby buildpack replaces your `database.yml` with one based 
 on the `DATABASE_URL` variable.
 
-<p class='note'><strong>Note</strong>: On Rails < 4, the Ruby buildpack ignores the contents 
-  of any <code>database.yml</code> that you provide and overwrites it during 
-  staging.</p>
+<p class='note'><strong>Note</strong>: On Rails < 4, the Ruby buildpack ignores the contents  of any <code>database.yml</code> that you provide and overwrites it during staging.</p>
 
 ## <a id='configuring-non-rails-applications'></a>Configuring Non-Rails Applications ##
 
@@ -84,21 +83,22 @@ Use the hash key for the service to obtain the connection credentials from
 - For services that use the <%= vars.api_v2_format %>, the hash key is the name 
   of the service.
 
-- For services that use the <%= vars.api_v1_format %>, the hash key is formed by 
-  combining the service provider and version, in the format PROVIDER-VERSION.
+- For services that use the <%= vars.api_v1_format %>, the hash key is formed 
+  by combining the service provider and version, in the format PROVIDER-VERSION.
 
-  For example, the hash key for service provider "p-mysql" with version "n/a" is is `p-mysql-n/a`.
+  For example, the service provider "p-mysql" with version "n/a" forms the hash 
+  key `p-mysql-n/a`.
 
 ## <a id='migrate'></a>Seed or Migrate Database ##
 
-Before you can use your database the first time, you must create and populate
+Before you can use your database the first time, you must create and populate 
 or migrate it. 
 For more information, see [Migrating a Database in Cloud Foundry](../../devguide/services/migrate-db.html).
 
 ## <a id='troubleshooting'></a>Troubleshooting ##
 
-To aid in troubleshooting issues connecting to your service, you can examine the 
-environment variables and log messages Cloud Foundry records for your 
+To aid in troubleshooting issues connecting to your service, you can examine 
+the environment variables and log messages Cloud Foundry records for your 
 application.
 
 ### <a id='view-env'></a>View Environment Variables ###
@@ -166,8 +166,8 @@ Run `cf logs APPNAME --recent` to dump the most recent logs to standard output:
   1:27:17.02 [App/0]  OUT 17,026  INFO Version:27 - HV001: Hibernate Validator 4.3.0.Final
 </pre>
 
-If you encounter the error "A fatal error has occurred. Please see the Bundler
-troubleshooting documentation," update your version of bundler and run `bundle install` again.
+If you encounter the error, "A fatal error has occurred. Please see the Bundler
+troubleshooting documentation," update your version of bundler and run `bundle install`.
 
 <pre class="terminal">
   $ gem update bundler
