@@ -23,7 +23,7 @@ This section describes using the CLI to configure a PostgreSQL managed service i
 
 Run `cf marketplace` to view managed and user-provided services and plans available to you.
 
-Run `cf create-service [SERVICE] [PLAN] [SERVICE_INSTANCE]` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
+Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
 
 ### Bind a Service Instance ###
 
@@ -46,15 +46,15 @@ You can specify app deployment options in a manifest that the `cf push` command 
 
 ## <a id="login"></a> Step 3: Log in and Target the API Endpoint ##
 
-Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+Run `cf login -a API_ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
   <%=vars.gen_GSG%>
 
 ## <a id="deploy"></a> Step 4: Deploy Your App ##
 
-From the root directory of your application, run `cf push [APP-NAME] --random-route` to deploy your application.
+From the root directory of your application, run `cf push APP-NAME --random-route` to deploy your application.
 
-`cf push [APP-NAME]` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your [APP-NAME] and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
+`cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. Use the following options to help create a unique URL:
 
@@ -62,7 +62,7 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 * `--random-route` to create a URL that includes the app name and random words.
 * `cf help push` to view other options for this command.
 
-To view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
+To view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
 In the terminal output of the `cf push` command, the `urls` field of the `App started` block contains the app URL. This is the `HOST_NAME` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Once your app deploys, use this URL to access the app online.
 
@@ -73,11 +73,11 @@ You’ve deployed an app to <%=vars.product_short%>! Consult the sections below 
 
 ### Test a Deployed App ###
 
-Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
+Use the cf <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you could edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
 ### Manage Your Application with the cf CLI ###
 
-Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
+Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the cf CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
 
 ### Troubleshooting ###

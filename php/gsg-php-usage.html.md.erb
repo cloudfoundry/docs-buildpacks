@@ -16,14 +16,14 @@ This document is intended to guide you through the process of deploying PHP appl
 ### A First PHP Application
 
 ```bash
-mkdir my-php-app
-cd my-php-app
-cat << EOF > index.php
+$ mkdir my-php-app
+$cd my-php-app
+$ cat << EOF > index.php
 <?php
   phpinfo();
 ?>
 EOF
-cf push my-php-app -m 128M
+$ cf push my-php-app -m 128M
 ```
 
 Change "my-php-app" to a unique name, otherwise you get an error and the push fails.
@@ -34,7 +34,8 @@ Here is a breakdown of what happens when you run the example above:
 
   - On your workstation...
     - It creates a new directory and one PHP file, which calls `phpinfo()`
-    - Run `cf` to push your application. This will create a new application with a memory limit of 128M (more than enough here) and upload our test file.
+    - Run `cf push` to push your application. This will create a new 
+application with a memory limit of 128M and upload our test file.
   - On Cloud Foundry...
     - The buildpack detects that your app is a php app
     - The buildpack is executed.
@@ -71,7 +72,7 @@ total 0
 -rw-r--r--  1 daniel  staff     0B Feb 27 21:40 my.class.php  <-- not public, http://app.cfapps.io/lib/my.class.php == 404
 ```
 
-This comes with a catch. If your project legitimately has a `lib` directory, these files will not be publicly available because the buildpack does not copy a top-level `lib` directory into the `WEBDIR` folder.  If your project has a `lib` directory that needs to be publicly available, then you have two options as follows:
+This comes with a catch. If your project legitimately has a `lib` directory, these files will not be publicly available because the buildpack does not copy a top-level `lib` directory into the `WEBDIR` folder. If your project has a `lib` directory that needs to be publicly available, then you have two options as follows:
 
 #### Option #1
 
@@ -136,12 +137,12 @@ The `.extensions` directory should also exist at the root of your project direct
 
 There are a couple of easy ways to debug the buildpack:
 
-  0. Check the output from the buildpack.  It writes some basic information to stdout, like the files that are being downloaded.  It writes information should something fail, specifically, stack traces.
+  0. Check the output from the buildpack. It writes some basic information to stdout, like the files that are being downloaded. It writes information should something fail, specifically, stack traces.
 
-  0. Check the logs from the buildpack.  The buildpack writes logs to disk. Retrieve them with the `cf files` command, as the following example shows:
+  0. Check the logs from the buildpack. The buildpack writes logs to disk. Retrieve them with the `cf files` command, as the following example shows:
 
     ```
-    cf files <app> app/.bp/logs/bp.log
+    $ cf files APP app/.bp/logs/bp.log
     ```
 
   This log is more detailed than the stdout output, however it is still terse.
