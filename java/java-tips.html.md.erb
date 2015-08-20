@@ -22,7 +22,7 @@ To build the WAR file and deploy it, run the following:
 
 <pre class="terminal">
 $ grails prod war
-$ cf push &lt;application-name&gt; -p target/&lt;application-name&gt;-&lt;version&gt;.war
+$ cf push my-application; -p target/my-application-version.war
 </pre>
 
 ## <a id='groovy'></a>Groovy ##
@@ -35,7 +35,7 @@ the `distZip` style. To build the ZIP and deploy it, run the following:
 
 <pre class="terminal">
 $ gradle distZip
-$ cf push &lt;application-name&gt; -p build/distributions/&lt;application-name&gt;.zip
+$ cf push my-application -p build/distributions/my-application.zip
 </pre>
 
 ### <a id='raw-groovy'></a>Raw Groovy ###
@@ -44,7 +44,7 @@ supporting files can be run without any other work.
 To deploy them, run the following:
 
 <pre class="terminal">
-$ cf push &lt;application-name&gt;
+$ cf push my-application
 </pre>
 
 ## <a id='java-main'></a>Java Main ##
@@ -57,7 +57,7 @@ To build and deploy the JAR, run the following:
 
 <pre class="terminal">
 $ mvn package
-$ cf push &lt;application-name&gt; -p target/&lt;application-name&gt;-&lt;application-version&gt;.jar
+$ cf push my-application -p target/my-application-version.jar
 </pre>
 
 ### <a id='java-main-gradle'></a>Gradle ###
@@ -66,7 +66,7 @@ To build and deploy the JAR, run the following:
 
 <pre class="terminal">
 $ gradle build
-$ cf push &lt;application-name&gt; -p build/libs/&lt;application-name&gt;-&lt;application-version&gt;.jar
+$ cf push my-application -p build/libs/my-application-version.jar
 </pre>
 
 ## <a id='play-framework'></a>Play Framework ##
@@ -76,7 +76,7 @@ style and deploy it, run the following:
 
 <pre class="terminal">
 $ play dist
-$ cf push &lt;application-name&gt; -p target/universal/&lt;application-name&gt;-&lt;application-version&gt.zip
+$ cf push my-application -p target/universal/my-application-version.zip
 </pre>
 
 ## <a id='spring-boot-cli'></a>Spring Boot CLI ##
@@ -85,7 +85,7 @@ To deploy then, run the following:
 
 <pre class="terminal">
 $ spring grab *.groovy
-$ cf push &lt;application-name&gt;
+$ cf push my-application
 </pre>
 
 ## <a id='servlet'></a>Servlet ##
@@ -97,7 +97,7 @@ To build and deploy the WAR, run the following:
 
 <pre class="terminal">
 $ mvn package
-$ cf push &lt;application-name&gt; -p target/&lt;application-name&gt;-&lt;application-version&gt;.war
+$ cf push my-application -p target/my-application-version.war
 </pre>
 
 ### <a id='servlet-gradle'></a>Gradle ###
@@ -106,7 +106,7 @@ To build and deploy the JAR, run the following:
 
 <pre class="terminal">
 $ gradle build
-$ cf push &lt;application-name&gt; -p build/libs/&lt;application-name&gt;-&lt;application-version&gt;.war
+$ cf push my-application -p build/libs/my-application-version.war
 </pre>
 
 ## <a id='services'></a>Binding to Services ##
@@ -129,7 +129,7 @@ Information about binding apps to services can be found on the following pages:
 ## <a id='buildpack'></a>Java Buildpack ##
 
 For detailed information about using, configuring, and extending the Cloud
-Foundry Java buildpack, see <https://github.com/cloudfoundry/java-buildpack>.
+Foundry Java buildpack, see [https://github.com/cloudfoundry/java-buildpack](https://github.com/cloudfoundry/java-buildpack).
 
 ## <a id='design'></a>Design ##
 The Java Buildpack is designed to convert artifacts that run on the JVM into
@@ -141,7 +141,7 @@ The collection of services bound to the application is also analyzed and any
 dependencies related to those services are also downloaded.
 
 As an example, pushing a WAR file that is bound to a PostgreSQL database and New
-Relic (for performance monitoring) would result in the following:
+Relic for performance monitoring would result in the following:
 
 <pre class="terminal">
 Initialized empty Git repository in /tmp/buildpacks/java-buildpack/.git/
@@ -201,7 +201,7 @@ For more information about configuring custom buildpacks and manifests, refer to
 the [Custom Buildpacks](../../buildpacks/custom.html) and [Deploying with
 Application Manifests](../../devguide/deploy-apps/manifest.html) topics.
 
-When your app is running, you can use the `cf app [APP_NAME]` command to see
+When your app is running, you can use the `cf app APP-NAME` command to see
 memory utilization.
 
 ### <a id='upload'></a>Troubleshoot Failed Upload ###
@@ -235,7 +235,7 @@ unnecessary files, in addition to the WAR.
 When you push a Java application, specify the path to the WAR:
 
     <pre class="terminal">
-    $ cf push MY-APP -p /Path/To/WAR/file
+    $ cf push MY-APP -p PATH/TO/WAR-FILE
     </pre>
 
     You can determine whether or not the path was specified for a previously
@@ -258,7 +258,7 @@ When you push a Java application, specify the path to the WAR:
 
 Because of the way that Cloud Foundry deploys your applications and isolates them, it is not possible to connect to your application with the remote Java debugger. Instead, instruct the application to connect to the Java debugger on your local machine.
 
-Here are the instructions for setting up remote debugging when using bosh-lite or a CloudFoundry installation.
+Here are the instructions for setting up remote debugging when using BOSH Lite or a CloudFoundry installation.
 
 1. Open your project in [Eclipse](./sts.html).
 1. Right-click on your project, go to **Debug as** and pick **Debug Configurations**.
@@ -270,10 +270,10 @@ The debugger should now be running. If you switch to the Debug perspective, you 
 
 Next, push your application to Cloud Foundry and instruct Cloud Foundry to connect to the debugger running on your local machine using the following instructions:
 
-1. Edit your manifest.yml file. Set the instances count to 1. If you set this greater than one, multiple applications try to connect to your debugger.
-1. Also in manifest.yml, add the [`env` section](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) and create a variable called `JAVA_OPTS`.
-1. Add the remote debugger configuration to the `JAVA_OPTS` variable: `-agentlib:jdwp=transport=dt_socket,address=<your-ip>:<your-port>`.
-1. Save the manifest.yml file.
+1. Edit your `manifest.yml` file. Set the instances count to 1. If you set this greater than one, multiple applications try to connect to your debugger.
+1. Also in `manifest.yml`, add the [`env` section](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) and create a variable called `JAVA_OPTS`.
+1. Add the remote debugger configuration to the `JAVA_OPTS` variable: `-agentlib:jdwp=transport=dt_socket,address=YOUR-IP-ADDRESS:YOUR-PORT`.
+1. Save the `manifest.yml` file.
 1. Run `cf push`.
 
 Upon completion, you should see that your application has started and is now connected to the debugger running in your IDE. You can now add breakpoints and interrogate the application just as you would if it were running locally.
@@ -292,7 +292,7 @@ because it checks the health of the application before the application can
 accept requests.
 By default, the DEA health check fails after a timeout threshold of 60 seconds.
 
-To resolve this issue, use `cf push APPNAME` with the `-t TIMEOUT-THRESHOLD`
+To resolve this issue, use `cf push APP-NAME` with the `-t TIMEOUT-THRESHOLD`
 option to increase the timeout threshold.
 Specify TIMEOUT-THRESHOLD in seconds.
 
