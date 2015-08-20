@@ -10,7 +10,7 @@ Run `git clone https://github.com/cloudfoundry-samples/rails_sample_app` to clon
 
 ### Step 2: Log in and Target the API Endpoint ###
 
-Run `cf login -a [API_ENDPOINT]` to log in and target the API endpoint. Enter your login credentials and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+Run `cf login -a API-ENDPOINT` to log in and target the API endpoint. Enter your login credentials and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%>
 
@@ -37,11 +37,11 @@ Run `cf create-service elephantsql turtle rails-postgres`. This creates a servic
 
 ### Step 4: Deploy the App ###
 
-From the root directory of your application, run `cf push rails_sample_app -n [HOST]` to deploy the app.
+From the root directory of your application, run `cf push rails_sample_app -n HOST` to deploy the app.
 
 Example: `cf push rails_sample_app -n jc0825-rails`
 
-`cf push [APP-NAME]` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your [APP-NAME] and DOMAIN is specified by your administrator. Your DOMAIN is `<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
+`cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is `<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. Use the following options to help create a unique URL:
 
@@ -49,7 +49,7 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 * `--random-route` to create a URL that includes the app name and random words.
 * `cf help push` to view other options for this command.
 
-If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
+If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
 In the terminal output of the `cf push` command, the `urls` field of the `App started` block contains the app URL. This is the `HOST` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Once your app deploys, use this URL to access the app online.
 
