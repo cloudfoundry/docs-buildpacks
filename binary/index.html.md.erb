@@ -16,7 +16,7 @@ buildpack.
 For example:
 
 ```bash
-cf push my_app -b https://github.com/cloudfoundry/binary-buildpack.git
+$ cf push my_app -b https://github.com/cloudfoundry/binary-buildpack.git
 ```
 
 You can provide Cloud Foundry with the shell command to execute your binary in
@@ -31,7 +31,7 @@ specifies a `web` task:
 * **Command line**: Use `cf push APP-NAME` with the `-c` option:
 
    	```bash
-   	cf push my_app -c './app' -b binary-buildpack
+   	$ cf push my_app -c './app' -b binary-buildpack
    	```
 
 ## Compiling your Binary ##
@@ -67,14 +67,14 @@ To boot a docker container running the cflinuxfs2 filesystem, run the following
 command:
 
 ```bash
-docker run -it cloudfoundry/cflinuxfs2 bash
+$ docker run -it cloudfoundry/cflinuxfs2 bash
 ```
 
 To boot a docker container running the lucid64 filesystem, run the following
 command:
 
 ```bash
-docker run -it cloudfoundry/lucid64 bash
+$ docker run -it cloudfoundry/lucid64 bash
 ```
 
 To compile the above Go application on the rootfs, golang must be installed. `apt-get install golang` and `go build app.go` will produce an `app` binary.
@@ -82,7 +82,7 @@ To compile the above Go application on the rootfs, golang must be installed. `ap
 When deploying your binary to Cloud Foundry, use `cf push` with the `-s` option to specify the root filesystem it should run against.
 
 ```bash
-cf push my_app -s (cflinuxfs2|lucid64)
+$ cf push my_app -s (cflinuxfs2|lucid64)
 ```
 
 To run docker on Mac OS X, we recommend [boot2docker](http://boot2docker.io/).
