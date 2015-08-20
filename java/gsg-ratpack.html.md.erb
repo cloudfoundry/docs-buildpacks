@@ -52,9 +52,9 @@ Declare all the dependency tasks for your app in the build script of your chosen
 Use the `cf push -m` command to specify the amount of memory that should be allocated to the application. Memory allocated this way is done in preset amounts of `64M`, `128M`, `256M`, `512M`, `1G`, or `2G`. For example:
 
 ```
-cf push -m 128M
+$ cf push -m 128M
 ```
-When your app is running, you can use the `cf app [APP_NAME]` command to see memory utilization.
+When your app is running, you can use the `cf app APP_NAME` command to see memory utilization.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.</p>
 
@@ -85,10 +85,9 @@ PROCESS_TYPE: COMMAND
 
 You create a Procfile and add a command line for a `web` process type. Store the Procfile in the root directory of your app. The example shows a process type that starts the launch script created by the build process.
 
-
 Example Procfile:
 <pre class="code">
-web: build/install/[PROJECT\_NAME]/bin/[PROJECT\_NAME]
+web: build/install/MY-PROJECT-NAME/bin/MY-PROJECT-NAME
 </pre>
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.</p>
@@ -125,7 +124,7 @@ rediscloud    25mb, 100mb, 1gb, 10gb, 50gb Enterprise-Class Redis for Developers
 
 </pre>
 
-Run `cf create-service [SERVICE] [PLAN] [SERVICE_INSTANCE]` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
+Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
 
 <p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 25mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>25mb</code> plan, as the example below shows.
 
@@ -169,7 +168,7 @@ Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/m
 
 ### Step 7: Log in and Target the API Endpoint ###
 
-Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+Run `cf login -a API_ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%>
 
@@ -179,11 +178,11 @@ Run `cf login -a [API_ENDPOINT]`, enter your login credentials, and select a spa
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
-From the root directory of your application, run `cf push [APP-NAME] -p [PATH-TO-FILE.distZip]` to deploy your application.
+From the root directory of your application, run `cf push APP-NAME -p PATH-TO-FILE.distZip` to deploy your application.
 
 <p class="note"><strong>Note</strong>: You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="./java-tips.html">Tips for Java Developers</a> topic.</p>
 
-`cf push [APP-NAME]` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your [APP-NAME] and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
+`cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
 The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. Use the following options to help create a unique URL:
 
@@ -191,14 +190,14 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 * `--random-route` to create a URL that includes the app name and random words
 * `cf help push` to view other options for this command
 
-If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs [APP-NAME]`.
+If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
 <p class="tip"><strong>Sample App Step</strong><br />
 1. Change to the <code>app</code>directory, and run <code>./gradlew distZip</code> to build the app.
 <br />
-2. Run <code>cf push pong_matcher_groovy -n [HOST_NAME]</code> to push the app.
+2. Run <code>cf push pong_matcher_groovy -n HOST_NAME</code> to push the app.
 <br /><br />
 Example: <code>cf push pong_matcher_groovy -n groovy-ratpack-app</code>
 </p>
@@ -210,7 +209,7 @@ The example below shows the terminal output of deploying the <code>pong\_matcher
 
 
 <pre class="terminal">
-$ |master ✗| → cf push pong_matcher_groovy -n groovy-ratpack-app
+$ cf push pong_matcher_groovy -n groovy-ratpack-app
 Using manifest file /Users/example/workspace/pong_matcher_groovy/app/manifest.yml
 
 Creating app pong_matcher_groovy in org Cloud-Apps / space development as clouduser@example.com...
@@ -259,7 +258,7 @@ urls: groovy-ratpack-app.cfapps.io
 
 You’ve deployed an app to <%=vars.product_short%>!
 
-Use the `cf` <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
+Use the cf <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
@@ -312,7 +311,7 @@ For more information, refer to the [Build Tool Integration](./build-tool-int.htm
 
 ##<a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 
-Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help [COMMAND]` for detailed information about a specific command. For more information about using the `cf` CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
+Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the cf CLI, refer to the cf Command Line Interface (CLI) topics, especially the <%=vars.cli_v6%> topic.
 
 <p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
 
@@ -332,6 +331,3 @@ Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run 
 
 * `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
-
-
-
