@@ -51,6 +51,8 @@ $ cf push my-application
 Java applications with a `main()` method can be run provided that they are
 packaged as [self-executable JARs][j].
 
+<p class="note"><strong>Note</strong>: If your application is not web-enabled, you must suppress route creation to avoid a "failed to start accepting connections" error. To suppress route creation, add <code>no-route: true</code> to the application manifest or use the <code>--no-route</code> flag with the <code>cf push</code> command. <br><br>For more information about the <code>no-route</code> attribute, see the <a href="../../devguide/deploy-apps/manifest.html#no-route">Deploying with Application Manifests</a> topic.</p>
+
 ### <a id='java-main-maven'></a>Maven ###
 A Maven build can create a self-executable JAR.
 To build and deploy the JAR, run the following:
