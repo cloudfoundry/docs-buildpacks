@@ -10,6 +10,16 @@ the [go-buildpack GitHub repo](https://github.com/cloudfoundry/go-buildpack).
 You can find current information about this buildpack on the Go buildpack
 [release page](https://github.com/cloudfoundry/go-buildpack/releases) in GitHub.
 
-This buildpack uses a default Go version of `1.4.2`.
-To change the default version, specify a different version in the `Godeps.json`
-file.
+### Specifying a Go version
+
+#### with Godeps
+
+The Go version is saved in `Godeps.json` with the command `godep save`.
+
+#### With .godir
+
+Set the environment variable `GOVERSION` to specify a custom version. For example,
+`cf set-env app-name GOVERSION 1.4.1`.
+
+This buildpack uses a default Go version of `1.4.2` when used with the deprecated
+`.godir` dependency management.
