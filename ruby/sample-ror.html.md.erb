@@ -49,6 +49,11 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 * `--random-route` to create a URL that includes the app name and random words.
 * `cf help push` to view other options for this command.
 
+<p class='note'><strong>Note</strong>:
+	If no hostname is specified using the `-n` switch, the host name of the app url defaults to the app name. However, CF ​allows​ app names to include underscores while web URIs do not. To handle this, CF converts the underscore to hyphen when converting app name to host name.
+</p>
+
+
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
 In the terminal output of the `cf push` command, the `urls` field of the `App started` block contains the app URL. This is the `HOST` you specified with the `-n` flag plus the domain `<%=vars.app_domain%>`. Once your app deploys, use this URL to access the app online.
