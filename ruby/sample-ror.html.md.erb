@@ -50,9 +50,8 @@ The URL for your app must be unique from other apps that <%=vars.product_short%>
 * `cf help push` to view other options for this command.
 
 <p class='note'><strong>Note</strong>:
-	If no hostname is specified using the `-n` switch, the host name of the app url defaults to the app name. However, CF ​allows​ app names to include underscores while web URIs do not. To handle this, CF converts the underscore to hyphen when converting app name to host name.
+	If no hostname is specified using the <code>-n</code> switch, the host name of the app URL defaults to the app name. CF ​allows​ app names, but not app URIs, to include underscores. CF therefore converts underscores to hyphens when setting a default app URL from an app name.
 </p>
-
 
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
