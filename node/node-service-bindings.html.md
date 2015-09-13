@@ -66,7 +66,7 @@ program to connect to your database.
 You must include the appropriate package for the type of services your
 application uses. For example:
 
-* Rabbit MQ via the [ampq](https://github.com/postwait/node-amqp) module
+* Rabbit MQ via the [amqp](https://github.com/postwait/node-amqp) module
 * Mongo via the [mongodb](http://mongodb.github.com/node-mongodb-native/) and
 [mongoose](http://mongoosejs.com/) modules
 * MySQL via the [mysql](https://github.com/felixge/node-mysql) module
@@ -90,7 +90,7 @@ add all of them:
     "mysql": "*",
     "pg": "*",
     "redis": "*",
-    "ampq": "*"
+    "amqp": "*"
   },
   "engines": {
     "node": "0.8.x"
