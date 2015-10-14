@@ -11,6 +11,7 @@ You can find current information about this buildpack on the PHP buildpack
 [release page](https://github.com/cloudfoundry/php-buildpack/releases) in
 GitHub.
 
-The buildpack uses a default PHP version of `5.5.27`.
+The buildpack uses a default PHP version specified in [`.defaults/options.json`](https://github.com/cloudfoundry/php-buildpack/blob/master/defaults/options.json) under the `PHP_VERSION` key.
+
 To change the default version, specify the `PHP_VERSION` key in your app's
 `.bp-config/options.json` file.
