@@ -34,6 +34,13 @@ end
 
 ~~~
 
+Note that the returned STDOUT "framework name" is displayed by the CF CLI when printing the details of an application. Buildpack authors are therefore encouraged to include additional details in this returned framework name, such as buildpack versionning information, and detailed list of configured frameworks and their associated version. See an example of the detailed information returned by the java buildpack:
+                                                                                                                                                                                                                                                                                                                                        
+~~~
+java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
+~~~
+
+
 ### <a id='compile-script'></a>bin/compile ###
 
 The `compile` script builds the droplet that will be run by the DEA and will therefore contain all the components necessary to run the application.
