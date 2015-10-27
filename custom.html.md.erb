@@ -34,12 +34,11 @@ end
 
 ~~~
 
-Note that the returned STDOUT "framework name" is displayed by the CF CLI when printing the details of an application. Buildpack authors are therefore encouraged to include additional details in this returned framework name, such as buildpack versionning information, and detailed list of configured frameworks and their associated version. See an example of the detailed information returned by the java buildpack:
-                                                                                                                                                                                                                                                                                                                                        
+Note that cf CLI displays the returned STDOUT "framework name" when printing the details of an application. Buildpack authors are therefore encouraged to include additional details in this returned framework name, such as buildpack versioning information, and a detailed list of configured frameworks and their associated versions. The following is an example of the detailed information returned by the Java buildpack:
+
 ~~~
 java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
 ~~~
-
 
 ### <a id='compile-script'></a>bin/compile ###
 
@@ -119,7 +118,7 @@ Option Flags
 
 `--force-download`
 
-By default, buildpack-packager stores the dependencies that it downloads while building a cached buildpack in a local cache at `~/.buildpack-packager`. This is in order to avoid redownloading them when repackaging similar buildpacks. Running `buildpack-packager cached` with the `--force-download` option will force the packager to download dependencies from the s3 host and ignore the local cache. When packaging an uncached buildpack, `--force-download` does nothing.
+By default, buildpack-packager stores the dependencies that it downloads while building a cached buildpack in a local cache at `~/.buildpack-packager`. This is in order to avoid re-downloading them when repackaging similar buildpacks. Running `buildpack-packager cached` with the `--force-download` option will force the packager to download dependencies from the s3 host and ignore the local cache. When packaging an uncached buildpack, `--force-download` does nothing.
 
 `--use-custom-manifest`
 
@@ -145,7 +144,7 @@ For example, for a buildpack that has been pushed to Github:
 $ cf push my-new-app -b git://github.com/johndoe/my-buildpack.git
 </pre>
 
-Alternatively, it is possible to use a private git repository (with https and username/password authentication) as follows:
+Alternatively, you can use a private git repository, with https and username/password authentication, as follows:
 
 <pre class="terminal">
 $ cf push my-new-app -b https://username:password@github.com/johndoe/my-buildpack.git
@@ -158,4 +157,3 @@ $ cf push my-new-app -b https://username:password@github.com/johndoe/my-buildpac
 </pre>
 
 The application will then be deployed to Cloud Foundry, and the buildpack will be cloned from the repository and applied to the application (provided that the `detect` script returns `0`).
-
