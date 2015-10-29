@@ -27,7 +27,7 @@ v1.7.2 of this plugin provides the following updates and changes:
 
 * Cloud Foundry Eclipse is now enabled for NLS and Internationalization.
 * A "New Service Binding" wizard that allows service instances to be bound to applications. This wizard serves as an alternative to binding through the existing drag-and-drop feature.
-* Improvements in loggregator streaming to the console.
+* Improvements in Loggregator streaming to the console.
 * Improvements in deploying Spring Boot and Getting Started projects with templates.
 
 ## <a id='install'></a>Install Cloud Foundry Eclipse Plugin ##
@@ -165,7 +165,7 @@ of your choice for the repository. Click **Local**.
 
 ## <a id='plugin-ui'></a>About the Plugin User Interface ##
 
-The sections below describe the Cloud Foundry Eclipse plugin user interface. If you do not see the tabs described below, select the Pivotal Cloud Foundry server in the **Servers** view. To expose the Servers view, ensure that you are using the Java perspective, then select **Window > Show View > Other > Server > Servers**.
+The sections below describe the Cloud Foundry Eclipse plugin user interface. If you do not see the tabs described below, select the Pivotal Cloud Foundry&reg; server in the **Servers** view. To expose the Servers view, ensure that you are using the Java perspective, then select **Window > Show View > Other > Server > Servers**.
 
 The Cloud Foundry editor, outlined in red in the screenshot below, is the primary plugin user interface.
 Some workflows involve interacting with standard elements of the Eclipse user interface, such as the **Project Explorer** and the **Console** and **Servers** views.
@@ -177,10 +177,10 @@ Note that the Cloud Foundry editor allows you to work with a single Cloud Foundr
 The follow panes and views are present when the **Overview** tab is selected:
 
 * A --- The **Package Explorer** view lists the projects in the current workspace.
-* B -- The **Servers** view lists server instances configured in the current workspace. A server of type **Pivotal Cloud Foundry** represents a targeted space in a Cloud Foundry instance.
+* B -- The **Servers** view lists server instances configured in the current workspace. A server of type **Pivotal Cloud Foundry&reg;** represents a targeted space in a Cloud Foundry instance.
 * C -- The **General Information** pane.
 * D -- The **Account Information** pane lists your Cloud Foundry credentials and the target organization and space. The pane includes these controls:
-    * **Clone Server** --- Use to create additional Pivotal Cloud Foundry server instances. You must configure a server instance for each Cloud Foundry space that you wish to target. For more information, see [Create Additional Server Instances](#clone).
+    * **Clone Server** --- Use to create additional Pivotal Cloud Foundry&reg; server instances. You must configure a server instance for each Cloud Foundry space that you wish to target. For more information, see [Create Additional Server Instances](#clone).
     * **Change Password** --- Use to change your Cloud Foundry password.
     * **Validate Account** --- Use to verify your currently configured Cloud Foundry credentials.
 * E -- The **Server Status** pane shows whether or not you are connected to the target Cloud Foundry space, and the **Disconnect** and **Connect** controls.
@@ -220,16 +220,15 @@ This section contains instructions for configuring a server resource that will r
     <%= image_tag("sts/define-new-server.png") %>
 
 1. In the **Cloud Foundry Account** window, if you already have a Pivotal
-    Cloud Foundry Hosted Developer Edition account, enter your email account and
-    password credentials and click **Validate Account**.
+    Cloud Foundry&reg; Hosted Developer Edition account, enter your email 
+    account and password credentials and click **Validate Account**.
 
     <p class="note"><strong>Note</strong>: By default, the <strong>URL</strong>
-    field points to the Pivotal Cloud Foundry Hosted Developer Edition URL of
-    https://api.run.pivotal.io. <%=vars.console_2%></p>
+    field points to the Pivotal Cloud Foundry&reg; Hosted Developer Edition URL 
+    of https://api.run.pivotal.io. <%=vars.console_2%></p>
 
     If you do not have a Cloud Foundry account and want to register a new
-    Pivotal Cloud Foundry Hosted Developer Edition account, click **Sign Up**.
-    After you create the account, you can complete this procedure.
+    Pivotal Cloud Foundry&reg; Hosted Developer Edition account, click **Sign Up**. After you create the account, you can complete this procedure.
 
     <p class="note"><strong>Note</strong>: The <strong>Register Account</strong>
     button is inactive.</p>
@@ -248,15 +247,15 @@ This section contains instructions for configuring a server resource that will r
 
     <%= image_tag("sts/orgs-and-spaces.png") %>
 
-1. Once you have successfully configured the Pivotal Cloud Foundry server, it will appear in the **Servers** view of the Eclipse or STS user interface. To familiarize yourself with the plugin user interface, see [About the Plugin User Interface](#plugin-ui). Following this step, proceed to [Deploy an Application](#deploy-an-application).
+1. Once you have successfully configured the Pivotal Cloud Foundry&reg; server, it will appear in the **Servers** view of the Eclipse or STS user interface. To familiarize yourself with the plugin user interface, see [About the Plugin User Interface](#plugin-ui). Following this step, proceed to [Deploy an Application](#deploy-an-application).
 
 ## <a id='deploy-an-application'></a>Deploy an Application ##
 
 To deploy an application to Cloud Foundry using the plugin:
 
 1. To initiate deployment either:
-  * Drag the application from the **Package Explorer** view onto the Pivotal Cloud Foundry server in the **Servers** view, or
-  * Right-click the Pivotal Cloud Foundry server in the **Servers** view, select **Add and Remove** from the server context menu, and move the application from the **Available** to the **Configured** column.
+  * Drag the application from the **Package Explorer** view onto the Pivotal Cloud Foundry&reg; server in the **Servers** view, or
+  * Right-click the Pivotal Cloud Foundry&reg; server in the **Servers** view, select **Add and Remove** from the server context menu, and move the application from the **Available** to the **Configured** column.
 
 1. In the **Application Details** window:
     * By default, the **Name** field is populated with the application project name. You can enter a different name. The name is assigned to the deployed application, but does not rename the project.
@@ -407,4 +406,4 @@ You can configure the plugin to work with any Cloud Foundry instances to which y
 
     <%= image_tag("sts/orgs-and-spaces.png") %>
 
-1. Once you have successfully configured the Pivotal Cloud Foundry server, it will appear in the **Servers** view of the Eclipse or STS user interface. To familiarize yourself with the plugin user interface, see [About the Plugin User Interface](#plugin-ui). Following this step, proceed to [Deploy an Application](#deploy-an-application).
+1. Once you have successfully configured the Pivotal Cloud Foundry&reg; server, it will appear in the **Servers** view of the Eclipse or STS user interface. To familiarize yourself with the plugin user interface, see [About the Plugin User Interface](#plugin-ui). Following this step, proceed to [Deploy an Application](#deploy-an-application).
