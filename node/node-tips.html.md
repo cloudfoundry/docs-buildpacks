@@ -11,8 +11,7 @@ This topic provides Node-specific information to supplement the general guidelin
 Cloud Foundry expects a `package.json` in your Node.js application.
 You can specify the version of Node.js you want to use in the `engine` node of
 your `package.json` file.
-As of April, 2015, and build pack version 1.3, Cloud Foundry uses 0.12.2 as the
-default.
+As of July, 2015, and buildpack version 1.5.0, Cloud Foundry uses Node.js version 0.12.7 by default.
 See the GitHub [Node.js buildpack page](https://github.com/cloudfoundry/nodejs-buildpack) for current information.
 
 Example `package.json` file:
@@ -29,7 +28,7 @@ Example `package.json` file:
     "swig": "1.3.2"
   },
   "engines": {
-    "node": "0.12.2",
+    "node": "0.12.7",
     "npm": "2.7.4"
   }
 }
@@ -44,7 +43,7 @@ the default:
 
 ~~~javascript
 
-app.listen(process.env.VCAP_APP_PORT || 3000);
+app.listen(process.env.PORT || 3000);
 
 ~~~
 
