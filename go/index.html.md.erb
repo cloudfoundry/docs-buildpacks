@@ -15,11 +15,3 @@ You can find current information about this buildpack on the Go buildpack
 #### with Godeps
 
 The Go version is saved in `Godeps.json` with the command `godep save`.
-
-#### With .godir
-
-Set the environment variable `GOVERSION` to specify a custom version. For example,
-`cf set-env app-name GOVERSION 1.4.2`.
-
-This buildpack uses a default Go version of `1.5.1` when used with the deprecated
-`.godir` dependency management.
