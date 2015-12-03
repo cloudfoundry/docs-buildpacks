@@ -2,6 +2,8 @@
 title: Deploying and Developing PHP Apps
 ---
 
+<strong><%= modified_date %></strong>
+
 <%=vars.GSG_intro_sentence%>
 
 This document is intended to guide you through the process of deploying PHP applications to <%=vars.product_full%>. If you experience a problem with deploying PHP apps, check the [Troubleshooting](#troubleshooting) section below.
@@ -34,7 +36,7 @@ Here is a breakdown of what happens when you run the example above:
 
   - On your workstation...
     - It creates a new directory and one PHP file, which calls `phpinfo()`
-    - Run `cf push` to push your application. This will create a new 
+    - Run `cf push` to push your application. This will create a new
 application with a memory limit of 128M and upload our test file.
   - On Cloud Foundry...
     - The buildpack detects that your app is a php app

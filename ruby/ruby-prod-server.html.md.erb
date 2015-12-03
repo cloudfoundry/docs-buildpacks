@@ -2,6 +2,8 @@
 title: Configure a Production Server for Ruby Apps
 ---
 
+<strong><%= modified_date %></strong>
+
 <%=vars.product_short%> uses the default standard Ruby web server library WEBrick for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn.
 
 To instruct <%=vars.product_short%> to use a web server other than WEBrick, you configure a text file called a _Procfile_. A Procfile enables you to declare required runtime processes, called _process_ _types_, for your web app. Process managers in a server use the process types to run and manage the workload.

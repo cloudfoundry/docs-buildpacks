@@ -2,6 +2,8 @@
 title: PHP Buildpack Configuration
 ---
 
+<strong><%= modified_date %></strong>
+
 ## <a id="defaults"></a> Defaults
 
 The buildpack stores all of its default configuration settings in the [defaults] directory.
@@ -84,21 +86,21 @@ Include conf/extra/httpd-my-special-config.conf # This line includes your additi
 
 ### <a id="php-extensions"></a> PHP Extensions
 
-PHP extensions are easily enabled by setting the `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` option in `.bp-config/options.json`.  Use these options to install bundled PHP extensions. 
+PHP extensions are easily enabled by setting the `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` option in `.bp-config/options.json`.  Use these options to install bundled PHP extensions.
 
 ### <a id="php-modules"></a> PHP Modules
 
 The following modules can be included by adding it to the `PHP_MODULES` list:
   - `cli`, installs `php` and `phar`
   - `fpm`, installs `PHP-FPM`
-  - `cgi`, installs `php-cgi` 
-  - `pear`, installs Pear 
+  - `cgi`, installs `php-cgi`
+  - `pear`, installs Pear
 
   By default, the buildpack installs the `cli` module when you push a standalone application, and it installs the `fpm` module when you run a web application. You must specify `cgi` and `pear` if you want them installed.
 
 ## <a id="buildpack-extensions"></a>Buildpack Extensions
 
-The buildpack comes with extensions for its default behavior. These are the [HTTPD], [Nginx], [PHP], and [NewRelic] extensions. 
+The buildpack comes with extensions for its default behavior. These are the [HTTPD], [Nginx], [PHP], and [NewRelic] extensions.
 
 The buildpack is designed with an extension mechanism, allowing application developers to add behavior to the buildpack without modifying the buildpack code.
 

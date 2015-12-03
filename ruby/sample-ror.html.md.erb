@@ -2,7 +2,9 @@
 title: Deploy a Sample Ruby on Rails Application
 ---
 
-This topic walks the reader through the process of deploying a sample Ruby on Rails app to <%= vars.product_full %>. 
+<strong><%= modified_date %></strong>
+
+This topic walks the reader through the process of deploying a sample Ruby on Rails app to <%= vars.product_full %>.
 
 The following subjects are covered:
 
@@ -38,14 +40,14 @@ Gemfile.lock	Rakefile autotest bundler_stubs config.ru doc lib public spec
 Run the following to log in and target the API endpoint of your Cloud Foundry deployment. You will be prompted for login credentials, and to select a space and org. <br><br> For `YOUR-API-ENDPOINT`, enter the IP of the BOSH director for your Cloud Foundry deployment. The IP must entered in the following format: `http://api.IP-ADDRESS`
 <pre class='terminal'>cf login -a YOUR-API-ENDPOINT</pre>
 
-For more information about Spaces and Orgs, see [Orgs, Spaces, Roles, and Permissions](../../concepts/roles.html). 
+For more information about Spaces and Orgs, see [Orgs, Spaces, Roles, and Permissions](../../concepts/roles.html).
 
 
 ### Step 3: Create a Service Instance for our Application Database ###
 
 In Cloud Foundry, a database is considered a type of service. To add a database for our sample application we will create an instance of [elephantsql](http://www.elephantsql.com/), a third party database as a service provider.
 
-Run the following terminal command to creates a postgresql service instance for our app. 
+Run the following terminal command to creates a postgresql service instance for our app.
 
   <pre class="terminal">
   $   cf create-service elephantsql turtle rails-postgres

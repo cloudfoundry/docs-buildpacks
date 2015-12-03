@@ -2,13 +2,15 @@
 title: Buildpacks for the Enterprise
 ---
 
+<strong><%= modified_date %></strong>
+
 ## <a id='intro'></a>Introduction to Buildpack Dependencies ##
 
 Buildpacks often need access to runtime binaries for the platform that they target.
 
 For example, depending on the source that it builds from, the [Ruby buildpack for Heroku](https://github.com/heroku/heroku-buildpack-ruby) requires the following binaries:
 
-  * A Ruby interpreter 
+  * A Ruby interpreter
   * Libyaml
   * Bundler
   * Node
@@ -25,7 +27,7 @@ When building droplets, the [Droplet Execution Agent (DEA)](../concepts/architec
 executes the buildpack within a container whose network can reach the Internet
 entirely unimpeded.
 
-Many Pivotal customers do not allow the DEA, or any part of their Cloud Foundry 
+Many Pivotal customers do not allow the DEA, or any part of their Cloud Foundry
 deployment, unimpeded access to the Internet.
 Security and Change Management concerns impact how an enterprise or smaller business business decides to architect their network.
 
