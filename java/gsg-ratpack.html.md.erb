@@ -121,17 +121,17 @@ service       plans        description
 
 elephantsql   turtle, panda, elephant      PostgreSQL as a Service
 ...
-rediscloud    25mb, 100mb, 1gb, 10gb, 50gb Enterprise-Class Redis for Developers
+rediscloud    30mb, 100mb, 1gb, 10gb, 50gb Enterprise-Class Redis for Developers
 ...
 
 </pre>
 
 Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
 
-<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 25mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>25mb</code> plan, as the example below shows.
+<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 30mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.
 
 <pre class="terminal">
-$ cf create-service rediscloud 25mb baby-redis
+$ cf create-service rediscloud 30mb baby-redis
 Creating service baby-redis in org Cloud-Apps / space development as clouduser@example.com....
 OK
 </pre>
