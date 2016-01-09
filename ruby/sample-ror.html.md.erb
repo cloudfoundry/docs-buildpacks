@@ -4,81 +4,65 @@ title: Deploy a Sample Ruby on Rails Application
 
 <strong><%= modified_date %></strong>
 
-This topic walks the reader through deploying a sample Ruby on Rails app to <%= vars.product_full %> (CF).
+This topic guides the reader through deploying a sample Ruby on Rails app to <%= vars.product_full %> (CF).
 
-The following subjects are covered:
+##<a id='prerequisites'></a>Prerequisites 
 
-- Using the CF CLI to target a CF deployment.
-- App manifests.
-- Deploying an app.
-- How app URL endpoints are generated in CF.
-- Adding a service instance (A postrgres database, in this example).
+In order to deploy a sample Ruby on Rails app, you must have the following: 
 
-##<a id='prerequisites'></a>Prerequisites  
-
-- A working CF deployment. See [Deploying CF Using BOSH-Lite](http://docs.cloudfoundry.org/deploying/boshlite/deploy_cf_boshlite.html).
-- [Cloud Foundry CLI](http://docs.cloudfoundry.org/devguide/installcf/install-go-cli.html)
-- Username and password with **Space Developer** [permissions](../../concepts/roles.html#space-roles).
+- A working [CF deployment](../../deploying/index.html). 
+- [Cloud Foundry CLI](../../devguide/installcf/install-go-cli.html)
+- Cloud Foundry username and password with **Space Developer** [permissions](../../concepts/roles.html#space-roles). See your [Org Manager](../../concepts/roles.html#org-roles) if you require permissions.
 
 ##<a id='clone'></a>Step 1: Clone the App ##
 
-1. Run the following in the terminal <code>git clone</code> to create a local copy. 
+Run the following terminal command to create a local copy of the rails\_sample\_app. 
 <pre class='terminal'>
 	$ git clone https://github.com/cloudfoundry-samples/rails_sample_app
 </pre>
-
-	The newly created <code>rails\_sample\_app directory</code> contains a Ruby on Rails app with an [application manifest](../..devguide/deploy-apps/manifest.html#minimal-manifest), which assists CF with deploying the app.
-
-	<pre class='terminal'>
-	~/workspace/rails_sample_app $ ls
-	Gemfile	README.markdown	app	bin	config db files <div style='display:inline;color:black;background:yellow'>manifest.yml</div> script vendor
-	Gemfile.lock	Rakefile autotest bundler_stubs config.ru doc lib public spec
-	</pre>
+The newly created directory contains a `manifest.yml` file, which assists CF with deploying the app. See [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#minimal-manifest) for more information.
 
 ##<a id='login'></a>Step 2: Log in and Target the API Endpoint ##
 
-1. Run the following to log in and target the API endpoint of your Cloud Foundry deployment. 
+1. Run the following terminal command to log in and target the API endpoint of your Cloud Foundry deployment. 
 
 	<pre class='terminal'>$ cf login -a YOUR-API-ENDPOINT</pre>
 
-1.	When prompted for login credentials, and to select a [Space and Org](../../concepts/roles.html). 
-1. For <%= vars.api_endpoint %>, enter the IP of the BOSH director for your Cloud Foundry deployment. The IP must be entered in the following format: `http://api.IP-ADDRESS`
+1.	Enter login credentials, and to select a [Space and Org](../../concepts/roles.html). 
+1. For <%= vars.api_endpoint %>, enter the IP of the BOSH director for your Cloud Foundry deployment. The IP must be entered in the following format: `http://api.IP-ADDRESS`.
 
 
 ##<a id='service'></a>Step 3: Create a Service Instance ##
 
-In Cloud Foundry, a database is a type of service. To add a database for our sample application, we will create an instance of [elephantsql](http://www.elephantsql.com/), a third-party database as a service provider.
+In Cloud Foundry, a database is a type of service. To add a database for your sample application, we will create an instance of [elephantsql](http://www.elephantsql.com/), a third-party database as a service provider.
 
-1. Run the following terminal command to create a PostgreSQL service instance for our app. Our service instance is `rails-postgres`. It uses the `elephantsql` service and the `turtle` plan.
+Run the following terminal command to create a PostgreSQL service instance for our app. Our service instance is `rails-postgres`. It uses the `elephantsql` service and the `turtle` plan.
+	  <pre class="terminal">
+	  $   cf create-service elephantsql turtle rails-postgres
+	  Creating service rails-postgres in org YOUR-ORG / space development as clouduser@example.com....
+	  OK</pre>
 
-  <pre class="terminal">
-  $   cf create-service elephantsql turtle rails-postgres
-  Creating service rails-postgres in org YOUR-ORG / space development as clouduser@example.com....
-  OK</pre>
-
-  The manifest for the rails_sample_app contains a `services` sub-block in the `applications` block, as the example below shows. This binds the `rails-postgres` service instance you created in the previous step.
-	<pre class="terminal">
-	---
-	applications:
-	- name: rails-sample
-	  memory: 256M
-	  instances: 1
-	  path: .
-	  command: bundle exec rake db:migrate && bundle exec rails s -p $PORT
-	  services:
-	    - rails-postgres
-	</pre>    
+The manifest for the rails\_sample\_app contains a `services` sub-block in the `applications` block. The cf CLI uses information in the manifest to bind the `rails-postgres` service instance you created in the previous step.
+		<pre class="terminal">
+		---
+		applications:
+		- name: rails-sample
+		  memory: 256M
+		  instances: 1
+		  path: .
+		  command: bundle exec rake db:migrate && bundle exec rails s -p $PORT
+		  services:
+		    - rails-postgres
+		</pre>    
 
 ##<a id='deploy'></a>Step 4: Deploy the App ##
 
-From your application's root directory, run the following in the terminal to deploy the app:
-<pre class='terminal'>$ cf push rails\_sample\_app</pre>
+From your application's root directory, run the following terminal command to deploy the app:
+		<pre class='terminal'>$ cf push rails\_sample\_app</pre>
 
-`cf push rails_sample_app` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME. Administrators specify your DOMAIN. For example, for the DOMAIN `<%=vars.app_domain%>`, running `cf push rails_sample_app` creates the URL `rails_sample_app.<%=vars.app_domain%>`.
+`cf push rails_sample_app` creates a URL route to your application in the form HOST.DOMAIN. In this example, HOST is rails\_sample\_app. Administators specify the DOMAIN. For example, for the DOMAIN `<%=vars.app_domain%>`, running `cf push rails_sample_app` creates the URL `rails_sample_app.<%=vars.app_domain%>`.
 
-If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs rails_sample_app`.
-
-The example below shows the terminal output when deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the `rails-postgres` service and follows the information in the manifest to start one instance of the app with of RAM. After the app starts, the output displays the health and status of the app.
+The example below shows the terminal output when deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the `rails-postgres` service and follows the information in the manifest to start one instance of the app with 256M of RAM. After the app starts, the output displays the health and status of the app.
 
 
 <pre class="terminal">
@@ -117,12 +101,15 @@ urls: rails_sample_app.<%=vars.app_domain%>
 
      state     since                    cpu    memory          disk
 #0   running   2014-08-25 03:32:10 PM   0.0%   68.4M of 256M   73.4M of 1G
-
 </pre>
+
+<p class='note'><strong>Note</strong>: If you want to view log activity while the app deploys, launch a new terminal window and run <code>cf logs rails\_sample\_app</code>.
+
+
 
 ##<a id='verify'></a> Step 5: Verifying the App ##
 
-Verify the app is running by browsing to the URL generated in the output of the previous step. In this example, the url is `urls: rails_sample_app.<%=vars.app_domain%>`.
+Verify that the app is running by browsing to the URL generated in the output of the previous step. In this example, the correct url path `urls: rails_sample_app.<%=vars.app_domain%>` verifies that the app is running.
 
 
 You've now pushed an app to <%=vars.product_short%>! For more information on this topic, see the [Deploy an Application](../../devguide/deploy-apps/deploy-app.html) topic.
