@@ -4,7 +4,7 @@ title: Deploy a Sample Ruby on Rails Application
 
 <strong><%= modified_date %></strong>
 
-This topic guides the reader through deploying a sample Ruby on Rails app to <%= vars.product_full %> (CF).
+This topic guides the reader through deploying a sample Ruby on Rails app to <%= vars.product_full %> <%= vars.product_abbr %>.
 
 ##<a id='prerequisites'></a>Prerequisites 
 
@@ -60,7 +60,7 @@ The manifest for the rails\_sample\_app contains a `services` sub-block in the `
 From your application's root directory, run the following terminal command to deploy the app:
 		<pre class='terminal'>$ cf push rails\_sample\_app</pre>
 
-`cf push rails_sample_app` creates a URL route to your application in the form HOST.DOMAIN. In this example, HOST is rails\_sample\_app. Administators specify the DOMAIN. For example, for the DOMAIN `<%=vars.app_domain%>`, running `cf push rails_sample_app` creates the URL `rails_sample_app.<%=vars.app_domain%>`.
+`cf push rails_sample_app` creates a URL route to your application in the form HOST.DOMAIN. In this example, HOST is rails\_sample\_app. Administrators specify the DOMAIN. For example, for the DOMAIN `<%=vars.app_domain%>`, running `cf push rails_sample_app` creates the URL `rails_sample_app.<%=vars.app_domain%>`.
 
 The example below shows the terminal output when deploying the `rails_sample_app`. `cf push` uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the `rails-postgres` service and follows the information in the manifest to start one instance of the app with 256M of RAM. After the app starts, the output displays the health and status of the app.
 
