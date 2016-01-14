@@ -24,12 +24,13 @@ The newly created directory contains a `manifest.yml` file, which assists CF wit
 
 ##<a id='login'></a>Step 2: Log in and Target the API Endpoint ##
 
-1. Run the following terminal command to log in and target the API endpoint of your Cloud Foundry deployment. 
+1. Run the following terminal command to log in and target the API endpoint of your Cloud Foundry deployment. For more information, see the <%= vars.api_endpoint %> topic.
 
 	<pre class='terminal'>$ cf login -a YOUR-API-ENDPOINT</pre>
 
 1.	Enter login credentials, and to select a [Space and Org](../../concepts/roles.html). 
-1. For <%= vars.api_endpoint %>, enter the IP of the BOSH director for your Cloud Foundry deployment. The IP must be entered in the following format: `http://api.IP-ADDRESS`.
+
+<p class='note'><strong>Note</strong>: The IP must be entered in the following format: `http://api.IP-ADDRESS`.
 
 
 ##<a id='service'></a>Step 3: Create a Service Instance ##
@@ -57,7 +58,7 @@ The manifest for the rails\_sample\_app contains a `services` sub-block in the `
 
 ##<a id='deploy'></a>Step 4: Deploy the App ##
 
-From your application's root directory, run the following terminal command to deploy the app:
+Make sure you are in the `rails_sample_app` directory. Run the following terminal command to deploy the app:
 		<pre class='terminal'>$ cf push rails\_sample\_app</pre>
 
 `cf push rails_sample_app` creates a URL route to your application in the form HOST.DOMAIN. In this example, HOST is rails\_sample\_app. Administrators specify the DOMAIN. For example, for the DOMAIN `<%=vars.app_domain%>`, running `cf push rails_sample_app` creates the URL `rails_sample_app.<%=vars.app_domain%>`.
