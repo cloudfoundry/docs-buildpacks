@@ -9,11 +9,18 @@ Buildpacks typically examine user-provided artifacts to determine what dependenc
 
 When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required and installs it on the Droplet Execution Agent (DEA) where the application needs to run.
 
-Cloud Foundry deployments often have limited access to dependencies. This occurs when the deploy is behind a firewall, or
-when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a
+## Dependencies ##
+
+Cloud Foundry deployments often have limited access to dependencies. 
+This limitation occurs when the deployment is behind a firewall, or
+when administrators want to use local mirrors and proxies. 
+In these circumstances, Cloud Foundry provides a
 [Buildpack Packager](https://github.com/cf-buildpacks/buildpack-packager) application.
 
-See also the [Supported Binary Dependencies](./supported-binary-dependencies.html) topic.
+The following topics also contain information that might be relevant to your deployment:
+
+* [Supported Binary Dependencies](./supported-binary-dependencies.html) topic.
+* [Packaging Dependencies for Offline Buildpacks](./depend-pkg-offline.html)
 
 ## System Buildpacks
 
@@ -31,14 +38,14 @@ This table describes Cloud Foundry system buildpacks. Each buildpack row lists s
     <td><a href="https://github.com/cloudfoundry/java-buildpack">Java source</a></td>
   </tr>
   <tr>
-    <td><a href="./node/index.html">Node.js</a></td>
-    <td><p>Node or JavaScript</p></td>
-    <td><a href="https://github.com/cloudfoundry/nodejs-buildpack">Node.js source</a></td>
-  </tr>
-  <tr>
     <td><a href="./ruby/index.html">Ruby</a></td>
     <td><p>Ruby, Rack, Rails, or Sinatra</p></td>
     <td><a href="https://github.com/cloudfoundry/ruby-buildpack">Ruby source</a></td>
+  </tr>
+  <tr>
+    <td><a href="./node/index.html">Node.js</a></td>
+    <td><p>Node or JavaScript</p></td>
+    <td><a href="https://github.com/cloudfoundry/nodejs-buildpack">Node.js source</a></td>
   </tr>
   <tr>
     <td><a href="./binary/index.html">Binary</a></td>
@@ -67,18 +74,15 @@ This table describes Cloud Foundry system buildpacks. Each buildpack row lists s
   </tr>
 </table>
 
-
 ## Other Buildpacks
 
 If your application uses a language or framework that Cloud Foundry buildpacks do not support, you can try the following:
 
-* Customize an existing buildpack
+* Customize an existing buildpack, or create your own [custom buildpack](./custom.html).
+  <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that Github recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
 
- <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that Github recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
-
-* [Write](./custom.html) your own buildpack
-* Use a [Cloud Foundry Community Buildpack][c]
-* Use a [Heroku Third-Party Buildpack][h]
+* Use a [Cloud Foundry Community Buildpack][c].
+* Use a [Heroku Third-Party Buildpack][h].
 
 [c]: https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks
 [h]: https://devcenter.heroku.com/articles/third-party-buildpacks
