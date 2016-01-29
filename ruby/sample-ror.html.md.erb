@@ -10,7 +10,7 @@ This topic guides the reader through deploying a sample Ruby on Rails app to <%=
 
 In order to deploy a sample Ruby on Rails app, you must have the following: 
 
-- A working [CF deployment](http://docs.cloudfoundry.org/deploying/index.html). 
+- A working <%=vars.product_name %> [deployment](http://docs.cloudfoundry.org/deploying/index.html) 
 - [Cloud Foundry CLI](../../devguide/cf-cli/install-go-cli.html)
 - Cloud Foundry username and password with **Space Developer** [permissions](../../concepts/roles.html#space-roles). See your [Org Manager](../../concepts/roles.html#org-roles) if you require permissions.
 
@@ -24,37 +24,36 @@ The newly created directory contains a `manifest.yml` file, which assists CF wit
 
 ##<a id='login'></a>Step 2: Log in and Target the API Endpoint ##
 
-1. Run the following terminal command to log in and target the API endpoint of your Cloud Foundry deployment. For more information, see the <%= vars.api_endpoint %> topic.
+1. Run the following terminal command to log in and target the API endpoint of your deployment.  <%= vars.api_endpoint_book %>
 
 	<pre class='terminal'>$ cf login -a YOUR-API-ENDPOINT</pre>
 
-1.	Enter login credentials, and to select a [Space and Org](../../concepts/roles.html). 
+1.	Use your credentials to log in, and to select a [Space and Org](../../concepts/roles.html). 
 
-<p class='note'><strong>Note</strong>: The IP must be entered in the following format: `http://api.IP-ADDRESS`.
+<p class='note'><strong>Note</strong>: The API endpoint must be entered in the following format: `https://api.IP-ADDRESS`.
 
 
 ##<a id='service'></a>Step 3: Create a Service Instance ##
 
-In Cloud Foundry, a database is a type of service. To add a database for your sample application, we will create an instance of [elephantsql](http://www.elephantsql.com/), a third-party database as a service provider.
+Run the following terminal command to create a PostgreSQL service instance for the sample app. Our service instance is `rails-postgres`. It uses the [`elephantsql`](http://www.elephantsql.com/) service and the `turtle` plan.
+<pre class="terminal">
+$   cf create-service elephantsql turtle rails-postgres
+Creating service rails-postgres in org YOUR-ORG / space development as clouduser@example.com....
+OK</pre>
 
-Run the following terminal command to create a PostgreSQL service instance for our app. Our service instance is `rails-postgres`. It uses the `elephantsql` service and the `turtle` plan.
-	  <pre class="terminal">
-	  $   cf create-service elephantsql turtle rails-postgres
-	  Creating service rails-postgres in org YOUR-ORG / space development as clouduser@example.com....
-	  OK</pre>
+The manifest for the rails\_sample\_app contains a `services` sub-block in the `applications` block. The cf Command Line Interface tool (cf CLI) binds the service to the app.
 
-The manifest for the rails\_sample\_app contains a `services` sub-block in the `applications` block. The cf CLI uses information in the manifest to bind the `rails-postgres` service instance you created in the previous step.
-		<pre class="terminal">
-		---
-		applications:
-		- name: rails-sample
-		  memory: 256M
-		  instances: 1
-		  path: .
-		  command: bundle exec rake db:migrate && bundle exec rails s -p $PORT
-		  services:
-		    - rails-postgres
-		</pre>    
+<pre class="terminal">
+---
+applications:
+- name: rails-sample
+  memory: 256M
+  instances: 1
+  path: .
+  command: bundle exec rake db:migrate && bundle exec rails s -p $PORT
+  services:
+    - rails-postgres
+</pre>    
 
 ##<a id='deploy'></a>Step 4: Deploy the App ##
 
@@ -110,7 +109,7 @@ urls: rails_sample_app.<%=vars.app_domain%>
 
 ##<a id='verify'></a> Step 5: Verifying the App ##
 
-Verify that the app is running by browsing to the URL generated in the output of the previous step. In this example, the correct url path `urls: rails_sample_app.<%=vars.app_domain%>` verifies that the app is running.
+Verify that the app is running by browsing to the URL generated in the output of the previous step. In this example, navigating to `rails_sample_app.<%=vars.app_domain%>` verifies that the app is running.
 
 
 You've now pushed an app to <%=vars.product_short%>! For more information on this topic, see the [Deploy an Application](../../devguide/deploy-apps/deploy-app.html) topic.
