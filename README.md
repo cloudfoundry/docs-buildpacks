@@ -1,7 +1,7 @@
 # Writing Custom Buildpacks
 
-This is a guide for developers on writing
-custom buildpacks to use with Cloud Foundry.
+This is a guide for developers on writing custom buildpacks to use with Cloud Foundry.
+Buildpacks package the languages and libraries that support your apps.
 
 This doc is one of several doc repositories that go into a complete documentation set.
 
