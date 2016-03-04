@@ -1,22 +1,23 @@
 ---
 title: Deploy a Sample Ruby on Rails Application
+owner: Buildpacks
 ---
 
 <strong><%= modified_date %></strong>
 
 This topic guides the reader through deploying a sample Ruby on Rails app to <%= vars.product_full %> <%= vars.product_abbr %>.
 
-##<a id='prerequisites'></a>Prerequisites 
+##<a id='prerequisites'></a>Prerequisites
 
-In order to deploy a sample Ruby on Rails app, you must have the following: 
+In order to deploy a sample Ruby on Rails app, you must have the following:
 
-- A working <%=vars.product_name %> [deployment](http://docs.cloudfoundry.org/deploying/index.html) 
+- A working <%=vars.product_name %> [deployment](http://docs.cloudfoundry.org/deploying/index.html)
 - [Cloud Foundry CLI](../../cf-cli/install-go-cli.html)
 - Cloud Foundry username and password with **Space Developer** [permissions](../../concepts/roles.html#space-roles). See your [Org Manager](../../concepts/roles.html#org-roles) if you require permissions.
 
 ##<a id='clone'></a>Step 1: Clone the App ##
 
-Run the following terminal command to create a local copy of the rails\_sample\_app. 
+Run the following terminal command to create a local copy of the rails\_sample\_app.
 <pre class='terminal'>
 	$ git clone https://github.com/cloudfoundry-samples/rails_sample_app
 </pre>
@@ -28,7 +29,7 @@ The newly created directory contains a `manifest.yml` file, which assists CF wit
 
 	<pre class='terminal'>$ cf login -a YOUR-API-ENDPOINT</pre>
 
-1.	Use your credentials to log in, and to select a [Space and Org](../../concepts/roles.html). 
+1.	Use your credentials to log in, and to select a [Space and Org](../../concepts/roles.html).
 
 <p class='note'><strong>Note</strong>: The API endpoint must be entered in the following format: `https://api.IP-ADDRESS`.
 
@@ -53,7 +54,7 @@ applications:
   command: bundle exec rake db:migrate && bundle exec rails s -p $PORT
   services:
     - rails-postgres
-</pre>    
+</pre>
 
 ##<a id='deploy'></a>Step 4: Deploy the App ##
 
