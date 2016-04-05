@@ -8,21 +8,19 @@ Use the Node.js buildpack with Node or JavaScript applications.
 
 See the following topics:
 
-* [Tips for Node.js Developers](./node-tips.html)
-* [Environment Variables Defined by the Node Buildpack](./node-environment.html)
-* [Configure Service Connections for Node](node-service-bindings.html)
+* <a href="./node-tips.html" class="subnav">Tips for Node.js Developers</a>
+* <a href="./node-environment.html" class="subnav">Environment Variables Defined by the Node Buildpack</a>
+* <a href="./node-service-bindings.html" class="subnav">Configure Service Connections for Node</a>
 
-The source for the buildpack is [here](https://github.com/cloudfoundry/heroku-buildpack-nodejs).
+You can find the source for the buildpack on GitHub:
+[https://github.com/cloudfoundry/heroku-buildpack-nodejs](https://github.com/cloudfoundry/heroku-buildpack-nodejs)
 
 ## Buildpack Logging and Application Logging ##
 
 The buildpack only runs during the staging process, and therefore only logs
-what is important to staging, such as what is being downloaded, what the
-configuration is, and work that the buildpack does on your application.
+staging information such as the downloaded components, configuration data, and work performed on your application by the buildpack.
 
-Once staging is done, the buildpack stops logging.
-Application logging is a separate concern.
+Once staging completes, the buildpack stops logging. The Loggregator handles application logging. 
 
-Your application must write to STDOUT or STDERR for its logs to be included in the
-Loggregator stream.
-See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
+Your application must write to STDOUT or STDERR for its logs to be included in
+the Loggregator stream. For more information, see the [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html) topic.
