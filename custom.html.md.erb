@@ -104,6 +104,19 @@ default_process_types:
 
 <p class="note"><strong>Note</strong>: The <code>web</code> command runs as <code>bash -c COMMAND</code> when Cloud Foundry starts your application. Refer to <a href="../devguide/deploy-apps/manifest.html#start-commands">the command attribute</a> section for more information about custom start commands. </p>
 
+## <a id='disconnected-environments'></a> Droplet Filesystem ##
+
+The buildpack staging process creates the following filesystem tree for the droplet:
+
+<pre class="terminal">
+app/ # <- contains BUILD_DIR contents
+logs/
+tmp/
+staging_info.yml # <- staging metadata saved in droplet
+</pre>
+
+The buildpack author should expect the droplet to be extracted into the /home/vcap directory inside the instance container.
+
 ## <a id='disconnected-environments'></a> Packaging Custom Buildpacks ##
 
 ### Partially or completely disconnected environments
