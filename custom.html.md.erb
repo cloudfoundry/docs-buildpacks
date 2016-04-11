@@ -106,16 +106,15 @@ default_process_types:
 
 ## <a id='disconnected-environments'></a> Droplet Filesystem ##
 
-The buildpack staging process creates the following filesystem tree for the droplet:
+The buildpack staging process extracts the droplet into the `/home/vcap` directory inside the instance container, and creates the following filesystem tree:
 
-<pre class="terminal">
-app/ # <- contains BUILD_DIR contents
+```
+app/ 
 logs/
 tmp/
-staging_info.yml # <- staging metadata saved in droplet
-</pre>
-
-The buildpack author should expect the droplet to be extracted into the /home/vcap directory inside the instance container.
+staging_info.yml
+```
+The `app` directory contains `BUILD_DIR` contents, and `staging_info.yml` contains the staging metadata saved in the droplet.
 
 ## <a id='disconnected-environments'></a> Packaging Custom Buildpacks ##
 
