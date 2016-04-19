@@ -1,0 +1,25 @@
+---
+title: Proxy Usage
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+Buildpacks can use proxies via the `http_proxy` and/or `https_proxy` environment variables. These should be set to the proxy hostname and/or port.
+
+These can be set via the manifest.yml file or `cf set-env`.
+
+All of the buildpacks will automatically utilize these proxy environment variables correctly. If any of them contact the internet during staging, it will be through the proxy host.
+The binary buildpack will not use a proxy because it does not use the internet at all during staging.
+
+~~~yaml
+---
+  env:
+  http_proxy: http://proxy-site.com:3000
+  https_proxy: https://proxy-site.com:3003
+~~~
+
+__Note:__ Whilst many applications will use the `http_proxy` and `https_proxy`
+environment variables at runtime, this is entirely dependent on your
+application, the buildpack does not add any extra functionality to make proxies
+work at runtime.
