@@ -63,7 +63,7 @@ directory: visible
 
 ### Server Side Includes (SSI)
 
-If you want to enable support for [SSI](https://en.wikipedia.org/wiki/Server_Side_Includes) add the following line to your `Staticfile`:
+Add the following line to your `Staticfile` to enable support for [SSI](https://en.wikipedia.org/wiki/Server_Side_Includes):
 
 ```
 ssi: enabled
@@ -71,10 +71,10 @@ ssi: enabled
 
 ### GZip Static
 
-The [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html) and [`gunzip`](http://nginx.org/en/docs/http/ngx_http_gunzip_module.html) modules are turned on by default. 
-These two modules in combination enable Nginx to intelligently serve compressed files properly to both clients that can and can't handle compressed content/responses.
+The [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html) and [`gunzip`](http://nginx.org/en/docs/http/ngx_http_gunzip_module.html) modules are set to `on` by default. 
+Together, these modules enable Nginx to properly serve compressed files to clients. They also decompress files for clients that do not support compressed content or responses.
 
-If you want to turn off these modules, specify the following in your custom `nginx.conf`:
+If you want to disable these modules, specify the following in your custom `nginx.conf`:
 
 ```
 gunzip off;
