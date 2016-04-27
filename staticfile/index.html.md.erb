@@ -5,22 +5,28 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-Use the Staticfile buildpack with front-end only web apps or demos.
+## <a id='pushing_apps'></a> Pushing Apps ##
 
-You only need to create a `Staticfile` file for Cloud Foundry to detect this buildpack:
+This buildpack will be used if your directory has a `Staticfile` file in the root directory.
 
+For example:
+
+```bash
+touch Staticfile
+cf push -m 64M
 ```
-$ touch Staticfile
-$ cf push my-site -m 64M
+
+If your Cloud Foundry deployment does not have the Staticfile Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
+
+```bash
+cf push my_app -b https://github.com/cloudfoundry/staticfile-buildpack.git -m 64M
 ```
 
 Why `-m 64M`? Your static assets will be served by [Nginx](http://nginx.com/) and it only requires 20M \[[reference](http://wiki.nginx.org/WhyUseIt)]. The `-m 64M` reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers. In the future there may be a way for a buildpack to indicate its default RAM requirements; but not as of writing.
 
-Configuration
-=============
+## <a id='configuration'></a> Configuration ##
 
-### Alternate root folder
-
+### <a id='root_folder'></a> Alternate root folder ###
 By default, the buildpack will serve `index.html` and all other assets from the root folder of your project.
 
 In many cases, you may have an alternate folder where your HTML/CSS/JavaScript files are to be served from, such as `dist/` or `public/`.
@@ -31,7 +37,7 @@ To configure the buildpack add the following line to your `Staticfile`:
 root: dist
 ```
 
-### Basic authentication
+### <a id='authentication'></a> Basic authentication ###
 
 Protect your website with a user/password configured via environment variables.
 
@@ -49,7 +55,7 @@ bob:$apr1$DuUQEQp8$ZccZCHQElNSjrg.erwSFC0
 
 Push your application to apply changes to basic auth. Remove the file and push to disable basic auth.
 
-### Directory Index
+### <a id='directory_index'></a> Directory Index ###
 
 If your site doesn't have a nice `index.html`, you can configure `Staticfile` to display a Directory Index of other files; rather than show a relatively unhelpful 404 error.
 
@@ -61,7 +67,7 @@ Add a line to your `Staticfile` that begins with `directory:`
 directory: visible
 ```
 
-### Server Side Includes (SSI)
+### <a id='server_side_includes'></a> Server Side Includes (SSI) ###
 
 Add the following line to your `Staticfile` to enable support for [SSI](https://en.wikipedia.org/wiki/Server_Side_Includes):
 
@@ -69,9 +75,9 @@ Add the following line to your `Staticfile` to enable support for [SSI](https://
 ssi: enabled
 ```
 
-### GZip Static
+### <a id='gzip'></a> GZip Static ###
 
-The [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html) and [`gunzip`](http://nginx.org/en/docs/http/ngx_http_gunzip_module.html) modules are set to `on` by default. 
+The [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html) and [`gunzip`](http://nginx.org/en/docs/http/ngx_http_gunzip_module.html) modules are set to `on` by default.
 Together, these modules enable Nginx to properly serve compressed files to clients. They also decompress files for clients that do not support compressed content or responses.
 
 If you want to disable these modules, specify the following in your custom `nginx.conf`:
@@ -81,13 +87,25 @@ gunzip off;
 gzip_static off;
 ```
 
-### Advanced Nginx configuration
+### <a id='gzip'></a> GZip Static ###
 
 You can customize the Nginx configuration further, by adding `nginx.conf` and/or `mime.types` to your root folder.
 
 If the buildpack detects either of these files, they will be used in place of the built-in versions.
 
-For information about using and extending the Staticfile buildpack in Cloud Foundry, see the [staticfile-buildpack GitHub repo](https://github.com/cloudfoundry/staticfile-buildpack).
+
+## <a id='proxy_support'></a> Proxy Support ##
+
+If you need to use a proxy to download dependencies during staging, you can set
+the `http_proxy` and/or `https_proxy` environment variables. For more information, see
+the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
+
+## <a id='help_support'></a>Help and Support ##
+
+Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+
+For more information about using and extending the Staticfile buildpack in Cloud Foundry, see
+the [staticfile-buildpack GitHub repo](https://github.com/cloudfoundry/staticfile-buildpack).
 
 You can find current information about this buildpack on the Staticfile
 buildpack [release page](https://github.com/cloudfoundry/staticfile-buildpack/releases) in GitHub.
