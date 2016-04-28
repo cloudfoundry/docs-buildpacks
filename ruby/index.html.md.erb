@@ -5,9 +5,17 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-Use the Ruby buildpack with Ruby, Rack, Rails or Sinatra applications.
+## <a id='pushing_apps'></a> Pushing Apps ##
 
-See the following topics:
+This buildpack will be used if your app has a `Gemfile` and `Gemfile.lock` in the root directory. It will then use Bundler to install your dependencies.
+
+If your Cloud Foundry deployment does not have the Ruby Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
+
+```bash
+cf push my_app -b https://github.com/cloudfoundry/ruby-buildpack.git
+```
+
+For more detailed information on deploying Ruby applications see the following topics:
 
 * [Getting Started Deploying Ruby Apps](./gsg-ruby.html)
 * [Getting Started Deploying Ruby on Rails Apps](./gsg-ror.html)
@@ -18,11 +26,66 @@ See the following topics:
 * [Environment Variables Defined by the Ruby Buildpack](./ruby-environment.html)
 * [Configure Service Connections for Ruby](./ruby-service-bindings.html)
 
+## <a id='runtime'></a>Specify a Ruby Runtime ##
 
-The source for the buildpack is [here](https://github.com/cloudfoundry/cf-buildpack-ruby).
+Specific versions of the Ruby runtime can be specified in the `Gemfile`:
 
-## Buildpack Logging and Application Logging ##
+### <a id='mri_runtime'></a>MRI ###
 
+For MRI you can specify the version of ruby by doing the following:
+
+``` ruby
+ruby '2.2.3'
+```
+
+### <a id='jruby_runtime'></a>JRuby ###
+For JRuby you can specify the version of ruby by doing the following:
+
+JRuby version `1.7.x` supports either `1.9` mode, e.g.:
+
+``` ruby
+ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.25'
+```
+
+or `2.0` mode, e.g.:
+
+``` ruby
+ruby '2.0.0', :engine => 'jruby', :engine_version => '1.7.25'
+```
+
+For Jruby version `>= 9.0`:
+
+``` ruby
+ruby '2.2.3', :engine => 'jruby', :engine_version => '9.0.5.0'
+```
+
+The buildpack only supports the stable Ruby versions, which are listed in [manifest.yml](manifest.yml) and [releases page](https://github.com/cloudfoundry/ruby-buildpack/releases).
+
+If you try to use a binary that is not currently supported, staging your app will fail and you will see the following error message:
+
+```
+       Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
+ !
+ !     exit
+ !
+Staging failed: Buildpack compilation step failed
+```
+
+## <a id='vendoring'></a>Vendoring app dependencies ##
+
+As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' its dependencies.
+
+For the Ruby buildpack, use bundler:
+
+```shell
+cd <your app dir>
+bundle package --all
+```
+
+```cf push``` uploads your vendored dependencies. The buildpack will compile any dependencies requiring compilation while staging your application.
+
+
+## <a id='logging'></a>Buildpack Logging and Application Logging ##
 The buildpack only runs during the staging process, and only logs
 what is important to staging, such as what is being downloaded, what the
 configuration is, and work that the buildpack does on your application.
@@ -45,3 +108,19 @@ You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning mes
 For more information about the `rails_log_stdout` plugin, refer to the [Github README](https://github.com/ddollar/rails_log_stdout).
 
 For more information about the `rails_12factor` gem, refer to the [Github README](https://github.com/heroku/rails_12factor).
+
+## <a id='proxy_support'></a> Proxy Support ##
+
+If you need to use a proxy to download dependencies during staging, you can set
+the `http_proxy` and/or `https_proxy` environment variables. For more information, see
+the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
+
+## <a id='help_support'></a>Help and Support ##
+
+Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+
+For more information about using and extending the Ruby buildpack in Cloud Foundry, see
+the [ruby-buildpack GitHub repo](https://github.com/cloudfoundry/ruby-buildpack).
+
+You can find current information about this buildpack on the Ruby buildpack
+[release page](https://github.com/cloudfoundry/ruby-buildpack/releases) in GitHub.
