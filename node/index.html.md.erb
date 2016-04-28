@@ -5,9 +5,16 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-Use the Node.js buildpack with Node or JavaScript applications.
+## <a id='pushing_apps'></a> Pushing Apps ##
 
-See the following topics:
+This buildpack will be automatically used if there is a `package.json` file in the root directory of your project.
+
+If your Cloud Foundry deployment does not have the Node.js Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
+```bash
+cf push my_app -b https://github.com/cloudfoundry/buildpack-nodejs.git
+```
+
+For more detailed information on deploying Node.js applications see the following topics:
 
 * <a href="./node-tips.html" class="subnav">Tips for Node.js Developers</a>
 * <a href="./node-environment.html" class="subnav">Environment Variables Defined by the Node Buildpack</a>
@@ -16,12 +23,73 @@ See the following topics:
 You can find the source for the buildpack on GitHub:
 [https://github.com/cloudfoundry/heroku-buildpack-nodejs](https://github.com/cloudfoundry/heroku-buildpack-nodejs)
 
-## Buildpack Logging and Application Logging ##
+## <a id='runtime'></a>Specify a Node.js Version##
 
-The buildpack only runs during the staging process, and therefore only logs
-staging information such as the downloaded components, configuration data, and work performed on your application by the buildpack.
+Set engines.node in package.json to the semver range
+(or specific version) of node you'd like to use. For example:
 
-Once staging completes, the buildpack stops logging. The Loggregator handles application logging. 
+```json
+"engines": {
+  "node": "4.4.x"
+}
+```
 
-Your application must write to STDOUT or STDERR for its logs to be included in
-the Loggregator stream. For more information, see the [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html) topic.
+or
+
+```json
+"engines": {
+  "node": "4.4.3"
+}
+```
+
+If you try to use a version that is not currently supported, staging your app will fail and you will see the following error message:
+
+```
+       Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
+ !
+ !     exit
+ !
+Staging failed: Buildpack compilation step failed
+```
+
+## <a id='vendoring'></a>Vendoring app dependencies ##
+
+As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' it's dependencies.
+
+For the Node.js buildpack, use ```npm```:
+
+```shell
+cd <your app dir>
+npm install # vendors into /node_modules
+```
+
+```cf push``` uploads your vendored dependencies.
+
+## <a id='openssl'></a>OpenSSL support ##
+
+Since November 2015, the [nodejs-buildpack](https://github.com/cloudfoundry/nodejs-buildpack)
+has been packaging binaries of Node.js with OpenSSL that are statically linked. With
+[community approval](https://github.com/cloudfoundry/nodejs-buildpack/issues/32), it was
+decided to support Node.js 4.x and greater, which relied on the Node.js release cycle
+to provide OpenSSL updates.
+
+The buildpack's team [binary-builder](https://github.com/cloudfoundry/binary-builder) was
+updated to [enable the static openssl compilation](https://github.com/cloudfoundry/binary-builder/commit/834759affa4d7e42294a54b49bac6f1cf81b798a).
+All versions of Node.js compiled since have been statically linked with OpenSSL, which
+include versions of Node.js greater than and equal to *0.12.10* and *0.10.42*.
+
+## <a id='proxy_support'></a> Proxy Support ##
+
+If you need to use a proxy to download dependencies during staging, you can set
+the `http_proxy` and/or `https_proxy` environment variables. For more information, see
+the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
+
+## <a id='help_support'></a>Help and Support ##
+
+Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+
+For more information about using and extending the Node.js buildpack in Cloud Foundry, see
+the [nodejs-buildpack GitHub repo](https://github.com/cloudfoundry/nodejs-buildpack).
+
+You can find current information about this buildpack on the Node.js buildpack
+[release page](https://github.com/cloudfoundry/nodejs-buildpack/releases) in GitHub.

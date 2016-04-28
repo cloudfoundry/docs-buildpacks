@@ -6,9 +6,7 @@ title: Binary Buildpack
 
 Use the binary buildpack for running arbitrary binary web servers.
 
-For more information, see the [buildpack documentation](../index.html).
-
-## Usage ##
+## <a id='pushing_apps'></a> Pushing Apps ##
 
 Unlike most other Cloud Foundry buildpacks, you must specify the binary
 buildpack in order to use it in staging your binary file.
@@ -36,8 +34,7 @@ specifies a `web` task:
    	$ cf push my_app -c './app' -b binary-buildpack
    	```
 
-## Compiling your Binary ##
-
+## <a id='compiling'></a> Compiling your Binary ##
 Cloud Foundry expects your binary to bind to the port specified by the `PORT`
 environment variable.
 
@@ -88,3 +85,13 @@ $ cf push my_app -s (cflinuxfs2|lucid64)
 ```
 
 To run docker on Mac OS X, we recommend [boot2docker](http://boot2docker.io/).
+
+## <a id='help_support'></a>Help and Support ##
+
+Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+
+For more information about using and extending the Ruby buildpack in Cloud Foundry, see
+the [ruby-buildpack GitHub repo](https://github.com/cloudfoundry/ruby-buildpack).
+
+You can find current information about this buildpack on the Ruby buildpack
+[release page](https://github.com/cloudfoundry/ruby-buildpack/releases) in GitHub.
