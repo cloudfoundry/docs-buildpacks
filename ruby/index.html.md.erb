@@ -17,14 +17,17 @@ cf push my_app -b https://github.com/cloudfoundry/ruby-buildpack.git
 
 For more detailed information on deploying Ruby applications see the following topics:
 
-* [Getting Started Deploying Ruby Apps](./gsg-ruby.html)
-* [Getting Started Deploying Ruby on Rails Apps](./gsg-ror.html)
-* [Deploy a Sample Ruby on Rails App](./sample-ror.html)
-* [Configure a Production Server for Ruby Apps](./ruby-prod-server.html)
-* [Configure Rake Tasks for Deployed Apps](./rake-config.html)
-* [Tips for Ruby Developers](./ruby-tips.html)
-* [Environment Variables Defined by the Ruby Buildpack](./ruby-environment.html)
-* [Configure Service Connections for Ruby](./ruby-service-bindings.html)
+* <a href="./gsg-ruby.html" class="subnav">Getting Started Deploying Ruby Apps</a>
+* <a href="./gsg-ror.html" class="subnav">Getting Started Deploying Ruby on Rails Apps</a>
+* <a href="./sample-ror.html" class="subnav">Deploy a Sample Ruby on Rails App</a>
+* <a href="./ruby-prod-server.html" class="subnav">Configure a Production Server for Ruby Apps</a>
+* <a href="./rake-config.html" class="subnav">Configure Rake Tasks for Deployed Apps</a>
+* <a href="./ruby-tips.html" class="subnav">Tips for Ruby Developers</a>
+* <a href="./ruby-environment.html" class="subnav">Environment Variables Defined by the Ruby Buildpack</a>
+* <a href="./ruby-service-bindings.html" class="subnav">Configure Service Connections for Ruby</a>
+
+You can find the source for the buildpack on GitHub:
+[https://github.com/cloudfoundry/cf-buildpack-ruby](https://github.com/cloudfoundry/cf-buildpack-ruby)
 
 ## <a id='runtime'></a>Specify a Ruby Runtime ##
 
@@ -86,26 +89,20 @@ bundle package --all
 
 
 ## <a id='logging'></a>Buildpack Logging and Application Logging ##
-The buildpack only runs during the staging process, and only logs
-what is important to staging, such as what is being downloaded, what the
-configuration is, and work that the buildpack does on your application.
+The buildpack only runs during the staging process, and only logs what is important to staging, such as what is being downloaded, what the configuration is, and work that the buildpack does on your application.
 
-The buildpack stops logging when the staging process finishes.
-Application logging is a separate concern.
+The buildpack stops logging when the staging process finishes. The Loggregator handles application logging. 
 
-If you are deploying a Ruby, Rack, or Sinatra application, your application must write to STDOUT or STDERR to include its logs in the
-Loggregator stream.
-See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
+Your application must write to STDOUT or STDERR for its logs to be included in
+the Loggregator stream. For more information, see the [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html) topic.
 
 If you are deploying a Rails application, the buildpack may or may not automatically install the necessary plugin or gem for logging, depending on the Rails version of the application:
 
-* Rails 2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application.
-* Rails 3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message.
-* Rails 4.x: The buildpack only issues a warning message that the `rails_12factor` gem is not present, but does not install the gem.
+* Rails 2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application. For more information about the `rails_log_stdout` plugin, refer to the [Github README](https://github.com/ddollar/rails_log_stdout).
 
-You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message.
+* Rails 3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, refer to the [Github README](https://github.com/heroku/rails_12factor).
 
-For more information about the `rails_log_stdout` plugin, refer to the [Github README](https://github.com/ddollar/rails_log_stdout).
+* Rails 4.x: The buildpack only issues a warning message that the `rails_12factor` gem is not present, but does not install the gem. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, refer to the [Github README](https://github.com/heroku/rails_12factor).
 
 For more information about the `rails_12factor` gem, refer to the [Github README](https://github.com/heroku/rails_12factor).
 
