@@ -365,7 +365,7 @@ public class RedisConfig {
         Cloud cloud = cloudFactory.getCloud();
         RedisServiceInfo serviceInfo = (RedisServiceInfo) cloud.getServiceInfo("my-redis");
         String serviceID = serviceInfo.getID();
-        return cloud.getServiceConnector(serviceID, DataSource.class, null);
+        return cloud.getServiceConnector(serviceID, RedisConnectionFactory.class, null);
     }
 
     @Bean
