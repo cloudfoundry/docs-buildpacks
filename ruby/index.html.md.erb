@@ -29,7 +29,11 @@ For more detailed information on deploying Ruby applications see the following t
 You can find the source for the buildpack on GitHub:
 [https://github.com/cloudfoundry/cf-buildpack-ruby](https://github.com/cloudfoundry/cf-buildpack-ruby)
 
-## <a id='runtime'></a>Specify a Ruby Runtime ##
+## <a id='supported_versions'></a>Supported Versions ##
+
+Supported Ruby versions can be found [in the release notes](https://github.com/cloudfoundry/ruby-buildpack/releases).
+
+## <a id='runtime'></a>Specifying a Ruby Version ##
 
 Specific versions of the Ruby runtime can be specified in the `Gemfile`:
 
@@ -91,7 +95,7 @@ bundle package --all
 ## <a id='logging'></a>Buildpack Logging and Application Logging ##
 The buildpack only runs during the staging process, and only logs what is important to staging, such as what is being downloaded, what the configuration is, and work that the buildpack does on your application.
 
-The buildpack stops logging when the staging process finishes. The Loggregator handles application logging. 
+The buildpack stops logging when the staging process finishes. The Loggregator handles application logging.
 
 Your application must write to STDOUT or STDERR for its logs to be included in
 the Loggregator stream. For more information, see the [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html) topic.
