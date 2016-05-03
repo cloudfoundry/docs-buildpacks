@@ -14,7 +14,11 @@ If your Cloud Foundry deployment does not have the Python Buildpack installed, o
 cf push my_app -b https://github.com/cloudfoundry/buildpack-python.git
 ```
 
-### <a id='runtime'></a>Specify a Python Runtime ###
+## <a id='supported_versions'></a>Supported Versions ##
+
+Supported Python versions can be found [in the release notes](https://github.com/cloudfoundry/python-buildpack/releases).
+
+## <a id='runtime'></a>Specifying a Python Version ##
 
 Specific versions of the Python runtime can be specified with a `runtime.txt` file:
 
@@ -33,7 +37,7 @@ If you try to use a binary that is not currently supported, staging your app wil
 Staging failed: Buildpack compilation step failed
 ```
 
-### <a id='vendoring'></a>Vendoring app dependencies ###
+## <a id='vendoring'></a>Vendoring app dependencies ##
 
 As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' it's dependencies.
 

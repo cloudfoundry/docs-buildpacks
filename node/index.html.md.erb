@@ -23,12 +23,16 @@ For more detailed information on deploying Node.js applications see the followin
 You can find the source for the buildpack on GitHub:
 [https://github.com/cloudfoundry/heroku-buildpack-nodejs](https://github.com/cloudfoundry/heroku-buildpack-nodejs)
 
-## <a id='runtime'></a>Specify a Node.js Version##
+## <a id='supported_versions'></a>Supported Versions ##
+
+Supported Node versions can be found [in the release notes](https://github.com/cloudfoundry/nodejs-buildpack/releases).
+
+## <a id='runtime'></a>Specifying a Node.js Version##
 
 Set engines.node in package.json to the semver range
 (or specific version) of node you'd like to use. For example:
 
-```json
+```
 "engines": {
   "node": "4.4.x"
 }
@@ -36,7 +40,7 @@ Set engines.node in package.json to the semver range
 
 or
 
-```json
+```
 "engines": {
   "node": "4.4.3"
 }
