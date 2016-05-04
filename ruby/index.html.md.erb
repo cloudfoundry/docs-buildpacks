@@ -116,6 +116,11 @@ If you need to use a proxy to download dependencies during staging, you can set
 the `http_proxy` and/or `https_proxy` environment variables. For more information, see
 the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
 
+## <a id='Custom Trusted Certificate Support'></a>Custom Trusted Certificate Support ##
+
+Ruby uses certificates stored in `/etc/ssl/certs` and thus will support trusted certificates out of the box. 
+
+
 ## <a id='help_support'></a>Help and Support ##
 
 Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
