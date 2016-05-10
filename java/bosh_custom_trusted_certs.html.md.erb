@@ -1,0 +1,15 @@
+---
+title: BOSH Custom Trusted Certificate Support
+owner: Java
+---
+
+<strong><%= modified_date %></strong>
+
+_This page assumes you are using cf CLI v6 and version 1.1.2 of either the Cloud Foundry Maven plugin or the Cloud Foundry Gradle plugin._
+
+## <a id='BOSH Configured Custom Trusted Certificate Support'></a>BOSH Configured Custom Trusted Certificate Support ##
+
+[BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) is supported by Java Buildpack version => 3.7. To enable:  
+Run: `cf set-env <APP> JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: true}'`
+or
+Modify the buildpack by changing: https://github.com/cloudfoundry/java-buildpack/blob/master/config/container_certificate_trust_store.yml#L18 to true
