@@ -142,10 +142,19 @@ There are a couple of easy ways to debug the buildpack:
 
   0. Check the output from the buildpack. It writes some basic information to stdout, like the files that are being downloaded. It writes information should something fail, specifically, stack traces.
 
-  0. Check the logs from the buildpack. The buildpack writes logs to disk. Retrieve them with the `cf files` command, as the following example shows:
+  0. Check the logs from the buildpack. The buildpack writes logs to disk. Retrieve them with the command, as the following example shows:
 
-    ```
+    DEA release
+
+    ```bash
     $ cf files APP app/.bp/logs/bp.log
+    ```
+
+    Diego release
+
+    ```bash
+    $ cf ssh APP
+    $ cat app/.bp/logs/bp.log
     ```
 
   This log is more detailed than the stdout output, however it is still terse.
