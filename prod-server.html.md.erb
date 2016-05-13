@@ -1,0 +1,62 @@
+---
+title: Configure a Production Server
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to configure a production server for your apps using a Procfile. A Procfile enables you to declare required runtime processes, called process types, for your web app. Process managers in a server use the process types to run and manage the workload.
+
+When you deploy, <%=vars.product_short%> determines if a Procfile exists and uses the Procfile to configure your app with the specified settings.
+
+##<a id="procfile"></a>About Procfiles
+
+In a Procfile, you declare one process type per line and use the following syntax:
+
+<pre class="code">
+PROCESS_TYPE: COMMAND
+</pre>
+
+* `PROCESS_TYPE` is typically `web` or `worker`. A `web` process handles HTTP traffic, and a `worker` process runs background jobs.
+* `COMMAND` is the command line to launch the process.
+
+For example, the following Procfile starts the launch script created by the build process for a Java app:
+
+        web: build/install/MY-PROJECT-NAME/bin/MY-PROJECT-NAME
+
+##<a id="specify-server"></a>Specify a Web Server
+
+Follow these steps to specify a web server using a Procfile. For more information on configuring a web server for Rails apps, see the [Configure a Ruby Web Server](#configure-ruby) section.
+
+1. Create a blank file with a command line for a `web` process type. 
+
+2. Save it as a file named `Procfile` with no extension in the root directory of your app. 
+
+3. Push your app.
+
+##<a id="config-ruby"></a>Configure a Ruby Web Server
+
+<%=vars.product_short%> uses the default standard Ruby web server library WEBrick for Ruby and Ruby on Rails apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn.
+
+To instruct <%=vars.product_short%> to use a web server other than WEBrick, perform the following steps: 
+
+1. Add the gem for the web server to your Gemfile.
+
+1. In the `config` directory of your app, create a new configuration file or modify an existing file. Refer to your web server documentation for how to configure this file. The following example uses the Puma web server:
+
+    <pre class="code">
+    &#35; config/puma.rb
+    threads 8,32
+    workers 3
+
+    on_worker_boot do
+      # things workers do
+    end
+</pre>
+
+1. In the root directory of your app, create a Procfile and add a command line for a `web` process type that points to your web server.  Refer to your web server documentation for how to configure the specific command for a process type.<br/><br/>
+    The following example shows a command that starts a Puma web server and specifies the app runtime environment, TCP port, and paths to the server state information and configuration files:
+   
+    <pre class="code">
+    web: bundle exec puma -e $RAILS_ENV -p 1234 -S ~/puma -C config/puma.rb
+    </pre>

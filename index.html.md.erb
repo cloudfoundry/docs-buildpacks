@@ -10,20 +10,16 @@ Buildpacks typically examine user-provided artifacts to determine what dependenc
 
 When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required and installs it on the Droplet Execution Agent (DEA) where the application needs to run.
 
-## Dependencies ##
+<p class="note"><strong>Note</strong>: Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a <a href="https://github.com/cf-buildpacks/buildpack-packager">
+Buildpack Packager</a> application.</p>
 
-Cloud Foundry deployments often have limited access to dependencies.
-This limitation occurs when the deployment is behind a firewall, or
-when administrators want to use local mirrors and proxies.
-In these circumstances, Cloud Foundry provides a
-[Buildpack Packager](https://github.com/cf-buildpacks/buildpack-packager) application.
-
-The following topics also contain information that might be relevant to your deployment:
+The following topics contain information that might be relevant to your deployment:
 
 * <a href="./detection.html" class="subnav">Buildpack Detection</a>
 * <a href="./custom.html" class="subnav">Custom Buildpacks</a>
 * <a href="./depend-pkg-offline.html" class="subnav">Packaging Dependencies for Offline Buildpacks</a>
 * <a href="./supported-binary-dependencies.html" class="subnav">Supported Binary Dependencies</a>
+* <a href="./prod-server.html" class="subnav">Configuring a Production Server</a>
 
 ## System Buildpacks
 
