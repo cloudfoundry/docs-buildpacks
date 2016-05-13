@@ -88,9 +88,9 @@ If you need to use a proxy to download dependencies during staging, you can set
 the `http_proxy` and/or `https_proxy` environment variables. For more information, see
 the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
 
-## <a id='BOSH Configured Custom Trusted Certificate Support'></a>BOSH Configured Custom Trusted Certificate Support ##
+## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-Nodejs hardcodes root CA certs in its source code. To use [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) a developer must pass the specified CAs to the [tls.connect](https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback) function as extra arguments.
+Nodejs hardcodes root CA certs in its source code. To use [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html), a developer must pass the specified CAs to the [tls.connect](https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback) function as extra arguments.
 
 ## <a id='help_support'></a>Help and Support ##
 
