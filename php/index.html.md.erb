@@ -7,25 +7,135 @@ owner: Buildpacks
 
 Use the PHP buildpack with PHP or HHVM runtimes.
 
+## <a id='supported_software'></a> Supported Software and Versions ##
+The [release notes page](https://github.com/cloudfoundry/php-buildpack/releases) has a list of currently supported modules and packages.
+
+* **PHP Runtimes**
+  * php-cli
+  * php-cgi
+  * php-fpm
+* **Third-Party Modules**
+  * New Relic, in connected environments only.
+
+## <a id='pushing_apps'></a> Pushing Apps ##
+### <a id='quick_start'></a> 30 Second Tutorial ###
+
+Getting started with this buildpack is easy.  With the [`cf` command line utility](https://github.com/cloudfoundry/cli) installed, open a shell, change directories to the root of your PHP files and push your application using the argument `-b https://github.com/cloudfoundry/php-buildpack.git`.
+
+Example:
+
+```bash
+mkdir my-php-app
+cd my-php-app
+cat << EOF > index.php
+<?php
+  phpinfo();
+?>
+EOF
+cf push -m 128M -b https://github.com/cloudfoundry/php-buildpack.git my-php-app
+```
+
+Please note that you should change *my-php-app* to some unique name on your target Cloud Foundry instance, otherwise you'll get a hostname conflict error and the push will fail.
+
+The example above will create and push a test application, *my-php-app*, to Cloud Foundry.  The `-b` argument instructs CF to use this buildpack.  The remainder of the options and arguments are not specific to the buildpack, for questions on those consult the output of `cf help push`.
+
+Here's a breakdown of what happens when you run the example above.
+
+  - On your PC:
+    - It will create a new directory and one PHP file, which just invokes `phpinfo()`
+    - Run `cf` to push your application.  This will create a new application with a memory limit of 128M (more than enough here) and upload our test file.
+  - Within Cloud Foundry:
+    - The buildpack is executed.
+    - Application files are copied to the `htdocs` folder.
+    - Apache HTTPD & PHP are downloaded, configured with the buildpack defaults and run.
+    - Your application is accessible at the URL `http://my-php-app.example.com` (Replacing `example.com` with the domain of your public CF provider or private instance).
+
+### <a id='more_info'></a> More information about deploying ###
+While the *30 Second Tutorial* shows how quick and easy it is to get started using the buildpack, it skips over quite a bit of what you can do to adjust, configure and extend the buildpack.  The following sections and links provide a more in-depth look at the buildpack.
+
+
+### <a id='features'></a> Features ###
+
+Here are some special features of the buildpack.
+
+  - Supports running commands or migration scripts prior to application startup.
+  - Supports an extension mechanism that allows the buildpack to provide additional functionality.
+  - Allows for application developers to provide custom extensions.
+  - Easy troubleshooting with the `BP_DEBUG` environment variable.
+  - Download location is configurable, allowing users to host binaries on the same network (i.e. run without an Internet connection)
+  - Smart session storage, defaults to file w/sticky sessions but can also use redis for storage.
+
+### <a id='examples'></a> Examples ###
+
+Here are some example applications that can be used with this buildpack.
+
+  - [php-info]  This app has a basic index page and shows the output of `phpinfo()`.
+  - [PHPMyAdmin]  A deployment of PHPMyAdmin that uses bound MySQL services.
+  - [PHPPgAdmin] A deployment of PHPPgAdmin that uses bound PostgreSQL services.
+  - [Wordpress]  A deployment of WordPress that uses bound MySQL service.
+  - [Drupal] A deployment of Drupal that uses bound MySQL service.
+  - [CodeIgniter]  CodeIgniter tutorial application running on CF.
+  - [Stand Alone]  An example which runs a standalone PHP script.
+  - [pgbouncer]  An example which runs the PgBouncer process in the container to pool database connections.
+  - [phalcon]  An example which runs a Phalcon based application.
+  - [composer] An example which uses Composer.
+
+### <a id='examples'></a> Advanced Topics ###
 See the following topics:
 
-* [Composer](./gsg-php-composer.html)
-* [New Relic](./gsg-php-newrelic.html)
-* [Configuration](./gsg-php-config.html)
-* [Deploying and Developing PHP Apps](./gsg-php-usage.html)
-* [Tips for PHP Developers](./gsg-php-tips.html)
+* <a href="./gsg-php-composer.html" class="subnav">Composer</a>
+* <a href="./gsg-php-sessions.html" class="subnav">Sessions</a>
+* <a href="./gsg-php-newrelic.html" class="subnav">New Relic</a>
+* <a href="./gsg-php-config.html" class="subnav">Configuration</a>
+* <a href="./gsg-php-usage.html" class="subnav">Deploying and Developing PHP Apps</a>
+* <a href="./gsg-php-tips.html" class="subnav">Tips for PHP Developers</a>
 
-The source for the buildpack is [here](https://github.com/cloudfoundry/php-buildpack).
+You can find the source for the buildpack on GitHub:
+[https://github.com/cloudfoundry/php-buildpack](https://github.com/cloudfoundry/php-buildpack)
 
-## Buildpack Logging and Application Logging ##
+## <a id='proxy_support'></a> Proxy Support ##
 
-The buildpack only runs during the staging process, and therefore only logs
-what is important to staging, such as what is being downloaded, what the
-configuration is, and work that the buildpack does on your application.
+If you need to use a proxy to download dependencies during staging, you can set
+the `http_proxy` and/or `https_proxy` environment variables. For more information, see
+the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
 
-Once staging is done, the buildpack stops logging.
-Application logging is a separate concern.
+## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-Your application must write to STDOUT or STDERR for its logs to be included in the
-Loggregator stream.
-See [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
+For versions of PHP 5.6.0 and later, the default cert location is `/usr/lib/ssl/certs`, which symlinks to `/etc/ssl/certs` and supports [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) out of the box. 
+
+## <a id='help_support'></a>Help and Support ##
+
+Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+
+For more information about using and extending the PHP buildpack in Cloud Foundry, see
+the [php-buildpack GitHub repo](https://github.com/cloudfoundry/php-buildpack).
+
+You can find current information about this buildpack on the PHP buildpack
+[release page](https://github.com/cloudfoundry/php-buildpack/releases) in GitHub.
+
+## License
+
+The Cloud Foundry PHP Buildpack is released under version 2.0 of the [Apache License].
+
+[Configuration Options]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/config.md
+[Development]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/development.md
+[Troubleshooting]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/troubleshooting.md
+[Usage]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/usage.md
+[Binaries]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/binaries.md
+[php-info]:https://github.com/dmikusa-pivotal/cf-ex-php-info
+[PHPMyAdmin]:https://github.com/dmikusa-pivotal/cf-ex-phpmyadmin
+[PHPPgAdmin]:https://github.com/dmikusa-pivotal/cf-ex-phppgadmin
+[Wordpress]:https://github.com/dmikusa-pivotal/cf-ex-worpress
+[Drupal]:https://github.com/dmikusa-pivotal/cf-ex-drupal
+[CodeIgniter]:https://github.com/dmikusa-pivotal/cf-ex-code-igniter
+[Stand Alone]:https://github.com/dmikusa-pivotal/cf-ex-stand-alone
+[pgbouncer]:https://github.com/dmikusa-pivotal/cf-ex-pgbouncer
+[Apache License]:http://www.apache.org/licenses/LICENSE-2.0
+[vcap-dev]:https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev
+[support forums]:http://support.run.pivotal.io/home
+[Composer support]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/composer.md
+["offline" mode]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/binaries.md#bundling-binaries-with-the-build-pack
+[phalcon]:https://github.com/dmikusa-pivotal/cf-ex-phalcon
+[Phalcon]:http://phalconphp.com/en/
+[composer]:https://github.com/dmikusa-pivotal/cf-ex-composer
+[Proxy Support]:http://docs.cloudfoundry.org/buildpacks/proxy-usage.html

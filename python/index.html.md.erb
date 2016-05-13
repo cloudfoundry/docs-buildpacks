@@ -5,15 +5,70 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-## <a id='buildpack'></a>About the Python Buildpack ##
+## <a id='pushing_apps'></a> Pushing Apps ##
 
-For information about using and extending the Python buildpack in Cloud Foundry,
-see the [python-buildpack Github repo](https://github.com/cloudfoundry/python-buildpack).
+This buildpack will be automatically used if there is a `requirements.txt` or `setup.py` file in the root directory of your project.
+
+If your Cloud Foundry deployment does not have the Python Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
+```bash
+cf push my_app -b https://github.com/cloudfoundry/buildpack-python.git
+```
+
+## <a id='supported_versions'></a>Supported Versions ##
+
+Supported Python versions can be found [in the release notes](https://github.com/cloudfoundry/python-buildpack/releases).
+
+## <a id='runtime'></a>Specifying a Python Version ##
+
+Specific versions of the Python runtime can be specified with a `runtime.txt` file:
+
+    $ cat runtime.txt
+    python-3.5.1
+
+The buildpack only supports the stable Python versions, which are listed in the `manifest.yml` and [releases page](https://github.com/cloudfoundry/python-buildpack/releases).
+
+If you try to use a binary that is not currently supported, staging your app will fail and you will see the following error message:
+
+```
+       Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
+ !
+ !     exit
+ !
+Staging failed: Buildpack compilation step failed
+```
+
+## <a id='vendoring'></a>Vendoring app dependencies ##
+
+As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' it's dependencies.
+
+For the Python buildpack, use ```pip```:
+
+```shell
+cd <your app dir>
+mkdir -p vendor
+
+# vendors all the pip *.tar.gz into vendor/
+pip install --download vendor -r requirements.txt
+```
+
+```cf push``` uploads your vendored dependencies. The buildpack will install them directly from the `vendor/`.
+
+## <a id='proxy_support'></a> Proxy Support ##
+
+If you need to use a proxy to download dependencies during staging, you can set
+the `http_proxy` and/or `https_proxy` environment variables. For more information, see
+the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
+
+## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
+
+Versions of Python 2.7.9 and later use certificates stored in `/etc/ssl/certs` and support [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) out of the box. 
+
+## <a id='help_support'></a>Help and Support ##
+
+Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+
+For more information about using and extending the Python buildpack in Cloud Foundry, see
+the [python-buildpack GitHub repo](https://github.com/cloudfoundry/python-buildpack).
 
 You can find current information about this buildpack on the Python buildpack
-[release page](https://github.com/cloudfoundry/python-buildpack/releases) in
-GitHub.
-
-This buildpack uses a default Python version of `2.7.10`.
-To change the default version, specify the version key in your `runtime.txt`
-file.
+[release page](https://github.com/cloudfoundry/python-buildpack/releases) in GitHub.

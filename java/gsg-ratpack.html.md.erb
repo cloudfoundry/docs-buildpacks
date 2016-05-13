@@ -72,26 +72,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 ### Step 4: (Optional) Configure a Procfile ###
 
-A _Procfile_ enables you to declare required runtime processes, called _process_ _types_, for your web app. Process managers in a server use the process types to run and manage the workload.
-
-When you deploy, <%=vars.product_short%> determines if a Procfile exists and uses the Procfile to configure your app with the specified settings.
-
-In a Procfile, you declare one process type per line and use the following syntax, as shown in the example below:
-
-* `PROCESS_TYPE` is the command name in the format of an alphanumeric string.
-* `COMMAND` is the command line to launch the process.
-
-Example process type syntax:
-<pre class="code">
-PROCESS_TYPE: COMMAND
-</pre>
-
-You create a Procfile and add a command line for a `web` process type. Store the Procfile in the root directory of your app. The example shows a process type that starts the launch script created by the build process.
-
-Example Procfile:
-<pre class="code">
-web: build/install/MY-PROJECT-NAME/bin/MY-PROJECT-NAME
-</pre>
+Use a Procfile to declare required runtime processes for your web app and to specify your web server. For more information, see the [Configure a Production Server](../prod-server.html) topic.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.</p>
 

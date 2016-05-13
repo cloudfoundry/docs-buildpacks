@@ -1,0 +1,20 @@
+---
+title: BOSH Custom Trusted Certificate Support
+owner: Java
+---
+
+<strong><%= modified_date %></strong>
+
+## <a id='bosh_trusted_cert'></a>Configure ##
+
+Java Buildpack versions 3.7 and later support [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html).  
+
+Run the following command to configure support for this feature: 
+
+<pre class="terminal">
+$ cf set-env <APP> JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: true}'`
+</pre>
+
+Alternatively, you can modify the buildpack by setting the [<code>enabled</code>](https://github.com/cloudfoundry/java-buildpack/blob/master/config/container_certificate_trust_store.yml#L18) property to true in `config/container_certificate_trust_store.yml`. 
+
+For more information see the official [Java Buildpack documentation](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-container_certificate_trust_store.md) for this feature. 
