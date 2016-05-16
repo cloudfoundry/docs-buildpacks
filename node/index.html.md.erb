@@ -29,8 +29,7 @@ Supported Node versions can be found [in the release notes](https://github.com/c
 
 ## <a id='runtime'></a>Specifying a Node.js Version##
 
-Set engines.node in package.json to the semver range
-(or specific version) of node you want. For example:
+Set engines.node in package.json to the semver range, or specific version, of node you are using:
 
 ```
 "engines": {
@@ -48,18 +47,17 @@ or
 
 If you try to use a version that is not currently supported, staging your app will fail and you will see the following error message:
 
-```
-       Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
- !
- !     exit
- !
-Staging failed: Buildpack compilation step failed
-```
+<pre class='terminal'>
+$   Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST:...
+$   !
+$   !     exit
+$   !
+$   Staging failed: Buildpack compilation step failed
+</pre>
 
 ## <a id='runtime'></a>Specifying an npm Version##
 
-Set engines.npm in package.json to the semver range
-(or specific version) of npm you want. For example:
+Set engines.npm in package.json to the semver range, or specific version, of npm you are using:
 
 ```
 "engines": {
@@ -81,12 +79,11 @@ If you do not specify an npm version, your app will use the [default npm](https:
 
 If your environment cannot connect to the internet and a non-default version of npm is specified, the buildpack will fail to download npm. You will see the following error message:
 
-```
-    We're unable to download the version of npm you've provided (...).
-    Please remove the npm version specification in package.json
-    ...
-Staging failed: Buildpack compilation step failed
-```
+<pre class='terminal'>
+$   We're unable to download the version of npm you've provided (...).
+$   Please remove the npm version specification in package.json (...)
+$   Staging failed: Buildpack compilation step failed
+</pre>
 
 ## <a id='vendoring'></a>Vendoring app dependencies ##
 
