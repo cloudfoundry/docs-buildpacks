@@ -44,7 +44,7 @@ For MRI you can specify the version of Ruby by doing the following:
 ruby '2.2.3'
 ```
 
-Rubygems version operators (ex. the `~>` pessimistic operator) are supported as well for the `ruby` directive.
+Rubygems version operators are supported for the `ruby` directive. For example, the `~>` pessimistic operator is also supported:
 
 ``` ruby
 ruby '~> 2.2.3'
@@ -52,7 +52,7 @@ ruby '~> 2.2.3'
 
 With this example declaration in the `Gemfile`, if Ruby versions `2.2.4`, `2.2.5`, and `2.3.0` are present in the Ruby buildpack, the app will use Ruby `2.2.5`.
 
-For more information on the `ruby` directive for Bundler Gemfiles, please see [Bundler's documentation](http://bundler.io/gemfile_ruby.html)
+For more information on the `ruby` directive for Bundler Gemfiles, see [Bundler's documentation](http://bundler.io/gemfile_ruby.html).
 
 ### <a id='jruby_runtime'></a>JRuby ###
 For JRuby you can specify the version of ruby by doing the following:
@@ -87,7 +87,7 @@ If you try to use a binary that is not currently supported, staging your app wil
 Staging failed: Buildpack compilation step failed
 ```
 
-Additionally, please note that the pessimistic version operator (`~>`) on the Gemfile `ruby` directive for JRuby is not supported by the Ruby buildpack.
+Additionally, note that the pessimistic version operator (`~>`) on the Gemfile `ruby` directive for JRuby is not supported by the Ruby buildpack.
 
 ## <a id='vendoring'></a>Vendoring app dependencies ##
 
