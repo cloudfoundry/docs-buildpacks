@@ -53,6 +53,12 @@ pip install --download vendor -r requirements.txt
 
 ```cf push``` uploads your vendored dependencies. The buildpack will install them directly from the `vendor/`.
 
+## <a id='miniconda'></a>Using Miniconda <span style="font-size:1rem">(starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.6">1.5.6</a>)</span>##
+
+To use miniconda instead of pip for installing dependencies place an `environment.yml` file in the root directory.
+
+For examples, see our sample apps [using Python 2 with miniconda](https://github.com/cloudfoundry/python-buildpack/tree/master/cf_spec/fixtures/miniconda_simple_app_python_2) and [using Python 3 with miniconda](https://github.com/cloudfoundry/python-buildpack/tree/master/cf_spec/fixtures/miniconda_simple_app_python_3)
+
 ## <a id='proxy_support'></a> Proxy Support ##
 
 If you need to use a proxy to download dependencies during staging, you can set
