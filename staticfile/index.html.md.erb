@@ -91,9 +91,9 @@ gunzip off;
 gzip_static off;
 ```
 
-### <a id='gzip'></a> GZip Static ###
+### <a id='custom_nginx_configuration'></a> Custom Nginx Configuration ###
 
-You can customize the Nginx configuration further, by adding `nginx.conf` and/or `mime.types` to your root folder.
+You can customize the Nginx configuration further, by adding `nginx.conf` and/or `mime.types` to your root folder. (Note that if you specified an [alternate root folder](#root_folder), the files will need to be placed there.)
 
 If the buildpack detects either of these files, they will be used in place of the built-in versions.
 
