@@ -10,6 +10,8 @@ for your application.
 
 For example, by default Cloud Foundry does not support Haskell. Using a buildpack for Haskell allows you to add support for it at the deployment stage. When you push an application written using Haskell, the required buildpack is automatically installed on the Cloud Foundry Droplet Execution Agent (DEA) where the application will run.
 
+Operators can choose to disable custom buildpacks in an entire deployment. For more information, see the [Disabling Custom Buildpacks](../adminguide/buildpacks.html#disabling-custom-buildpacks) section of the Adding Buildpacks to Cloud Foundry topic.
+
  <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that Github recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
 
 ## <a id='custom-buildpacks'></a>Custom Buildpacks ##
