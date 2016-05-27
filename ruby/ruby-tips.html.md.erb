@@ -87,7 +87,8 @@ The following is an example of the "migrate frequently" method described in the
 [Migrating a Database in Cloud Foundry]
 (../../devguide/services/migrate-db.html#frequent-migration) topic.
 
-1. Create a Rake task to limit an idempotent command to the first instance of a deployed application:
+1. Create a Rakefile if one does not already exist, and add it to your application directory. 
+1. In your Rakefile, add a Rake task to limit an idempotent command to the first instance of a deployed application:
 
     ~~~
     namespace :cf do
