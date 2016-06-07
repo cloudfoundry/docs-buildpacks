@@ -87,7 +87,10 @@ Include conf/extra/httpd-my-special-config.conf # This line includes your additi
 
 ### <a id="php-extensions"></a> PHP Extensions
 
-PHP extensions are easily enabled by setting the `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` option in `.bp-config/options.json`.  Use these options to install bundled PHP extensions.
+PHP extensions are easily enabled by setting the `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` option in `.bp-config/options.json`. Use these options to install bundled PHP extensions.
+
+Please note that if an extension is already present and enabled in the compiled php (ex. `intl`), you do not need to explicitly enable it via `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` in `.bp-config/options.json` to use that extension.
+
 
 ### <a id="php-modules"></a> PHP Modules
 
