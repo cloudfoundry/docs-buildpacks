@@ -143,7 +143,7 @@ applications:
 
 ## <a id='passing_symbol_linker'></a>Passing a symbol and string to the linker ##
 
-This buildpack supports the go [linker's][https://golang.org/cmd/ld/] ability (`-X symbol
+This buildpack supports the go [linker's](https://golang.org/cmd/link/) ability (`-X symbol
 value`) to set the value of a string at link time. This can be done by setting
 `GO_LINKER_SYMBOL` and `GO_LINKER_VALUE` in the application's config before
 pushing code.
