@@ -99,7 +99,14 @@ applications:
 ### <a id='pushing_Apps_with_native_Go_vendoring'></a>Pushing Apps with native Go vendoring ###
 If you are using the native Go vendoring system, which packages all local dependencies in the `vendor/` directory, you must specify your app's package name in the `GOPACKAGENAME` environment variable. An example `manifest.yml`:
 
-If you are using the `vendor/` directory for dependencies, you can set the Go version with the `GOVERSION` environment variable.
+```yaml
+---
+applications:
+  - name: my-app-name
+    command: go-online
+    env:
+      GOPACKAGENAME: go-online
+```
 
 #### <a id='go 1.5'></a>Go 1.5 ####
 **NOTE**: For Go 1.5, since native vendoring is turned off by default, you must set the environment variable `GO15VENDOREXPERIMENT` to 1 in your `manifest.yml` to use this feature.
