@@ -11,7 +11,7 @@ When you deploy an app, <%=vars.product_short%> determines the command used to s
 
 1. If the developer uses the command `cf push -c COMMAND`, then <%=vars.product_short%> uses `COMMAND` to start the app. 
 1. If the developer creates a file called a Procfile, <%=vars.product_short%> uses the Procfile to configure the command that launches the app. See the <a href="#procfile">About Procfiles</a> section below for more information.
-1. If the developer does not use `cf push -c COMMAND` and does not create a Procfile, then <%=vars.product_short%> uses the command provided in the `default_process_types` property of the `release` script of the buildpack used by the app. See the <a href="buildpacks/custom.html#release-script">Custom Buildpacks</a> topic for more information about this property.
+1. If the developer does not use `cf push -c COMMAND` and does not create a Procfile, then <%=vars.product_short%> uses the command provided in the `default_process_types` property of the `release` script of the buildpack used by the app. See the <a href="../buildpacks/custom.html#release-script">Custom Buildpacks</a> topic for more information about this property.
 
 ##<a id="procfile"></a>About Procfiles
 
