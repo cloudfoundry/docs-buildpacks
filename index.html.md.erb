@@ -8,9 +8,9 @@ owner: Buildpacks
 Buildpacks provide framework and runtime support for your applications.
 Buildpacks typically examine user-provided artifacts to determine what dependencies to download and how to configure applications to communicate with bound services.
 
-When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required and installs it on the Droplet Execution Agent (DEA) where the application needs to run.
+When you push an application, Cloud Foundry automatically [detects](./detection.html) which buildpack is required and installs it on the Diego Cell where the application needs to run.
 
-<p class="note"><strong>Note</strong>: Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a <a href="https://github.com/cf-buildpacks/buildpack-packager">
+<p class="note"><strong>Note</strong>: Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a <a href="https://github.com/cloudfoundry/buildpack-packager">
 Buildpack Packager</a> application.</p>
 
 The following topics contain information that might be relevant to your deployment:
@@ -23,12 +23,12 @@ The following topics contain information that might be relevant to your deployme
 
 ## System Buildpacks
 
-This table describes Cloud Foundry system buildpacks. Each buildpack row lists supported languages and frameworks and includes a GitHub repo link. Specific buildpack names also link to additional documentation.
+System Buildpacks are the default buildpacks that ship with Cloud Foundry. Below is a table stating each system Buildpack and its languages and frameworks.
 
 <table border="1" class="nice" >
   <tr>
     <th>Name</th>
-    <th>Other Supported Languages and Frameworks</th>
+    <th>Supported Languages and Frameworks</th>
     <th>GitHub Repo</th>
   </tr>
   <tr>
@@ -38,7 +38,7 @@ This table describes Cloud Foundry system buildpacks. Each buildpack row lists s
   </tr>
   <tr>
     <td><a href="./ruby/index.html" class="subnav">Ruby</a></td>
-    <td><p>Ruby, Rack, Rails, or Sinatra</p></td>
+    <td><p>JRuby, Rack, Rails, or Sinatra</p></td>
     <td><a href="https://github.com/cloudfoundry/ruby-buildpack">Ruby source</a></td>
   </tr>
   <tr>
@@ -58,31 +58,27 @@ This table describes Cloud Foundry system buildpacks. Each buildpack row lists s
   </tr>
   <tr>
     <td><a href="./php/index.html" class="subnav">PHP</a></td>
-    <td><p><i>NA</i></p></td>
+    <td><p>Cake, Symfony, Zend, Nginx, HTTPD</p></td>
     <td><a href="https://github.com/cloudfoundry/php-buildpack">PHP source</a></td>
   </tr>
   <tr>
     <td><a href="./python/index.html" class="subnav">Python</a></td>
-    <td><p><i>NA</i></p></td>
+    <td><p>Django, Flask</p></td>
     <td><a href="https://github.com/cloudfoundry/python-buildpack">Python source</a></td>
   </tr>
   <tr>
     <td><a href="./staticfile/index.html" class="subnav">Staticfile</a></td>
-    <td><p>HTML, CSS, or JavaScript</p></td>
+    <td><p>HTML, CSS, or JavaScript, Nginx</p></td>
     <td><a href="https://github.com/cloudfoundry/staticfile-buildpack">Staticfile source</a></td>
   </tr>
 </table>
 
 ## Other Buildpacks
 
-If your application uses a language or framework that Cloud Foundry buildpacks do not support, you can try the following:
+If your application uses a language or framework that the system buildpacks do not support, you can try the following:
 
+* Use a [Cloud Foundry Community Buildpack][c].
 * Customize an existing buildpack, or create your own [custom buildpack](./custom.html).
   <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that Github recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
 
-* Use a [Cloud Foundry Community Buildpack][c].
-* Use a [Heroku Third-Party Buildpack][h].
-
 [c]: https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks
-[h]: https://devcenter.heroku.com/articles/third-party-buildpacks
-
