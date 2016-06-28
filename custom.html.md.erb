@@ -91,7 +91,7 @@ The `release` script provides feedback metadata back to Cloud Foundry indicating
 
 `default_process_types` indicates the type of application being run and the command line used to start it. At this time only `web` type of applications are supported.
 
-<p class="note"><strong>Note</strong>: A previous version of the <code>release</code> script exported environment variables through the <code>config_vars</code> property. To define environment variables, add a bash script to the <code>.profile.d</code> directory in the root folder of your application. See the <a href="../devguide/deploy-apps/deploy-app.html">Set Environment Variables</a> section of the Deploy an Application topic for more information.</p>
+<p class="note"><strong>Note</strong>: A previous version of the <code>release</code> script exported environment variables through the <code>config_vars</code> property. To define environment variables for your buildpack, add a bash script to the <code>.profile.d</code> directory in the root folder of your application.</p>
 
 The following example shows what a Rack application's `release` script might return:
 
