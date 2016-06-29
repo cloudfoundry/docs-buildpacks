@@ -1,0 +1,216 @@
+---
+title: Adding a New Dependency Release
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+The following workflow covers how to update the version of an existing dependency in a buildpack.
+This assumes that you are using a [Concourse](https://concourse.ci) deployment of the [buildpacks-ci](https://github.com/cloudfoundry/buildpacks-ci) pipelines.
+
+Some general notes on the Cloud Foundry Buildpacks team's dependency update policies:
+
+- We do not build or include release candidates of dependencies in our buildpacks.
+
+##<a id="notifications"></a>New Dependency Notifications
+
+The [New Releases](https://buildpacks.ci.cf-app.com/pipelines/notifications/jobs/New%20Releases) job in our [notifications pipeline](https://buildpacks.ci.cf-app.com/pipelines/notifications), on detection of a new version of a tracked dependency
+in one of our buildpacks, will create a Pivotal Tracker story regarding building and including the new dependency version in the appropriate buildpack manifests and post to the [#buildpacks channel](https://cloudfoundry.slack.com/messages/buildpacks/) in the Cloud Foundry slack informing us of this new version.
+
+##<a id="building"></a>Building the Binaries
+
+For all dependencies, you must build the binary from source or acquire the tarred binary from a trusted source. For most of the dependencies, we build the binaries from source.
+
+To build the binary for a dependency:
+
+-  cd `~/workspace/buildpacks-ci` and make sure there are no uncommitted changes hanging around in the `buildpacks-ci` repo.
+- `git checkout binary-builds`. This is an orphan branch of `buildpacks-ci` that we use as a separate resource on Concourse to trigger the binary building process.
+- `git pull -r` to make sure the branch is up to date.
+- You will see YAML files for all the packages and dependencies we track. Each YAML file correlates to the build queue for one dependency or package and the naming format is `<dependency-name.yaml`.
+Ex. the YAML file tracking the build queue for Ruby is called `ruby-builds.yml` and will have the following contents:
+
+```yaml
+---
+ruby: []
+```
+
+- Find the SHA256, MD5, or GPG signature for the binary. In the below sections, for each dependency, we describe which verification type we check with and from where we get this verification.
+  To get the SHA256 of a file, you can run `shasum -a 256 <file>`. To get the MD5 of a file, you can run `md5 <file>`. For GPG signature (for Nginx), it should be listed for each version on the [Nginx Downloads](nginx.org/en/download.html) page.
+- Add the version and verification for the new binary to the YAML file as attributes of an element under the dependency name. For example, if we're looking to build the Ruby 2.3.0 binary that we verify with SHA256, it will look like:
+
+```yaml
+---
+ruby:
+- version: 2.3.0
+  sha256: ba5ba60e5f1aa21b4ef8e9bf35b9ddb57286cb546aac4b5a28c71f459467e507
+```
+
+The version should not be prefaced with the name of the binary or language (i.e. `2.3.0` is the version, not `ruby-2.3.0`).
+
+- Note that you can enqueue builds for multiple binary/dependency versions at once.
+
+```yaml
+---
+ruby:
+- version: 2.3.0
+  sha256: ba5ba60e5f1aa21b4ef8e9bf35b9ddb57286cb546aac4b5a28c71f459467e507
+- version: 2.3.1
+  sha256: b87c738cb2032bf4920fef8e3864dc5cf8eae9d89d8d523ce0236945c5797dcd
+```
+
+- Save your changes by running `git add .`
+
+- Run `git commit -m "Build Ruby 2.3.0 [#STORY_NUMBER]"` to commit the change. Go to the story in Pivotal Tracker to get the story number.
+
+- Run `git push` to push the change to the remote origin. This will trigger the binary building process, which can be monitored at the [binary-builder pipeline](https://buildpacks.ci.cf-app.com/pipelines/binary-builder)
+(of your own `buildpacks-ci` Concourse deployment). Upon completion, it will add a link to the Concourse build run to the Tracker story for the new release.
+
+Binary builds are executed by the Cloud Foundry [Binary Builder](https://github.com/cloudfoundry/binary-builder) and the [binary-builder pipeline](https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/binary-builder.yml)
+
+
+###<a id="build-go-buildpack"></a>Go Buildpack
+
+__Go__: We do not build the Go binary from source. We use a tarred binary (`go<version>.linux-amd64.tar.gz`) that Google provides on their [Downloads](https://golang.org/dl/) page. We verify using the tarred binary's MD5.
+
+Ex. [Using the Google Tarred Binary for Go 1.6.2](https://github.com/cloudfoundry/go-buildpack/blob/v1.7.8/manifest.yml#L33-L34)
+
+__Godep__: We verify using the SHA256 of the Source code `.tar.gz` file from the [Godep Github releases](https://github.com/tools/godep/releases) page.
+
+Note that this process of detecting, uploading, and updating Godep in the manifest is currently all automated in the buildpacks-ci binary-builder pipeline.
+
+Ex. [Automated enqueuing of binary build for Godep 72](https://github.com/cloudfoundry/buildpacks-ci/commit/42a361193ea9a4c77a93451228c93bf96f78d50a)
+
+
+###<a id="build-nodejs-buildpack"></a>Nodejs Buildpack
+
+__Node__: We verify using the SHA256 of the `node-v<version>.tar.gz` file. This is listed on: `https://nodejs.org/dist/v<version>/SHASUMS256.txt`
+
+Ex. For node version `4.4.6`, we verify with the SHA256 for `node-v4.4.6.tar.gz` on its [SHASUMS256](https://nodejs.org/dist/v4.4.6/SHASUMS256.txt) page.
+
+[Enqueuing binary builds for Node 4.4.5 and 6.2.0](https://github.com/cloudfoundry/buildpacks-ci/commit/1747c697dc29db0180253c5d466804784cb3fcce)
+
+###<a id="build-python-buildpack"></a>Python Buildpack
+
+__Python__: We verify using the MD5 of the `Gzipped source tarball`. This is listed on: `https://www.python.org/downloads/release/python-<version without periods>/`
+
+Ex. For python version `2.7.12`, we look at the MD5 for the `Gzipped source tarball` on its [Downloads](https://www.python.org/downloads/release/python-2712/) page.
+
+[Enqueuing binary build for Python 2.7.12](https://github.com/cloudfoundry/buildpacks-ci/commit/79e4ce891281ce3ec376b00c967465fc8c7383f8)
+
+###<a id="build-ruby-buildpack"></a>Ruby Buildpack
+
+__Openjdk__: For Openjdk, we do not build it from source ourselves but rather use the tarred openjdk files that the Java Buildpack team manages. The list
+of openjdk versions that the Java Buildpack team has built is available at [index.yml](https://download.run.pivotal.io/openjdk/trusty/x86_64/index.yml) along with
+the download links for each openjdk version. We verify using the MD5 of these tarred openjdk files.
+
+__JRuby__: We verify using the MD5 of the Source `.tar.gz` file from the [JRuby Downloads](http://jruby.org/download) page.
+
+Ex. [Enqueuing binary build for JRuby 9.1.2.0](https://github.com/cloudfoundry/buildpacks-ci/commit/1c90967bcb511e7657202a1308e530825e372158)
+
+__Node__: We verify using the SHA256 of the `node-v<version>.tar.gz` file. This is listed on: `https://nodejs.org/dist/v<version>/SHASUMS256.txt`
+
+Ex. For node version `4.4.6`, we verify with the SHA256 for `node-v4.4.6.tar.gz` on its [SHASUMS256](https://nodejs.org/dist/v4.4.6/SHASUMS256.txt) page.
+
+[Enqueuing binary builds for Node 4.4.5 and 6.2.0](https://github.com/cloudfoundry/buildpacks-ci/commit/1747c697dc29db0180253c5d466804784cb3fcce)
+
+__Ruby__: We verify using the SHA256 of the source from the [Ruby Downloads] (https://www.ruby-lang.org/en/downloads/) page.
+
+Ex. [Enqueuing binary builds for Ruby 2.2.5 and 2.3.1](https://github.com/cloudfoundry/buildpacks-ci/commit/8d06eaa6573146b9771de7f96cebf85e07719d79)
+
+__Bundler__: We verify using the SHA256 of the `.gem` file from [Rubygems](https://rubygems.org/gems/bundler).
+
+Ex. [Enqueuing binary build for Bundler 1.12.5](https://github.com/cloudfoundry/buildpacks-ci/commit/cd161594a564631dff13e8c101205f922beb5cf8)
+
+###<a id="build-php-buildpack"></a>PHP Buildpack
+
+__PHP__: We verify using the SHA256 of the `.tar.gz` file from the [PHP Downloads](http://php.net/downloads.php) page.
+
+For PHP5 versions, we enqueue builds in the `php-builds.yml` file in the `binary-builds` branch.
+For PHP7 versions, we enqueue builds in the `php7-builds.yml` file in the `binary-builds` branch.
+
+Ex. [Enqueuing binary builds for PHP 5.5.37, 5.6.23, and 7.0.8](https://github.com/cloudfoundry/buildpacks-ci/commit/cfb02b7d590996d3727dea9192d2da1ae0aaa595)
+
+__Nginx__: We verify using the `gpg-rsa-key-id` and `gpg-signature` of the version. The `gpg-rsa-key-id` is the same
+for each version/build, but the `gpg-signature` will be different. We find this information on the [Nginx Downloads](https://nginx.org/en/download.html) page.
+
+Ex. [Enqueuing binary build for Nginx 1.11.0](https://github.com/cloudfoundry/buildpacks-ci/commit/b86a09a46eb071957adaecd3a16d1ebba9cd0973)
+
+__HTTPD__: We verify using the MD5 of the `.tar.bz2` file from the [HTTPD Downloads](https://httpd.apache.org/download.cgi) page.
+
+Ex. [Enqueuing binary build for HTTPD 2.4.20](https://github.com/cloudfoundry/buildpacks-ci/commit/cee826dc978f013840ef6a8193ec6ee75536778b)
+
+__Composer__: We verify using the SHA256 of the `composer.phar` file from the [Composer Downloads](https://getcomposer.org/download/) page.
+
+For Composer, there is no build process as the `composer.phar` file is essentially the binary of interest. In the manual process, we
+connect to the `pivotal-buildpacks` S3 bucket using the correct AWS credentials. We create a new directory with the name of the
+composer version (ex. `1.0.2`) and put the appropriate `composer.phar` file into that directory.
+
+Ex. For Composer `v1.0.2`, we connect and create the `php/binaries/trusty/composer/1.0.2` directory. Then, we place the `composer.phar` file into that directory so the binary
+is available at `php/binaries/trusty/composer/1.0.2/composer.phar`.
+
+Note that this process of detecting, uploading, and updating Composer in the manifest is currently all automated in the buildpacks-ci binary-builder pipeline.
+
+Ex. [Automated enqueuing of binary build for Composer 1.1.2](https://github.com/cloudfoundry/buildpacks-ci/commit/d51abbdb919ca51df86628b37366c55311b05f38)
+
+
+###<a id="build-staticfile-buildpack"></a>Staticfile Buildpack
+
+__Nginx__: We verify using the `gpg-rsa-key-id` and `gpg-signature` of the version. The `gpg-rsa-key-id` is the same
+for each version/build, but the `gpg-signature` will be different. We find this information on the [Nginx Downloads](https://nginx.org/en/download.html) page.
+
+Ex. [Enqueuing binary build for Nginx 1.11.0](https://github.com/cloudfoundry/buildpacks-ci/commit/b86a09a46eb071957adaecd3a16d1ebba9cd0973)
+
+
+###<a id="build-binary-buildpack"></a>Binary Buildpack
+
+The Binary buildpack does not have any dependencies.
+
+
+##<a id="manifest-updates"></a>Updating Buildpack Manifests
+
+Once you have a built binary for a dependency that you can access and download via a url, you are ready to put that new dependency version in the buildpack manifest.
+
+- `cd` into the buildpack whose dependencies you're looking to update. For the Cloud Foundry buildpacks team, make sure you are on the develop branch.
+
+         cd ~/workspace/ruby-buildpack
+         git checkout develop
+
+- Open the `manifest.yml` for that buildpack and remove or add dependencies. For the Buildpacks team, our current practice for languages is to include
+  the two most recent patch versions for each minor version of language (e.g., if `ruby-2.1.9` is most recent, we include `ruby-2.1.9`
+  and `ruby-2.1.8` but nothing earlier). Other dependencies may include only the most recent version: follow however the manifest
+  is currently structured. Each element (with a `name`, `version`, `uri`, `md5`, `cf_stacks`) under the 'dependencies' key is a dependency.
+  Ruby Buildpack `manifest.yml` snippet of the `ruby-2.3.0` dependency:
+
+```yaml
+dependencies:
+  - name: ruby
+    version: 2.3.0
+    md5: 535342030a11abeb11497824bf642bf2
+    uri: https://pivotal-buildpacks.s3.amazonaws.com/concourse-binaries/ruby/ruby-2.3.0-linux-x64.tgz
+    cf_stacks:
+      - cflinuxfs2
+```
+
+You can get the `uri` and the `md5` from the `build-<binary name>` (ex. `build-ruby`) job that ran in Concourse's binary-builder pipeline.
+It can be found in the output logs of the `build-out` task.
+
+- After you have updated the manifest make sure to run `ag <old-version>` in the buildpack repo directory to check if there are any other mentions of the
+  old version number in the buildpack that need to be changed. [Ag](https://github.com/ggreer/the_silver_searcher) is the text-searching tool the Buildpacks team usually uses.
+
+- Run `BUNDLE_GEMFILE=cf.Gemfile buildpack-build` which will package and upload the buildpack, setup the org and space for tests in the specified CF deployment, and run the `cf_spec`s (the Cloud Foundry buildpack's tests).
+
+- If there are failures, you may need to fix/change some tests and/or fixtures or other parts of the buildpack.
+
+- Once the test suite is completely passing, push up your changes (to the develop branch for the Buildpacks team).
+
+        git add .
+        git commit -m "<thoughtful message> [#<tracker story ID>]"
+        git push
+
+- Watch the `<language>-buildpack` pipeline in Concourse. Once the test suite builds pass on CI for the buildpack (the `specs-lts-develop` job and `specs-edge-develop` job), the story for the new Dependency release
+  can now be marked in Tracker as delivered. Paste links for those successful test suite builds in the Tracker story.
+
+###<a id="manifest-php-buildpack"></a>PHP Buildpack Specific Notes
+
+**NOTE**: In the PHP buildpack, you may see a `modules` line for each PHP dependency in the manifest. DO NOT include this in your new PHP dependency entry. This will
+be added to the manifest by the `ensure-manifest-has-modules` Concourse job in the `php-buildpack` when you commit and push your changes.
