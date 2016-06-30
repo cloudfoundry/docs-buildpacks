@@ -37,6 +37,26 @@ If you try to use a binary that is not currently supported, staging your app wil
 Staging failed: Buildpack compilation step failed
 ```
 
+## <a id='start-command'></a>Specifying a Start Command ##
+
+The Python buildpack will not generate a [default start command](../../devguide/deploy-apps/app-startup.html#first-time) for your applications.
+
+In order to successfully stage with the Python buildpack and start an application, you must do one of the following:
+
+- Supply a `Procfile`. Example:
+
+```
+web: gunicorn server:app
+```
+
+- Specify a start command via `-c`. Example:
+
+```shell
+cf push python-app -c "waitress-serve --port=$PORT django_web_app.wsgi:application"
+```
+
+- Specify a start command [via the `command` key](../../devguide/deploy-apps/manifest.html#start-commands) in the application manifest
+
 ## <a id='vendoring'></a>Vendoring app dependencies ##
 
 As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' it's dependencies.
