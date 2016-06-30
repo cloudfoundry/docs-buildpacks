@@ -5,25 +5,38 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-The following workflow covers how to update the version of an existing dependency in a buildpack.
-This assumes that you are using a [Concourse](https://concourse.ci) deployment of the [buildpacks-ci](https://github.com/cloudfoundry/buildpacks-ci) pipelines.
+This topic describes how to update the version of an existing dependency in a buildpack.
+It assumes that you are using a [Concourse](https://concourse.ci) deployment of the [buildpacks-ci](https://github.com/cloudfoundry/buildpacks-ci) pipelines.
 
-Some general notes on the Cloud Foundry Buildpacks team's dependency update policies:
+<p class="note"><strong>Note</strong>: Cloud Foundry does not include release candidates of dependencies in buildpacks.</p>
 
-- We do not build or include release candidates of dependencies in our buildpacks.
+##<a id="notifications"></a>Notifications about New Dependencies
 
-##<a id="notifications"></a>New Dependency Notifications
-
-The [New Releases](https://buildpacks.ci.cf-app.com/pipelines/notifications/jobs/New%20Releases) job in our [notifications pipeline](https://buildpacks.ci.cf-app.com/pipelines/notifications), on detection of a new version of a tracked dependency
-in one of our buildpacks, will create a Pivotal Tracker story regarding building and including the new dependency version in the appropriate buildpack manifests and post to the [#buildpacks channel](https://cloudfoundry.slack.com/messages/buildpacks/) in the Cloud Foundry slack informing us of this new version.
+When the [New Releases](https://buildpacks.ci.cf-app.com/pipelines/notifications/jobs/New%20Releases) job in the [notifications pipeline](https://buildpacks.ci.cf-app.com/pipelines/notifications)
+detects a new version of a tracked dependency in a buildpack, it creates a [Pivotal Tracker](https://www.pivotaltracker.com) story about building and including the new version of the dependency in the buildpack manifests. It also posts a message as the `dependency-notifier` to the [#buildpacks channel](https://cloudfoundry.slack.com/messages/buildpacks/) in the Cloud Foundry Slack.
 
 ##<a id="building"></a>Building the Binaries
 
-For all dependencies, you must build the binary from source or acquire the tarred binary from a trusted source. For most of the dependencies, we build the binaries from source.
+For all dependencies, you must build the binary from source or acquire the binary as a tarball from a trusted source. For most dependencies, the Cloud Foundry buildpacks team builds the binaries from source.
 
-To build the binary for a dependency:
+To build the binary for a dependency, perform the following steps:
 
--  cd `~/workspace/buildpacks-ci` and make sure there are no uncommitted changes hanging around in the `buildpacks-ci` repo.
+1. Change into the `buildpacks-ci` directory and check that there are no uncommitted changes.
+	<pre class='terminal'>
+	$ cd ~/workspace/buildpacks-ci
+	$ git status
+	</pre>
+2. Check out the `binary-builds` branch. This is an orphan branch of `buildpacks-ci` that the Cloud Foundry buildpacks team uses as a separate resource on Concourse to trigger the binary building process.
+	<pre class="terminal">
+	$ git checkout binary-builds
+	</pre>
+3. Pull the branch to make sure it is up to date.
+	<pre class="terminal">
+	$ git pull -r
+	</pre>
+4.
+
+cd `~/workspace/buildpacks-ci` and make sure there are no uncommitted changes hanging around in the `buildpacks-ci` repo.
 - `git checkout binary-builds`. This is an orphan branch of `buildpacks-ci` that we use as a separate resource on Concourse to trigger the binary building process.
 - `git pull -r` to make sure the branch is up to date.
 - You will see YAML files for all the packages and dependencies we track. Each YAML file correlates to the build queue for one dependency or package and the naming format is `<dependency-name.yaml`.
