@@ -5,22 +5,15 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-When you push an app, Cloud Foundry determines which buildpack to use.
-Each buildpack has a position in the detection priority list.
-Cloud Foundry first checks whether the buildpack in position 1 is right for the
-app.
-If the position 1 buildpack is not appropriate, Cloud Foundry moves on to the
-position 2 buildpack.
-This goes on until Cloud Foundry finds the correct buildpack. Otherwise,
-`cf push` fails with an `Unable to detect a supported application type` error.
+When you push an app, Cloud Foundry determines which buildpack to use by running each enabled buildpacks' detect script during [staging](https://docs.cloudfoundry.org/concepts/how-applications-are-staged.html). 
 
-Each buildpack contains a detect script.
-Cloud Foundry determines whether a buildpack is appropriate for an app by
-running that buildpack’s detect script against the app.
+During staging, each buildpack has a position in a priority list (identified by running `cf buildpacks`). Cloud Foundry checks if the buildpack in position 1 is a compatible buildpack. If the position 1 buildpack is not compatible, Cloud Foundry moves on to the buildpack in position 2. Cloud Foundry continues this process until the correct buildpack is found. If no buildpack is compatible  `cf push` fails with the error:
 
-By default, the three systems buildpacks occupy the first three positions
-on the detection priority list.
-Since running detect scripts takes time, an administrator can decrease the
-average time required to push apps by making sure that the most frequently
-used buildpacks occupy the lowest positions on the list.
+```
+None of the buildpacks detected a compatible application
+Exit status 222
+Staging failed: Exited with status 222
 
+FAILED
+NoAppDetectedError
+```

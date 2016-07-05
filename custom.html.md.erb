@@ -5,22 +5,15 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-Buildpacks are a convenient way of packaging framework and/or runtime support
-for your application.
-
-For example, by default Cloud Foundry does not support Haskell. Using a buildpack for Haskell allows you to add support for it at the deployment stage. When you push an application written using Haskell, the required buildpack is automatically installed on the Cloud Foundry Droplet Execution Agent (DEA) where the application will run.
-
-<%= vars.disable_custom_buildpacks_note %>
-
- <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that Github recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
+Buildpacks are a convenient way of packaging frameworks and/or runtime support for your application. Cloud Foundry comes with system buildpacks out of the box and provides an interface for developers to create custom buildpacks.
 
 ## <a id='custom-buildpacks'></a>Custom Buildpacks ##
 
-The structure of a buildpack is straightforward. A buildpack repository contains three main scripts, situated in a folder named `bin`.
+A buildpack repository contains three main scripts, situated in a folder named `bin`.
 
 ### <a id='detect-script'></a>bin/detect ###
 
-The `detect` script is used to determine whether or not to apply the buildpack to an application. The script is called with one argument, the build directory for the application. It returns an exit code of `0` if the application can be supported by the buildpack. If the script does return `0`, it should also print a framework name to STDOUT.
+The `detect` script is used to determine whether or not to apply the buildpack to an application. The script is called with one argument, the `buildw directory for the application. It returns an exit code of `0` if the buildpack is compatible with the application. If the script does return `0`, it should print a framework name to STDOUT.
 
 Shown below is an example `detect` script written in Ruby that checks for a Ruby application based on the existence of a `Gemfile`:
 
@@ -39,7 +32,7 @@ end
 
 ~~~
 
-Note that cf CLI displays the returned STDOUT "framework name" when printing the details of an application. Buildpack authors are therefore encouraged to include additional details in this returned framework name, such as buildpack versioning information, and a detailed list of configured frameworks and their associated versions. The following is an example of the detailed information returned by the Java buildpack:
+Optionally, the buildpack detect script can output additional details decided by the buildpack developer. Such as buildpack versioning information, a detailed list of configured frameworks and their associated versions. The following is an example of the detailed information returned by the Java buildpack:
 
 ~~~
 java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
@@ -47,7 +40,7 @@ java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 o
 
 ### <a id='compile-script'></a>bin/compile ###
 
-The `compile` script builds the droplet that will be run by the DEA and will therefore contain all the components necessary to run the application.
+The `compile` script builds a droplet by packaging the application's dependencies, assuring that the application has all the necessary components needed to run.
 
 The script is run with two arguments, the build directory for the application and the cache directory, which is a location the buildpack can use to store assets during the build process.
 
@@ -79,7 +72,6 @@ def install_ruby
 end
 
 ~~~
-
 ### <a id='release-script'></a>bin/release ###
 
 The `release` script provides feedback metadata back to Cloud Foundry indicating how the application should be executed. The script is run with one argument, the build location of the application. The script must generate a YAML file in the following format:
@@ -174,3 +166,9 @@ $ cf push my-new-app -b https://username:password@github.com/johndoe/my-buildpac
 </pre>
 
 The application will then be deployed to Cloud Foundry, and the buildpack will be cloned from the repository and applied to the application (provided that the `detect` script returns `0`).
+
+## <a id='disabling-custom-buildpacks'></a>Disabling Custom Buildpacks ##
+
+Operators can choose to disable custom buildpacks. For more information, see [Disabling Custom Buildpacks](../adminguide/buildpacks.html#disabling-custom-buildpacks). 
+
+ <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that Github recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
