@@ -10,9 +10,8 @@ Buildpacks typically examine user-provided artifacts to determine what dependenc
 
 When you push an application, Cloud Foundry automatically detects which buildpack is required and installs it on the Diego cell or Droplet Execution Agent (DEA) where the application needs to run.
 
-<p class="note"><strong>Note</strong>: Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a <a href="https://github.com/cf-buildpacks/buildpack-packager">
+<p class="note"><strong>Note</strong>: Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a <a href="https://github.com/cloudfoundry/buildpack-packager">
 Buildpack Packager</a> application.</p>
-
 
 ##<a id='system-buildpacks'></a>System Buildpacks
 
@@ -21,7 +20,7 @@ Cloud Foundry includes a set of system buildpacks for common languages and frame
 <table border="1" class="nice" >
   <tr>
     <th>Name</th>
-    <th>Other Supported Languages and Frameworks</th>
+    <th>Supported Languages and Frameworks</th>
     <th>GitHub Repo</th>
   </tr>
   <tr>
@@ -31,7 +30,7 @@ Cloud Foundry includes a set of system buildpacks for common languages and frame
   </tr>
   <tr>
     <td><a href="./ruby/index.html" class="subnav">Ruby</a></td>
-    <td><p>Ruby, Rack, Rails, or Sinatra</p></td>
+    <td><p>JRuby, Rack, Rails, or Sinatra</p></td>
     <td><a href="https://github.com/cloudfoundry/ruby-buildpack">Ruby source</a></td>
   </tr>
   <tr>
@@ -51,24 +50,24 @@ Cloud Foundry includes a set of system buildpacks for common languages and frame
   </tr>
   <tr>
     <td><a href="./php/index.html" class="subnav">PHP</a></td>
-    <td><p><i>n/a</i></p></td>
+    <td><p><i>Cake, Symfony, Zend, Nginx, or HTTPD</i></p></td>
     <td><a href="https://github.com/cloudfoundry/php-buildpack">PHP source</a></td>
   </tr>
   <tr>
     <td><a href="./python/index.html" class="subnav">Python</a></td>
-    <td><p><i>n/a</i></p></td>
+    <td><p><i>Django or Flask</i></p></td>
     <td><a href="https://github.com/cloudfoundry/python-buildpack">Python source</a></td>
   </tr>
   <tr>
     <td><a href="./staticfile/index.html" class="subnav">Staticfile</a></td>
-    <td><p>HTML, CSS, or JavaScript</p></td>
+    <td><p>HTML, CSS, JavaScript, or Nginx</p></td>
     <td><a href="https://github.com/cloudfoundry/staticfile-buildpack">Staticfile source</a></td>
   </tr>
 </table>
 
 ##<a id='custom-buildpacks'></a> About Custom Buildpacks
 
-If your application uses a language or framework that Cloud Foundry buildpacks do not support, do the following:
+If your application uses a language or framework that the Cloud Foundry system buildpacks do not support, do the following:
 
 * Use a [Cloud Foundry Community Buildpack][c].
 * Use a [Heroku Third-Party Buildpack][h].
