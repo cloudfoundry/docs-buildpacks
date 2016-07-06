@@ -44,7 +44,7 @@ To build the binary for a dependency, perform the following steps:
 1. Different buildpacks use different signatures for verification. Determine which signature your buildpack requires by consulting the [list](#buildpacks) below and follow the instructions to locate the SHA256, MD5, or GPG signature for the binary:
   * For the SHA256 of a file, run `shasum -a 256 FILE`. 
   * For the MD5 of a file, run `md5 FILE`. 
-  * For the GPG signature (for Nginx), see the [Nginx Downloads](nginx.org/en/download.html) page.
+  * For the GPG signature (for Nginx), see the [Nginx Downloads](http://nginx.org/en/download.html) page.
 
 1. Add the version and verification for the new binary to the YAML file as attributes of an element under the dependency name. For example, to build the Ruby 2.3.0 binary verified with SHA256, add the following:
 
