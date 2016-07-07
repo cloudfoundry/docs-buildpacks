@@ -38,12 +38,12 @@ snippet shows how to add this dependency.
 
 ```xml
 <dependencies>
-	<dependency>
-	  <groupId>org.springframework.cloud</groupId>
-	  <artifactId>spring-cloud-spring-service-connector</artifactId>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-spring-service-connector</artifactId>
     <version>1.1.0.RELEASE</version>
-	</dependency>
-	<dependency>
+    </dependency>
+    <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
     <version>1.1.0.RELEASE</version>
@@ -56,11 +56,11 @@ You also need to update your application build file to include the Spring Framew
 ```xml
 <repositories>
     <repository>
-	   <id>repository.springsource.milestone</id>
-	   <name>SpringSource Milestone Repository</name>
-	   <url>http://repo.springsource.org/milestone</url>
-	 </repository>
-	 ...
+       <id>repository.springsource.milestone</id>
+       <name>SpringSource Milestone Repository</name>
+       <url>http://repo.springsource.org/milestone</url>
+     </repository>
+     ...
 </repositories>
 ```
 
@@ -76,11 +76,11 @@ In the following example, the configuration creates a `DataSource` bean connecti
 
 ```java
 class CloudConfig extends AbstractCloudConfig {
-	  @Bean
-	    public DataSource inventoryDataSource() {
-	      return connectionFactory().dataSource();
-	   }
-	   ... more beans to obtain service connectors
+      @Bean
+        public DataSource inventoryDataSource() {
+          return connectionFactory().dataSource();
+       }
+       ... more beans to obtain service connectors
 }
 ```
 
@@ -92,7 +92,7 @@ explicit control over the services to which a bean is bound, you can pass the se
 ```java
 class CloudConfig extends AbstractCloudConfig {
 
-	@Bean
+    @Bean
     public DataSource inventoryDataSource() {
        return connectionFactory().dataSource("inventory-db-service");
     }
@@ -171,7 +171,7 @@ application to set conditions under which configuration classes are invoked. By 
 
 ```
 public class Configuration {
-	@Configuration
+    @Configuration
     @Profile("cloud")
     static class CloudConfiguration {
 
@@ -188,16 +188,16 @@ public class Configuration {
     @Profile("default")
     static class LocalConfiguration {
 
-	 @Bean
-	       public DataSource dataSource() {
-	           BasicDataSource dataSource = new BasicDataSource();
-	           dataSource.setUrl("jdbc:postgresql://localhost/db");
-	           dataSource.setDriverClassName("org.postgresql.Driver");
-	           dataSource.setUsername("postgres");
-	           dataSource.setPassword("postgres");
-	           return dataSource;
-	     }
-	 }
+     @Bean
+           public DataSource dataSource() {
+               BasicDataSource dataSource = new BasicDataSource();
+               dataSource.setUrl("jdbc:postgresql://localhost/db");
+               dataSource.setDriverClassName("org.postgresql.Driver");
+               dataSource.setUsername("postgres");
+               dataSource.setPassword("postgres");
+               return dataSource;
+         }
+     }
 }
 ```
 ## <a id='properties'></a>Property Placeholders ##

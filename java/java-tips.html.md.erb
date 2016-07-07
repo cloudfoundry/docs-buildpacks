@@ -244,9 +244,9 @@ When you push a Java application, specify the path to the WAR:
 
     You can determine whether or not the path was specified for a previously
     pushed application by looking at the application deployment manifest,
-	`manifest.yml`.
-	If the `path` attribute specifies the current directory, the manifest will
-	include a line like this:
+    `manifest.yml`.
+    If the `path` attribute specifies the current directory, the manifest will
+    include a line like this:
 
     ```
     path: .
@@ -254,9 +254,9 @@ When you push a Java application, specify the path to the WAR:
     To re-push just the WAR, either:
 
     * Delete `manifest.yml` and push again, specifying the location of the WAR
-	using the `-p` flag, or
- 	* Edit the `path` argument in `manifest.yml` to point to the WAR, and
-	re-push the application.
+    using the `-p` flag, or
+     * Edit the `path` argument in `manifest.yml` to point to the WAR, and
+    re-push the application.
 
 ### <a id='debugging'></a>Debugging Java Apps on Cloud Foundry ###
 

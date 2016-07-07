@@ -57,18 +57,18 @@ and the plans that they offer: `cleardb` MySQL, `elephantsql` PostgreSQL as a
 Service, and `mongolab` MongoDB-as-a-Service.
 
 <pre class="terminal">
-	$  cf marketplace
-	Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
-	OK
+    $  cf marketplace
+    Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
+    OK
 
-	service          plans 	description
-	...
-	cleardb          spark, boost, amp, shock  	Highly available MySQL for your Apps
-	...
-	elephantsql      turtle, panda, hippo, elephant   PostgreSQL as a Service
-	...
-	mongolab         sandbox   	Fully-managed MongoDB-as-a-Service
-	...
+    service          plans     description
+    ...
+    cleardb          spark, boost, amp, shock      Highly available MySQL for your Apps
+    ...
+    elephantsql      turtle, panda, hippo, elephant   PostgreSQL as a Service
+    ...
+    mongolab         sandbox       Fully-managed MongoDB-as-a-Service
+    ...
 </pre>
 
 Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service
@@ -167,20 +167,20 @@ Use the URL to access your app online.
 
 <pre class="terminal">
 
-	$ cf push pong_matcher_ruby -n pongmatch-ex12
-	Using manifest file /Users/clouduser/workspace/pong_matcher_ruby/manifest.yml
+    $ cf push pong_matcher_ruby -n pongmatch-ex12
+    Using manifest file /Users/clouduser/workspace/pong_matcher_ruby/manifest.yml
 
-	Creating app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
-	OK
+    Creating app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
+    OK
 
-	Creating route pongmatch-ex12.<%=vars.app_domain%>
+    Creating route pongmatch-ex12.<%=vars.app_domain%>
            Binding pongmatch-ex12.<%=vars.app_domain%> to pong_matcher_ruby...
     OK
 
-	Uploading pong_matcher_ruby...
-	Uploading app files from: /Users/clouduserl/workspace/pong_matcher_ruby
-	Uploading 8.8K, 12 files
-	OK
+    Uploading pong_matcher_ruby...
+    Uploading app files from: /Users/clouduserl/workspace/pong_matcher_ruby
+    Uploading 8.8K, 12 files
+    OK
     Binding service redis to app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
     OK
 
