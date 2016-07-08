@@ -25,14 +25,14 @@ the following two ways:
 * **Procfile**: In the root directory of your app, add a `Procfile` that
 specifies a `web` task:
 
-       ```yaml
-       web: ./app
-    ```
+```yaml
+web: ./app
+```
 * **Command line**: Use `cf push APP-NAME` with the `-c` option:
 
-       ```bash
-       $ cf push my_app -c './app' -b binary-buildpack
-       ```
+```bash
+$ cf push my_app -c './app' -b binary-buildpack
+```
 
 ## <a id='compiling'></a> Compiling your Binary ##
 Cloud Foundry expects your binary to bind to the port specified by the `PORT`
