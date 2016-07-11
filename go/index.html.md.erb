@@ -15,16 +15,16 @@ The Go buildpack will be automatically detected if:
 
 - your app has been packaged with [godep](https://github.com/tools/godep) using `godep save`
 - your app has a `vendor/` directory and has any files ending with `.go`.
-- your app has a GOPACKAGENAME environment variable specified and has any files ending with `.go`.
+- your app has a `GOPACKAGENAME` environment variable specified and has any files ending with `.go`.
 - your app has a `glide.yaml` file and is using [glide](https://github.com/Masterminds/glide).
 
 If your Cloud Foundry deployment does not have the Go Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
 
-```bash
-cf push my_app -b https://github.com/cloudfoundry/go-buildpack.git
-```
+<pre class="terminal">
+$ cf push my_app -b https://github.com/cloudfoundry/go-buildpack.git
+</pre>
 
-When specifying versions, we recommend only specifying major/minor versions, eg. go1.6, rather than go1.6.0. This will ensure you receive the most recent patches.
+When specifying versions, specify only major/minor versions, eg. go1.6, rather than go1.6.0. This will ensure you receive the most recent patches.
 
 ### <a id='start_command'></a>Start command ###
 
@@ -101,7 +101,7 @@ applications:
 ### <a id='with_glide'></a>Pushing Apps with glide ###
 If you are using [glide](https://github.com/Masterminds/glide) to specify and/or package your dependencies, make sure that you have created a valid `glide.yaml` file in the root directory of your app by running `glide init`.
 
-To vendor your dependencies before pushing, run `glide install`. This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies. A `glide.lock` is not required when deploying a non vendored app. A `glide.lock` is required when pushing a vendored app.
+To vendor your dependencies before pushing, run `glide install`. This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies. A `glide.lock` is not required when deploying a non-vendored app. A `glide.lock` is required when pushing a vendored app.
 
 ####<a id='glide_app'></a>Glide####
 * [glide sample app](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_app_with_glide/src/go_app_with_glide)
