@@ -13,9 +13,11 @@ A buildpack repository contains three main scripts, situated in a folder named `
 
 ### <a id='detect-script'></a>bin/detect ###
 
-The `detect` script is used to determine whether or not to apply the buildpack to an application. The script is called with one argument, the `build` directory for the application. The build directory contains the files a user `cf push`ed. It returns an exit code of `0` if the buildpack is compatible with the application. In the case of System buildpacks, if the script does return `0`, it will also print the buildpack name, version and other helpful information to `STDOUT`. 
+The `detect` script determines whether or not to apply the buildpack to an application. The script is called with one argument, the `build` directory for the application. The `build` directory contains the application files uploaded when a user performs a `cf push`. 
 
-Shown below is an example `detect` script written in Ruby that checks for a Ruby application based on the existence of a `Gemfile`:
+The `detect` script returns an exit code of `0` if the buildpack is compatible with the application. In the case of system buildpacks, the script also prints the buildpack name, version, and other helpful information to `STDOUT`. 
+
+The following is an example `detect` script written in Ruby that checks for a Ruby application based on the existence of a `Gemfile`:
 
 ~~~ruby
 
@@ -32,7 +34,9 @@ end
 
 ~~~
 
-Optionally, the buildpack detect script can output additional details decided by the buildpack developer. Such as buildpack versioning information, a detailed list of configured frameworks and their associated versions. The following is an example of the detailed information returned by the Java buildpack:
+Optionally, the buildpack detect script can output additional details decided by the buildpack developer. These additional details include buildpack versioning information and a detailed list of configured frameworks and their associated versions. 
+
+The following is an example of the detailed information returned by the Java buildpack:
 
 ~~~
 java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
@@ -42,9 +46,9 @@ java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 o
 
 The `compile` script builds a droplet by packaging the application's dependencies, assuring that the application has all the necessary components needed to run.
 
-The script is run with two arguments, the build directory for the application and the cache directory, which is a location the buildpack can use to store assets during the build process. During the execution of the `compile` script, all output sent to `STDOUT` will be relayed via the cf CLI back to the end user. 
+The script is run with two arguments: the `build` directory for the application and the `cache` directory, which is a location the buildpack can use to store assets during the build process. During the execution of the `compile` script, all output sent to `STDOUT` is relayed through the cf CLI to the user.
 
-A simple `compile` script is shown below:
+The following is an example of a simple `compile` script:
 
 ~~~ruby
 
@@ -72,14 +76,14 @@ end
 ~~~
 ### <a id='release-script'></a>bin/release ###
 
-The `release` script provides feedback metadata back to Cloud Foundry indicating how the application should be executed. The script is run with one argument, the `build` directory. The script must generate a YAML file in the following format:
+The `release` script provides feedback metadata to Cloud Foundry indicating how the application should be executed. The script is run with one argument, the `build` directory. The script must generate a YAML file in the following format:
 
 ~~~yaml
   default_process_types:
     web: start_command.filetype
 ~~~
 
-`default_process_types` indicates the type of application being run and the command used to start it. At this time only `web` type of applications are supported.
+`default_process_types` indicates the type of application being run and the command used to start it. At this time, only `web` type of applications are supported.
 
 <p class="note"><strong>Note</strong>: To define environment variables for your buildpack, add a bash script to the <code>.profile.d</code> directory in the root folder of your application.</p>
 
@@ -115,7 +119,8 @@ your custom buildpack by using the [Buildpack Packager](https://github.com/cloud
 
 #### Using buildpack-packager
 1. Create a manifest.yml in your buildpack.
-1. Run the packager in cached mode: `buildpack-packager --cached`
+1. Run the packager in cached mode: 
+  <pre class="terminal">$ buildpack-packager --cached</pre>
 
 The packager will add (almost) everything in your buildpack directory into a zip file. It will exclude anything marked for exclusion in your manifest.
 
@@ -125,7 +130,7 @@ Option Flags
 
 `--force-download`
 
-By default, buildpack-packager stores the dependencies that it downloads while building a cached buildpack in a local cache at `~/.buildpack-packager`. This is in order to avoid re-downloading them when repackaging similar buildpacks. Running `buildpack-packager --cached` with the `--force-download` option will force the packager to download dependencies from the s3 host and ignore the local cache. When packaging an uncached buildpack, `--force-download` does nothing.
+By default, buildpack-packager stores the dependencies that it downloads while building a cached buildpack in a local cache at `~/.buildpack-packager`. Storing dependencies enables the packager to avoid re-downloading them when repackaging similar buildpacks. Running `buildpack-packager --cached` with the `--force-download` option forces the packager to download dependencies from the S3 host and ignore the local cache. When packaging an uncached buildpack, `--force-download` does nothing.
 
 `--use-custom-manifest`
 
