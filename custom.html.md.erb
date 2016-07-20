@@ -126,23 +126,21 @@ The packager will add (almost) everything in your buildpack directory into a zip
 
 In cached mode, the packager will download and add dependencies as described in the manifest.
 
-Option Flags
+The packager has the following option flags:
 
-`--force-download`
+* `--force-download`: By default, the packager stores the dependencies that it downloads while building a cached buildpack in a local cache at `~/.buildpack-packager`. Storing dependencies enables the packager to avoid re-downloading them when repackaging similar buildpacks. Running `buildpack-packager --cached` with the `--force-download` option forces the packager to download dependencies from the S3 host and ignore the local cache. When packaging an uncached buildpack, `--force-download` does nothing.
 
-By default, buildpack-packager stores the dependencies that it downloads while building a cached buildpack in a local cache at `~/.buildpack-packager`. Storing dependencies enables the packager to avoid re-downloading them when repackaging similar buildpacks. Running `buildpack-packager --cached` with the `--force-download` option forces the packager to download dependencies from the S3 host and ignore the local cache. When packaging an uncached buildpack, `--force-download` does nothing.
+* `--use-custom-manifest`: To include a different manifest file in your packaged buildpack, you can call the packager with the `--use-custom-manifest PATH/TO/MANIFEST.YML` option. The packager generates a buildpack with the specified manifest. If you are building a cached buildpack, the packager vendors dependencies from the specified manifest as well.
 
-`--use-custom-manifest`
-
-If you would like to include a different manifest file in your packaged buildpack, you may call buildpack-packager with the `--use-custom-manifest PATH/TO/MANIFEST.YML` option. buildpack-packager will generate a buildpack with the specified manifest. If you are building a cached buildpack, buildpack-packager will vendor dependencies from the specified manifest as well.
-
-You can find more documentation at the [buildpack-packager Github repo](https://github.com/cloudfoundry-incubator/buildpack-packager).
+For more information, see the documentation at the [buildpack-packager Github repo](https://github.com/cloudfoundry-incubator/buildpack-packager).
 
 #### Uploading the buildpack
 
 Once you have packaged your buildpack using `buildpack-packager`, you can upload the resulting `.zip` file to your instance of Cloud Foundry:
 
-`cf create-buildpack BUILDPACK PATH POSITION [--enable|--disable]`
+<pre class="terminal">
+$ cf create-buildpack BUILDPACK PATH POSITION [--enable|--disable]
+</pre>
 
 <%=vars.link_adminguid_buildpack%>
 
