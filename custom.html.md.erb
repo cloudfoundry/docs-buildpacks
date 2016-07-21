@@ -143,6 +143,60 @@ $ cf create-buildpack BUILDPACK PATH POSITION [--enable|--disable]
 </pre>
 
 <%=vars.link_adminguid_buildpack%>
+### <a id='specifying-default-versions'></a> Specifying Default Versions ###
+
+As of `buildpack-packager` [version 2.3.0](https://github.com/cloudfoundry/buildpack-packager/releases/tag/v2.3.0), you can specify the default version for a dependency by adding a `default_versions` object to the `manifest.yml` file.
+The `default_versions` object has two properties, `name` and `version`. For example:
+
+```yml
+default_versions:
+- name: go
+  version: 1.6.3
+- name: other-dependency
+  version: 1.1.1
+```
+
+To specify a default version:
+
+1. Add the `default_version` object to your manifest, following the [rules](#rules) below. You can find a complete example manifest in the Cloud Foundry [go-buildpack](https://github.com/cloudfoundry/go-buildpack/blob/f1a380f2f3a8012491c6007948af74676713dd50/manifest.yml) repo. 
+
+1. Run the `default_version_for` script from the [compile-extensions](https://github.com/cloudfoundry/compile-extensions) repo, passing the path of your `manifest.yml` and the dependency name as arguments. The following command uses the example manifest from step 1:
+  <pre class="terminal">
+  $ ./compile-extensions/bin/default\_version\_for manifest.yml go 1.6.3
+  </pre>
+
+
+#### <a name="rules"></a> Rules for Specifying a Default Version
+
+The `buildpack-packager` script validates this object according to the following rules:
+
+* You can create at most one entry under `default_versions` for a single dependency. The following example causes `buildpack-packager` to fail with an error because the manifest specifies two default versions for the same `go` dependency.
+
+    ```yml
+    # Incorrect; will fail to package
+    default_versions:
+    - name: go
+      version: 1.6.3
+    - name: go
+      version: 1.3.1
+    ```
+
+* If you specify a `default_version` for a dependency, you must also list that dependency and version under the `dependencies` section of the manifest. The following example causes `buildpack-packager` to fail with an error because the manifest specifies `version: 1.6.3` for the `go` dependency, but lists `version: 1.5.4` under `dependencies`. 
+
+    ```yml
+    # Incorrect; will fail to package
+    default_versions:
+    - name: go
+      version: 1.6.3
+
+    dependencies:
+    - name: go
+      version: 1.5.4
+      uri: https://storage.googleapis.com/golang/go1.5.4.linux-amd64.tar.gz
+      md5: 27b1c469797292064c65c995ffe30386
+      cf_stacks:
+      - cflinuxfs2
+     ```
 
 ## <a id='deploying-with-custom-buildpacks'></a>Deploying With a Custom Buildpack ##
 
