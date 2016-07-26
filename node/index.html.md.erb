@@ -7,14 +7,14 @@ owner: Buildpacks
 
 ## <a id='pushing_apps'></a> Pushing Apps ##
 
-This buildpack will be automatically used if there is a `package.json` file in the root directory of your project.
+This buildpack is used automatically if there is a `package.json` file in the root directory of your project.
 
-If your Cloud Foundry deployment does not have the Node.js Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
+If your Cloud Foundry deployment does not have the Node.js buildpack installed or the installed version is out of date, you can use the latest version with the command:
 ```bash
 cf push my_app -b https://github.com/cloudfoundry/buildpack-nodejs.git
 ```
 
-For more detailed information on deploying Node.js applications see the following topics:
+For more detailed information on deploying Node.js apps see the following topics:
 
 * <a href="./node-tips.html" class="subnav">Tips for Node.js Developers</a>
 * <a href="./node-environment.html" class="subnav">Environment Variables Defined by the Node Buildpack</a>
@@ -29,7 +29,7 @@ Supported Node versions can be found [in the release notes](https://github.com/c
 
 ## <a id='runtime'></a>Specifying a Node.js Version##
 
-Set engines.node in package.json to the semver range, or specific version, of node you are using:
+Set engines.node in package.json to the semver range or the specific version of node you are using:
 
 ```
 "engines": {
@@ -45,7 +45,7 @@ or
 }
 ```
 
-If you try to use a version that is not currently supported, staging your app will fail and you will see the following error message:
+If you try to use a version that is not currently supported, staging your app fails with the following error message:
 
 <pre class='terminal'>
 $   Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST:...
@@ -75,9 +75,9 @@ or
 }
 ```
 
-If you do not specify an npm version, your app will use the [default npm](https://nodejs.org/en/download/releases/) packaged with your app's Node.js version.
+If you do not specify an npm version, your app uses the [default npm](https://nodejs.org/en/download/releases/) packaged with your app's Node.js version.
 
-If your environment cannot connect to the internet and a non-default version of npm is specified, the buildpack will fail to download npm. You will see the following error message:
+If your environment cannot connect to the internet and a non-default version of npm is specified, the buildpack fails to download npm. You see the following error message:
 
 <pre class='terminal'>
 $   We're unable to download the version of npm you've provided (...).
@@ -85,9 +85,9 @@ $   Please remove the npm version specification in package.json (...)
 $   Staging failed: Buildpack compilation step failed
 </pre>
 
-## <a id='vendoring'></a>Vendoring app dependencies ##
+## <a id='vendoring'></a>Vendoring App Dependencies ##
 
-As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' its dependencies.
+As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your app must 'vendor' its dependencies.
 
 For the Node.js buildpack, use ```npm```:
 
@@ -98,7 +98,7 @@ npm install # vendors into /node_modules
 
 ```cf push``` uploads your vendored dependencies.
 
-## <a id='openssl'></a>OpenSSL support ##
+## <a id='openssl'></a>OpenSSL Support ##
 
 Since November 2015, the [nodejs-buildpack](https://github.com/cloudfoundry/nodejs-buildpack)
 has been packaging binaries of Node.js with OpenSSL that are statically linked. With
@@ -107,9 +107,8 @@ decided to support Node.js 4.x and greater, which relied on the Node.js release 
 to provide OpenSSL updates.
 
 The buildpack's team [binary-builder](https://github.com/cloudfoundry/binary-builder) was
-updated to [enable the static openssl compilation](https://github.com/cloudfoundry/binary-builder/commit/834759affa4d7e42294a54b49bac6f1cf81b798a).
-All versions of Node.js compiled since have been statically linked with OpenSSL, which
-include versions of Node.js greater than and equal to *0.12.10* and *0.10.42*.
+updated to [enable the static OpenSSL compilation](https://github.com/cloudfoundry/binary-builder/commit/834759affa4d7e42294a54b49bac6f1cf81b798a).
+All versions of Node.js compiled since have been statically linked with OpenSSL.
 
 ## <a id='proxy_support'></a> Proxy Support ##
 
