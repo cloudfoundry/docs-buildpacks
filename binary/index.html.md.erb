@@ -86,6 +86,10 @@ $ cf push my_app -s (cflinuxfs2|lucid64)
 
 To run docker on Mac OS X, we recommend [boot2docker](http://boot2docker.io/).
 
+## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
+
+Certificates deployed through [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) will exist in the `/etc/ssl/certs` directory and as such can be used by a binary application.
+
 ## <a id='help_support'></a>Help and Support ##
 
 Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
