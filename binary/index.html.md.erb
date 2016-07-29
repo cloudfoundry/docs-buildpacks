@@ -8,9 +8,9 @@ Use the binary buildpack for running arbitrary binary web servers.
 
 ## <a id='pushing_apps'></a> Pushing Apps ##
 
-Unlike most other Cloud Foundry buildpacks, you must specify the binary
-buildpack in order to use it in staging your binary file.
-On a command line, use `cf push APP-NAME` with the `-b` option to specify the
+Unlike most other Cloud Foundry buildpacks, you must specify the binary 
+buildpack to use it when staging your binary file.
+On a command line, use `cf push APP-NAME` with the `-b` option to specify the 
 buildpack.
 
 For example:
@@ -38,7 +38,8 @@ $ cf push my_app -c './app' -b binary-buildpack
 Cloud Foundry expects your binary to bind to the port specified by the `PORT`
 environment variable.
 
-The following example in [Go](https://golang.org/) binds a binary to the PORT environment variable:
+The following example in [Go](https://golang.org/) binds a binary to the PORT 
+environment variable:
 
 ```go
 package main
@@ -59,7 +60,8 @@ func main() {
 }
 ```
 
-Your binary should run without any additional runtime dependencies on the cflinuxfs2 or lucid64 root filesystem (rootfs).
+Your binary should run without any additional runtime dependencies on the 
+cflinuxfs2 or lucid64 root filesystem (rootfs).
 Any such dependencies should be statically linked to the binary.
 
 To boot a docker container running the cflinuxfs2 filesystem, run the following
@@ -88,14 +90,16 @@ To run docker on Mac OS X, we recommend [boot2docker](http://boot2docker.io/).
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-Certificates deployed through [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) will exist in the `/etc/ssl/certs` directory and as such can be used by a binary application.
+Certificates deployed through [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) exist in the 
+`/etc/ssl/certs` directory and can be used by binary applications.
 
 ## <a id='help_support'></a>Help and Support ##
 
-Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
 
-For more information about using and extending the binary buildpack in Cloud Foundry, see
-the [binary-buildpack GitHub repo](https://github.com/cloudfoundry/binary-buildpack).
+For more information about using and extending the binary buildpack in Cloud 
+Foundry, see the [binary-buildpack GitHub repo](https://github.com/cloudfoundry/binary-buildpack).
 
 You can find current information about this buildpack on the binary buildpack
-[release page](https://github.com/cloudfoundry/binary-buildpack/releases) in GitHub.
+[release page](https://github.com/cloudfoundry/binary-buildpack/releases) in 
+GitHub.
