@@ -17,13 +17,13 @@ Visit the [Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf
 Most projects need two dependencies: the Operations API and an implementation of the Client API. Refer to the following sections for more information on how to add the Cloud Foundry Java Client Library as dependencies to a Maven or Gradle project.
 
 ### <a id='maven'></a>Maven ###
-Add the `cloudfoundry-client-spring` dependency to your `pom.xml` as follows:
+Add the `cloudfoundry-client-reactor` dependency (formerly known as `cloudfoundry-client-spring`) to your `pom.xml` as follows:
 
 ```xml
 <dependencies>
     <dependency>
         <groupId>org.cloudfoundry</groupId>
-        <artifactId>cloudfoundry-client-spring</artifactId>
+        <artifactId>cloudfoundry-client-reactor</artifactId>
         <version>2.0.0.BUILD-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -72,11 +72,11 @@ The artifacts can be found in the Spring release and snapshot repositories:
 ```
 
 ### <a id='gradle'></a>Gradle ###
-Add the `cloudfoundry-client-spring` dependency to your `build.gradle` file as follows:
+Add the `cloudfoundry-client-reactor` dependency to your `build.gradle` file as follows:
 
 ```
 dependencies {
-    compile 'org.cloudfoundry:cloudfoundry-client-spring:2.0.0.BUILD-SNAPSHOT'
+    compile 'org.cloudfoundry:cloudfoundry-client-reactor:2.0.0.BUILD-SNAPSHOT'
     compile 'org.cloudfoundry:cloudfoundry-operations:2.0.0.BUILD-SNAPSHOT'
     compile 'io.projectreactor:reactor-core:2.5.0.BUILD-SNAPSHOT'
     compile 'io.projectreactor:reactor-netty:2.5.0.BUILD-SNAPSHOT'
