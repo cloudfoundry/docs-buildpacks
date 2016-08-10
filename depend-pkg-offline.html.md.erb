@@ -17,7 +17,7 @@ For example, the operator might complete the following process:
 
 <pre class='terminal'>
     # Clones your buildpack
-    $ git clone http://your.git/repo
+    $ git clone http://YOUR-GITHUB-REPO.example.com/repo
     $ cd SomeBuildPackName
 
     # Creates a zipfile using your script
@@ -51,7 +51,7 @@ The administrator completes the following steps:
 
 <pre class="terminal">
     # Clones your buildpack
-    $ git clone http://your.git/repo
+    $ git clone http://YOUR-GITHUB-REPO.example.com/repo
     $ cd <buildpack\_name>
 
     $ # Selects dependencies
@@ -95,11 +95,11 @@ The administrator completes the following process:
 <pre class="terminal">
 
     # Clones your buildpack
-    $ git clone http://your.git/repo
+    $ git clone http://YOUR-GITHUB-REPO.example.com/repo
     $ cd <buildpack\_name>
 
     # Builds a package using your script
-    $ ./package https://our.internal.site/dependency/repo
+    $ ./package https:///dependency/repo
      ----> creating zipfile: cobol_buildpack.zip
 
     # Adds the buildpack to the Cloud Foundry instance
@@ -110,8 +110,8 @@ The administrator completes the following process:
     $ cf push my-cobol-webapp -b cobol-buildpack
      ----> deploying app
      ----> downloading dependencies:
-        https://our.internal.site/dependency/repo/dep1.tgz.... done
-        https://our.internal.site/dependency/repo/dep2.tgz.... WARNING: dependency not found!
+        https://OUR-INTERNAL-SITE.example.com/dependency/repo/dep1.tgz.... done
+        https://OUR-INTERNAL-SITE.example.com/dependency/repo/dep2.tgz.... WARNING: dependency not found!
 </pre>
 
 ### Pros ###

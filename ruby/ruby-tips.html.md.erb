@@ -5,8 +5,6 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-_This page assumes you are using cf CLI v6._
-
 This page has information specific to deploying Rack, Rails, or Sinatra
 applications.
 
@@ -87,7 +85,8 @@ The following is an example of the "migrate frequently" method described in the
 [Migrating a Database in Cloud Foundry]
 (../../devguide/services/migrate-db.html#frequent-migration) topic.
 
-1. Create a Rake task to limit an idempotent command to the first instance of a deployed application:
+1. Create a Rakefile if one does not already exist, and add it to your application directory. 
+1. In your Rakefile, add a Rake task to limit an idempotent command to the first instance of a deployed application:
 
     ~~~
     namespace :cf do
@@ -316,15 +315,16 @@ Example:
 $ cf scale sidekiq-worker -i 2
 </pre>
 
-## <a id='rails-4'></a>Use rails\_serv\_static\_assets on Rails 4 ##
+## <a id='rails-4'></a>Use rails\_serve\_static\_assets on Rails 4 ##
 
 By default Rails 4 returns a 404 if an asset is not handled via an external
 proxy such as Nginx.
-The `rails_serve_static_assets` gem enables your Rails server to deliver
+The <a href="https://rubygems.org/gems/rails_serve_static_assets">`rails_serve_static_assets`</a>
+gem enables your Rails server to deliver
 static assets directly, instead of returning a 404.
 You can use this capability to populate an edge cache CDN or serve files
 directly from your web application.
-The `rails_serv_static_assets` gem enables this behavior by setting the
+The gem enables this behavior by setting the
 `config.serve_static_assets` option to `true`, so you do not need to
 configure it manually.
 

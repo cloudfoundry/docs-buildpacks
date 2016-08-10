@@ -5,13 +5,19 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to configure a production server for your apps using a Procfile. A Procfile enables you to declare required runtime processes, called process types, for your web app. Process managers in a server use the process types to run and manage the workload.
+This topic describes how to configure a production server for your apps. 
 
-When you deploy, <%=vars.product_short%> determines if a Procfile exists and uses the Procfile to configure your app with the specified settings.
+When you deploy an app, <%=vars.product_short%> determines the command used to start the app through the following process: 
+
+1. If the developer uses the command `cf push -c COMMAND`, then <%=vars.product_short%> uses `COMMAND` to start the app. 
+1. If the developer creates a file called a Procfile, <%=vars.product_short%> uses the Procfile to configure the command that launches the app. See the <a href="#procfile">About Procfiles</a> section below for more information.
+1. If the developer does not use `cf push -c COMMAND` and does not create a Procfile, then <%=vars.product_short%> uses the command provided in the `default_process_types` property of the `release` script of the buildpack used by the app. See the <a href="../buildpacks/custom.html#release-script">Custom Buildpacks</a> topic for more information about this property.
 
 ##<a id="procfile"></a>About Procfiles
 
-In a Procfile, you declare one process type per line and use the following syntax:
+Procfiles offer the best way to configure a production server for web apps.
+
+A Procfile enables you to declare required runtime processes, called process types, for your web app. Process managers in a server use the process types to run and manage the workload. In a Procfile, you declare one process type per line and use the following syntax:
 
 <pre class="code">
 PROCESS_TYPE: COMMAND
