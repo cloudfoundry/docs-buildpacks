@@ -9,9 +9,10 @@ owner: Buildpacks
 
 This buildpack will be used if your directory has a `Staticfile` file in the root directory.
 
-For example:
+For example, in an empty directory:
 
 ```bash
+echo '<html>hello</html>' > index.html
 touch Staticfile
 cf push APPNAME -m 64M
 ```
