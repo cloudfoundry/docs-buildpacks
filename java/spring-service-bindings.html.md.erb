@@ -1,5 +1,5 @@
 ---
-title: Configure Service Connections for Spring
+title: Configuring Service Connections for Spring
 owner: Java
 ---
 
@@ -70,7 +70,7 @@ Typical use of Java config involves extending the `AbstractCloudConfig` class an
 Java config also offers a way to expose application and service properties. Use this for debugging or to create service connectors using a lower-level access.
 
 
-#### <a id='create-service-beans'></a>Creating Service Beans ####
+#### <a id='create-service-beans'></a>Create a Service Bean ####
 
 In the following example, the configuration creates a `DataSource` bean connecting to the only relational database service bound to the app. It also creates a `MongoDbFactory` bean, again, connecting to the only MongoDB service bound to the app. Check Javadoc for `AbstractCloudConfig` for ways to connect to other services.
 
@@ -109,14 +109,14 @@ class CloudConfig extends AbstractCloudConfig {
 
 Method such as `dataSource()` come in an additional overloaded variant that offer specifying configuration options such as the pooling parameters. See Javadoc for more details.
 
-#### <a id='connect-gen-services'></a>Connecting to Generic Services ####
+#### <a id='connect-gen-services'></a>Connect to Generic Services ####
 
 Java config supports access to generic services through the `service()` method.
 Generic services do not have a directly mapped method. This is typical for a newly introduced service or when connecting to a private service in private PaaS. The generic `service()` method follows the same pattern as the
 `dataSource()`, except it allows supplying the connector type as an additional
 parameters.
 
-#### <a id='scan-services'></a>Scanning for Services ####
+#### <a id='scan-services'></a>Scan for Services ####
 You can scan for each bound service using the `@ServiceScan` annotation as shown below. This is conceptually similar to the @ComponentScan annotation in Spring:
 
 ```java
@@ -141,7 +141,7 @@ If the app is bound to more than one services of a type, you can use the `@Quali
 @Autowired @Qualifier("shipping-db") DataSource shippingDb;
 ```
 
-#### <a id='access-service-providers'></a>Accessing Service Properties ####
+#### <a id='access-service-providers'></a>Access Service Properties ####
 You can expose raw properties for all services and the app through a bean as follows:
 
 ```java
