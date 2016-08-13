@@ -5,7 +5,7 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-## <a id='pushing_apps'></a> Pushing Apps ##
+## <a id='pushing_apps'></a> Push Apps ##
 
 This buildpack will be used if your app has a `Gemfile` and `Gemfile.lock` in the root directory. It will then use Bundler to install your dependencies.
 
@@ -19,11 +19,11 @@ For more detailed information on deploying Ruby applications see the following t
 
 * <a href="./gsg-ruby.html" class="subnav">Getting Started Deploying Ruby Apps</a>
 * <a href="./gsg-ror.html" class="subnav">Getting Started Deploying Ruby on Rails Apps</a>
-* <a href="./sample-ror.html" class="subnav">Deploy a Sample Ruby on Rails App</a>
-* <a href="./rake-config.html" class="subnav">Configure Rake Tasks for Deployed Apps</a>
+* <a href="./sample-ror.html" class="subnav">Deploying a Sample Ruby on Rails App</a>
+* <a href="./rake-config.html" class="subnav">Configuring Rake Tasks for Deployed Apps</a>
 * <a href="./ruby-tips.html" class="subnav">Tips for Ruby Developers</a>
 * <a href="./ruby-environment.html" class="subnav">Environment Variables Defined by the Ruby Buildpack</a>
-* <a href="./ruby-service-bindings.html" class="subnav">Configure Service Connections for Ruby</a>
+* <a href="./ruby-service-bindings.html" class="subnav">Configuring Service Connections for Ruby</a>
 
 You can find the source for the buildpack on GitHub:
 [https://github.com/cloudfoundry/cf-buildpack-ruby](https://github.com/cloudfoundry/cf-buildpack-ruby)
@@ -32,7 +32,7 @@ You can find the source for the buildpack on GitHub:
 
 Supported Ruby versions can be found [in the release notes](https://github.com/cloudfoundry/ruby-buildpack/releases).
 
-## <a id='runtime'></a>Specifying a Ruby Version ##
+## <a id='runtime'></a>Specify a Ruby Version ##
 
 Specific versions of the Ruby runtime can be specified in the `Gemfile`:
 
@@ -89,7 +89,7 @@ Staging failed: Buildpack compilation step failed
 
 Additionally, note that the pessimistic version operator (`~>`) on the Gemfile `ruby` directive for JRuby is not supported by the Ruby buildpack.
 
-## <a id='vendoring'></a>Vendoring app dependencies ##
+## <a id='vendoring'></a>Vendor App Dependencies ##
 
 As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' its dependencies.
 
