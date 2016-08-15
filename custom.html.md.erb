@@ -112,12 +112,10 @@ The `app` directory contains `BUILD_DIR` contents, and `staging_info.yml` contai
 
 ## <a id='packaging-custom-buildpacks'></a> Packaging Custom Buildpacks ##
 
-### Partially or completely disconnected environments
+Cloud Foundry buildpacks work with limited or no internet connectivity. A Cloud Foundry operator can use the [buildpack packager](https://github.com/cloudfoundry-incubator/buildpack-packager) to give the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
 
-Cloud Foundry buildpacks work with limited or no internet connectivity. A Cloud Foundry operator can enable the same support in
-your custom buildpack by using the [Buildpack Packager](https://github.com/cloudfoundry-incubator/buildpack-packager) application.
+### Using the Buildpack Packager
 
-#### Using buildpack-packager
 1. Create a manifest.yml in your buildpack.
 1. Run the packager in cached mode: 
   <pre class="terminal">$ buildpack-packager --cached</pre>
@@ -134,15 +132,14 @@ The packager has the following option flags:
 
 For more information, see the documentation at the [buildpack-packager Github repo](https://github.com/cloudfoundry-incubator/buildpack-packager).
 
-#### Uploading the buildpack
+### Using and Sharing the Packaged Buildpack
 
-Once you have packaged your buildpack using `buildpack-packager`, you can upload the resulting `.zip` file to your instance of Cloud Foundry:
+After you have packaged your buildpack using `buildpack-packager` you can use the resulting `.zip` file locally, or share it with others by uploading it to any network location that is accessible to the CLI. Users can then specify the buildpack with the `-b` option when they push apps. See <a href="#deploying-with-custom-buildpacks">Deploying Apps with a Custom Buildpack</a> for details.
 
-<pre class="terminal">
-$ cf create-buildpack BUILDPACK PATH POSITION [--enable|--disable]
-</pre>
+<%=vars.upload_custom_buildpacks%>
 
-<%=vars.link_adminguid_buildpack%>
+<%=vars.link_adminguide_buildpack%>
+
 ### <a id='specifying-default-versions'></a> Specifying Default Versions ###
 
 As of `buildpack-packager` [version 2.3.0](https://github.com/cloudfoundry/buildpack-packager/releases/tag/v2.3.0), you can specify the default version for a dependency by adding a `default_versions` object to the `manifest.yml` file.
@@ -198,7 +195,7 @@ The `buildpack-packager` script validates this object according to the following
       - cflinuxfs2
      ```
 
-## <a id='deploying-with-custom-buildpacks'></a>Deploying With a Custom Buildpack ##
+## <a id='deploying-with-custom-buildpacks'></a>Deploying Apps with a Custom Buildpack ##
 
 Once a custom buildpack has been created and pushed to a public git repository, the git URL can be passed via the cf CLI when pushing an application.
 
