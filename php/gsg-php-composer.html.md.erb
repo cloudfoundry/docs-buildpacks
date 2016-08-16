@@ -49,7 +49,7 @@ There are two ways to avoid the request limit:
   0. Vendor dependencies before pushing your application.
   0. Supply a Github OAuth API token.
 
-### Vendoring Dependencies
+### Vendor Dependencies
 
 To vendor dependencies, you must run `composer install` before you push your application. You might also need to configure `COMPOSER_VENDOR_DIR` to "vendor".
 
@@ -64,7 +64,7 @@ To supply the token, you can use either of the following methods:
   0. `cf set-env YOUR_APP_NAME COMPOSER_GITHUB_OAUTH_TOKEN "OAUTH_TOKEN_VALUE"`
   0. Add the token to the `env` block of your application manifest.
 
-## <a id="staging-environment"></a> Staging Environment
+## <a id="staging-environment"></a> Buildpack Staging Environment
 
 Composer runs in the buildpack staging environment. Variables set with `cf set-env` or with [a manifest.yml 'env' block](../../devguide/deploy-apps/manifest.html#env-block) are visible to Composer.
 

@@ -6,7 +6,7 @@ title: Binary Buildpack
 
 Use the binary buildpack for running arbitrary binary web servers.
 
-## <a id='pushing_apps'></a> Pushing Apps ##
+## <a id='pushing_apps'></a> Push an App ##
 
 Unlike most other Cloud Foundry buildpacks, you must specify the binary 
 buildpack to use it when staging your binary file.
@@ -34,7 +34,7 @@ web: ./app
 $ cf push my_app -c './app' -b binary-buildpack
 ```
 
-## <a id='compiling'></a> Compiling your Binary ##
+## <a id='compiling'></a> Compile your Binary ##
 Cloud Foundry expects your binary to bind to the port specified by the `PORT`
 environment variable.
 

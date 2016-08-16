@@ -19,7 +19,7 @@ The CF buildpacks team uses the following tools to update dependencies:
 When the [New Releases](https://buildpacks.ci.cf-app.com/pipelines/notifications/jobs/New%20Releases) job in the [notifications pipeline](https://buildpacks.ci.cf-app.com/pipelines/notifications)
 detects a new version of a tracked dependency in a buildpack, it creates a [Tracker](https://www.pivotaltracker.com) story about building and including the new version of the dependency in the buildpack manifests. It also posts a message as the `dependency-notifier` to the [#buildpacks channel](https://cloudfoundry.slack.com/messages/buildpacks/) in the Cloud Foundry Slack.
 
-##<a id="building"></a>Building the Binaries
+##<a id="building"></a>Build the Binaries
 
 For all dependencies, you must build the binary from source or acquire the binary as a tarball from a trusted source. For most dependencies, the CF buildpacks team builds the binaries from source.
 
@@ -91,7 +91,7 @@ of your own `buildpacks-ci` Concourse deployment. When the build completes, it a
 
     <p class="note"><strong>Note</strong>: Binary builds are executed by the CF <a href="https://github.com/cloudfoundry/binary-builder">Binary Builder</a> and the <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/binary-builder.yml">binary-builder pipeline</a>.</p>
 
-##<a id="manifest-updates"></a>Updating Buildpack Manifests
+##<a id="manifest-updates"></a>Update Buildpack Manifests
 
 After you build the binary for a dependency that you can access and download from a URL, follow these instructions to add the dependency version to the buildpack manifest.
 
@@ -158,7 +158,7 @@ Example: [Automated enqueuing of binary build for Godep 72](https://github.com/c
 
     <p class="note"><strong>Note</strong>: The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/binary-builder.yml">binary-builder</a> pipeline automates the process of detecting, uploading, and updating Godep in the manifest.</p>
 
-###<a id="build-nodejs-buildpack"></a>Nodejs Buildpack
+###<a id="build-nodejs-buildpack"></a>Node.js Buildpack
 
 __Node__: 
 

@@ -9,7 +9,7 @@ owner: Buildpacks
 
 Supported Go versions can be found [in the release notes](https://github.com/cloudfoundry/go-buildpack/releases).
 
-## <a id='pushing_apps'></a> Pushing Apps ##
+## <a id='pushing_apps'></a> Push an App ##
 
 The Go buildpack will be automatically detected if:
 
@@ -47,7 +47,7 @@ applications:
 
 If you do not specify a start command via a `Procfile`, in the manifest, or via the `-c` flag for `cf push`, the generated binary will be used as the start command. (ex. `my-go-server`)
 
-### <a id='with_godep'></a>Pushing Apps with godep ###
+### <a id='with_godep'></a>Push an App with godep ###
 If you are using [godep](https://github.com/tools/godep) to package your dependencies, make sure that you have created a valid `Godeps/Godeps.json` file in the root directory of your app by running `godep save`.
 
 When using godep, you can fix your Go version in  `GoVersion` key of the `Godeps/Godeps.json` file.
@@ -98,7 +98,7 @@ applications:
       GO15VENDOREXPERIMENT: 0
 ```
 
-### <a id='with_glide'></a>Pushing Apps with Glide ###
+### <a id='with_glide'></a>Push an App with Glide ###
 If you are using [glide](https://github.com/Masterminds/glide) to specify and/or package your dependencies, make sure that you have created a valid `glide.yaml` file in the root directory of your app by running `glide init`.
 
 To vendor your dependencies before pushing, run `glide install`. This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies. A `glide.lock` is not required when deploying a non-vendored app. A `glide.lock` is required when pushing a vendored app.
@@ -116,7 +116,7 @@ import:
   - foo
 ```
 
-### <a id='pushing_Apps_with_native_Go_vendoring'></a>Pushing Apps with Native Go Vendoring ###
+### <a id='pushing_Apps_with_native_Go_vendoring'></a>Push an App with Native Go Vendoring ###
 If you are using the native Go vendoring system, which packages all local dependencies in the `vendor/` directory, you must specify your app's package name in the `GOPACKAGENAME` environment variable. An example `manifest.yml`:
 
 ```yaml
@@ -161,7 +161,7 @@ applications:
 ```
 
 
-## <a id='passing_symbol_linker'></a>Passing a Symbol and String to the Linker ##
+## <a id='passing_symbol_linker'></a>Pass a Symbol and String to the Linker ##
 
 This buildpack supports the go [linker's](https://golang.org/cmd/link/) ability (`-X symbol
 value`) to set the value of a string at link time. This can be done by setting
