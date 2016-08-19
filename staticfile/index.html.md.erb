@@ -92,6 +92,15 @@ gunzip off;
 gzip_static off;
 ```
 
+### <a id='gzip'></a> Forcing HTTPS ###
+
+To only allow requests sent via HTTPS, the `FORCE_HTTPS` environment variable can be set. This will redirect non-HTTPS requests as HTTPS requests.
+
+The value that `FORCE_HTTPS` is set to does not matter, only that the environment variable is set at all. For example, `FORCE_HTTPS: true` and `FORCE_HTTPS: enabled` will both force HTTPS.
+
+<p class="note"><strong>Note</strong> If you're using a reverse proxy like CloudFlare and have rules that redirect HTTP to HTTPS, these can cause redirect loops with your app if <code>FORCE_HTTPS</code> is also enabled.
+Taking CloudFlare as an example, when attempting to make an HTTPS request to the app, the connection between the user and CloudFlare is HTTPS but the connection between CloudFlare and your app is via HTTP (which your app will redirect as HTTPS).</p>
+
 ### <a id='custom_nginx_configuration'></a> Custom Nginx Configuration ###
 
 You can customize the Nginx configuration further, by adding `nginx.conf` and/or `mime.types` to your root folder. (Note that if you specified an [alternate root folder](#root_folder), the files will need to be placed there.)
