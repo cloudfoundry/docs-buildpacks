@@ -5,6 +5,10 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
+The Staticfile buildpack works for apps and content that require no backend code besides an Nginx webserver, which the buildpack provides. Examples include front-end JavaScript apps, static HTML content, and HTML/JavaScript forms. It also supports apps with backends hosted elsewhere.
+
+To find which version of Nginx the current Staticfile buildpack uses, see the [release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
+
 ## <a id='pushing_apps'></a> Push an App ##
 
 This buildpack will be used if your directory has a `Staticfile` file in the root directory.
@@ -25,13 +29,11 @@ cf push APPNAME -b https://github.com/cloudfoundry/staticfile-buildpack.git -m 6
 
 Why `-m 64M`? Your static assets will be served by [Nginx](http://nginx.com/) and it only requires 20M \[[reference](http://wiki.nginx.org/WhyUseIt)]. The `-m 64M` reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers. In the future there may be a way for a buildpack to indicate its default RAM requirements; but not as of writing.
 
-## <a id='supported_versions'></a>Supported nginx Version ##
-
-The version of nginx used by the staticfile buildpack can be found [in the release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
-
 ## <a id='configuration'></a> Configuration ##
 
-### <a id='root_folder'></a> Alternate root folder ###
+You can configure how the Staticfile buildpack accesses and serves apps by editing the `Staticfile` or `nginx.conf` files.
+
+### <a id='root_folder'></a> Specify an Alternate Root Folder ###
 By default, the buildpack will serve `index.html` and all other assets from the root folder of your project.
 
 In many cases, you may have an alternate folder where your HTML/CSS/JavaScript files are to be served from, such as `dist/` or `public/`.
@@ -42,7 +44,7 @@ To configure the buildpack add the following line to your `Staticfile`:
 root: dist
 ```
 
-### <a id='authentication'></a> Basic authentication ###
+### <a id='authentication'></a> Enable or Disable Basic Authentication ###
 
 Protect your website with a user/password configured via environment variables.
 
@@ -52,7 +54,7 @@ Convert the username / password to the required format: http://www.htaccesstools
 
 For example, username `bob` and password `bob` becomes `bob:$apr1$DuUQEQp8$ZccZCHQElNSjrg.erwSFC0`.
 
-Create a file in the root of your application `Staticfile.auth`. This becomes the `.htpasswd` file for nginx to project your site. It can include one or more user/password lines.
+Create a file in the root of your application `Staticfile.auth`. This becomes the `.htpasswd` file for Nginx to project your site. It can include one or more user/password lines.
 
 ```
 bob:$apr1$DuUQEQp8$ZccZCHQElNSjrg.erwSFC0
@@ -60,7 +62,7 @@ bob:$apr1$DuUQEQp8$ZccZCHQElNSjrg.erwSFC0
 
 Push your application to apply changes to basic auth. Remove the file and push to disable basic auth.
 
-### <a id='directory_index'></a> Directory Index ###
+### <a id='directory_index'></a> Directory List Instead of 404 If Missing index.html ###
 
 If your site doesn't have a nice `index.html`, you can configure `Staticfile` to display a Directory Index of other files; rather than show a relatively unhelpful 404 error.
 
@@ -72,7 +74,7 @@ Add a line to your `Staticfile` that begins with `directory:`
 directory: visible
 ```
 
-### <a id='server_side_includes'></a> Server Side Includes (SSI) ###
+### <a id='server_side_includes'></a> Enable Server Side Includes (SSI) ###
 
 Add the following line to your `Staticfile` to enable support for [SSI](https://en.wikipedia.org/wiki/Server_Side_Includes):
 
@@ -80,12 +82,22 @@ Add the following line to your `Staticfile` to enable support for [SSI](https://
 ssi: enabled
 ```
 
-### <a id='gzip'></a> GZip Static ###
+### <a id='pushstate'></a> Enable Pushstate Routing ###
+
+With client-side JavaScript apps that serve multiple routes, pushstate routing keeps browser-visible URLs clean. For example, pushstate routing allows a single JavaScript file route to multiple anchor-tagged URLs that look like `/some/path1` instead of `/some#path1`.
+
+To enable support for pushstate routing, add the following line to your `Staticfile`:
+
+```
+pushstate: enabled
+```
+
+### <a id='gzip'></a> Disable Serving and Decompressing GZip Files ###
 
 The [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html) and [`gunzip`](http://nginx.org/en/docs/http/ngx_http_gunzip_module.html) modules are set to `on` by default.
-Together, these modules enable Nginx to properly serve compressed files to clients. They also decompress files for clients that do not support compressed content or responses.
+`gzip_static` enables Nginx to serve files stored in compressed `.gz` format, and `gunzip` uncompresses them for clients that do not support compressed content or responses.
 
-If you want to disable these modules, specify the following in your custom `nginx.conf`:
+To disable these modules, specify the following in your custom `nginx.conf`:
 
 ```
 gunzip off;
@@ -122,7 +134,7 @@ the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html)
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-The staticfile-buildpack, based on nginx, does not make outgoing requests and does not benefit from [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html).
+The staticfile-buildpack, based on Nginx, does not make outgoing requests and does not benefit from [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html).
 
 ## <a id='help_support'></a>Help and Support ##
 
