@@ -28,11 +28,11 @@ When building droplets, the [Droplet Execution Agent (DEA)](../concepts/architec
 executes the buildpack within a container whose network can reach the Internet
 entirely unimpeded.
 
-Many Pivotal customers do not allow the DEA, or any part of their Cloud Foundry
+Many of our customers do not allow the DEA, or any part of their Cloud Foundry
 deployment, unimpeded access to the Internet.
 Security and Change Management concerns impact how an enterprise or smaller business business decides to architect their network.
 
-To satisfy these customers, Pivotal forks existing buildpacks, or creates customized ones, which support the loading of dependencies from behind a firewall. When building your buildpack, you should consider these mechanisms, especially if you want enterprise companies to adopt your platform.
+To satisfy these customers, we fork existing buildpacks, or create customized ones, which support the loading of dependencies from behind a firewall. When building your buildpack, you should consider these mechanisms, especially if you want enterprise companies to adopt your platform.
 
 For a breakdown of offline modes and how to implement them, see the Offline Modes topic.
 
