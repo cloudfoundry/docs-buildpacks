@@ -45,7 +45,7 @@ Cloud Foundry includes a set of system buildpacks for common languages and frame
   </tr>
   <tr>
     <td><a href="./go/index.html" class="subnav">Go</a></td>
-    <td><p><i>Go</i></p></td>
+    <td><p>Go</p></td>
     <td><a href="https://github.com/cloudfoundry/go-buildpack">Go source</a></td>
   </tr>
   <tr>
@@ -65,28 +65,8 @@ Cloud Foundry includes a set of system buildpacks for common languages and frame
   </tr>
 </table>
 
-##<a id='custom-buildpacks'></a> About Custom Buildpacks
+##<a id='using-buildpacks'></a> Using, Developing, and Customizing Buildpacks
 
-If your application uses a language or framework that the Cloud Foundry system buildpacks do not support, do the following:
+For general information about using buildpacks, see <a href="./using-buildpacks.html" class="subnav">Using Buildpacks</a>.
 
-* Use a [Cloud Foundry Community Buildpack][c].
-* Use a [Heroku Third-Party Buildpack][h].
-* Customize an existing buildpack or create your own [custom buildpack](./custom.html). A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. See the <a href="#maintain-buildpacks">About Maintaining Buildpacks</a> section below for more information. 
-
-For more information about custom buildpacks, see the following topics:
-
-* <a href="./custom.html" class="subnav">Custom Buildpacks</a>
-* <a href="./depend-pkg-offline.html" class="subnav">Packaging Dependencies for Offline Buildpacks</a>
-* <a href="./supported-binary-dependencies.html" class="subnav">Supported Binary Dependencies</a>
-
-##<a id='maintain-buildpacks'></a> About Maintaining Buildpacks
-
-The following topics describe how the Cloud Foundry buildpacks team maintains the Cloud Foundry system buildpacks. Use this information to maintain your custom buildpacks or to contribute to the Cloud Foundry system buildpacks. 
-
-* <a href="./merging_upstream.html" class="subnav">Merging from Upstream Buildpacks</a>
-* <a href="./upgrading_dependency_versions.html" class="subnav">Upgrading Dependency Versions</a>
-
-[c]: https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks
-[h]: https://devcenter.heroku.com/articles/third-party-buildpacks
-
-<p class="note"><strong>Note</strong>: To configure a production server for your web app, see the <a href="./prod-server.html" class="subnav">Configuring a Production Server</a> topic.</p>
+For general information about customizing existing buildpacks and developing new buildpacks, see <a href="./developing-buildpacks.html" class="subnav">Developing Buildpacks</a>.

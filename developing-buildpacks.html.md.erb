@@ -1,0 +1,32 @@
+---
+title: Developing Buildpacks
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+Buildpacks enable you to packaging frameworks and/or runtime support for your application.
+Cloud Foundry provides with system buildpacks out-of-the-box and provides an interface for customizing existing buildpacks and developing new ones.
+
+##<a id="create-buildpacks"></a>About Customizing and Creating Buildpacks
+
+If your application uses a language or framework that the Cloud Foundry system buildpacks do not support, do one of the following:
+
+* Use a [Cloud Foundry Community Buildpack](https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks).
+* Use a [Heroku Third-Party Buildpack](https://devcenter.heroku.com/articles/third-party-buildpacks).
+* Customize an existing buildpack or create your own [custom buildpack](./custom.html). 
+A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. 
+For information on customizing an existing buildpack or creating your own, see the following:
+
+    + <a href="./custom.html" class="subnav">Custom Buildpacks</a>
+    + <a href="./depend-pkg-offline.html" class="subnav">Packaging Dependencies for Offline Buildpacks</a>
+
+##<a id='maintain-buildpacks'></a> About Maintaining Buildpacks
+
+After you have modified an existing buildpack or created your own, it is necessary to maintain it.
+Refer to the following when maintaining your own buildpacks:
+
+* <a href="./merging_upstream.html" class="subnav">Merging from Upstream Buildpacks</a>
+* <a href="./upgrading_dependency_versions.html" class="subnav">Upgrading Dependency Versions</a>
+
+<p class="note"><strong>Note</strong>: To configure a production server for your web app, see the <a href="./prod-server.html">Configuring a Production Server</a> topic.</p>
