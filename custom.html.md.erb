@@ -109,11 +109,11 @@ staging_info.yml
 ```
 The `app` directory contains `BUILD_DIR` contents, and `staging_info.yml` contains the staging metadata saved in the droplet.
 
-## <a id='packaging-custom-buildpacks'></a> Packaging Custom Buildpacks ##
+## <a id='packaging-custom-buildpacks'></a> Package Custom Buildpacks ##
 
 Cloud Foundry buildpacks work with limited or no Internet connectivity. A Cloud Foundry operator can use the [buildpack packager](https://github.com/cloudfoundry-incubator/buildpack-packager) to give the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
 
-### Using the Buildpack Packager
+### Use the Buildpack Packager
 
 1. Create a manifest.yml in your buildpack.
 1. Run the packager in cached mode: 
@@ -131,7 +131,7 @@ The packager has the following option flags:
 
 For more information, see the documentation at the [buildpack-packager Github repo](https://github.com/cloudfoundry-incubator/buildpack-packager).
 
-### Using and Sharing the Packaged Buildpack
+### Use and Share the Packaged Buildpack
 
 After you have packaged your buildpack using `buildpack-packager` you can use the resulting `.zip` file locally, or share it with others by uploading it to any network location that is accessible to the CLI. Users can then specify the buildpack with the `-b` option when they push apps. See <a href="#deploying-with-custom-buildpacks">Deploying Apps with a Custom Buildpack</a> for details.
 
@@ -139,7 +139,7 @@ After you have packaged your buildpack using `buildpack-packager` you can use th
 
 <%=vars.link_adminguide_buildpack%>
 
-### <a id='specifying-default-versions'></a> Specifying Default Versions ###
+### <a id='specifying-default-versions'></a> Specify a Default Version ###
 
 As of `buildpack-packager` [version 2.3.0](https://github.com/cloudfoundry/buildpack-packager/releases/tag/v2.3.0), you can specify the default version for a dependency by adding a `default_versions` object to the `manifest.yml` file.
 The `default_versions` object has two properties, `name` and `version`. For example:
@@ -194,7 +194,7 @@ The `buildpack-packager` script validates this object according to the following
       - cflinuxfs2
      ```
 
-## <a id='deploying-with-custom-buildpacks'></a>Deploying Apps with a Custom Buildpack ##
+## <a id='deploying-with-custom-buildpacks'></a>Deploy Apps with a Custom Buildpack ##
 
 Once a custom buildpack has been created and pushed to a public git repository, the git URL can be passed via the cf CLI when pushing an application.
 
