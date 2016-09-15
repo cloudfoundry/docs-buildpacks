@@ -1,0 +1,88 @@
+---
+title: Releasing a New Buildpack Version
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to bump the version of a Cloud Foundry buildpack. These procedures enable
+the Cloud Foundry Buildpacks Team and other Cloud Foundry (CF) Buildpack maintainers to release new
+versions of their buildpacks.
+
+##<a id="releasing-a-new-buildpack-version"></a>Releasing a New Buildpack Version
+
+1. Ensure you have the `buildpacks-ci` repo cloned down:
+  <pre class="terminal">
+  $ git clone https://github.com/cloudfoundry/buildpacks-ci.git
+  </pre>
+
+1. While in the buildpack directory, checkout the `develop` branch of the buildpack:
+  <pre class="terminal">
+  $ cd /system/path/to/buildpack
+  $ git checkout develop
+  $ git pull -r
+  </pre>
+
+1. Bump the version in the buildpack repo by running the `bump` script:
+  <pre class="terminal">
+  $ /system/path/to/buildpacks-ci/scripts/bump
+  </pre>
+
+1. Update the `CHANGELOG` file manually, condensing recent commits
+into relevant changes (see [Changelogs](#changelogs) section below for more details).
+
+1. Make release-bumping commit:
+  <pre class="terminal">
+  git add VERSION CHANGELOG
+  git commit -m "Bump version to $(cat VERSION) [{insert story #}]"
+  </pre>
+
+1. Push release-bumping commit to develop and master:
+  <pre class="terminal">
+  git push origin HEAD:{master,develop}
+  git checkout master
+  git merge develop
+  </pre>
+
+At this point, if you don't have `buildpacks-ci` deployed to Concourse, you can
+manually git tag the buildpack and mark the tag as a release on Github.
+
+If you do have `buildpacks-ci` deployed to Concourse, the following steps will go through
+the full buildpack release cycle:
+
+1. The `detect-new-buildpack-and-upload-artifacts` job in the pipeline for the buildpack you just released
+will trigger. This job will create a cached buildpack and an uncached buildpack and upload these to
+an AWS S3 bucket. Then, the `specs-lts-master` and `specs-edge-master` jobs will trigger and will
+run the buildpack test suite and the buildpack's subsection of [BRATS](https://github.com/cloudfoundry/brats).
+Once these jobs complete, the `buildpack-release` job will trigger and create a tag for the new version.
+At this point, if you're using [Pivotal Tracker](https://www.pivotaltracker.com), you'd paste the links for
+the `specs-edge-master`, `specs-lts-master`, and `buildpack-release` builds in the related buildpack release story
+and deliver that story.
+
+1. The PM will then manually trigger the `buildpack-to-github` and `buildpack-to-pivnet` jobs on Concourse as part
+of the acceptance process. These will respectively release the buildpack to Pivotal Network and to Github.
+
+1. Once the buildpack has been released to Github, the `cf-release` pipeline can be triggered via manual trigger of
+the `recreate-bosh-lite` job on that pipeline. As long as the new buildpack has been released to Github, the CF that
+will be deployed for testing in the `cf-release` pipeline will test against that new buildpack. Once the `cats` job has
+successfully completed, the PM can ship the new buildpacks to the `cf-release` repo and create the new buildpack
+BOSH release by manually triggering the `ship-it` job.
+
+- If it goes badly, you may need to remove unwanted tags. See the section on [Dealing with Unwanted Tags](#dealing-with-unwanted-tags).
+
+##<a id="changelogs"></a>Changelogs
+
+The [Ruby Buildpack changelog](https://github.com/cloudfoundry/ruby-buildpack/blob/master/CHANGELOG) is a good example of
+layout/content for a changelog. The rules are simple:
+
+- Reference public tracker stories whenever possible.
+- Exclude cruft
+- Combine/condense commit statements into individual stories/valuable changes.
+
+##<a id="dealing-with-unwanted-tags"></a>Dealing With Unwanted Tags
+
+If the buildpack commit that is tagged with a new version has issues, you may want to change where the release tag points to. To achieve this:
+
+1. Get the repo in a good state, where it is building and green.
+1. Remove the tag from your local repo and the Github remote.
+1. Kick off a build. The pipeline build script should re-tag the build if it's successful.
