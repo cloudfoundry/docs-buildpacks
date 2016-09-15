@@ -11,7 +11,7 @@ When your application has one instance, it's mostly safe to use the default sess
 
 If you have multiple application instances or you need a more robust solution for your application, then you'll want to use Redis or Memcached as a backing store for your session data.  The build pack supports both and when one is bound to your application it will detected it and automatically configure PHP to use it for session storage.
 
-By default, there's no configuration necessary.  Simple create a Redis or Memcached service, make sure the service name contains `redis-sessions` or `memcached-sessions` and then bind the service to the application.
+By default, there's no configuration necessary.  Simply create a Redis or Memcached service, make sure the service name contains `redis-sessions` or `memcached-sessions` and then bind the service to the application.
 
 Ex:
 
