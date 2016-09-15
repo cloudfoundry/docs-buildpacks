@@ -5,84 +5,97 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to bump the version of a Cloud Foundry buildpack. These procedures enable
+This topic describes how to update the version of a Cloud Foundry buildpack. The procedures below enable
 the Cloud Foundry Buildpacks Team and other Cloud Foundry (CF) Buildpack maintainers to release new
 versions of their buildpacks.
 
-##<a id="releasing-a-new-buildpack-version"></a>Releasing a New Buildpack Version
+##<a id="releasing-a-new-buildpack-version"></a>Release a New Buildpack Version
 
-1. Ensure you have the `buildpacks-ci` repo cloned down:
+To release a new buildpack version, perform the following:
+
+1. Ensure you have downloaded the `buildpacks-ci` repo:
   <pre class="terminal">
-  $ git clone https://github.com/cloudfoundry/buildpacks-ci.git
+  $ git clone https<span>:</span>//github.com/cloudfoundry/buildpacks-ci.git
   </pre>
 
-1. While in the buildpack directory, checkout the `develop` branch of the buildpack:
+1. From the buildpack directory, check out the `develop` branch of the buildpack:
   <pre class="terminal">
   $ cd /system/path/to/buildpack
   $ git checkout develop
+  </pre>
+
+1. Ensure you have the most current version of the repo:
+  <pre class="terminal">
   $ git pull -r
   </pre>
 
-1. Bump the version in the buildpack repo by running the `bump` script:
+1. Run `bump` to update the version in the buildpack repo:
   <pre class="terminal">
   $ /system/path/to/buildpacks-ci/scripts/bump
   </pre>
 
-1. Update the `CHANGELOG` file manually, condensing recent commits
-into relevant changes (see [Changelogs](#changelogs) section below for more details).
+1. Modify the `CHANGELOG` file manually to condense recent commits
+into relevant changes. For more information, see [Modify Changelogs](#changelogs).
 
-1. Make release-bumping commit:
+1. Add and commit your changes:
   <pre class="terminal">
   git add VERSION CHANGELOG
   git commit -m "Bump version to $(cat VERSION) [{insert story #}]"
   </pre>
 
-1. Push release-bumping commit to develop and master:
+1. Push your changes to the `develop` branch:
   <pre class="terminal">
   git push origin HEAD:{master,develop}
+  </pre>
+
+1. Merge your changes to the `master` branch:
+  <pre class="terminal">
   git checkout master
   git merge develop
   </pre>
 
-At this point, if you don't have `buildpacks-ci` deployed to Concourse, you can
-manually git tag the buildpack and mark the tag as a release on Github.
+##<a id="concourse"></a>Concourse Buildpack Workflow
 
-If you do have `buildpacks-ci` deployed to Concourse, the following steps will go through
-the full buildpack release cycle:
+If `buildpacks-ci` is not deployed to Concourse, manualy add
+a Git tag to the buildpack and mark the tag as a release on Github. 
 
-1. The `detect-new-buildpack-and-upload-artifacts` job in the pipeline for the buildpack you just released
-will trigger. This job will create a cached buildpack and an uncached buildpack and upload these to
-an AWS S3 bucket. Then, the `specs-lts-master` and `specs-edge-master` jobs will trigger and will
-run the buildpack test suite and the buildpack's subsection of [BRATS](https://github.com/cloudfoundry/brats).
-Once these jobs complete, the `buildpack-release` job will trigger and create a tag for the new version.
-At this point, if you're using [Pivotal Tracker](https://www.pivotaltracker.com), you'd paste the links for
+If `buildpacks-ci` is deployed to Concourse, the buildpack updated passes through the following life cycle:
+
+1. Concourse triggers the `detect-new-buildpack-and-upload-artifacts` job in the pipeline for the updated buildpack. This job creates a cached and uncached buildpack and uploads them to an AWS S3 bucket. 
+
+1. The `specs-lts-master` and `specs-edge-master` jobs trigger and
+run the buildpack test suite and the buildpack-specific tests of the [Buildpack Runtime Acceptance Tests (BRATS)](https://github.com/cloudfoundry/brats).
+
+1. The `buildpack-release` job triggers and creates a tag for the new version.
+
+1. If you are using [Pivotal Tracker](https://www.pivotaltracker.com), paste the links for
 the `specs-edge-master`, `specs-lts-master`, and `buildpack-release` builds in the related buildpack release story
 and deliver that story.
 
-1. The PM will then manually trigger the `buildpack-to-github` and `buildpack-to-pivnet` jobs on Concourse as part
-of the acceptance process. These will respectively release the buildpack to Pivotal Network and to Github.
+1. Your project manager can manually trigger the `buildpack-to-github` and `buildpack-to-pivnet` jobs on Concourse as part
+of the acceptance process. This releases the buildpack to Pivotal Network and to Github.
 
-1. Once the buildpack has been released to Github, the `cf-release` pipeline can be triggered via manual trigger of
-the `recreate-bosh-lite` job on that pipeline. As long as the new buildpack has been released to Github, the CF that
-will be deployed for testing in the `cf-release` pipeline will test against that new buildpack. Once the `cats` job has
-successfully completed, the PM can ship the new buildpacks to the `cf-release` repo and create the new buildpack
-BOSH release by manually triggering the `ship-it` job.
+1. After the buildpack has been released to Github, the `cf-release` pipeline is triggered using the manual trigger of
+the `recreate-bosh-lite` job on that pipeline. If the new buildpack has been released to Github, the CF that
+is deployed for testing in the `cf-release` pipeline is tested against that new buildpack. 
 
-- If it goes badly, you may need to remove unwanted tags. See the section on [Dealing with Unwanted Tags](#dealing-with-unwanted-tags).
+1. After the `cats` job has successfully completed, your project manager can ship the new buildpacks to the `cf-release` repo and create the new buildpack BOSH release by manually triggering the `ship-it` job.
 
-##<a id="changelogs"></a>Changelogs
+- If errors occur during this workflow, you may need to remove unwanted tags. For more information, see [Handle Unwanted Tags](#dealing-with-unwanted-tags).
 
-The [Ruby Buildpack changelog](https://github.com/cloudfoundry/ruby-buildpack/blob/master/CHANGELOG) is a good example of
-layout/content for a changelog. The rules are simple:
+##<a id="changelogs"></a>Modify Changelogs
+
+The [Ruby Buildpack changelog](https://github.com/cloudfoundry/ruby-buildpack/blob/master/CHANGELOG) shows an example
+layout and content of a changelog. In general, changelogs follow these conventions:
 
 - Reference public tracker stories whenever possible.
-- Exclude cruft
-- Combine/condense commit statements into individual stories/valuable changes.
+- Exclude unnecessary files
+- Combine and condense commit statements into individual stories containing valuable changes.
 
-##<a id="dealing-with-unwanted-tags"></a>Dealing With Unwanted Tags
+##<a id="dealing-with-unwanted-tags"></a>Handle Unwanted Tags
 
-If the buildpack commit that is tagged with a new version has issues, you may want to change where the release tag points to. To achieve this:
+If you encounter problems with the commit that contains the new version, change the target of the release tag by performing the following:
 
-1. Get the repo in a good state, where it is building and green.
-1. Remove the tag from your local repo and the Github remote.
-1. Kick off a build. The pipeline build script should re-tag the build if it's successful.
+1. Ensure the repo is in a valid state and is building successfully.
+1. Remove the tag from your local repo and from Github.
+1. Start a build. The pipeline build script should re-tag the build if it is successful.
