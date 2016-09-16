@@ -1,0 +1,101 @@
+---
+title: Releasing a New Buildpack Version
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to update the version of a Cloud Foundry buildpack. The procedures below enable
+the Cloud Foundry Buildpacks Team and other Cloud Foundry (CF) Buildpack maintainers to release new
+versions of their buildpacks.
+
+##<a id="releasing-a-new-buildpack-version"></a>Release a New Buildpack Version
+
+To release a new buildpack version, perform the following:
+
+1. Ensure you have downloaded the `buildpacks-ci` repo:
+  <pre class="terminal">
+  $ git clone https<span>:</span>//github.com/cloudfoundry/buildpacks-ci.git
+  </pre>
+
+1. From the buildpack directory, check out the `develop` branch of the buildpack:
+  <pre class="terminal">
+  $ cd /system/path/to/buildpack
+  $ git checkout develop
+  </pre>
+
+1. Ensure you have the most current version of the repo:
+  <pre class="terminal">
+  $ git pull -r
+  </pre>
+
+1. Run `bump` to update the version in the buildpack repo:
+  <pre class="terminal">
+  $ /system/path/to/buildpacks-ci/scripts/bump
+  </pre>
+
+1. Modify the `CHANGELOG` file manually to condense recent commits
+into relevant changes. For more information, see [Modify Changelogs](#changelogs).
+
+1. Add and commit your changes:
+  <pre class="terminal">
+  git add VERSION CHANGELOG
+  git commit -m "Bump version to $(cat VERSION) [{insert story #}]"
+  </pre>
+
+1. Push your changes to the `develop` branch:
+  <pre class="terminal">
+  git push origin HEAD:{master,develop}
+  </pre>
+
+1. Merge your changes to the `master` branch:
+  <pre class="terminal">
+  git checkout master
+  git merge develop
+  </pre>
+
+##<a id="concourse"></a>Concourse Buildpack Workflow
+
+If `buildpacks-ci` is not deployed to Concourse, manualy add
+a Git tag to the buildpack and mark the tag as a release on Github. 
+
+If `buildpacks-ci` is deployed to Concourse, the buildpack update passes through the following life cycle:
+
+1. Concourse triggers the `detect-new-buildpack-and-upload-artifacts` job in the pipeline for the updated buildpack. This job creates a cached and uncached buildpack and uploads them to an AWS S3 bucket. 
+
+1. The `specs-lts-master` and `specs-edge-master` jobs trigger and
+run the buildpack test suite and the buildpack-specific tests of the [Buildpack Runtime Acceptance Tests (BRATS)](https://github.com/cloudfoundry/brats).
+
+1. The `buildpack-release` job triggers and creates a tag for the new version.
+
+1. If you are using [Pivotal Tracker](https://www.pivotaltracker.com), paste the links for
+the `specs-edge-master`, `specs-lts-master`, and `buildpack-release` builds in the related buildpack release story
+and deliver that story.
+
+1. Your project manager can manually trigger the `buildpack-to-github` and `buildpack-to-pivnet` jobs on Concourse as part
+of the acceptance process. This releases the buildpack to Pivotal Network and to Github.
+
+1. After the buildpack has been released to Github, the `cf-release` pipeline is triggered using the manual trigger of
+the `recreate-bosh-lite` job on that pipeline. If the new buildpack has been released to Github, the CF that
+is deployed for testing in the `cf-release` pipeline is tested against that new buildpack. 
+
+1. After the `cats` job has successfully completed, your project manager can ship the new buildpacks to the `cf-release` repo and create the new buildpack BOSH release by manually triggering the `ship-it` job.
+
+<p class="note"><strong>Note</strong>: If errors occur during this workflow, you may need to remove unwanted tags. For more information, see [Handle Unwanted Tags](#dealing-with-unwanted-tags).</p>
+
+##<a id="changelogs"></a>Modify Changelogs
+
+The [Ruby Buildpack changelog](https://github.com/cloudfoundry/ruby-buildpack/blob/master/CHANGELOG) shows an example
+layout and content of a changelog. In general, changelogs follow these conventions:
+
+- Reference public tracker stories whenever possible.
+- Exclude unnecessary files
+- Combine and condense commit statements into individual stories containing valuable changes.
+
+##<a id="dealing-with-unwanted-tags"></a>Handle Unwanted Tags
+
+If you encounter problems with the commit that contains the new version, change the target of the release tag by performing the following:
+
+1. Ensure the repo is in a valid state and is building successfully.
+1. Remove the tag from your local repo and from Github.
+1. Start a build. The pipeline build script should re-tag the build if it is successful.
