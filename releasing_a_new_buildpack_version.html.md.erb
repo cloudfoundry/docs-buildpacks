@@ -59,7 +59,7 @@ into relevant changes. For more information, see [Modify Changelogs](#changelogs
 If `buildpacks-ci` is not deployed to Concourse, manualy add
 a Git tag to the buildpack and mark the tag as a release on Github. 
 
-If `buildpacks-ci` is deployed to Concourse, the buildpack updated passes through the following life cycle:
+If `buildpacks-ci` is deployed to Concourse, the buildpack update passes through the following life cycle:
 
 1. Concourse triggers the `detect-new-buildpack-and-upload-artifacts` job in the pipeline for the updated buildpack. This job creates a cached and uncached buildpack and uploads them to an AWS S3 bucket. 
 
@@ -81,7 +81,7 @@ is deployed for testing in the `cf-release` pipeline is tested against that new 
 
 1. After the `cats` job has successfully completed, your project manager can ship the new buildpacks to the `cf-release` repo and create the new buildpack BOSH release by manually triggering the `ship-it` job.
 
-- If errors occur during this workflow, you may need to remove unwanted tags. For more information, see [Handle Unwanted Tags](#dealing-with-unwanted-tags).
+<p class="note"><strong>Note</strong>: If errors occur during this workflow, you may need to remove unwanted tags. For more information, see [Handle Unwanted Tags](#dealing-with-unwanted-tags).</p>
 
 ##<a id="changelogs"></a>Modify Changelogs
 
