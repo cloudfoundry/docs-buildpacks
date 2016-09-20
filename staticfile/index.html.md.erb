@@ -9,9 +9,9 @@ The Staticfile buildpack works for apps and content that require no backend code
 
 To find which version of Nginx the current Staticfile buildpack uses, see the [release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
 
-## <a id='pushing_apps'></a> Pushing Apps ##
+## <a id='pushing_apps'></a> Push an App ##
 
-This buildpack will be used if your directory has a `Staticfile` file in the root directory.
+This buildpack is used if your directory has a `Staticfile` file in the root directory.
 
 For example, in an empty directory:
 
@@ -27,14 +27,14 @@ If your Cloud Foundry deployment does not have the Staticfile Buildpack installe
 cf push APPNAME -b https://github.com/cloudfoundry/staticfile-buildpack.git -m 64M
 ```
 
-Why `-m 64M`? Your static assets will be served by [Nginx](http://nginx.com/) and it only requires 20M \[[reference](http://wiki.nginx.org/WhyUseIt)]. The `-m 64M` reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers. In the future there may be a way for a buildpack to indicate its default RAM requirements; but not as of writing.
+When using the `-m 64M` flag, static assets are served by [Nginx](http://nginx.com/) and it only requires 20M \[[reference](http://wiki.nginx.org/WhyUseIt)]. The `-m 64M` flag reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers.
 
 ## <a id='configuration'></a> Configuration ##
 
 You can configure how the Staticfile buildpack accesses and serves apps by editing the `Staticfile` or `nginx.conf` files.
 
 ### <a id='root_folder'></a> Specify an Alternate Root Folder ###
-By default, the buildpack will serve `index.html` and all other assets from the root folder of your project.
+By default, the buildpack serves `index.html` and all other assets from the root folder of your project.
 
 In many cases, you may have an alternate folder where your HTML/CSS/JavaScript files are to be served from, such as `dist/` or `public/`.
 
@@ -123,15 +123,15 @@ and your app is via HTTP, which your app then redirects as HTTPS.</p>
 
 ### <a id='custom_nginx_configuration'></a> Custom Nginx Configuration ###
 
-You can customize the Nginx configuration further, by adding `nginx.conf` and/or `mime.types` to your root folder. (Note that if you specified an [alternate root folder](#root_folder), the files will need to be placed there.)
+You can customize the Nginx configuration further, by adding `nginx.conf` and `mime.types` to your root folder. If you specified an [alternate root folder](#root_folder), the files must be placed there.
 
-If the buildpack detects either of these files, they will be used in place of the built-in versions.
+If the buildpack detects either of these files, they are used in place of the built-in versions.
 
 
 ## <a id='proxy_support'></a> Proxy Support ##
 
 If you need to use a proxy to download dependencies during staging, you can set
-the `http_proxy` and/or `https_proxy` environment variables. For more information, see
+the `http_proxy` and `https_proxy` environment variables. For more information, see
 the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
