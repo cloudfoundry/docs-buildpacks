@@ -144,18 +144,14 @@ There are a couple of easy ways to debug the buildpack:
 
   0. Check the logs from the buildpack. The buildpack writes logs to disk. Retrieve them with the command, as the following example shows:
 
-    DEA release
-
-    ```bash
-    $ cf files APP app/.bp/logs/bp.log
-    ```
+    <%=vars.buildpacks_php_dea%>
 
     Diego release
 
-    ```bash
+    <pre>
     $ cf ssh APP
     $ cat app/.bp/logs/bp.log
-    ```
+    </pre>
 
   This log is more detailed than the stdout output, however it is still terse.
 

@@ -1,0 +1,35 @@
+---
+title: Updating Buildpack-related Gems
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to update [machete](https://github.com/cloudfoundry/buildpack-packager) and [buildpack-packager](https://github.com/cloudfoundry/machete), used for CF system buildpack development.
+
+`buildpack-packager` packages buildpacks and `machete` provides an integration test framework.
+
+
+
+The CF Buildpacks team uses the [gems-and-extensions pipeline](https://buildpacks.ci.cf-app.com/teams/main/pipelines/gems-and-extensions) to:
+
+1. Run the integration tests for `buildpack-packager` and `machete`
+2. Update the gems in the buildpacks managed by the team
+
+## Running the Update Process
+
+<p class="note"><strong>Note</strong>: The steps below assume you are using a Concourse deployment of the <code>buildpacks-ci</code> pipelines</p>
+
+At the end of the process, there will be a new Github release and updates will be applied to the buildpacks.
+
+To update the version of either gem in a buildpack:
+
+1. Confirm that the test job `<gemname>-specs` for the gem to be updated successfully ran on the commit you plan to update.
+2. Manually trigger the `<gemname>-tag` job to update ("bump") the version of the gem.
+3. The `<gemname>-release` job will trigger. This will create a new Github release of the gem.
+4. Each of the buildpack pipelines (e.g. the [go-buildpack pipeline](https://buildpacks.ci.cf-app.com/teams/main/pipelines/go-buildpack)) has a job which watches for new releases of the gem. When a new release is detected, the buildpack's `cf.Gemfile` is updated to that release version.
+5. The commit made to the buildpack's `cf.Gemfile` triggers the full integration test suite for that buildpack.
+
+<p class="note"><strong>Note</strong>: The final step will trigger all buildpack test suites simultaneously, causing contention for available shared BOSH-lite test environments.</p>
+
+

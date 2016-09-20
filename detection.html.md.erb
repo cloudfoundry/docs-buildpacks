@@ -5,9 +5,13 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-When you push an app, Cloud Foundry determines which buildpack to use by running each enabled buildpacks' detect script during [staging](https://docs.cloudfoundry.org/concepts/how-applications-are-staged.html). 
+When you push an app, Cloud Foundry uses a detection process to determine which buildpack to use. 
+For general information about this process, see [How Applications Are Staged](../concepts/how-applications-are-staged.html#stage-buildpack). 
 
-During staging, each buildpack has a position in a priority list (identified by running `cf buildpacks`). Cloud Foundry checks if the buildpack in position 1 is a compatible buildpack. If the position 1 buildpack is not compatible, Cloud Foundry moves on to the buildpack in position 2. Cloud Foundry continues this process until the correct buildpack is found. If no buildpack is compatible  `cf push` fails with the error:
+During staging, each buildpack has a position in a priority list (identified by running `cf buildpacks`). 
+Cloud Foundry checks if the buildpack in position 1 is a compatible buildpack. 
+If the position 1 buildpack is not compatible, Cloud Foundry moves on to the buildpack in position 2. 
+Cloud Foundry continues this process until the correct buildpack is found. If no buildpack is compatible `cf push` fails with the error:
 
 ```
 None of the buildpacks detected a compatible application
