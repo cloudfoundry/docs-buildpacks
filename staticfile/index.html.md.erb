@@ -27,7 +27,7 @@ If your Cloud Foundry deployment does not have the Staticfile Buildpack installe
 cf push APPNAME -b https://github.com/cloudfoundry/staticfile-buildpack.git -m 64M
 ```
 
-When using the `-m 64M` flag, static assets are served by [Nginx](http://nginx.com/) and it only requires 20M \[[reference](http://wiki.nginx.org/WhyUseIt)]. The `-m 64M` flag reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers.
+When using the `-m 64M` flag, static assets are served by [Nginx](http://nginx.com/), which [only requires 20M](http://wiki.nginx.org/WhyUseIt). The `-m 64M` flag reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers.
 
 ## <a id='configuration'></a> Configuration ##
 
