@@ -33,8 +33,7 @@ workstation
 
 ### Step 1: Create and Bind a Service Instance for a Ruby Application ###
 
-This section describes using the CLI to configure a Redis Cloud managed service
-instance for an app. <%=vars.dev_console_1%>
+This section describes using the cf CLI to configure a Redis Cloud managed service instance for an app. <%=vars.dev_console_1%>
 
 <%=vars.product_short%> supports two types of service instances:
 
@@ -57,18 +56,18 @@ and the plans that they offer: `cleardb` MySQL, `elephantsql` PostgreSQL as a
 Service, and `mongolab` MongoDB-as-a-Service.
 
 <pre class="terminal">
-    $  cf marketplace
-    Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
-    OK
+$  cf marketplace
+Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
+OK
 
-    service          plans     description
-    ...
-    cleardb          spark, boost, amp, shock      Highly available MySQL for your Apps
-    ...
-    elephantsql      turtle, panda, hippo, elephant   PostgreSQL as a Service
-    ...
-    mongolab         sandbox       Fully-managed MongoDB-as-a-Service
-    ...
+service          plans     description
+...
+cleardb          spark, boost, amp, shock      Highly available MySQL for your Apps
+...
+elephantsql      turtle, panda, hippo, elephant   PostgreSQL as a Service
+...
+mongolab         sandbox       Fully-managed MongoDB-as-a-Service
+...
 </pre>
 
 Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service
@@ -83,7 +82,6 @@ $ cf create-service rediscloud 30mb redis
 Creating service redis in org Cloud-Apps / space development as clouduser@example.com....
 OK
 </pre>
-</p>
 
 #### Bind a Service Instance ####
 
@@ -166,44 +164,42 @@ Use the URL to access your app online.
 <p class="note"><strong>Note</strong>: The <code>pong_matcher_ruby</code> app does not include a web interface. To interact with the  <code>pong_matcher_ruby</code> app, see the interaction instructions on GitHub: <a href="https://github.com/cloudfoundry-samples/pong_matcher_ruby">https://github.com/cloudfoundry-samples/pong_matcher_ruby</a>.</p>
 
 <pre class="terminal">
+$ cf push pong_matcher_ruby -n pongmatch-ex12
+Using manifest file /Users/clouduser/workspace/pong_matcher_ruby/manifest.yml
 
-    $ cf push pong_matcher_ruby -n pongmatch-ex12
-    Using manifest file /Users/clouduser/workspace/pong_matcher_ruby/manifest.yml
+Creating app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
+OK
 
-    Creating app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
-    OK
+Creating route pongmatch-ex12.<%=vars.app_domain%>
+        Binding pongmatch-ex12.<%=vars.app_domain%> to pong_matcher_ruby...
+OK
 
-    Creating route pongmatch-ex12.<%=vars.app_domain%>
-           Binding pongmatch-ex12.<%=vars.app_domain%> to pong_matcher_ruby...
-    OK
+Uploading pong_matcher_ruby...
+Uploading app files from: /Users/clouduserl/workspace/pong_matcher_ruby
+Uploading 8.8K, 12 files
+OK
+Binding service redis to app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
+OK
 
-    Uploading pong_matcher_ruby...
-    Uploading app files from: /Users/clouduserl/workspace/pong_matcher_ruby
-    Uploading 8.8K, 12 files
-    OK
-    Binding service redis to app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
-    OK
+Starting app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
+OK
+...
 
-    Starting app pong_matcher_ruby in org cf-Cloud-Apps / space development as clouduser@example.com...
-    OK
-    ...
+0 of 1 instances running, 1 starting
+1 of 1 instances running
 
-    0 of 1 instances running, 1 starting
-    1 of 1 instances running
+App started
 
-    App started
+Showing health and status for app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
+OK
 
-    Showing health and status for app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
-    OK
+requested state: started
+instances: 1/1
+usage: 256M x 1 instances
+urls: pongmatch-ex12.cfapps.io
 
-    requested state: started
-    instances: 1/1
-    usage: 256M x 1 instances
-    urls: pongmatch-ex12.cfapps.io
-
-         state     since                    cpu    memory          disk
-    #0   running   2014-12-09 10:04:40 AM   0.0%   35.2M of 256M   45.8M of 1G
-
+     state     since                    cpu    memory          disk
+#0   running   2014-12-09 10:04:40 AM   0.0%   35.2M of 256M   45.8M of 1G
 </pre>
 
 ### Step 5: Test a Deployed App ###

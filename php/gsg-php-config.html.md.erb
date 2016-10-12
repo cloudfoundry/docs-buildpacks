@@ -54,11 +54,11 @@ Each directory can contain configuration files that the component understands.
 
 For example, to change HTTPD logging configuration:
 
-```
+<pre class="terminal">
 $ ls -l .bp-config/httpd/extra/
 total 8
 -rw-r--r--  1 daniel  staff  396 Jan  3 08:31 httpd-logging.conf
-```
+</pre>
 
 In this example, the `httpd-logging.conf` file overrides the one provided by the buildpack. We recommend that you copy the default from the buildpack and modify it.
 

@@ -16,17 +16,17 @@ To avoid keeping the dependencies in source control, load the dependencies into 
 For example, the operator might complete the following process:
 
 <pre class='terminal'>
-    # Clones your buildpack
-    $ git clone http://YOUR-GITHUB-REPO.example.com/repo
-    $ cd SomeBuildPackName
+$ # Clones your buildpack
+$ git clone http://YOUR-GITHUB-REPO.example.com/repo
+$ cd SomeBuildPackName
 
-    # Creates a zipfile using your script
-    $ ./SomeScriptName
-     ----> downloading-dependencies.... done
-     ----> creating zipfile: ZippedBuildPackName.zip
+$ # Creates a zipfile using your script
+$ ./SomeScriptName
+ ----> downloading-dependencies.... done
+ ----> creating zipfile: ZippedBuildPackName.zip
 
-    # Adds the buildpack zipfile to the Cloud Foundry instance
-    $ cf create-buildpack SomeBuildPackName ZippedBuildPackName.zip 1
+$ # Adds the buildpack zipfile to the Cloud Foundry instance
+$ cf create-buildpack SomeBuildPackName ZippedBuildPackName.zip 1
 </pre>
 
 ### Pros ###
@@ -50,24 +50,24 @@ packages and uploads the buildpack.
 The administrator completes the following steps:
 
 <pre class="terminal">
-    # Clones your buildpack
-    $ git clone http://YOUR-GITHUB-REPO.example.com/repo
-    $ cd <buildpack\_name>
+$ # Clones your buildpack
+$ git clone http://YOUR-GITHUB-REPO.example.com/repo
+$ cd <buildpack\_name>
 
-    $ # Selects dependencies
-    $ vi dependencies.yml # Or copy in a preferred config
+$ # Selects dependencies
+$ vi dependencies.yml # Or copy in a preferred config
 
-    $ # Builds a package using your script
-    $ ./package
-     ----> downloading-dependencies.... done
-     ----> creating zipfile: cobol_buildpack.zip
+$ # Builds a package using your script
+$ ./package
+ ----> downloading-dependencies.... done
+ ----> creating zipfile: cobol_buildpack.zip
 
-    $ # Adds the buildpack to the Cloud Foundry instance
-    $ cf create-buildpack cobol-buildpack cobol_buildpack.zip 1
+$ # Adds the buildpack to the Cloud Foundry instance
+$ cf create-buildpack cobol-buildpack cobol_buildpack.zip 1
 
-    $ # Pushes an app using your buildpack
-    $ cd ~/my_app
-    $ cf push my-cobol-webapp -b cobol-buildpack
+$ # Pushes an app using your buildpack
+$ cd ~/my_app
+$ cf push my-cobol-webapp -b cobol-buildpack
 </pre>
 
 ### Pros ###
@@ -93,25 +93,24 @@ In this method, the administrator provides a compatible file store of dependenci
 The administrator completes the following process:
 
 <pre class="terminal">
+$ # Clones your buildpack
+$ git clone http://YOUR-GITHUB-REPO.example.com/repo
+$ cd <buildpack\_name>
 
-    # Clones your buildpack
-    $ git clone http://YOUR-GITHUB-REPO.example.com/repo
-    $ cd <buildpack\_name>
+$ # Builds a package using your script
+$ ./package https:///dependency/repo
+ ----> creating zipfile: cobol_buildpack.zip
 
-    # Builds a package using your script
-    $ ./package https:///dependency/repo
-     ----> creating zipfile: cobol_buildpack.zip
+$ # Adds the buildpack to the Cloud Foundry instance
+$ cf create-buildpack cobol-buildpack cobol_buildpack.zip 1
 
-    # Adds the buildpack to the Cloud Foundry instance
-    $ cf create-buildpack cobol-buildpack cobol_buildpack.zip 1
-
-    $ # Pushes an app using your buildpack
-    $ cd ~/my_app
-    $ cf push my-cobol-webapp -b cobol-buildpack
-     ----> deploying app
-     ----> downloading dependencies:
-        https://OUR-INTERNAL-SITE.example.com/dependency/repo/dep1.tgz.... done
-        https://OUR-INTERNAL-SITE.example.com/dependency/repo/dep2.tgz.... WARNING: dependency not found!
+$ # Pushes an app using your buildpack
+$ cd ~/my_app
+$ cf push my-cobol-webapp -b cobol-buildpack
+ ----> deploying app
+ ----> downloading dependencies:
+    https://OUR-INTERNAL-SITE.example.com/dependency/repo/dep1.tgz.... done
+    https://OUR-INTERNAL-SITE.example.com/dependency/repo/dep2.tgz.... WARNING: dependency not found!
 </pre>
 
 ### Pros ###

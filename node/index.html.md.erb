@@ -91,10 +91,10 @@ As stated in the [Disconnected Environments documentation](https://github.com/cf
 
 For the Node.js buildpack, use ```npm```:
 
-```shell
-cd <your app dir>
-npm install # vendors into /node_modules
-```
+<pre class="terminal">
+$ cd YOUR-APP-DIR
+$ npm install # vendors into /node_modules
+</pre>
 
 ```cf push``` uploads your vendored dependencies.
 

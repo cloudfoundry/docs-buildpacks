@@ -13,13 +13,13 @@ If you have multiple application instances or you need a more robust solution fo
 
 By default, there's no configuration necessary. Create a Redis or Memcached service, make sure the service name contains `redis-sessions` or `memcached-sessions` and then bind the service to the application.
 
-Ex:
+Example:
 
-```
-cf create-service redis some-plan app-redis-sessions
-cf bind-service app app-redis-sessions
-cf restage app
-```
+<pre class="terminal">
+$ cf create-service redis some-plan app-redis-sessions
+$ cf bind-service app app-redis-sessions
+$ cf restage app
+</pre>
 
 If you want to use a specific service instance or change the search key, you can do that by setting either `REDIS_SESSION_STORE_SERVICE_NAME` or `MEMCACHED_SESSION_STORE_SERVICE_NAME` in `.bp-config/options.json` to the new search key.  The session configuration extension will then search the bound services by name for the new session key.
 
@@ -32,7 +32,7 @@ When detected, the following changes will be made.
   - the `redis` PHP extension will be installed, which provides the session save handler
   - `session.name` will be set to `PHPSESSIONID` this disables sticky sessions
   - `session.save_handler` is configured to `redis`
-  - `session.save_path` is configured based on the bound credentials (i.e. `tcp://host:port?auth=pass`)
+  - `session.save_path` is configured based on the bound credentials, for example `tcp://host:port?auth=pass`
 
 ### <a id='memcached'></a> Memcached###
 
@@ -42,4 +42,4 @@ When detected, the following changes will be made.
  - `session.save_path` is configured based on the bound credentials (i.e. `PERSISTENT=app_sessions host:port`)
  - `memcached.sess_binary` is set to `On`
  - `memcached.use_sasl` is set to `On`, which enables authentication
- - `memcached.sess_sasl_username` and `memcached.sess_sasl_password` are set with the service credentials.
+ - `memcached.sess_sasl_username` and `memcached.sess_sasl_password` are set with the service credentials

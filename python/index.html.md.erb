@@ -10,9 +10,10 @@ owner: Buildpacks
 This buildpack will be automatically used if there is a `requirements.txt` or `setup.py` file in the root directory of your project.
 
 If your Cloud Foundry deployment does not have the Python Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
-```bash
-cf push my_app -b https://github.com/cloudfoundry/buildpack-python.git
-```
+
+<pre class="terminal">
+$ cf push my_app -b https://github.com/cloudfoundry/buildpack-python.git
+</pre>
 
 ## <a id='supported_versions'></a>Supported Versions ##
 
@@ -22,20 +23,22 @@ Supported Python versions can be found [in the release notes](https://github.com
 
 Specific versions of the Python runtime can be specified with a `runtime.txt` file:
 
-    $ cat runtime.txt
-    python-3.5.2
+<pre class="terminal">
+$ cat runtime.txt
+python-3.5.2
+</pre>
 
 The buildpack only supports the stable Python versions, which are listed in the `manifest.yml` and [releases page](https://github.com/cloudfoundry/python-buildpack/releases).
 
 If you try to use a binary that is not currently supported, staging your app will fail and you will see the following error message:
 
-```
-       Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
+<pre class="terminal">
+Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
  !
  !     exit
  !
 Staging failed: Buildpack compilation step failed
-```
+</pre>
 
 ## <a id='start-command'></a>Specify a Start Command ##
 
@@ -51,9 +54,9 @@ To stage with the Python buildpack and start an application, do one of the follo
 
 - Specify a start command with `-c`. The following example specifies `waitress-serve` as the start command for a web app running on Waitress:
 
-    ```shell
-    cf push python-app -c "waitress-serve --port=$PORT DJANGO-WEB-APP.wsgi:MY-APP"
-    ```
+    <pre class="terminal">
+    $ cf push python-app -c "waitress-serve --port=$PORT DJANGO-WEB-APP.wsgi:MY-APP"
+    </pre>
 
 - Specify a start command in the application manifest by setting the `command` attribute. For more information, see the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#start-commands) topic. 
 
@@ -63,13 +66,13 @@ As stated in the [Disconnected Environments documentation](https://github.com/cf
 
 For the Python buildpack, use ```pip```:
 
-```shell
-cd <your app dir>
+<pre class="terminal">
+cd YOUR-APP-DIR
 mkdir -p vendor
 
 # vendors all the pip *.tar.gz into vendor/
 pip install --download vendor -r requirements.txt
-```
+</pre>
 
 ```cf push``` uploads your vendored dependencies. The buildpack will install them directly from the `vendor/`.
 

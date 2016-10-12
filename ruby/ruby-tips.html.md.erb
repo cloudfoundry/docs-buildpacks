@@ -33,7 +33,7 @@ Precompiling before deploying reduces the time it takes to stage an application.
 Use the following command to precompile assets before deployment:
 
 <pre class="terminal">
-rake assets:precompile
+$ rake assets:precompile
 </pre>
 
 Note that the Rake precompile task reinitializes the Rails application.
@@ -390,7 +390,9 @@ If your application depends on DATABASE\_URL being set to the connection string
 for your service, and Cloud Foundry does not set it, you can set this variable
 manually.
 
-`$ cf set-env my_app_name DATABASE_URL mysql://b5d435f40dd2b2:ebfc00ac@us-cdbr-east-03.cleardb.com:3306/ad_c6f4446532610ab`
+<pre class="terminal">
+$ cf set-env my_app_name DATABASE_URL mysql://b5d435f40dd2b2:ebfc00ac@us-cdbr-east-03.cleardb.com:3306/ad_c6f4446532610ab
+</pre>
 
 ### <a id='GEM-HOME'></a>GEM_HOME ###
 

@@ -37,9 +37,11 @@ PROCESS_TYPE: COMMAND
 * `PROCESS_TYPE` is `web`. A `web` process handles HTTP traffic.
 * `COMMAND` is the command line to launch the process.
 
-For example, the following Procfile starts the launch script created by the build process for a Java app:
+For example, a Procfile with the following content starts the launch script created by the build process for a Java app:
 
-        web: build/install/MY-PROJECT-NAME/bin/MY-PROJECT-NAME
+```
+web: build/install/MY-PROJECT-NAME/bin/MY-PROJECT-NAME
+```
 
 ##<a id="specify-server"></a>Specify a Web Server
 

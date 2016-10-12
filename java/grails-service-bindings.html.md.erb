@@ -64,16 +64,16 @@ Follow the steps below to manually configure a service connection.
 `BuildConfig.groovy` file.
 
     ```groovy
-      repositories {
-        grailsHome()
-        mavenCentral()
-        grailsCentral()
-        mavenRepo "http://repo.spring.io/milestone"
-      }
+    repositories {
+      grailsHome()
+      mavenCentral()
+      grailsCentral()
+      mavenRepo "http://repo.spring.io/milestone"
+    }
 
-      dependencies {
-        compile "org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.0.0.RELEASE"
-        compile "org.springframework.cloud:spring-cloud-spring-service-connector:1.0.0.RELEASE"
+    dependencies {
+      compile "org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.0.0.RELEASE"
+      compile "org.springframework.cloud:spring-cloud-spring-service-connector:1.0.0.RELEASE"
   }
     ```
 

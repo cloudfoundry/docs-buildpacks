@@ -18,16 +18,16 @@ This document is intended to guide you through the process of deploying PHP appl
 
 ### A First PHP Application
 
-```bash
+<pre class="terminal">
 $ mkdir my-php-app
 $cd my-php-app
 $ cat << EOF > index.php
-<?php
+&lt;?php
   phpinfo();
-?>
+?&gt; 
 EOF
 $ cf push my-php-app -m 128M
-```
+</pre>
 
 Change "my-php-app" to a unique name, otherwise you get an error and the push fails.
 
@@ -63,7 +63,7 @@ The buildpack will put all of your files into a publicly accessible directory.  
 
 For example:
 
-```bash
+<pre class="terminal">
 $ ls -lRh
 total 0
 -rw-r--r--  1 daniel  staff     0B Feb 27 21:40 images
@@ -73,7 +73,7 @@ drwxr-xr-x  3 daniel  staff   102B Feb 27 21:40 lib
 ./lib:
 total 0
 -rw-r--r--  1 daniel  staff     0B Feb 27 21:40 my.class.php  <-- not public, http://app.cfapps.io/lib/my.class.php == 404
-```
+</pre>
 
 This comes with a catch. If your project legitimately has a `lib` directory, these files will not be publicly available because the buildpack does not copy a top-level `lib` directory into the `WEBDIR` folder. If your project has a `lib` directory that needs to be publicly available, then you have two options as follows:
 
@@ -83,7 +83,7 @@ In your project folder, create an `htdocs` folder (or whatever you've set for `W
 
 Example:
 
-```bash
+<pre class="terminal">
 $ ls -lRh
 total 0
 drwxr-xr-x  7 daniel  staff   238B Feb 27 21:48 htdocs
@@ -97,13 +97,13 @@ drwxr-xr-x  3 daniel  staff   102B Feb 27 21:48 lib
 ./htdocs/lib:   <--  anything under htdocs is public, including a lib directory
 total 0
 -rw-r--r--  1 daniel  staff     0B Feb 27 21:48 controller.php
-```
+</pre>
 
 Given this setup, it is possible to have both a public `lib` directory and a protected `lib` directory. The following example demonstrates this setup:
 
 Example:
 
-```bash
+<pre class="terminal">
 $ ls -lRh
 total 0
 drwxr-xr-x  7 daniel  staff   238B Feb 27 21:48 htdocs
@@ -122,7 +122,7 @@ total 0
 ./lib: <-- protected lib directory
 total 0
 -rw-r--r--  1 daniel  staff     0B Feb 27 21:51 my.class.php
-```
+</pre>
 
 #### Option #2
 
@@ -148,14 +148,14 @@ There are a couple of easy ways to debug the buildpack:
 
     Diego release
 
-    <pre>
+    <pre class="terminal">
     $ cf ssh APP
     $ cat app/.bp/logs/bp.log
     </pre>
 
-  This log is more detailed than the stdout output, however it is still terse.
+  This log is more detailed than the stdout output, but is still terse.
 
-  0. Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the buildpack to set its log level to DEBUG and it writes to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
+  Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the buildpack to set its log level to `DEBUG` and it writes to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
 
 [Environment Variables documentation]:../../devguide/deploy-apps/manifest.html#env-block
 [application configuration files]:./gsg-php-config.html

@@ -13,19 +13,17 @@ To find which version of Nginx the current Staticfile buildpack uses, see the [r
 
 This buildpack is used if your directory has a `Staticfile` file in the root directory.
 
-For example, in an empty directory:
-
-```bash
-echo '<html>hello</html>' > index.html
-touch Staticfile
-cf push APPNAME -m 64M
-```
+<pre class="terminal">
+$ echo '<html>hello</html>' > index.html
+$ touch Staticfile
+$ cf push APPNAME -m 64M
+</pre>
 
 If your Cloud Foundry deployment does not have the Staticfile Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
 
-```bash
-cf push APPNAME -b https://github.com/cloudfoundry/staticfile-buildpack.git -m 64M
-```
+<pre class="terminal">
+$ cf push APPNAME -b https://github.com/cloudfoundry/staticfile-buildpack.git -m 64M
+</pre>
 
 When using the `-m 64M` flag, static assets are served by [Nginx](http://nginx.com/), which [only requires 20M](http://wiki.nginx.org/WhyUseIt). The `-m 64M` flag reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers.
 

@@ -19,7 +19,7 @@ In order to deploy a sample Ruby on Rails app, you must have the following:
 
 Run the following terminal command to create a local copy of the rails\_sample\_app.
 <pre class='terminal'>
-    $ git clone https://github.com/cloudfoundry-samples/rails_sample_app
+$ git clone https://github.com/cloudfoundry-samples/rails_sample_app
 </pre>
 The newly created directory contains a `manifest.yml` file, which assists CF with deploying the app. See [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#minimal-manifest) for more information.
 
@@ -44,7 +44,7 @@ OK</pre>
 
 The manifest for the rails\_sample\_app contains a `services` sub-block in the `applications` block. The Cloud Foundry Command Line Interface tool (cf CLI) binds the service to the app.
 
-<pre class="terminal">
+```
 ---
 applications:
 - name: rails-sample
@@ -54,7 +54,7 @@ applications:
   command: bundle exec rake db:migrate && bundle exec rails s -p $PORT
   services:
     - rails-postgres
-</pre>
+```
 
 ##<a id='deploy'></a>Step 4: Deploy the App ##
 
@@ -67,7 +67,6 @@ The example below shows the terminal output when deploying the `rails_sample_app
 
 
 <pre class="terminal">
-
 $ cf push rails_sample_app
 Using manifest file ~/workspace/rails_sample_app/manifest.yml
 

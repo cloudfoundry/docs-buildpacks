@@ -111,30 +111,30 @@ your application.
 * The user-provided variables set using the `cf set-env` command
 
 <pre class="terminal">
-  $ cf env my-app
-  Getting env variables for app my-app in org My-Org / space development as admin...
-  OK
+$ cf env my-app
+Getting env variables for app my-app in org My-Org / space development as admin...
+OK
 
-  System-Provided:
-  {
-    "VCAP_SERVICES": {
-      "p-mysql-n/a": [
-        {
-          "credentials": {
-              "uri":"postgres://lrra:e6B-X@p-mysqlprovider.example.com:5432/lraa
-          },
-          "label": "p-mysql-n/a",
-          "name": "p-mysql",
-          "syslog_drain_url": "",
-          "tags": ["postgres","postgresql","relational"]
-        }
-      ]
-    }
+System-Provided:
+{
+  "VCAP_SERVICES": {
+    "p-mysql-n/a": [
+      {
+        "credentials": {
+            "uri":"postgres://lrra:e6B-X@p-mysqlprovider.example.com:5432/lraa
+        },
+        "label": "p-mysql-n/a",
+        "name": "p-mysql",
+        "syslog_drain_url": "",
+        "tags": ["postgres","postgresql","relational"]
+      }
+    ]
   }
+}
 
-  User-Provided:
-  my-env-var: 100
-  my-drain: http://drain.example.com
+User-Provided:
+my-env-var: 100
+my-drain: http://drain.example.com
 </pre>
 
 ### <a id='view-logs'></a>View Logs ###
@@ -147,30 +147,30 @@ recent logs to standard output.
 Run `cf logs APPNAME` to direct current logging to standard output:
 
 <pre class="terminal">
-  $ cf logs my-app
-  Connected, tailing logs for app my-app in org My-Org / space development as admin...
-  1:27:19.72 [App/0]  OUT [CONTAINER]  org.apache.coyote.http11.Http11Protocol  INFO  Starting ProtocolHandler ["http-bio-61013"]
-  1:27:19.77 [App/0]  OUT [CONTAINER]   org.apache.catalina.startup.Catalina     INFO  Server startup in 10427 ms
+$ cf logs my-app
+Connected, tailing logs for app my-app in org My-Org / space development as admin...
+1:27:19.72 [App/0]  OUT [CONTAINER]  org.apache.coyote.http11.Http11Protocol  INFO  Starting ProtocolHandler ["http-bio-61013"]
+1:27:19.77 [App/0]  OUT [CONTAINER]   org.apache.catalina.startup.Catalina     INFO  Server startup in 10427 ms
 </pre>
 
 Run `cf logs APPNAME --recent` to dump the most recent logs to standard output:
 <pre class="terminal">
-  $ cf logs my-app --recent
-  Connected, dumping recent logs for app my-app in org My-Org / space development as admin...
-  1:27:15.93 [App/0]  OUT 15,935  INFO EmbeddedDatabaseFactory:124 - Creating embedded database 'SkyNet'
-  1:27:16.31 [App/0]  OUT 16,318  INFO LocalEntityManagerFactory:287 - Building TM container EntityManagerFactory for unit 'default'
-  1:27:16.50 [App/0]  OUT 16,505  INFO Version:37 - HCANN001: Hibernate Commons Annotations {4.0.1.Final}
-  1:27:16.51 [App/0]  OUT 16,517  INFO Version:41 - HHH412: Hibernate Core {4.1.9.Final}
-  1:27:16.95 [App/0]  OUT 16,957  INFO SkyNet-Online:73 - HHH268: Transaction strategy: org.hibernate.internal.TransactionFactory
-  1:27:16.96 [App/0]  OUT 16,963  INFO InintiateTerminatorT1000Deployment:48 - HHH000397: Using TranslatorFactory
-  1:27:17.02 [App/0]  OUT 17,026  INFO Version:27 - HV001: Hibernate Validator 4.3.0.Final
+$ cf logs my-app --recent
+Connected, dumping recent logs for app my-app in org My-Org / space development as admin...
+1:27:15.93 [App/0]  OUT 15,935  INFO EmbeddedDatabaseFactory:124 - Creating embedded database 'SkyNet'
+1:27:16.31 [App/0]  OUT 16,318  INFO LocalEntityManagerFactory:287 - Building TM container EntityManagerFactory for unit 'default'
+1:27:16.50 [App/0]  OUT 16,505  INFO Version:37 - HCANN001: Hibernate Commons Annotations {4.0.1.Final}
+1:27:16.51 [App/0]  OUT 16,517  INFO Version:41 - HHH412: Hibernate Core {4.1.9.Final}
+1:27:16.95 [App/0]  OUT 16,957  INFO SkyNet-Online:73 - HHH268: Transaction strategy: org.hibernate.internal.TransactionFactory
+1:27:16.96 [App/0]  OUT 16,963  INFO InintiateTerminatorT1000Deployment:48 - HHH000397: Using TranslatorFactory
+1:27:17.02 [App/0]  OUT 17,026  INFO Version:27 - HV001: Hibernate Validator 4.3.0.Final
 </pre>
 
 If you encounter the error, "A fatal error has occurred. Please see the Bundler
 troubleshooting documentation," update your version of bundler and run `bundle install`.
 
 <pre class="terminal">
-  $ gem update bundler
-  $ gem update --system
-  $ bundle install
+$ gem update bundler
+$ gem update --system
+$ bundle install
 </pre>

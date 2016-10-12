@@ -24,20 +24,20 @@ Getting started with this buildpack is easy.  With the [`cf` command line utilit
 
 Example:
 
-```bash
-mkdir my-php-app
-cd my-php-app
-cat << EOF > index.php
-<?php
+<pre class="terminal">
+$ mkdir my-php-app
+$ cd my-php-app
+$ cat << EOF > index.php
+&lt;?php
   phpinfo();
-?>
+?&gt;
 EOF
-cf push -m 128M -b https://github.com/cloudfoundry/php-buildpack.git my-php-app
-```
+$ cf push -m 128M -b https://github.com/cloudfoundry/php-buildpack.git my-php-app
+</pre>
 
-Please note that you should change *my-php-app* to some unique name on your target Cloud Foundry instance, otherwise you'll get a hostname conflict error and the push will fail.
+Change **my-php-app** in the above example to a unique name on your target Cloud Foundry instance to prevent a hostname conflict error and failed push.
 
-The example above will create and push a test application, *my-php-app*, to Cloud Foundry.  The `-b` argument instructs CF to use this buildpack.  The remainder of the options and arguments are not specific to the buildpack, for questions on those consult the output of `cf help push`.
+The example above creates and pushes a test application, **my-php-app**, to Cloud Foundry. The `-b` argument instructs CF to use this buildpack. The remainder of the options and arguments are not specific to the buildpack, for questions on those consult the output of `cf help push`.
 
 Here's a breakdown of what happens when you run the example above.
 
