@@ -52,8 +52,8 @@ Run `cf marketplace` to view managed and user-provided services and plans
 that are available to you.
 
 The example shows three of the available managed database-as-a-service providers
-and the plans that they offer: `cleardb` MySQL, `elephantsql` PostgreSQL as a
-Service, and `mongolab` MongoDB-as-a-Service.
+and the plans that they offer: `cleardb` MySQL and `elephantsql` PostgreSQL as a
+Service.
 
 <pre class="terminal">
 $  cf marketplace
@@ -65,8 +65,6 @@ service          plans     description
 cleardb          spark, boost, amp, shock      Highly available MySQL for your Apps
 ...
 elephantsql      turtle, panda, hippo, elephant   PostgreSQL as a Service
-...
-mongolab         sandbox       Fully-managed MongoDB-as-a-Service
 ...
 </pre>
 
@@ -244,7 +242,7 @@ might have to delete the app and redeploy.
 Common reasons deploying an app fails include:
 
 * You did not successfully create and bind a needed service instance to the app,
-such as a PostgreSQL or MongoDB service instance.
+such as a PostgreSQL service instance.
 Refer to Step 2: Create and Bind a Service Instance for a Ruby Application.
 * You did not successfully create a unique URL for the app.
 Refer to the troubleshooting tip <strong>App Requires Unique URL</strong>.
