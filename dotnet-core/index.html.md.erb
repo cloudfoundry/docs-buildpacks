@@ -1,0 +1,131 @@
+---
+title: .NET Core Buildpack
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+## <a id='supported_versions'></a>Supported Versions ##
+
+<p class="note">
+  <strong>Note</strong>: Please be aware that the .NET Core buildpack only works with [ASP.NET Core](https://www.microsoft.com/net/core).
+</p>
+
+Supported ASP.NET Core versions can be found [in the release notes](https://github.com/cloudfoundry-incubator/dotnet-core-buildpack/releases).
+
+## <a id='pushing_apps'></a> Push an App ##
+
+The .NET Core buildpack will be automatically detected if:
+
+- The pushed application contains one or more `project.json` files
+- The application is pushed from the output directory of the `dotnet publish` command.
+
+If your Cloud Foundry deployment does not have the .NET Core Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
+
+<pre class="terminal">
+$ cf push my_app -b https://github.com/cloudfoundry-community/dotnet-core-buildpack.git
+</pre>
+
+Use a `global.json` file to specify the desired .NET CLI version if different than the latest stable beta release. Use a `NuGet.Config` file to specify non-default package sources.
+
+For a basic example see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
+
+## <a id='port'></a>Configuring your application to listen on the proper port ##
+
+The samples provided in the [cli-samples repo](https://github.com/aspnet/cli-samples/) and the templates provided by Visual Studio and Yeoman will work with this buildpack but they need a slight modification to the `Main` method to make the application listen on the port specified by the `$PORT` environment variable which is set automatically by Cloud Foundry.
+
+In the `Main` method, before the line `var host = new WebHostBuilder()` add these lines:
+
+```c#
+var config = new ConfigurationBuilder()
+    .AddCommandLine(args)
+    .Build();
+```
+
+Add a `using` statement to the file which contains your `Main` method:
+
+```c#
+using Microsoft.Extensions.Configuration;
+```
+
+And then add this line after `.UseKestrel()`:
+
+```c#
+.UseConfiguration(config)
+```
+
+Add the following dependency to `project.json`:
+
+```json
+"Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
+```
+
+Add the following property to the `buildOptions` section of `project.json`:
+
+```json
+"copyToOutput": {
+  "include": [
+    "wwwroot",
+    "Areas/**/Views",
+    "Views",
+    "appsettings.json"
+  ]
+}
+```
+
+In the `Startup` method, remove the following line:
+
+```c#
+.SetBasePath(env.ContentRootPath)
+```
+
+In the `Main` method, remove the following line:
+
+```c#
+.UseContentRoot(Directory.GetCurrentDirectory())
+```
+
+These changes should allow the .NET CLI to find your application's `Views` as they will now be copied to the build output when the `dotnet run` command executes.  If your application has any other files, such as json configuration files, which are required at runtime then you should also add those to the `include` section of `copyToOutput` in the project.json file.
+
+Example `Main` method:
+
+```c#
+public static void Main(string[] args)
+{
+    var config = new ConfigurationBuilder()
+        .AddCommandLine(args)
+        .Build();
+
+    var host = new WebHostBuilder()
+        .UseKestrel()
+        .UseConfiguration(config)
+        .UseStartup<Startup>()
+        .Build();
+    host.Run();
+}
+```
+
+## <a id='multiple_projects'></a>Deploying apps with multiple projects ##
+
+To deploy an app which contains multiple projects, you will need to specify which project you want the buildpack to run as the main project.  This can be done by creating a `.deployment` file in the root folder of the solution which sets the path to the main project.  The path to the main project can be specified as the project folder or the project file (.xproj or .csproj).
+
+For a solution which contains three projects (MyApp.DAL, MyApp.Services, and MyApp.Web which are contained in the "src" folder) where MyApp.Web is the main project to run, the format of the `.deployment` file would be as follows:
+
+```text
+[config]
+project = src/MyApp.Web
+```
+
+In this case, the buildpack would automatically compile the MyApp.DAL and MyApp.Services projects if they are listed as dependencies in the main project's (MyApp.Web) `project.json` file, but the buildpack would only attempt to execute the main project with `dotnet run -p src/MyApp.Web`.  The path to MyApp.Web could also be specified as `project = src/MyApp.Web/MyApp.Web.xproj` (assuming this project is an xproj project).
+
+## <a id='disconnected_environments'></a>Disconnected environments ##
+
+The binaries in `manifest.yml` can be cached with the buildpack.
+
+Applications can be pushed with their other dependencies after "publishing" the application like `dotnet publish -r ubuntu.14.04-x64`.  Then push from the `bin/<Debug|Release>/<framework>/<runtime>/publish` directory.
+
+For this publish command to work, you will need to make some changes to your application code to ensure that the dotnet cli publishes it as a self-contained application rather than a portable application.
+
+See [.NET Core Application Deployment][] for more information on how to make the required changes to publish your application as a self-contained application.
+
+Also note that if you are using a `manifest.yml` file in your application, you can [specify the path][] in your manifest.yml to point to the publish output folder so that you don't have to be in that folder to push the application to Cloud Foundry.
