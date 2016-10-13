@@ -1,5 +1,5 @@
 ---
-title: .NET Buildpack
+title: .NET Core Buildpack
 owner: Buildpacks
 ---
 
@@ -8,19 +8,19 @@ owner: Buildpacks
 ## <a id='supported_versions'></a>Supported Versions ##
 
 <p class="note">
-  <strong>Note</strong>: Please be aware that the .NET buildpack only works with [ASP.NET Core](https://www.microsoft.com/net/core).
+  <strong>Note</strong>: Please be aware that the .NET Core buildpack only works with [ASP.NET Core](https://www.microsoft.com/net/core).
 </p>
 
 Supported ASP.NET Core versions can be found [in the release notes](https://github.com/cloudfoundry-incubator/dotnet-core-buildpack/releases).
 
 ## <a id='pushing_apps'></a> Push an App ##
 
-The .NET buildpack will be automatically detected if:
+The .NET Core buildpack will be automatically detected if:
 
 - The pushed application contains one or more `project.json` files
 - The application is pushed from the output directory of the `dotnet publish` command.
 
-If your Cloud Foundry deployment does not have the .NET Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
+If your Cloud Foundry deployment does not have the .NET Core Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
 
 <pre class="terminal">
 $ cf push my_app -b https://github.com/cloudfoundry-community/dotnet-core-buildpack.git
