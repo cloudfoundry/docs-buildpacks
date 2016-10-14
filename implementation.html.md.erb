@@ -24,12 +24,9 @@ Online deployments of Cloud Foundry, such as [Pivotal Web Services](https://run.
 You can specify the use of these buildpacks with the `-b` option to the Cloud
 Foundry CLI.
 
-When building droplets, the [Droplet Execution Agent (DEA)](../concepts/architecture/execution-agent.html)
-executes the buildpack within a container whose network can reach the Internet
-entirely unimpeded.
+When building droplets, the Diego [cell](../concepts/architecture/index.html#diego-cell) <%= vars.buildpacks_index_dea %> executes the buildpack within a container whose network can reach the Internet entirely unimpeded.
 
-Many of our customers do not allow the DEA, or any part of their Cloud Foundry
-deployment, unimpeded access to the Internet.
+Many of our customers do not allow the cell <%= vars.buildpacks_index_dea %>, or any part of their Cloud Foundry deployment, unimpeded access to the Internet.
 Security and Change Management concerns impact how an enterprise or smaller business business decides to architect their network.
 
 To satisfy these customers, we fork existing buildpacks, or create customized ones, which support the loading of dependencies from behind a firewall. When building your buildpack, you should consider these mechanisms, especially if you want enterprise companies to adopt your platform.
