@@ -5,7 +5,7 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to push Cloud Foundry applications using the .NET Core Buildpack. You can find supported ASP.NET Core versions in the .NET Core buildpack [release notes](https://github.com/cloudfoundry-incubator/dotnet-core-buildpack/releases).
+This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the .NET Core buildpack [release notes](https://github.com/cloudfoundry-incubator/dotnet-core-buildpack/releases).
 
 <p class="note">
   <strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>.
@@ -18,13 +18,13 @@ Cloud Foundry automatically uses the .NET Core buildpack when:
 - The pushed app contains one or more `project.json` files.
 - The app is pushed from the output directory of the `dotnet publish` command.
 
-If your Cloud Foundry deployment does not have the .NET Core Buildpack installed, or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
+If your Cloud Foundry deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
 
 <pre class="terminal">
 $ cf push MY_APP -b https://github.com/cloudfoundry-community/dotnet-core-buildpack.git
 </pre>
 
-If you do not want to use latest stable beta release of the .NET CLI, specify your desired version in the `global.json` file. 
+If you do not want to use latest stable beta release of the .NET CLI, specify the version in the `global.json` file. 
 
 Specify any non-default package sources in the `NuGet.Config` file.
 
@@ -62,7 +62,7 @@ var config = new ConfigurationBuilder()
 .UseConfiguration(config)
     ```
 
-1. Save the file, then open `project.json`.
+1. Save the file, and then open `project.json`.
 
 
 1. Add the following dependency:
@@ -90,11 +90,11 @@ var config = new ConfigurationBuilder()
 .SetBasePath(env.ContentRootPath)
     ```
 
-1. If your application requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
+1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
 1. Save.
 
-With these changes, the `dotnet run` command copies your application `Views` to the build output, where the .NET CLI can find them. Refer to the following example `Main` method:
+With these changes, the `dotnet run` command copies your app `Views` to the build output, where the .NET CLI can find them. Refer to the following example `Main` method:
 
 ```c#
 public static void Main(string[] args)
@@ -131,14 +131,15 @@ In this case, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Se
 
 For offline use, you can cache the binaries in `manifest.yml` with the buildpack.
 
-You can push applications with their other dependencies following these steps:
+You can push apps with their other dependencies following these steps:
 
-1. Publish the application by running `dotnet publish -r ubuntu.14.04-x64`.
+1. Publish the app by running `dotnet publish -r ubuntu.14.04-x64`.
 
-    <p class="note"><strong>Note</strong>: For this publish command to work, you must modify your application code so the dotnet CLI publishes it as a self-contained application. See <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/">.NET Core Application Deployment</a> for more information.</p>
+    <p class="note"><strong>Note</strong>: For this publish command to work, modify your app code so the .NET CLI publishes it as a self-contained app.
+For more information, see <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/">.NET Core Application Deployment</a>.</p>
 
-1. Navigate to the `bin/<Debug|Release>/<framework>/<runtime>/publish` directory. Or, if your app uses a `manifest.yml`, specify a path to the publish output folder. This allows you to push your application from any directory.
+1. Navigate to the `bin/<Debug|Release>/<framework>/<runtime>/publish` directory. Or, if your app uses a `manifest.yml`, specify a path to the publish output folder. This allows you to push your app from any directory.
 
 
-1. Push your application. 
+1. Push your app. 
 
