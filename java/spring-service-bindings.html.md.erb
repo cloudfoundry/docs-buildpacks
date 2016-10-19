@@ -401,14 +401,12 @@ To configure a RabbitMQ service in Java configuration, create a
 
 ```
 @Configuration
-public class RabbitConfig {
+public class RabbitConfig extends AbstractCloudConfig {
     @Bean
     public ConnectionFactory rabbitConnectionFactory() {
-        CloudFactory cloudFactory = new CloudFactory();
-        Cloud cloud = cloudFactory.getCloud();
-        AmqpServiceInfo serviceInfo = (AmqpServiceInfo) cloud.getServiceInfo("my-rabbit");
+        AmqpServiceInfo serviceInfo = (AmqpServiceInfo) cloud().getServiceInfo("my-rabbit");
     String serviceID = serviceInfo.getID();
-    return cloud.getServiceConnector(serviceID, ConnectionFactory.class, null);
+    return cloud().getServiceConnector(serviceID, ConnectionFactory.class, null);
     }
 
     @Bean
