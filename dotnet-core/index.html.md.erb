@@ -21,7 +21,7 @@ Cloud Foundry automatically uses the .NET Core buildpack when:
 If your Cloud Foundry deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
 
 <pre class="terminal">
-$ cf push MY_APP -b https://github.com/cloudfoundry-community/dotnet-core-buildpack.git
+$ cf push MY_APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
 </pre>
 
 If you do not want to use latest stable beta release of the .NET CLI, specify the version in the `global.json` file.
