@@ -5,10 +5,10 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the .NET Core buildpack [release notes](https://github.com/cloudfoundry-incubator/dotnet-core-buildpack/releases).
+This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the .NET Core buildpack [release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
 <p class="note">
-  <strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>.
+  <strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>. For apps which aren't based on this new toolchain, please refer to the legacy <a href="#legacy">.NET buildpack.</a>
 </p>
 
 ## <a id='pushing_apps'></a> Push an App ##
@@ -21,10 +21,10 @@ Cloud Foundry automatically uses the .NET Core buildpack when:
 If your Cloud Foundry deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
 
 <pre class="terminal">
-$ cf push MY_APP -b https://github.com/cloudfoundry-community/dotnet-core-buildpack.git
+$ cf push MY_APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
 </pre>
 
-If you do not want to use latest stable beta release of the .NET CLI, specify the version in the `global.json` file. 
+If you do not want to use latest stable beta release of the .NET CLI, specify the version in the `global.json` file.
 
 Specify any non-default package sources in the `NuGet.Config` file.
 
@@ -32,63 +32,64 @@ For a basic example see this [Hello World sample](https://github.com/IBM-Bluemix
 
 ## <a id='port'></a>Configure the Listen Port ##
 
-The samples provided in the [cli-samples repo](https://github.com/aspnet/cli-samples/) and the templates provided by Visual Studio and Yeoman work with this buildpack, but you must modify the `Main` method to make the app listen on the port specified by the `$PORT` environment variable that Cloud Foundry automatically sets. 
+For your .NET Core app to work on Cloud Founry, you must modify the `Main` method to make the app listen on the port specified by the `$PORT` environment variable that Cloud Foundry automatically sets.
 
 1. Open the file that contains your `Main` method.
 
 1. Add a `using` statement to the top of the file:
 
-    ```c#
-using Microsoft.Extensions.Configuration;
-    ```
+  ```c#
+  using Microsoft.Extensions.Configuration;
+  ```
 
 1. Add the following lines before the line `var host = new WebHostBuilder()`:
 
-    ```c#
-var config = new ConfigurationBuilder()
-    .AddCommandLine(args)
-    .Build();
-    ```
+  ```c#
+  var config = new ConfigurationBuilder()
+      .AddCommandLine(args)
+      .Build();
+  ```
+
+  This allows the buildpack to pass the correct port from `$PORT` to the app when running the initial startup command.
 
 1. Remove the following line from the `Main` method.
 
-    ```c#
-.UseContentRoot(Directory.GetCurrentDirectory())
-    ```
+  ```c#
+  .UseContentRoot(Directory.GetCurrentDirectory())
+  ```
 
 1. Add this line after `.UseKestrel()`:
 
-    ```c#
-.UseConfiguration(config)
-    ```
+  ```c#
+  .UseConfiguration(config)
+  ```
 
 1. Save the file, and then open `project.json`.
 
-
 1. Add the following dependency:
 
-    ```json
-"Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
-    ```
+  ```json
+  "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
+  ```
 
 1. Add the following property to the `buildOptions` section:
 
-    ```json
-"copyToOutput": {
-    "include": [
-    "wwwroot",
-    "Areas/**/Views",
-    "Views",
-    "appsettings.json"
-    ]
-}
-    ```
+  ```json
+  "copyToOutput": {
+      "include": [
+          "wwwroot",
+          "Areas/**/Views",
+          "Views",
+          "appsettings.json"
+      ]
+  }
+  ```
 
 1. Remove the following line from the `Startup` method:
 
-    ```c#
-.SetBasePath(env.ContentRootPath)
-    ```
+  ```c#
+  .SetBasePath(env.ContentRootPath)
+  ```
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
@@ -112,9 +113,13 @@ public static void Main(string[] args)
 }
 ```
 
+<p class="note">
+  <strong>Note</strong>: The samples provided in the <a href="https://github.com/aspnet/cli-samples">cli-samples repo</a> and the templates provided by Visual Studio and Yeoman work with this buildpack after you have followed the steps above.</a>
+</p>
+
 ## <a id='multiple_projects'></a>Deploy Apps with Multiple Projects ##
 
-To deploy an app that contains multiple projects, specify the project you want the buildpack to run as the main project.  
+To deploy an app that contains multiple projects, specify the project you want the buildpack to run as the main project.
 
 Create a `.deployment` file in the root folder of the .NET solution file which sets the path to the main project. You can also specify the path to the main project as the project folder or the project file, `.xproj` or `.csproj`.
 
@@ -135,11 +140,14 @@ You can push apps with their other dependencies following these steps:
 
 1. Publish the app by running `dotnet publish -r ubuntu.14.04-x64`.
 
-    <p class="note"><strong>Note</strong>: For this publish command to work, modify your app code so the .NET CLI publishes it as a self-contained app.
-For more information, see <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/">.NET Core Application Deployment</a>.</p>
+  <p class="note">
+    <strong>Note</strong>: For this publish command to work, modify your app code so the .NET CLI publishes it as a self-contained app. For more information, see <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/">.NET Core Application Deployment</a>.
+  </p>
 
 1. Navigate to the `bin/<Debug|Release>/<framework>/<runtime>/publish` directory. Or, if your app uses a `manifest.yml`, specify a path to the publish output folder. This allows you to push your app from any directory.
 
+1. Push your app.
 
-1. Push your app. 
+## <a id='legacy'></a>Legacy .NET buildpack ##
 
+There is also a legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) built by the Cloud Foundry community which addresses applications not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/) (e.g. via Xamarin Studio, MonoDevelop or xbuild).
