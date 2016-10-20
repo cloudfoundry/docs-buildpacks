@@ -8,7 +8,7 @@ owner: Buildpacks
 This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the .NET Core buildpack [release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
 <p class="note">
-  <strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>. For apps which aren't based on this new toolchain, please refer to the legacy <a href="#legacy">.NET buildpack.</a>
+  <strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>. For apps which are not based on this new toolchain, please refer to the legacy <a href="#legacy">.NET buildpack.</a>
 </p>
 
 ## <a id='pushing_apps'></a> Push an App ##
@@ -32,7 +32,7 @@ For a basic example see this [Hello World sample](https://github.com/IBM-Bluemix
 
 ## <a id='port'></a>Configure the Listen Port ##
 
-For your .NET Core app to work on Cloud Founry, you must modify the `Main` method to make the app listen on the port specified by the `$PORT` environment variable that Cloud Foundry automatically sets.
+For your .NET Core app to work on Cloud Foundry, you must modify the `Main` method to make the app listen on the port specified by the `$PORT` environment variable, which Cloud Foundry sets automatically.
 
 1. Open the file that contains your `Main` method.
 
