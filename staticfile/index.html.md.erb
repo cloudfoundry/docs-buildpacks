@@ -14,31 +14,29 @@ To find which version of Nginx the current Staticfile buildpack uses, see the [r
 
 ## <a id='pushing_apps'></a> Push an App ##
 
-You need the most recent version of the Staticfile buildpack to push an app successfully. 
+Follow the steps below to push an app using the Staticfile buildpack. 
 
-1. Check which version of the Staticfile buildpack you have with this command:
-  <pre class="terminal">
-PLACEHOLDER
-</pre>
-
-2. Create a file named `Staticfile` in the root directory.
+1. Create a file named `Staticfile` in the root directory.
   <pre class="terminal">
 $ touch Staticfile
 </pre>
 
-3. Push the app.
+2. Push the app.
   <pre class="terminal">
 $ cf push APPNAME -m 64M
 </pre>
+   When using the `-m 64M` flag, static assets are served by [Nginx](http://nginx.com/), 
+which [only requires 20M](http://wiki.nginx.org/WhyUseIt). 
+The `-m 64M` flag reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers.
+   <p class='note'><strong>Note</strong>: If you don't have the buildpack or the installed version 
+   is out of date, use the latest version with the command:
+  <code>
+  $ cf push APPNAME -b https<span>:</span>//github.com/cloudfoundry/staticfile-buildpack.git
+  </code>
+  </p>
 
-4. If you don't have the buildpack, or the installed version is out of date, use the latest version with the command:
-  <pre class="terminal">
-$ cf push APPNAME -b https<span>:</span>//github.com/cloudfoundry/staticfile-buildpack.git
-</pre>
 
-When using the `-m 64M` flag, static assets are served by [Nginx](http://nginx.com/), which [only requires 20M](http://wiki.nginx.org/WhyUseIt). The `-m 64M` flag reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers.
-
-Test this procedure for yourself by creating a simple app that has an index.html file. You can even push the app from the root directory.
+Test this procedure for yourself by creating a simple app that has an index.html file. You can push the app from the root directory.
  <pre class="terminal">
 $ echo 'Hello World' > index.html
 $ touch Staticfile
