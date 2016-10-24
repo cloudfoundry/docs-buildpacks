@@ -9,25 +9,41 @@ The Staticfile buildpack works for apps and content that require no backend code
 
 To find which version of Nginx the current Staticfile buildpack uses, see the [release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
 
+
+<p class="note"><strong>Note</strong>: <a href="http://bosh.io/docs/trusted-certs.html">BOSH configured custom trusted certificates</a> are not supported by the Staticfile buildpack.</p>
+
 ## <a id='pushing_apps'></a> Push an App ##
 
-This buildpack is used if your directory has a `Staticfile` file in the root directory.
+Follow the steps below to push an app using the Staticfile buildpack. 
 
-<pre class="terminal">
-$ echo '<html>hello</html>' > index.html
+1. Create a file named `Staticfile` in the root directory.
+  <pre class="terminal">
+$ touch Staticfile
+</pre>
+
+2. Push the app.
+  <pre class="terminal">
+$ cf push APPNAME -m 64M
+</pre>
+   When using the `-m 64M` flag, static assets are served by [Nginx](http://nginx.com/), 
+which [only requires 20M](http://wiki.nginx.org/WhyUseIt). 
+The `-m 64M` flag reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers.
+   <p class='note'><strong>Note</strong>: If you don't have the buildpack or the installed version 
+   is out of date, use the latest version with the command:
+  <code>
+  $ cf push APPNAME -b https<span>:</span>//github.com/cloudfoundry/staticfile-buildpack.git
+  </code>
+  </p>
+
+
+Test this procedure for yourself by creating a simple app that has an index.html file. You can push the app from the root directory.
+ <pre class="terminal">
+$ echo 'Hello World' > index.html
 $ touch Staticfile
 $ cf push APPNAME -m 64M
 </pre>
 
-If your Cloud Foundry deployment does not have the Staticfile Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
-
-<pre class="terminal">
-$ cf push APPNAME -b https://github.com/cloudfoundry/staticfile-buildpack.git -m 64M
-</pre>
-
-When using the `-m 64M` flag, static assets are served by [Nginx](http://nginx.com/), which [only requires 20M](http://wiki.nginx.org/WhyUseIt). The `-m 64M` flag reduces the RAM allocation from the default 1G allocated to Cloud Foundry containers.
-
-## <a id='configuration'></a> Configuration ##
+## <a id='configuration'></a> Configure the Buildpack ##
 
 You can configure how the Staticfile buildpack accesses and serves apps by editing the `Staticfile` or `nginx.conf` files.
 
@@ -62,9 +78,9 @@ For example, username `bob` and password `bob` becomes `bob:$apr1$DuUQEQp8$ZccZC
 
 To disable basic auth, remove `Staticfile.auth` and push.
 
-### <a id='directory_index'></a> Directory List Instead of 404 If Missing index.html ###
+### <a id='directory_index'></a> Display a Directory List Instead of 404 ###
 
-If your site doesn't have a nice `index.html`, you can configure `Staticfile` to display a Directory Index of other files; rather than show a relatively unhelpful 404 error.
+If your site doesn't have an `index.html`, you can configure `Staticfile` to display a Directory Index of other files instead of a standard 404 error.
 
 ![Directory Index](../images/directory-index.png)
 
@@ -104,7 +120,7 @@ gunzip off;
 gzip_static off;
 ```
 
-### <a id='force'></a> Force HTTPS ###
+### <a id='force'></a> Enable Force HTTPS ###
 
 To only allow requests sent via HTTPS, set the `FORCE_HTTPS` environment variable. 
 This redirects non-HTTPS requests as HTTPS requests.
@@ -126,15 +142,12 @@ You can customize the Nginx configuration further, by adding `nginx.conf` and `m
 If the buildpack detects either of these files, they are used in place of the built-in versions.
 
 
-## <a id='proxy_support'></a> Proxy Support ##
+### <a id='proxy_support'></a> Enable Proxy Support ###
 
 If you need to use a proxy to download dependencies during staging, you can set
 the `http_proxy` and `https_proxy` environment variables. For more information, see
 the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
 
-## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
-
-The staticfile-buildpack, based on Nginx, does not make outgoing requests and does not benefit from [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html).
 
 ## <a id='help_support'></a>Help and Support ##
 
