@@ -29,11 +29,11 @@ Supported Node versions can be found [in the release notes](https://github.com/c
 
 ## <a id='runtime'></a>Specify a Node.js Version##
 
-Set engines.node in package.json to the semver range or the specific version of node you are using:
+Set `engines.node` in `package.json to the semver range or the specific version of node you are using:
 
 ```
 "engines": {
-  "node": "4.4.x"
+  "node": "6.9.x"
 }
 ```
 
@@ -41,7 +41,7 @@ or
 
 ```
 "engines": {
-  "node": "4.4.3"
+  "node": "6.9.0"
 }
 ```
 
@@ -55,13 +55,13 @@ $   !
 $   Staging failed: Buildpack compilation step failed
 </pre>
 
-## <a id='runtime'></a>Specify an npm Version##
+## <a id='npm_version'></a>Specify an npm Version##
 
-Set engines.npm in package.json to the semver range, or specific version, of npm you are using:
+Set `engines.npm in `package.json` to the semver range or specific version of npm you are using:
 
 ```
 "engines": {
-  "node": "4.4.x",
+  "node": "6.9.x",
   "npm": "2.15.x"
 }
 ```
@@ -70,14 +70,15 @@ or
 
 ```
 "engines": {
-  "node": "4.4.3",
+  "node": "6.9.0",
   "npm": "2.15.1"
 }
 ```
 
 If you do not specify an npm version, your app uses the [default npm](https://nodejs.org/en/download/releases/) packaged with your app's Node.js version.
 
-If your environment cannot connect to the internet and a non-default version of npm is specified, the buildpack fails to download npm. You see the following error message:
+If your environment cannot connect to the internet and a non-supported version of npm is specified, 
+the buildpack fails to download npm. You see the following error message:
 
 <pre class='terminal'>
 $   We're unable to download the version of npm you've provided (...).
@@ -100,15 +101,8 @@ $ npm install # vendors into /node_modules
 
 ## <a id='openssl'></a>OpenSSL Support ##
 
-Since November 2015, the [nodejs-buildpack](https://github.com/cloudfoundry/nodejs-buildpack)
-has been packaging binaries of Node.js with OpenSSL that are statically linked. With
-[community approval](https://github.com/cloudfoundry/nodejs-buildpack/issues/32), it was
-decided to support Node.js 4.x and greater, which relied on the Node.js release cycle
-to provide OpenSSL updates.
-
-The buildpack's team [binary-builder](https://github.com/cloudfoundry/binary-builder) was
-updated to [enable the static OpenSSL compilation](https://github.com/cloudfoundry/binary-builder/commit/834759affa4d7e42294a54b49bac6f1cf81b798a).
-All versions of Node.js compiled since have been statically linked with OpenSSL.
+The [nodejs-buildpack](https://github.com/cloudfoundry/nodejs-buildpack)
+packages binaries of Node.js with OpenSSL that are statically linked. The Node.js buildpack supports Node.js 4.x and greater, which relies on the Node.js release cycle to provide OpenSSL updates. The [binary-builder](https://github.com/cloudfoundry/binary-builder) enables [ static OpenSSL compilation](https://github.com/cloudfoundry/binary-builder/commit/834759affa4d7e42294a54b49bac6f1cf81b798a).
 
 ## <a id='proxy_support'></a> Proxy Support ##
 
