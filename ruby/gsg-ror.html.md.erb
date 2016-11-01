@@ -47,13 +47,22 @@ You can specify app deployment options in a manifest that the `cf push` command 
 
 <%=vars.product_short%> uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configuring a Production Server](../prod-server.html) topic for help configuring a server other than WEBrick.
 
-## <a id="login"></a> Step 3: Log in and Target the API Endpoint ##
+## <a id="database-configuration"></a> Step 3: Create the Database Configuration ##
+
+For Rails versions 4.0.x and earlier, the Ruby buildpack will overwrite the `config/database.yml` file using the contents of the DATABASE_URL environment variable. This variable can be set by the user or will be automatically set
+based on [bound service instances](./ruby-service-bindings.html#vcap-services-defines-database-url).
+
+For Rails versions 4.1.y and later, the Ruby buildpack will not modify the `config/database.yml` file.
+
+When the app starts, the [standard Rails behavior](http://guides.rubyonrails.org/configuring.html#configuring-a-database) for DATABASE_URL and `config/database.yml` applies.
+
+## <a id="login"></a> Step 4: Log in and Target the API Endpoint ##
 
 Run `cf login -a API_ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
   <%=vars.gen_GSG%>
 
-## <a id="deploy"></a> Step 4: Deploy Your App ##
+## <a id="deploy"></a> Step 5: Deploy Your App ##
 
 From the root directory of your application, run `cf push APP-NAME --random-route` to deploy your application.
 
