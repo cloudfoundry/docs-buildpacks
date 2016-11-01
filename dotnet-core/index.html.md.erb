@@ -146,6 +146,41 @@ You can push apps with their other dependencies following these steps:
 
 1. Push your app.
 
+## <a id='disabling_the_nuget_package_cache'></a>Disabling the NuGet package cache
+
+You may need to disable NuGet package caching, or clear NuGet packages cached in the staging environment.
+
+For example:
+
+* Your app is failing to stage because it exceeds the maximum allowable disk quota (ie, runs out of space)
+* You have added pre-release packages to test a new feature, then decided to revert back to the main NuGet feed. The packages you changed may need to be removed from the cache to avoid conflicts.
+
+Disabling NuGet caching will:
+
+* Clear any existing NuGet dependencies from the staging cache
+* Prevent the buildpack from adding NuGet dependencies to the staging cache
+
+This behaviour is configured by setting the `CACHE_NUGET_PACKAGES` environment variable to `false`. If the variable is not set, or set to a different value, there is no change in behaviour.
+
+You can set the `CACHE_NUGET_PACKAGES` variable in your application `manifest.yml`:
+
+```yml
+---
+applications:
+- name: sample-aspnetcore-app
+  memory: 512M
+  env:
+    CACHE_NUGET_PACKAGES: false
+```
+
+Or by using `cf set-env`:
+
+```
+$ cf set-env <your app name> CACHE_NUGET_PACKAGES false
+```
+
+See the [documentation on environment variables](/devguide/deploy-apps/manifest.html#env-block) for more details.
+
 ## <a id='legacy'></a>Legacy .NET buildpack ##
 
 There is also a legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) built by the Cloud Foundry community which addresses applications not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/) (e.g. via Xamarin Studio, MonoDevelop or xbuild).
