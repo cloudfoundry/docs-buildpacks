@@ -146,41 +146,34 @@ You can push apps with their other dependencies following these steps:
 
 1. Push your app.
 
-## <a id='disabling_the_nuget_package_cache'></a>Disabling the NuGet package cache
+## <a id='disabling_the_nuget_package_cache'></a>Disabling the NuGet Package Cache
 
-You may need to disable NuGet package caching, or clear NuGet packages cached in the staging environment.
+You may need to disable NuGet package caching, or clear NuGet packages cached in the staging environment, in one of the following scenarios:
 
-For example:
-
-* Your app is failing to stage because it exceeds the maximum allowable disk quota (ie, runs out of space)
+* Your app is failing to stage because it runs out of space, exceeding the maximum allowable disk quota.
 * You have added pre-release packages to test a new feature, then decided to revert back to the main NuGet feed. The packages you changed may need to be removed from the cache to avoid conflicts.
 
-Disabling NuGet caching will:
+Disabling NuGet caching both clears any existing NuGet dependencies from the staging cache and prevents the buildpack from adding NuGet dependencies to the staging cache.
 
-* Clear any existing NuGet dependencies from the staging cache
-* Prevent the buildpack from adding NuGet dependencies to the staging cache
+To disable NuGet package caching, set the `CACHE_NUGET_PACKAGES` environment variable to `false`. If the variable is not set, or set to a different value, there is no change. Perform one of the following procedures to set `CACHE_NUGET_PACKAGES` to `false`:
 
-This behaviour is configured by setting the `CACHE_NUGET_PACKAGES` environment variable to `false`. If the variable is not set, or set to a different value, there is no change in behaviour.
+* Locate your application manifest, `manifest.yml`, and set the `CACHE_NUGET_PACKAGES` environment variable, following the format of the example below:
 
-You can set the `CACHE_NUGET_PACKAGES` variable in your application `manifest.yml`:
+    ```yml
+    ---
+    applications:
+    - name: sample-aspnetcore-app
+      memory: 512M
+      env:
+        CACHE_NUGET_PACKAGES: false
+    ```
 
-```yml
----
-applications:
-- name: sample-aspnetcore-app
-  memory: 512M
-  env:
-    CACHE_NUGET_PACKAGES: false
-```
+* Use `cf set-env` to set the `CACHE_NUGET_PACKAGES` environment variable on the command line:
 
-Or by using `cf set-env`:
+    <pre class="terminal">$ cf set-env YOUR-APP CACHE_NUGET_PACKAGES false</pre>
 
-```
-$ cf set-env <your app name> CACHE_NUGET_PACKAGES false
-```
+See the [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) section of the <em>Deploying with Application Manifests</em> for more information.
 
-See the [documentation on environment variables](/devguide/deploy-apps/manifest.html#env-block) for more details.
-
-## <a id='legacy'></a>Legacy .NET buildpack ##
+## <a id='legacy'></a>Legacy .NET Buildpack ##
 
 There is also a legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) built by the Cloud Foundry community which addresses applications not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/) (e.g. via Xamarin Studio, MonoDevelop or xbuild).
