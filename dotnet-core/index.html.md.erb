@@ -28,7 +28,7 @@ If you do not want to use latest stable beta release of the .NET CLI, specify th
 
 Specify any non-default package sources in the `NuGet.Config` file.
 
-For a basic example see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
+For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
 
 ## <a id='port'></a>Configure the Listen Port ##
 
@@ -38,58 +38,57 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
 
 1. Add a `using` statement to the top of the file:
 
-  ```c#
-  using Microsoft.Extensions.Configuration;
-  ```
+    ```c#
+    using Microsoft.Extensions.Configuration;
+    ```
 
 1. Add the following lines before the line `var host = new WebHostBuilder()`:
 
-  ```c#
-  var config = new ConfigurationBuilder()
-      .AddCommandLine(args)
-      .Build();
-  ```
-
-  This allows the buildpack to pass the correct port from `$PORT` to the app when running the initial startup command.
+    ```c#
+    var config = new ConfigurationBuilder()
+        .AddCommandLine(args)
+        .Build();
+    ```
+    This allows the buildpack to pass the correct port from `$PORT` to the app when running the initial startup command.
 
 1. Remove the following line from the `Main` method.
 
-  ```c#
-  .UseContentRoot(Directory.GetCurrentDirectory())
-  ```
+    ```c#
+    .UseContentRoot(Directory.GetCurrentDirectory())
+    ```
 
 1. Add this line after `.UseKestrel()`:
 
-  ```c#
-  .UseConfiguration(config)
-  ```
+    ```c#
+    .UseConfiguration(config)
+    ```
 
 1. Save the file, and then open `project.json`.
 
 1. Add the following dependency:
 
-  ```json
-  "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
-  ```
+    ```json
+    "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
+    ```
 
 1. Add the following property to the `buildOptions` section:
 
-  ```json
-  "copyToOutput": {
-      "include": [
-          "wwwroot",
-          "Areas/**/Views",
-          "Views",
-          "appsettings.json"
-      ]
-  }
-  ```
+    ```json
+    "copyToOutput": {
+        "include": [
+            "wwwroot",
+            "Areas/**/Views",
+            "Views",
+            "appsettings.json"
+        ]
+    }
+    ```
 
 1. Remove the following line from the `Startup` method:
 
-  ```c#
-  .SetBasePath(env.ContentRootPath)
-  ```
+    ```c#
+    .SetBasePath(env.ContentRootPath)
+    ```
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
@@ -140,9 +139,8 @@ You can push apps with their other dependencies following these steps:
 
 1. Publish the app by running `dotnet publish -r ubuntu.14.04-x64`.
 
-  <p class="note">
-    <strong>Note</strong>: For this publish command to work, modify your app code so the .NET CLI publishes it as a self-contained app. For more information, see <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/">.NET Core Application Deployment</a>.
-  </p>
+    <p class="note"><strong>Note</strong>: For this publish command to work, modify your app code so the .NET CLI publishes it as a self-contained app. For more information, see <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/">.NET Core Application Deployment</a>.
+    </p>
 
 1. Navigate to the `bin/<Debug|Release>/<framework>/<runtime>/publish` directory. Or, if your app uses a `manifest.yml`, specify a path to the publish output folder. This allows you to push your app from any directory.
 
