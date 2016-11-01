@@ -7,14 +7,14 @@ owner: Buildpacks
 
 ## <a id='pushing_apps'></a>Push Node.js Apps ##
 
-This buildpack is used automatically if there is a `package.json` file in the root directory of your project.
+Cloud Foundry automatically uses the Node.js buildpack if it detects a `package.json` file in the root directory of your project.
 
-If your Cloud Foundry deployment does not have the Node.js buildpack installed or the installed version is out of date, you can use the latest version with the command:
+If your Cloud Foundry deployment does not have the Node.js buildpack installed or the installed version is out of date, you can use the latest version by specifying it with the `-b` option when pushing your application. For example:
 ```bash
 cf push my_app -b https://github.com/cloudfoundry/buildpack-nodejs.git
 ```
 
-For more detailed information on deploying Node.js apps see the following topics:
+For more detailed information about deploying Node.js apps, see the following topics:
 
 * <a href="./node-tips.html" class="subnav">Tips for Node.js Developers</a>
 * <a href="./node-environment.html" class="subnav">Environment Variables Defined by the Node Buildpack</a>
@@ -29,7 +29,7 @@ Supported Node versions can be found [in the release notes](https://github.com/c
 
 ## <a id='runtime'></a>Specify a Node.js Version##
 
-Set `engines.node` in `package.json to the semver range or the specific version of node you are using:
+Set `engines.node` in `package.json` to the semver range or the specific version of node you are using:
 
 ```
 "engines": {
@@ -57,7 +57,7 @@ $   Staging failed: Buildpack compilation step failed
 
 ## <a id='npm_version'></a>Specify an npm Version##
 
-Set `engines.npm in `package.json` to the semver range or specific version of npm you are using:
+Set `engines.npm` in `package.json` to the semver range or specific version of npm you are using:
 
 ```
 "engines": {
@@ -77,8 +77,7 @@ or
 
 If you do not specify an npm version, your app uses the [default npm](https://nodejs.org/en/download/releases/) packaged with your app's Node.js version.
 
-If your environment cannot connect to the internet and a non-supported version of npm is specified, 
-the buildpack fails to download npm. You see the following error message:
+If your environment cannot connect to the Internet and you specified a non-supported version of npm, the buildpack fails to download npm and you see the following error message:
 
 <pre class='terminal'>
 $   We're unable to download the version of npm you've provided (...).
@@ -107,8 +106,7 @@ packages binaries of Node.js with OpenSSL that are statically linked. The Node.j
 ## <a id='proxy_support'></a> Proxy Support ##
 
 If you need to use a proxy to download dependencies during staging, you can set
-the `http_proxy` and/or `https_proxy` environment variables. For more information, see
-the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
+the `http_proxy` and/or `https_proxy` environment variables. For more information, see the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
