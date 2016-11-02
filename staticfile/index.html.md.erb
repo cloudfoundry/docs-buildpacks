@@ -135,6 +135,23 @@ In the example of CloudFlare, when attempting to make an HTTPS request to the ap
 the connection between the user and CloudFlare is HTTPS but the connection between CloudFlare 
 and your app is via HTTP, which your app then redirects as HTTPS.</p>
 
+### <a id='hsts'></a> Enable HTTP Strict Transport Security ###
+
+To enable HTTP Strict Transport Security (HSTS), add the following line to your `Staticfile`:
+
+```
+http_strict_transport_security: true
+```
+
+This will cause Nginx to respond to all requests with the header:
+
+```
+Strict-Transport-Security: max-age=31536000
+```
+
+
+<p class="note"><strong>Note</strong>: This header will cause a browser that receives it to make all future requests over HTTPS. Because of the long amount of time this setting persists in the browser, only enable this setting once you are sure that everything is properly configured.</p>
+
 ### <a id='custom_nginx_configuration'></a> Custom Nginx Configuration ###
 
 You can customize the Nginx configuration further, by adding `nginx.conf` and `mime.types` to your root folder. If you specified an [alternate root folder](#root_folder), the files must be placed there.
