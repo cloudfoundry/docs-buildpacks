@@ -143,14 +143,14 @@ To enable HTTP Strict Transport Security (HSTS), add the following line to your 
 http_strict_transport_security: true
 ```
 
-This will cause Nginx to respond to all requests with the header:
+This causes Nginx to respond to all requests with the header:
 
 ```
 Strict-Transport-Security: max-age=31536000
 ```
 
 
-<p class="note"><strong>Note</strong>: This header will cause a browser that receives it to make all future requests over HTTPS. Because of the long amount of time this setting persists in the browser, only enable this setting once you are sure that everything is properly configured.</p>
+<p class="note"><strong>Note</strong>: This header causes a browser that receives it to make all future requests over HTTPS. Because of the long amount of time this setting persists in the browser, only enable this setting once you are sure that everything is properly configured.</p>
 
 ### <a id='custom_nginx_configuration'></a> Custom Nginx Configuration ###
 
