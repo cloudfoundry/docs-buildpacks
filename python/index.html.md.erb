@@ -76,6 +76,12 @@ pip install --download vendor -r requirements.txt
 
 ```cf push``` uploads your vendored dependencies. The buildpack will install them directly from the `vendor/`.
 
+## <a id='cfenv'></a>Parse Environment Variables ##
+
+The `cfenv` package provides access to Cloud Foundry application environment settings by parsing all the relevant environment variables. The settings are returned as a class instance.
+
+* https://github.com/jmcarp/py-cfenv
+
 ## <a id='miniconda'></a>Miniconda Support <span style="font-size:1rem">(starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.6">1.5.6</a>)</span>##
 
 To use miniconda instead of pip for installing dependencies, place an `environment.yml` file in the root directory.
