@@ -87,16 +87,18 @@ $   Staging failed: Buildpack compilation step failed
 
 ## <a id='vendoring'></a>Vendor App Dependencies ##
 
-As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your app must 'vendor' its dependencies.
-
-For the Node.js buildpack, use ```npm```:
+In order to vendor dependencices for an app using the Node.js buildpack, use ```npm```:
 
 <pre class="terminal">
-$ cd YOUR-APP-DIR
-$ npm install # vendors into /node_modules
+$ cd APP-DIR
+$ npm install # vendors into APP-DIR/node_modules
 </pre>
 
-```cf push``` uploads your vendored dependencies.
+```cf push``` will upload the vendored dependencies with the app.
+
+<p class='note'><strong>Note</strong>: For an app to run in a disconnected environment, it must vendor its dependencies as
+stated in the [disconnected environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md).</p>
+
 
 ## <a id='openssl'></a>OpenSSL Support ##
 
