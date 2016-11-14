@@ -11,6 +11,9 @@ Cloud Foundry provides extensive support for connecting a Spring application to 
 
 If your Spring application requires services such as a relational database or messaging system, you might be able to deploy your application to Cloud Foundry without changing any code. In this case, Cloud Foundry automatically re-configures the relevant bean definitions to bind them to cloud services.
 
+For information about connecting to services from a Spring application, see 
+[Spring Cloud Spring Service Connector](http://cloud.spring.io/spring-cloud-connectors/spring-cloud-spring-service-connector.html).
+
 Cloud Foundry auto-reconfigures applications only if the following items are true for your application:
 
 * Only one service instance of a given service type is bound to the application. In this context, MySQL and PostgreSQL are considered the same service type, relational database, so if both a MySQL and a PostgreSQL service are bound to the application, auto-reconfiguration will not occur.
