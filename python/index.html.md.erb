@@ -46,7 +46,7 @@ The Python buildpack does not generate a [default start command](../../devguide/
 
 To stage with the Python buildpack and start an application, do one of the following:
 
-- Supply a Procfile. For more information about Procfiles, see the [Configuring a Production Server](../prod-server.html) topic. The following example Procfile specifies `gunicorn` as the start command for a web app running on Gunicorn:
+- <%= vars.python_cf245only %> Supply a Procfile. For more information about Procfiles, see the [Configuring a Production Server](../prod-server.html) topic. The following example Procfile specifies `gunicorn` as the start command for a web app running on Gunicorn:
 
     ```
     web: gunicorn SERVER-NAME:APP-NAME
@@ -75,6 +75,10 @@ pip install --download vendor -r requirements.txt
 </pre>
 
 ```cf push``` uploads your vendored dependencies. The buildpack will install them directly from the `vendor/`.
+
+## <a id='cfenv'></a>Parse Environment Variables ##
+
+The `cfenv` package provides access to Cloud Foundry application environment settings by parsing all the relevant environment variables. The settings are returned as a class instance. See [https://github.com/jmcarp/py-cfenv](https://github.com/jmcarp/py-cfenv)
 
 ## <a id='miniconda'></a>Miniconda Support <span style="font-size:1rem">(starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.6">1.5.6</a>)</span>##
 

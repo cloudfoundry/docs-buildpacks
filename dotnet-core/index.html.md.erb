@@ -28,7 +28,7 @@ If you do not want to use latest stable beta release of the .NET CLI, specify th
 
 Specify any non-default package sources in the `NuGet.Config` file.
 
-For a basic example see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
+For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
 
 ## <a id='port'></a>Configure the Listen Port ##
 
@@ -38,58 +38,57 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
 
 1. Add a `using` statement to the top of the file:
 
-  ```c#
-  using Microsoft.Extensions.Configuration;
-  ```
+    ```c#
+    using Microsoft.Extensions.Configuration;
+    ```
 
 1. Add the following lines before the line `var host = new WebHostBuilder()`:
 
-  ```c#
-  var config = new ConfigurationBuilder()
-      .AddCommandLine(args)
-      .Build();
-  ```
-
-  This allows the buildpack to pass the correct port from `$PORT` to the app when running the initial startup command.
+    ```c#
+    var config = new ConfigurationBuilder()
+        .AddCommandLine(args)
+        .Build();
+    ```
+    This allows the buildpack to pass the correct port from `$PORT` to the app when running the initial startup command.
 
 1. Remove the following line from the `Main` method.
 
-  ```c#
-  .UseContentRoot(Directory.GetCurrentDirectory())
-  ```
+    ```c#
+    .UseContentRoot(Directory.GetCurrentDirectory())
+    ```
 
 1. Add this line after `.UseKestrel()`:
 
-  ```c#
-  .UseConfiguration(config)
-  ```
+    ```c#
+    .UseConfiguration(config)
+    ```
 
 1. Save the file, and then open `project.json`.
 
 1. Add the following dependency:
 
-  ```json
-  "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
-  ```
+    ```json
+    "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
+    ```
 
 1. Add the following property to the `buildOptions` section:
 
-  ```json
-  "copyToOutput": {
-      "include": [
-          "wwwroot",
-          "Areas/**/Views",
-          "Views",
-          "appsettings.json"
-      ]
-  }
-  ```
+    ```json
+    "copyToOutput": {
+        "include": [
+            "wwwroot",
+            "Areas/**/Views",
+            "Views",
+            "appsettings.json"
+        ]
+    }
+    ```
 
 1. Remove the following line from the `Startup` method:
 
-  ```c#
-  .SetBasePath(env.ContentRootPath)
-  ```
+    ```c#
+    .SetBasePath(env.ContentRootPath)
+    ```
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
@@ -140,14 +139,41 @@ You can push apps with their other dependencies following these steps:
 
 1. Publish the app by running `dotnet publish -r ubuntu.14.04-x64`.
 
-  <p class="note">
-    <strong>Note</strong>: For this publish command to work, modify your app code so the .NET CLI publishes it as a self-contained app. For more information, see <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/">.NET Core Application Deployment</a>.
-  </p>
+    <p class="note"><strong>Note</strong>: For this publish command to work, modify your app code so the .NET CLI publishes it as a self-contained app. For more information, see <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/">.NET Core Application Deployment</a>.
+    </p>
 
 1. Navigate to the `bin/<Debug|Release>/<framework>/<runtime>/publish` directory. Or, if your app uses a `manifest.yml`, specify a path to the publish output folder. This allows you to push your app from any directory.
 
 1. Push your app.
 
-## <a id='legacy'></a>Legacy .NET buildpack ##
+## <a id='disabling_the_nuget_package_cache'></a>Disabling the NuGet Package Cache
+
+You may need to disable NuGet package caching, or clear NuGet packages cached in the staging environment, in one of the following scenarios:
+
+* Your app is failing to stage because it runs out of space, exceeding the maximum allowable disk quota.
+* You have added pre-release packages to test a new feature, then decided to revert back to the main NuGet feed. The packages you changed may need to be removed from the cache to avoid conflicts.
+
+Disabling NuGet caching both clears any existing NuGet dependencies from the staging cache and prevents the buildpack from adding NuGet dependencies to the staging cache.
+
+To disable NuGet package caching, set the `CACHE_NUGET_PACKAGES` environment variable to `false`. If the variable is not set, or set to a different value, there is no change. Perform one of the following procedures to set `CACHE_NUGET_PACKAGES` to `false`:
+
+* Locate your application manifest, `manifest.yml`, and set the `CACHE_NUGET_PACKAGES` environment variable, following the format of the example below:
+
+    ```yml
+    ---
+    applications:
+    - name: sample-aspnetcore-app
+      memory: 512M
+      env:
+        CACHE_NUGET_PACKAGES: false
+    ```
+
+* Use `cf set-env` to set the `CACHE_NUGET_PACKAGES` environment variable on the command line:
+
+    <pre class="terminal">$ cf set-env YOUR-APP CACHE_NUGET_PACKAGES false</pre>
+
+See the [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) section of the <em>Deploying with Application Manifests</em> topic for more information.
+
+## <a id='legacy'></a>Legacy .NET Buildpack ##
 
 There is also a legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) built by the Cloud Foundry community which addresses applications not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/) (e.g. via Xamarin Studio, MonoDevelop or xbuild).

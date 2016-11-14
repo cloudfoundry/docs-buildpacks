@@ -139,7 +139,7 @@ The table below summarizes the three main libraries available for Ruby / Rails:
   </tr>
   <tr>
     <td><a href="https://github.com/mperham/sidekiq">Sidekiq</a></td>
-    <td>Uses threads to handle many messages at the same time in the same process. It does not require Rails but will integrate tightly with Rails 3 to make background message processing dead simple. This library is also Redis-backed and is actually somewhat compatible with Resque messaging.</td>
+    <td>Uses threads to handle many messages at the same time in the same process. It does not require Rails, but integrates tightly with Rails 3 to simplify background message processing. This library is Redis-backed and semi-compatible with Resque messaging.</td>
   </tr>
 </table>
 
@@ -327,19 +327,6 @@ directly from your web application.
 The gem enables this behavior by setting the
 `config.serve_static_assets` option to `true`, so you do not need to
 configure it manually.
-
-## <a id='buildpack'></a>Additional Ruby Buildpack Information ##
-
-For information about using and extending the Ruby buildpack in Cloud Foundry,
-see the [ruby-buildpack GitHub repo](https://github.com/cloudfoundry/ruby-buildpack).
-
-You can find current information about this buildpack on the Ruby buildpack
-[release page](https://github.com/cloudfoundry/ruby-buildpack/releases) in
-GitHub.
-
-The buildpack uses a default Ruby version of `2.2.2`.
-To override this value for your app, add a Ruby declaration in the Gemfile.
-This also applies to using a JRuby interpreter.
 
 ## <a id='env-var'></a>Environment Variables ##
 

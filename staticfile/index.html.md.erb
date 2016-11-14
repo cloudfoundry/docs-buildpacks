@@ -192,6 +192,25 @@ The diagram below illustrates a HTTPS redirect loop and direct HTTP communicatio
 
 2. Find the URL of your app in the output from the push command above and navigate there to see your static app running.
 
+### <a id='hsts'></a> Enable HTTP Strict Transport Security ###
+
+To enable HTTP Strict Transport Security (HSTS), add the following line to your `Staticfile`:
+
+```
+http_strict_transport_security: true
+```
+
+This causes Nginx to respond to all requests with the header:
+
+```
+Strict-Transport-Security: max-age=31536000
+```
+
+
+<p class="note"><strong>Note</strong>: This header causes a browser that receives it to make all future requests over HTTPS. Because of the long amount of time this setting persists in the browser, only enable this setting once you are sure that everything is properly configured.</p>
+
+### <a id='custom_nginx_configuration'></a> Custom Nginx Configuration ###
+
 ## <a id='help'></a>Help and Support
 
 ### <a id='intro'></a> Introduction
