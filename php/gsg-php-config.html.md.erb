@@ -91,6 +91,30 @@ PHP extensions are easily enabled by setting the `PHP_EXTENSIONS` or `ZEND_EXTEN
 
 If an extension is already present and enabled in the compiled php, for example `intl`, you do not need to explicitly enable it through `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` in `.bp-config/options.json` to use that extension.
 
+#### PHP\_EXTENSIONS vs. ZEND\_EXTENSIONS
+
+PHP has two kinds of extensions, "PHP extensions" and "Zend extensions". These [hook into the PHP executable in different ways](https://wiki.php.net/internals/extensions).
+
+The buildpack cannot know, in advance, what kind of extension you are requesting. This is why there are two variables, and why your app will fail if you say a Zend Extension
+is a PHP Extension, or vice versa.
+
+If you see this error:
+
+```
+php-fpm | [warn-ioncube] The example Loader is a Zend-Engine extension and not a module (pid 40)
+php-fpm | [warn-ioncube] Please specify the Loader using 'zend_extension' in php.ini (pid 40)
+php-fpm | NOTICE: PHP message: PHP Fatal error:  Unable to start example Loader module in Unknown on line 0
+```
+
+Try moving the `example` extension from `PHP_EXTENSIONS` to `ZEND_EXTENSIONS`, then re-pushing your application.
+
+If you see this error:
+
+```
+NOTICE: PHP message: PHP Warning:  example MUST be loaded as a Zend extension in Unknown on line 0
+```
+
+Try moving the `example` extension from `ZEND_EXTENSIONS` to `PHP_EXTENSIONS`, then re-pushing your application.
 
 ### <a id="php-modules"></a> PHP Modules
 
