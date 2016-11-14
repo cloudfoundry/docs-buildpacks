@@ -10,42 +10,34 @@ owner: Buildpacks
 ### <id='introduction'></a>Introduction
 
 This topic describes how to configure the Staticfile buildpack and use it to push static content to the web. 
+It also shows you how to serve a simple "Hello World" page using the staticfile buildpack.
 
-<hr>
+### <a id='definitions'></a>Definitions
 
-### <a id='staticfile-app'></a>Definition: Staticfile app
+**Staticfile app** — An app or content that requires no backend code other than the Nginx webserver, which the buildpack provides.
+   Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
 
-A **_staticfile app_** is an app or content that require no backend code except an Nginx webserver.
+**Staticfile buildpack** — The buildpack that provides runtime support for staticfile apps and apps with backends hosted elsewhere.
 
-Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
-
-<hr>
-
-### <a id='staticfile-buildpack'></a>Definition: Staticfile buildpack
-
-The **_Staticfile buildpack_** is the buildpack that provides runtime support for staticfile apps and apps with backends hosted elsewhere.
-
-For example, works for apps and content that require no backend code besides an Nginx webserver, which the buildpack provides.
-
-<hr>
-
-### <a id='memory'></a>About memory usage
-
+### <a id='memory'></a>About Memory Usage
 
 Nginx only requires 20&nbsp;M to serve static assets. 
-Using the `-m 64 M` reduces the RAM allocation from the default 1&nbsp;G usually allocated to Cloud Foundry containers. 
+This is why Pivotal recommends using the `-m 64 M` command when pushing the app to reduce the RAM allocation from the 
+default 1&nbsp;G usually allocated to Cloud Foundry containers. 
 
-<hr>
+### <a id='sample'></a>Create and Push a Sample App
 
-### <a id='sample'></a>Create and push a sample app
+The following procedure describes how to create and push a single page staticfile app using the Staticfile buildpack.
 
-The procedure below describes how to create and push a single page staticfile app using the Staticfile buildpack.
+1. In your local workspace, use `cf login` to log in to <%= vars.product_short %>. For more information, see [Login](../../cf-cli/getting-started.html#login).
 
-1. Create a root directory for the sample app in your workspace:
+1. Create and change into a root directory for the sample app in your workspace:
     
     <code>
     $ mkdir sample
+    $ cd sample
     </code>
+
 2. Create an `index.html` file that contains some text:
 
     <code>
@@ -58,34 +50,46 @@ The procedure below describes how to create and push a single page staticfile ap
     $ touch Staticfile
     </code>
 
+1. Use `cf login` to log in to <%= vars.product_short %>. 
+For more information, see [Login](../../cf-cli/getting-started.html#login).
+
 4. Push the sample app:
 
     <code>
     $ cf push hello -m 64M
     </code>
   
-5. Find the URL of the hello app in the output and navigate there to see the static app running.
+5. Find the URL of the hello app in the output. A fragment of output is shown below:
+  <pre class='terminal'>
+  Creating app hello in org sample-org / space sample-space as username<span>@</span>example.com...
+  OK
+  &#8230; 
+  requested state: started
+  instances: 1/1
+  usage: 64M x 1 instances
+  urls: hello.example.com
+  </pre>
 
-    Highlight the code output ADD
+7. Navigate to the URL to see the hello app running.
 
- 
-<hr>
+## <a id='configure-and-push'></a>Configuring the Buildpack and Pushing the App
 
-## <a id='configure-and-push'></a>Configuring the buildpack and pushing the app
+This section describes...
+how to configure the staticbuildpack options by x or y and then how to push your app.
 
-### <a id='config-options'></a>Configuration options
+### <a id='config-options'></a>Configuration Options
 
-This list explains some of the aspects of the Staticfile buildpack that you can configure:
+This list describes some of the aspects of the Staticfile buildpack that you can configure:
 
-* **_Directory list_** — An HTML page that displays a directory index for your site. A sample of a directory list is shown below. 
+* **Directory list** — An HTML page that displays a directory index for your site. A sample of a directory list is shown below. 
 
     ![Directory Index](../images/directory-index.png)
 
     If your site is missing an index.html, you can choose to display a directory list instead of the standard 404 error page.
 
-* **_SSI_** — Server Side Includes (SSI) is ...
+* **SSI** — Server Side Includes (SSI) is ... You can apply SSI to your app. [NEEDS WORK]. For more information about SSI, see the [Server Side Includes](https://en.wikipedia.org/wiki/Server_Side_Includes) entry on Wikipedia.
 
-* **_Pushstate routing_** — A way to keep browser-visible URLs clean for client-side JavaScript apps that serve multiple routes. 
+* **Pushstate routing** — A way to keep browser-visible URLs clean for client-side JavaScript apps that serve multiple routes. 
 
     For example, pushstate routing allows a single JavaScript file route to multiple anchor-tagged URLs that look like `/some/path1` instead of `/some#path1`.
 
@@ -94,9 +98,7 @@ The [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.ht
 
 * **_Proxy support_** — Allows you to use a proxy to download dependencies during staging.
 
-* **_Force HTTPS_** — A way to enforce that all requests are sent via HTTPS. This redirects non-HTTPS requests as HTTPS requests. For information about when not to force HTTPS, see [About FORCE_HTTPS with reverse proxies](#force-https) below.
-
-<hr>
+* **_Force HTTPS_** — A way to enforce that all requests are sent via HTTPS. This redirects non-HTTPS requests as HTTPS requests. For information about when not to force HTTPS, see [About FORCE_HTTPS with Reverse Proxies](#force-https) below.
 
 ### <a id='basic-auth'></a>Creating hashes for basic authentication
 
@@ -107,7 +109,7 @@ You can apply basic authentication to your app.
 Use this website to create hashed username and password pairs for your website: 
 [http://www.htaccesstools.com/htpasswd-generator/](http://www.htaccesstools.com/htpasswd-generator/)
 
-### <a id='force-https'></a>About FORCE_HTTPS with reverse proxies 
+### <a id='force-https'></a>About FORCE_HTTPS with Reverse Proxies 
 
 If you are using a reverse proxy such as CloudFlare and you have rules to redirect HTTP, do not use FORCE_HTTPS. 
 This is because the reverse proxy is intended to communicate directly with the app through HTTP.
@@ -116,8 +118,6 @@ Forcing the reverse proxy to communicate with the app can cause redirect loops.
 The diagram below illustrates a HTTPS redirect loop and direct HTTP communication between a reverse proxy and an app server.
 
 <img src="../images/reverse-proxy.png">
-
-<hr>
 
 ### <a id='config-process'></a>Configure and push your app
 
@@ -192,32 +192,22 @@ The diagram below illustrates a HTTPS redirect loop and direct HTTP communicatio
 
 2. Find the URL of your app in the output from the push command above and navigate there to see your static app running.
 
-<hr>
-
 ## <a id='help'></a>Help and Support
 
 ### <a id='intro'></a> Introduction
 
 Here are some ways you can get more help with using the Staticfile buildpack or with developing your own Staticfile buildpack.
 
-<hr>
-
 ### <a id='slack'></a>Slack
 
 You can join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
-
-<hr>
 
 ### <a id='relnotes'></a> Release notes
 
 You can find current information about this buildpack on the Staticfile buildpack [release page](https://github.com/cloudfoundry/staticfile-buildpack/releases) in GitHub.
 
-<hr>
-
 ### <a id='extend'></a> Staticfile buildpack repo in Github
 
 You can find more information about using and extending the Staticfile buildpack in Cloud Foundry in the
 [staticfile-buildpack GitHub repo](https://github.com/cloudfoundry/staticfile-buildpack).
-
-<hr>
 
