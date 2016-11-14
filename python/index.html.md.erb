@@ -9,7 +9,7 @@ owner: Buildpacks
 
 This buildpack will be automatically used if there is a `requirements.txt` or `setup.py` file in the root directory of your project.
 
-If your Cloud Foundry deployment does not have the Python Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
+If your Cloud Foundry deployment does not have the Python Buildpack installed, or the installed version is out of date, you can use the latest version by specifying it with the `-b` option when you push your app. For example:
 
 <pre class="terminal">
 $ cf push my_app -b https://github.com/cloudfoundry/buildpack-python.git
@@ -17,20 +17,20 @@ $ cf push my_app -b https://github.com/cloudfoundry/buildpack-python.git
 
 ## <a id='supported_versions'></a>Supported Versions ##
 
-Supported Python versions can be found [in the release notes](https://github.com/cloudfoundry/python-buildpack/releases).
+You can find the list of supported Python versions in the [Python buildpack release notes](https://github.com/cloudfoundry/python-buildpack/releases).
 
 ## <a id='runtime'></a>Specify a Python Version ##
 
-Specific versions of the Python runtime can be specified with a `runtime.txt` file:
+You can specific versions of the Python runtime within a `runtime.txt` file. For example:
 
 <pre class="terminal">
 $ cat runtime.txt
 python-3.5.2
 </pre>
 
-The buildpack only supports the stable Python versions, which are listed in the `manifest.yml` and [releases page](https://github.com/cloudfoundry/python-buildpack/releases).
+The buildpack only supports the stable Python versions, which are listed in the `manifest.yml` and [Python buildpack release notes](https://github.com/cloudfoundry/python-buildpack/releases).
 
-If you try to use a binary that is not currently supported, staging your app will fail and you will see the following error message:
+If you try to use a binary that is not currently supported, staging your app fails and you will see the following error message:
 
 <pre class="terminal">
 Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
@@ -46,7 +46,7 @@ The Python buildpack does not generate a [default start command](../../devguide/
 
 To stage with the Python buildpack and start an application, do one of the following:
 
-- **[Required](https://www.pivotaltracker.com/n/projects/966314/stories/132190561) for Cloud Foundry v245 only:** Supply a Procfile. For more information about Procfiles, see the [Configuring a Production Server](../prod-server.html) topic. The following example Procfile specifies `gunicorn` as the start command for a web app running on Gunicorn:
+- <%= vars.python_cf245only %> Supply a Procfile. For more information about Procfiles, see the [Configuring a Production Server](../prod-server.html) topic. The following example Procfile specifies `gunicorn` as the start command for a web app running on Gunicorn:
 
     ```
     web: gunicorn SERVER-NAME:APP-NAME
@@ -62,23 +62,23 @@ To stage with the Python buildpack and start an application, do one of the follo
 
 ## <a id='vendoring'></a>Vendor App Dependencies ##
 
-As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' it's dependencies.
+As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must vendor its dependencies.
 
-For the Python buildpack, use ```pip```:
+For the Python buildpack, use `pip`:
 
 <pre class="terminal">
-cd YOUR-APP-DIR
-mkdir -p vendor
+$ cd YOUR-APP-DIR
+$ mkdir -p vendor
 
 # vendors all the pip *.tar.gz into vendor/
-pip install --download vendor -r requirements.txt
+$ pip install --download vendor -r requirements.txt
 </pre>
 
-```cf push``` uploads your vendored dependencies. The buildpack will install them directly from the `vendor/`.
+`cf push` uploads your vendored dependencies. The buildpack installs them directly from the `vendor/` directory.
 
 ## <a id='cfenv'></a>Parse Environment Variables ##
 
-The `cfenv` package provides access to Cloud Foundry application environment settings by parsing all the relevant environment variables. The settings are returned as a class instance. See [https://github.com/jmcarp/py-cfenv](https://github.com/jmcarp/py-cfenv)
+The `cfenv` package provides access to Cloud Foundry application environment settings by parsing all the relevant environment variables. The settings are returned as a class instance. See [https://github.com/jmcarp/py-cfenv](https://github.com/jmcarp/py-cfenv) for more information.
 
 ## <a id='miniconda'></a>Miniconda Support <span style="font-size:1rem">(starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.6">1.5.6</a>)</span>##
 
@@ -89,8 +89,7 @@ For examples, see our sample apps [using Python 2 with miniconda](https://github
 ## <a id='proxy_support'></a> Proxy Support ##
 
 If you need to use a proxy to download dependencies during staging, you can set
-the `http_proxy` and/or `https_proxy` environment variables. For more information, see
-the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
+the `http_proxy` and `https_proxy` environment variables. For more information, see the [Proxy Usage Documentation](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
@@ -100,8 +99,7 @@ Versions of Python 2.7.9 and later use certificates stored in `/etc/ssl/certs` a
 
 Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
 
-For more information about using and extending the Python buildpack in Cloud Foundry, see
-the [python-buildpack GitHub repo](https://github.com/cloudfoundry/python-buildpack).
+For more information about using and extending the Python buildpack in Cloud Foundry, see the [python-buildpack GitHub repo](https://github.com/cloudfoundry/python-buildpack).
 
-You can find current information about this buildpack on the Python buildpack
-[release page](https://github.com/cloudfoundry/python-buildpack/releases) in GitHub.
+You can find current information about this buildpack on the [Python buildpack
+release page](https://github.com/cloudfoundry/python-buildpack/releases) in GitHub.
