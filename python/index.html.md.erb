@@ -46,7 +46,7 @@ The Python buildpack does not generate a [default start command](../../devguide/
 
 To stage with the Python buildpack and start an application, do one of the following:
 
-- **[Temporarily required](https://www.pivotaltracker.com/n/projects/966314/stories/132190561) for Cloud Foundry 245+:** Supply a Procfile. For more information about Procfiles, see the [Configuring a Production Server](../prod-server.html) topic. The following example Procfile specifies `gunicorn` as the start command for a web app running on Gunicorn:
+- **[Required](https://www.pivotaltracker.com/n/projects/966314/stories/132190561) for Cloud Foundry v245 only:** Supply a Procfile. For more information about Procfiles, see the [Configuring a Production Server](../prod-server.html) topic. The following example Procfile specifies `gunicorn` as the start command for a web app running on Gunicorn:
 
     ```
     web: gunicorn SERVER-NAME:APP-NAME
