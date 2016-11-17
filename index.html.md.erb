@@ -6,16 +6,21 @@ owner: Buildpacks
 <strong><%= modified_date %></strong>
 
 Buildpacks provide framework and runtime support for your applications.
-Buildpacks typically examine user-provided artifacts to determine what dependencies to download and how to configure applications to communicate with bound services.
+Buildpacks typically examine user-provided artifacts to determine what dependencies to 
+download and how to configure applications to communicate with bound services.
 
-When you push an application, Cloud Foundry automatically detects which buildpack is required and installs it on the Diego cell <%=vars.buildpacks_index_dea%>  where the application needs to run.
+When you push an application, Cloud Foundry automatically detects which buildpack is required 
+and installs it on the Diego cell <%=vars.buildpacks_index_dea%>  where the application needs to run.
 
-<p class="note"><strong>Note</strong>: Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a <a href="https://github.com/cloudfoundry/buildpack-packager">
+<p class="note"><strong>Note</strong>: Cloud Foundry deployments often have limited access to dependencies. 
+This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. 
+In these circumstances, Cloud Foundry provides a <a href="https://github.com/cloudfoundry/buildpack-packager">
 Buildpack Packager</a> application.</p>
 
 ##<a id='system-buildpacks'></a>System Buildpacks
 
-Cloud Foundry includes a set of system buildpacks for common languages and frameworks. This table lists the system buildpacks.
+Cloud Foundry includes a set of system buildpacks for common languages and frameworks. 
+This table lists the system buildpacks.
 
 <table border="1" class="nice" >
   <tr>
@@ -72,14 +77,9 @@ Cloud Foundry includes a set of system buildpacks for common languages and frame
 
 ##<a id='community-buildpacks'></a>Community Buildpacks
 
-Here are some other buildpacks that aren't officially supported, but may be of interest:
-
-* [CppCMS](https://github.com/cloudfoundry-community/cppcms-buildpack)
-* [JBoss (Java)](https://github.com/cloudfoundry-community/jboss-buildpack)
-* [Meteor](https://github.com/cloudfoundry-community/cf-meteor-buildpack)
-* [.NET (via Mono)](https://github.com/cloudfoundry-community/.net-buildpack)
-* [Swift](https://github.com/cloudfoundry-community/swift-buildpack)
-* [TomEE (Java)](https://github.com/cloudfoundry-community/tomee-buildpack)
+You can find a list of unsupported, community-created buildpacks here: 
+<a href="https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks#community-created">
+cf-docs-contrib</a>.
 
 ##<a id='using-buildpacks'></a> Using, Developing, and Customizing Buildpacks
 
@@ -87,4 +87,6 @@ For information about using buildpacks, see <a href="./using-buildpacks.html" cl
 
 For information about customizing existing buildpacks and developing new buildpacks, see <a href="./developing-buildpacks.html" class="subnav">Developing Buildpacks</a>.
 
-For information about updating and releasing a new version of a Cloud Foundry (CF) buildpack through the CF Buildpacks Team Concourse pipeline, see <a href="./buildpack-ci-index.html" class="subnav">CF Buildpack Team CI</a>. You can use this as a model for using Concourse to build and release new versions of your own buildpacks.
+For information about updating and releasing a new version of a Cloud Foundry (CF) buildpack 
+through the CF Buildpacks Team Concourse pipeline, see <a href="./buildpack-ci-index.html" class="subnav">CF Buildpack Team CI</a>. 
+You can use this as a model for using Concourse to build and release new versions of your own buildpacks.
