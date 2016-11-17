@@ -19,47 +19,72 @@ It also shows you how to serve a simple "Hello World" page using the staticfile 
 
 **Staticfile buildpack** — The buildpack that provides runtime support for staticfile apps and apps with backends hosted elsewhere.
 
+### <a id='staticfile'></a>Staticfile Requirement
+
+The presence of a file called `Staticfile` in the root directory for the app determines that <%= vars.product_name %> will use the Staticfile buildpack for the application.
+
 ### <a id='memory'></a>About Memory Usage
 
 Nginx only requires 20&nbsp;M to serve static assets. 
 This is why Pivotal recommends using the `-m 64 M` command when pushing the app to reduce the RAM allocation from the 
 default 1&nbsp;G usually allocated to Cloud Foundry containers. 
 
-### <a id='sample'></a>Create and Push a Sample App
+### <a id='sample'></a>Hello-World Tutorial
 
-The following procedure describes how to create and push a single page staticfile app using the Staticfile buildpack.
+If you are new to pushing apps in <%= vars.product_name %>, try following this procedure to create and push a single page app using the Staticfile buildpack.
 
-1. In your local workspace, use `cf login` to log in to <%= vars.product_short %>. For more information, see [Login](../../cf-cli/getting-started.html#login).
+<p class="note"><strong>Note</strong>: To push your own Staticfile app, see <a href="#configure-and-push")>Configuring the Buildpack and Pushing the App</a>.</p>
 
-1. Create and change into a root directory for the sample app in your workspace:
-    
+<table border='1' class='nice'>
+<tr>
+  <th>Step</th><th>Action</th>
+</tr>
+<tr>
+  <td valign="top">1</td>
+  <td>Create and change into a root directory for the sample app in your workspace:
+    <br> 
     <code>
-    $ mkdir sample
+    $ mkdir sample<br>
     $ cd sample
     </code>
-
-2. Create an `index.html` file that contains some text:
-
+  </td>
+</tr>
+<tr>
+  <td valign="top">2</td>
+  <td>Create an `index.html` file that contains some text:
+    <br>
     <code>
     $ echo 'Hello World' > index.html
     </code>
-
-3. Create an empty file named `Staticfile`:
-
+  </td>
+</tr>
+<tr>
+  <td valign="top">3</td>
+  <td> Create an empty file named `Staticfile`:
+    <br>
     <code>
     $ touch Staticfile
     </code>
-
-1. Use `cf login` to log in to <%= vars.product_short %>. 
-For more information, see [Login](../../cf-cli/getting-started.html#login).
-
-4. Push the sample app:
-
+  </td>
+</tr>
+<tr>
+  <td valign="top">4</td>
+  <td> Use <code>cf login</code> to log in to <%= vars.product_short %>.<br>
+    For more information, see <a href="../../cf-cli/getting-started.html#login">Login</a>.
+ </td>
+</tr>
+<tr>
+  <td valign="top">5</td>
+  <td> Push the sample app:<br>
     <code>
     $ cf push hello -m 64M
     </code>
-  
-5. Find the URL of the hello app in the output. A fragment of output is shown below:
+  </td>
+</tr>
+<tr>
+  <td valign="top">6</td>
+  <td>Find the URL of the hello-world app in the output.<br>
+    A fragment of output is shown below:
   <pre class='terminal'>
   Creating app hello in org sample-org / space sample-space as username<span>@</span>example.com...
   OK
@@ -69,36 +94,83 @@ For more information, see [Login](../../cf-cli/getting-started.html#login).
   usage: 64M x 1 instances
   urls: hello.example.com
   </pre>
+  </td>
+</tr>
+<tr>
+  <td valign="top">7</td>
+  <td>Navigate to the URL to see the hello app running.
+  </td>
+</tr>
+</table>
 
-7. Navigate to the URL to see the hello app running.
 
 ## <a id='configure-and-push'></a>Configuring the Buildpack and Pushing the App
 
-This section describes...
-how to configure the staticbuildpack options by x or y and then how to push your app.
+This section describes how to configure the staticbuildpack options by editing the Staticfile or y and then how to push your app.
 
 ### <a id='config-options'></a>Configuration Options
 
 This list describes some of the aspects of the Staticfile buildpack that you can configure:
 
-* **Directory list** — An HTML page that displays a directory index for your site. A sample of a directory list is shown below. 
+<table>
+<tr>
+  <th>Options</th>
+  <th>Description</th>
+</tr>
+<tr>
+  <td>Alternative root</td>
+  <td>Allows you to specify a root directory other than the default, which is <code>index.html</code>.
 
-    ![Directory Index](../images/directory-index.png)
+  For example, you can specify that the buildpack serves index.html and all other assets from an alternate folder 
+  where your HTML/CSS/JavaScript files are to be served from, such as <code>dist/</code> or <code>public/</code>.</td>
+</tr>
+<tr>
+  <td>Directory list</td>
+  <td>An HTML page that displays a directory index for your site. A sample of a directory list is shown below.<br>
+ <img src="../images/directory-index.png" alt="directory index"><br>
+    If your site is missing an index.html, you display a directory list instead of the standard 404 error page.</td>
+</tr>
+<tr>
+  <td>SSI</td>
+  <td>Server Side Includes (SSI) allows you to show the contents of files on a web page on the web server. 
+      For general information about SSI, see the <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side Includes</a>) entry on Wikipedia.</td>
+<tr>
+  <td>Pushstate routing</td>
+  <td>Keeps browser-visible URLs clean for client-side JavaScript apps that serve multiple routes.
+    For example, pushstate routing allows a single JavaScript file route to multiple anchor-tagged URLs 
+    that look like <code>/some/path1</code> instead of <code>/some#path1</code>.
+  </td>
+<tr>
+  <td>GZip file serving and compressing</td>
+  <td>The <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a> 
+      and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules 
+      are enabled by default so that Nginx can serve files stored in compressed GZ format 
+      and can uncompresses them for clients that do not support compressed content or responses. <br>
+      Occasionally, you might want to disable compression, for example if serving to very old browser clients.</td>
+</tr>
+<tr>
+  <td>Proxy support</td>
+  <td>Allows you to use a proxy to download dependencies during staging.</td>
+</tr>
+<tr>
+  <td>Force HTTPS</td>
+   <td>A way to enforce that all requests are sent via HTTPS. 
+       This redirects non-HTTPS requests as HTTPS requests. 
+       For an example of when to avoid forcing HTTPS, see <a href="#force-https">About FORCE_HTTPS with Reverse Proxies</a> below.</td>
+</tr>
+<tr>
+  <td>Basic authentication</td>
+  <td>Allows you to place simple access controls on your app.<br>
+      <img src="../images/basicauth.png"></td>
+</tr>
+<tr>
+  <td>
+</table>
 
-    If your site is missing an index.html, you can choose to display a directory list instead of the standard 404 error page.
+* **HTTP Strict Transport Security** — Causes Nginx to respond to all requests with the header
+`Strict-Transport-Security: max-age=31536000`, thus forcing browser to make all subsequent requests over HTTPS. 
 
-* **SSI** — Server Side Includes (SSI) is ... You can apply SSI to your app. [NEEDS WORK]. For more information about SSI, see the [Server Side Includes](https://en.wikipedia.org/wiki/Server_Side_Includes) entry on Wikipedia.
-
-* **Pushstate routing** — A way to keep browser-visible URLs clean for client-side JavaScript apps that serve multiple routes. 
-
-    For example, pushstate routing allows a single JavaScript file route to multiple anchor-tagged URLs that look like `/some/path1` instead of `/some#path1`.
-
-* **_GZip file serving and compressing_** — 
-The [`gzip_static`](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html) and [`gunzip`](http://nginx.org/en/docs/http/ngx_http_gunzip_module.html) modules are set to `on` by default.
-
-* **_Proxy support_** — Allows you to use a proxy to download dependencies during staging.
-
-* **_Force HTTPS_** — A way to enforce that all requests are sent via HTTPS. This redirects non-HTTPS requests as HTTPS requests. For information about when not to force HTTPS, see [About FORCE_HTTPS with Reverse Proxies](#force-https) below.
+* **Custom Nginx configuration** — Additional Nginx configuration can be applied, such as mapping file extensions to mime types. See the <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">Nginx documentation</a> for examples. 
 
 ### <a id='basic-auth'></a>Creating hashes for basic authentication
 
@@ -119,7 +191,7 @@ The diagram below illustrates a HTTPS redirect loop and direct HTTP communicatio
 
 <img src="../images/reverse-proxy.png">
 
-### <a id='config-process'></a>Configure and push your app
+### <a id='config-process'></a>Configure Your App
 
 3. In the root directory of your app, create an empty file named `Staticfile`:
 
@@ -209,7 +281,41 @@ Strict-Transport-Security: max-age=31536000
 
 <p class="note"><strong>Note</strong>: This header causes a browser that receives it to make all future requests over HTTPS. Because of the long amount of time this setting persists in the browser, only enable this setting once you are sure that everything is properly configured.</p>
 
-### <a id='custom_nginx_configuration'></a> Custom Nginx Configuration ###
+### <a id='custom_nginx_configuration'></a> Push Your App ###
+
+Follow the steps below to push your application.
+
+<table>
+<tr>
+<th>Step</th>
+<th>Action</th>
+</tr>
+<tr valign="top">
+  <td>1.</td>
+  <td>Use the <code>cf push</code> to push your app:<br>
+    <code>
+    $ cf push APP_NAME -m 64M
+    </code>
+    <br>
+    where <code>APP_NAME</code> is the name you want to give your application, for example, 
+    <code>my-app</code>:
+    <pre class='terminal'>
+ $ cf push my-app -m 64M
+ Creating app my-app in org sample-org / space sample-space as username@example.com...
+ OK
+ … 
+ requested state: started
+ instances: 1/1
+ usage: 64M x 1 instances
+ urls: my-app.example.com
+   </pre>
+  </td>
+</tr>
+<tr valign="top">
+  <td>2.</td>
+  <td>Find the URL of your app in the output from the push command above and navigate there to see your static app running.</td>
+</tr>
+</table>
 
 ## <a id='help'></a>Help and Support
 
