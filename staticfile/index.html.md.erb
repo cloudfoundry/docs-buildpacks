@@ -114,7 +114,7 @@ This table describes some of the aspects of the Staticfile buildpack that you ca
  
 For instructions on _how to_ do these configurations, see [Configure Your App](#config-process) below.
 
-<table>
+<table border='1' class='nice'>
 <tr>
   <th>Options</th>
   <th>Description</th>
@@ -156,6 +156,12 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
 </tr>
 
 <tr>
+  <td id="basic-auth">Basic authentication</td>
+  <td>Allows you to place simple access controls on your app.<br>
+      <img src="../images/basicauth.png"></td>
+</tr>
+
+<tr>
   <td>Proxy support</td>
   <td>Allows you to use a proxy to download dependencies during staging.</td>
 </tr>
@@ -165,12 +171,6 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
    <td>A way to enforce that all requests are sent via HTTPS. 
        This redirects non-HTTPS requests as HTTPS requests. 
        For an example of when to avoid forcing HTTPS, see <a href="#force-https">About FORCE_HTTPS with Reverse Proxies</a> below.</td>
-</tr>
-
-<tr>
-  <td id="basic-auth">Basic authentication</td>
-  <td>Allows you to place simple access controls on your app.<br>
-      <img src="../images/basicauth.png"></td>
 </tr>
 
 <tr>
@@ -232,6 +232,15 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
     </tr>
 
     <tr>
+    <td valign="top">enable basic authentication for your app or website</td>
+    <td>  1. create a hashed username and password pair for each user, using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a><br>
+  &#50;. create a file called <code>Staticfile.auth</code> in the root directory or alternative root directory and add one or more user/password lines to it. 
+    For example,<br> <code>bob:$apr1$DuUQEQp8$ZccZCHQElNSjrg.erwSFC0<br>alice:$apr1$4IRQGcD/$.UMFLnIHSD9ZHJ86TR4zx.</code><br>
+    </td>
+    <td><a href="#basic-auth">Basic authentication</a></td>
+    </tr>
+
+    <tr>
     <td>use a proxy for downloading dependencies during staging</td>
     <td>Set the <code>http_proxy</code> and <code>https_proxy</code> environment variables.</td>
     <td><a href="../proxy-usage.html">Proxy support</a></td>
@@ -239,16 +248,11 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
 
     <tr>
     <td>force HTTPS</td>
-    <td>add the line<br><code><strong>FORCE_HTTPS: true</strong></code> to a file called <code>nginx.conf</code> in your root directory or alternate root directory.</td> 
+    <td>add the line<br><code><strong>FORCE_HTTPS: true</strong></code> to a file called <code>nginx.conf</code> in your root directory or alternate root directory.
+    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you are have a proxy server or load balancer that terminates SSL/TLS. 
+Doing so can cause infinite redirect loops, for example, 
+if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
     <td><a href="#force-https">Force HTTPS</a></td>
-
-    <tr>
-    <td valign="top">enable basic authentication for your app or website</td>
-    <td>  1. create a hashed username and password pair for each user, using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a><br>
-  &#50;. create a file called <code>Staticfile.auth</code> in the root directory or alternative root directory and add one or more user/password lines to it. 
-    For example,<br> <code>bob:$apr1$DuUQEQp8$ZccZCHQElNSjrg.erwSFC0<br>alice:$apr1$4IRQGcD/$.UMFLnIHSD9ZHJ86TR4zx.</code><br>
-    </td>
-    <td><a href="#basic-auth">Basic authentication</a></td>
     </tr>
 
     <tr>
@@ -260,7 +264,7 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
 
     <tr>
     <td>make additional configuration changes to Nginx</td>
-    <td>add <code><strong>nginx.conf</strong></code> and <code><strong>mime.types</strong></code> to your root folder or to the alternate root folder if you specified one.</td> 
+    <td>add <code><strong>nginx.conf</strong></code> and <code><strong>mime.types</strong></code> files to your root folder or to the alternate root folder if you specified one.</td> 
     <td><a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">Nginx documentation</a></td>
     </tr>
     </table>
@@ -269,7 +273,7 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
 
 Follow the steps below to push your application.
 
-<table>
+<table border='1' class='nice'>
 <tr>
 <th>Step</th>
 <th>Action</th>
@@ -300,16 +304,6 @@ Follow the steps below to push your application.
   <td>Find the URL of your app in the output from the push command above and navigate there to see your static app running.</td>
 </tr>
 </table>
-
-### <a id='force-https'></a>About FORCE_HTTPS with Reverse Proxies 
-
-If you are using a reverse proxy such as CloudFlare and you have rules to redirect HTTP, do not use FORCE_HTTPS. 
-This is because the reverse proxy is intended to communicate directly with the app through HTTP.
-Forcing the reverse proxy to communicate with the app can cause redirect loops.
-
-The diagram below illustrates a HTTPS redirect loop and direct HTTP communication between a reverse proxy and an app server.
-
-<img src="../images/reverse-proxy.png">
 
 ## <a id='help'></a>Help and Support
 
