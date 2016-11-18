@@ -106,90 +106,85 @@ If you are new to pushing apps in <%= vars.product_name %>, try following this p
 
 ## <a id='configure-and-push'></a>Configuring the Buildpack and Pushing the App
 
-This section describes how to configure the staticbuildpack options by editing the Staticfile or y and then how to push your app.
+This section describes various ways you can configure the staticbuildpack options and then how to push your staticfile app.
 
 ### <a id='config-options'></a>Configuration Options
 
-This list describes some of the aspects of the Staticfile buildpack that you can configure:
+This table describes some of the aspects of the Staticfile buildpack that you can configure.
+ 
+For instructions on _how to_ do these configurations, see [Configure Your App](#config-process) below.
 
 <table>
 <tr>
   <th>Options</th>
   <th>Description</th>
 </tr>
+
 <tr>
-  <td>Alternative root</td>
+  <td id="root">Alternative root</td>
   <td>Allows you to specify a root directory other than the default, which is <code>index.html</code>.
 
   For example, you can specify that the buildpack serves index.html and all other assets from an alternate folder 
   where your HTML/CSS/JavaScript files are to be served from, such as <code>dist/</code> or <code>public/</code>.</td>
 </tr>
 <tr>
-  <td>Directory list</td>
+  <td id="dir-list">Directory list</td>
   <td>An HTML page that displays a directory index for your site. A sample of a directory list is shown below.<br>
  <img src="../images/directory-index.png" alt="directory index"><br>
     If your site is missing an index.html, you display a directory list instead of the standard 404 error page.</td>
 </tr>
+
 <tr>
-  <td>SSI</td>
+  <td id="ssi">SSI</td>
   <td>Server Side Includes (SSI) allows you to show the contents of files on a web page on the web server. 
       For general information about SSI, see the <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side Includes</a>) entry on Wikipedia.</td>
 <tr>
-  <td>Pushstate routing</td>
+  <td id="pushstate">Pushstate routing</td>
   <td>Keeps browser-visible URLs clean for client-side JavaScript apps that serve multiple routes.
     For example, pushstate routing allows a single JavaScript file route to multiple anchor-tagged URLs 
     that look like <code>/some/path1</code> instead of <code>/some#path1</code>.
   </td>
+</tr>
+
 <tr>
-  <td>GZip file serving and compressing</td>
+  <td id="gzip">GZip file serving and compressing</td>
   <td>The <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a> 
       and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules 
       are enabled by default so that Nginx can serve files stored in compressed GZ format 
       and can uncompresses them for clients that do not support compressed content or responses. <br>
       Occasionally, you might want to disable compression, for example if serving to very old browser clients.</td>
 </tr>
+
 <tr>
   <td>Proxy support</td>
   <td>Allows you to use a proxy to download dependencies during staging.</td>
 </tr>
+
 <tr>
   <td>Force HTTPS</td>
    <td>A way to enforce that all requests are sent via HTTPS. 
        This redirects non-HTTPS requests as HTTPS requests. 
        For an example of when to avoid forcing HTTPS, see <a href="#force-https">About FORCE_HTTPS with Reverse Proxies</a> below.</td>
 </tr>
+
 <tr>
-  <td>Basic authentication</td>
+  <td id="basic-auth">Basic authentication</td>
   <td>Allows you to place simple access controls on your app.<br>
       <img src="../images/basicauth.png"></td>
 </tr>
+
 <tr>
-  <td>
+  <td id="strict-security">HTTP Strict Transport Security</td>
+  <td>Causes Nginx to respond to all requests with the header
+ <code>Strict-Transport-Security: max-age=31536000</code>, thus forcing browser to make all subsequent requests over HTTPS.</td>
+</tr>
+
+<tr>
+  <td>Custom Nginx configuration</td>
+  <td>Additional Nginx configuration can be applied, such as mapping file extensions to mime types. 
+      See the <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">Nginx documentation</a> for examples.</td>
+</tr>
 </table>
-
-* **HTTP Strict Transport Security** — Causes Nginx to respond to all requests with the header
-`Strict-Transport-Security: max-age=31536000`, thus forcing browser to make all subsequent requests over HTTPS. 
-
-* **Custom Nginx configuration** — Additional Nginx configuration can be applied, such as mapping file extensions to mime types. See the <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">Nginx documentation</a> for examples. 
-
-### <a id='basic-auth'></a>Creating hashes for basic authentication
-
-You can apply basic authentication to your app. 
-
-![Basic Authentication](../images/basicauth.png)
-
-Use this website to create hashed username and password pairs for your website: 
-[http://www.htaccesstools.com/htpasswd-generator/](http://www.htaccesstools.com/htpasswd-generator/)
-
-### <a id='force-https'></a>About FORCE_HTTPS with Reverse Proxies 
-
-If you are using a reverse proxy such as CloudFlare and you have rules to redirect HTTP, do not use FORCE_HTTPS. 
-This is because the reverse proxy is intended to communicate directly with the app through HTTP.
-Forcing the reverse proxy to communicate with the app can cause redirect loops.
-
-The diagram below illustrates a HTTPS redirect loop and direct HTTP communication between a reverse proxy and an app server.
-
-<img src="../images/reverse-proxy.png">
 
 ### <a id='config-process'></a>Configure Your App
 
@@ -203,83 +198,72 @@ The diagram below illustrates a HTTPS redirect loop and direct HTTP communicatio
 
     <table border='1' class='nice'>
     <tr>
-    <th><strong>If you want &hellip;</strong></th> <th><strong>Then&hellip;</strong></th>
+    <th><strong>If you want to&hellip;</strong></th> <th><strong>Then&hellip;</strong></th><th>More information</th>
     </tr>
 
     <tr>
-    <td>to serve <code>index.html</code> and other assets not from the root directory</tc>
-    <td>add this line to the static file:<br><code>root: DIRECTORY_NAME</code><br>for example, <pre class='terminal'>root: public</pre></td>
+    <td>serve <code>index.html</code> and other assets not from the root directory</tc>
+    <td>add this line to the <code>Staticfile</code>:<br><code><strong>root: DIRECTORY_NAME</strong></code><br>for example, <pre class='terminal'>root: public</pre></td>
+    <td><a href="#root">Alternative root</a></td>
     </tr>
     
     <tr>
     <td>display a directory list instead of the standard 404 error</td>
-    <td>add this line to the Staticfile:<br><code>directory: visible</code></td>
-    </tr>
-
-    <tr>
-    <td>disable gzip_static and gunzip modules so that...</td>
-    <td>add this line to the Staticfile:<br><code>directory: visible</code></td>
-    </tr>
-
-    <tr>
-    <td>enable pushstate routing</td>
-    <td>add this line to the Staticfile:<br><code>pushstate: enabled</code></td>
+    <td>add this line to the <code>Staticfile</code>:<br><code><strong>directory: visible</strong></code></td>
+    <td><a href="#dir-list">Directory list</a></td>
     </tr>
 
     <tr>
     <td>enable SSI</td>
-    <td>add this line to the Staticfile:<br><code>ssi: enabled </code></td>
+    <td>add this line to the <code>Staticfile</code>:<br><code><strong>ssi: enabled</strong></code></td>
+    <td><a href="#ssi">SSI</a></td>
     </tr>
 
     <tr>
-    <td>enable basic authentication for your app or website</td>
-    <td>create a file called Staticfile.auth in the root directory or alternative root directory and add one or more user/password lines to it. 
+    <td>enable pushstate routing</td>
+    <td>add this line to the <code>Staticfile</code>:<br><code><strong>pushstate: enabled</strong></code></td>
+    <td><a href="#pushstate">Pushstate routing</a></td>
+    </tr>
+
+    <tr>
+    <td>disable gzip_static and gunzip modules so that...</td>
+    <td>add this line to the <code>Staticfile</code>:<br><code><strong>directory: visible</strong></code></td>
+    <td><a href="#gzip">GZip</a></td>
+    </tr>
+
+    <tr>
+    <td>use a proxy for downloading dependencies during staging</td>
+    <td>Set the <code>http_proxy</code> and <code>https_proxy</code> environment variables.</td>
+    <td><a href="../proxy-usage.html">Proxy support</a></td>
+    </tr>
+
+    <tr>
+    <td>force HTTPS</td>
+    <td>add the line<br><code><strong>FORCE_HTTPS: true</strong></code> to a file called <code>nginx.conf</code> in your root directory or alternate root directory.</td> 
+    <td><a href="#force-https">Force HTTPS</a></td>
+
+    <tr>
+    <td valign="top">enable basic authentication for your app or website</td>
+    <td>  1. create a hashed username and password pair for each user, using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a><br>
+  &#50;. create a file called <code>Staticfile.auth</code> in the root directory or alternative root directory and add one or more user/password lines to it. 
     For example,<br> <code>bob:$apr1$DuUQEQp8$ZccZCHQElNSjrg.erwSFC0<br>alice:$apr1$4IRQGcD/$.UMFLnIHSD9ZHJ86TR4zx.</code><br>
-    For more information, see [Basic Authentication](#basic-auth) above.</td> 
+    </td>
+    <td><a href="#basic-auth">Basic authentication</a></td>
     </tr>
 
     <tr>
-    <td>Force HTTPS</td>
-    <td>add the line<br><code>FORCE_HTTPS: true</code> to a file called <code>nginx.conf</code> in your root directory or alternate root directory.</td> 
+    <td>force the receiving browser to make subsequent requests over HTTPS</td>
+    <td>add this line to the <code>Staticfile</code>:<br><code><strong>http_strict_transport_security: true</strong></code><br>
+        <p class="note"><strong>Note</strong>: Because of the long time this setting persists in the browser, only enable this setting after ensuring that everything is properly configured.</p></td>
+    <td><a href="#strict-security">HTTP Strict Transport Security</a></td>
     </tr>
 
     <tr>
     <td>make additional configuration changes to Nginx</td>
-    <td>add `nginx.conf` and `mime.types` to your root folder or to the alternate root folder if you specified one.</td> 
+    <td>add <code><strong>nginx.conf</strong></code> and <code><strong>mime.types</strong></code> to your root folder or to the alternate root folder if you specified one.</td> 
+    <td><a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">Nginx documentation</a></td>
     </tr>
     </table>
-
-1. Push your app:
-
-    <code>
-    $ cf push APP_NAME -m 64M
-    </code>
-
-    where `APP_NAME` is the name you want to give your application. 
-
-    For example, 
-    <pre class='terminal'> 
-    CODE OUTPUT GOES HERE
-    </pre>
-
-2. Find the URL of your app in the output from the push command above and navigate there to see your static app running.
-
-### <a id='hsts'></a> Enable HTTP Strict Transport Security ###
-
-To enable HTTP Strict Transport Security (HSTS), add the following line to your `Staticfile`:
-
-```
-http_strict_transport_security: true
-```
-
-This causes Nginx to respond to all requests with the header:
-
-```
-Strict-Transport-Security: max-age=31536000
-```
-
-
-<p class="note"><strong>Note</strong>: This header causes a browser that receives it to make all future requests over HTTPS. Because of the long amount of time this setting persists in the browser, only enable this setting once you are sure that everything is properly configured.</p>
 
 ### <a id='custom_nginx_configuration'></a> Push Your App ###
 
@@ -294,7 +278,7 @@ Follow the steps below to push your application.
   <td>1.</td>
   <td>Use the <code>cf push</code> to push your app:<br>
     <code>
-    $ cf push APP_NAME -m 64M
+    $ <strong>cf push APP_NAME -m 64M</strong>
     </code>
     <br>
     where <code>APP_NAME</code> is the name you want to give your application, for example, 
@@ -317,6 +301,16 @@ Follow the steps below to push your application.
 </tr>
 </table>
 
+### <a id='force-https'></a>About FORCE_HTTPS with Reverse Proxies 
+
+If you are using a reverse proxy such as CloudFlare and you have rules to redirect HTTP, do not use FORCE_HTTPS. 
+This is because the reverse proxy is intended to communicate directly with the app through HTTP.
+Forcing the reverse proxy to communicate with the app can cause redirect loops.
+
+The diagram below illustrates a HTTPS redirect loop and direct HTTP communication between a reverse proxy and an app server.
+
+<img src="../images/reverse-proxy.png">
+
 ## <a id='help'></a>Help and Support
 
 ### <a id='intro'></a> Introduction
@@ -327,11 +321,11 @@ Here are some ways you can get more help with using the Staticfile buildpack or 
 
 You can join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
 
-### <a id='relnotes'></a> Release notes
+### <a id='relnotes'></a> Release Notes
 
 You can find current information about this buildpack on the Staticfile buildpack [release page](https://github.com/cloudfoundry/staticfile-buildpack/releases) in GitHub.
 
-### <a id='extend'></a> Staticfile buildpack repo in Github
+### <a id='extend'></a> Staticfile Buildpack Repo in Github
 
 You can find more information about using and extending the Staticfile buildpack in Cloud Foundry in the
 [staticfile-buildpack GitHub repo](https://github.com/cloudfoundry/staticfile-buildpack).
