@@ -7,13 +7,13 @@ owner: Buildpacks
 
 This topic describes how to update and release a new version of a Cloud Foundry (CF) buildpack through the CF Buildpacks Team Concourse [pipeline](https://buildpacks.ci.cf-app.com/). Concourse is a continuous integration (CI) tool for software development teams. This is the process used by the CF Buildpacks Team and other CF buildpack development teams. You can use this process as a model for using Concourse to build and release new versions of your own buildpacks.
 
-The Concourse pipelines for Cloud Foundry buildpacks are located in the [`buildpacks-ci`](http://github.com/cloudfoundry/buildpacks-ci) Github repo.
+The Concourse pipelines for Cloud Foundry buildpacks are located in the [`buildpacks-ci`](http://github.com/cloudfoundry/buildpacks-ci) Github repository.
 
 ##<a id="releasing-a-new-buildpack-version"></a>Release a New Buildpack Version
 
 To release a new buildpack version, perform the following:
 
-1. Ensure you have downloaded the `buildpacks-ci` repo:
+1. Ensure you have downloaded the `buildpacks-ci` repository:
   <pre class="terminal">
   $ git clone https<span>:</span>//github.com/cloudfoundry/buildpacks-ci.git
   </pre>
@@ -24,12 +24,12 @@ To release a new buildpack version, perform the following:
   $ git checkout develop
   </pre>
 
-1. Ensure you have the most current version of the repo:
+1. Ensure you have the most current version of the repository:
   <pre class="terminal">
   $ git pull -r
   </pre>
 
-1. Run `bump` to update the version in the buildpack repo:
+1. Run `bump` to update the version in the buildpack repository:
   <pre class="terminal">
   $ /system/path/to/buildpacks-ci/scripts/bump
   </pre>
@@ -79,7 +79,7 @@ of the acceptance process. This releases the buildpack to Pivotal Network and to
 the `recreate-bosh-lite` job on that pipeline. If the new buildpack has been released to Github, the CF that
 is deployed for testing in the `cf-release` pipeline is tested against that new buildpack. 
 
-1. After the `cats` job has successfully completed, your project manager can ship the new buildpacks to the `cf-release` repo and create the new buildpack BOSH release by manually triggering the `ship-it` job.
+1. After the `cats` job has successfully completed, your project manager can ship the new buildpacks to the `cf-release` repository and create the new buildpack BOSH release by manually triggering the `ship-it` job.
 
 <p class="note"><strong>Note</strong>: If errors occur during this workflow, you may need to remove unwanted tags. For more information, see <a href="#dealing-with-unwanted-tags">Handle Unwanted Tags</a>.</p>
 
@@ -96,6 +96,6 @@ layout and content of a changelog. In general, changelogs follow these conventio
 
 If you encounter problems with the commit that contains the new version, change the target of the release tag by performing the following:
 
-1. Ensure the repo is in a valid state and is building successfully.
-1. Remove the tag from your local repo and from Github.
+1. Ensure the repository is in a valid state and is building successfully.
+1. Remove the tag from your local repository and from Github.
 1. Start a build. The pipeline build script should re-tag the build if it is successful.

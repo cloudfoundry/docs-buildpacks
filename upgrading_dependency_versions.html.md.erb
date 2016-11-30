@@ -118,7 +118,7 @@ After you build the binary for a dependency that you can access and download fro
     * Paste in the `uri` and the `md5` from the `build-BINARY-NAME` job that ran in the Concourse binary-builder pipeline.
     <p class="note"><strong>Note</strong>: In the PHP buildpack, you may see a <code>modules</code> line for each PHP dependency in the manifest. Do not include this in your new PHP dependency entry. This will be added to the manifest by the <code>ensure-manifest-has-modules</code> Concourse job in the <code>php-buildpack</code> when you commit and push your changes. You can find this in the output logs of the <code>build-out</code> task.</p>
 
-1. Replace any other mentions of the old version number in the buildpack repo with the new version number. The CF buildpack team uses [Ag](https://github.com/ggreer/the_silver_searcher) for text searching.
+1. Replace any other mentions of the old version number in the buildpack repository with the new version number. The CF buildpack team uses [Ag](https://github.com/ggreer/the_silver_searcher) for text searching.
 
     <pre class="terminal">$ ag OLD-VERSION</pre>
 

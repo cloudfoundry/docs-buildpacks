@@ -17,7 +17,7 @@ For example, the operator might complete the following process:
 
 <pre class='terminal'>
 $ # Clones your buildpack
-$ git clone http://YOUR-GITHUB-REPO.example.com/repo
+$ git clone http://YOUR-GITHUB-REPOSITORY.example.com/repository
 $ cd SomeBuildPackName
 
 $ # Creates a zipfile using your script
@@ -51,7 +51,7 @@ The administrator completes the following steps:
 
 <pre class="terminal">
 $ # Clones your buildpack
-$ git clone http://YOUR-GITHUB-REPO.example.com/repo
+$ git clone http://YOUR-GITHUB-REPOSITORY.example.com/repository
 $ cd <buildpack\_name>
 
 $ # Selects dependencies
@@ -94,11 +94,11 @@ The administrator completes the following process:
 
 <pre class="terminal">
 $ # Clones your buildpack
-$ git clone http://YOUR-GITHUB-REPO.example.com/repo
+$ git clone http://YOUR-GITHUB-REPOSITORY.example.com/repository
 $ cd <buildpack\_name>
 
 $ # Builds a package using your script
-$ ./package https:///dependency/repo
+$ ./package https:///dependency/repository
  ----> creating zipfile: cobol_buildpack.zip
 
 $ # Adds the buildpack to the Cloud Foundry instance
@@ -109,8 +109,8 @@ $ cd ~/my_app
 $ cf push my-cobol-webapp -b cobol-buildpack
  ----> deploying app
  ----> downloading dependencies:
-    https://OUR-INTERNAL-SITE.example.com/dependency/repo/dep1.tgz.... done
-    https://OUR-INTERNAL-SITE.example.com/dependency/repo/dep2.tgz.... WARNING: dependency not found!
+    https://OUR-INTERNAL-SITE.example.com/dependency/repository/dep1.tgz.... done
+    https://OUR-INTERNAL-SITE.example.com/dependency/repository/dep2.tgz.... WARNING: dependency not found!
 </pre>
 
 ### Pros ###
