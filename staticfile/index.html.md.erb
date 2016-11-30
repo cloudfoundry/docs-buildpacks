@@ -7,36 +7,31 @@ owner: Buildpacks
 
 ## <a id='overview'></a> Overview
 
-### <id='introduction'></a>Introduction
-
 This topic describes how to configure the Staticfile buildpack and use it to push static content to the web. 
-It also shows you how to serve a simple "Hello World" page using the staticfile buildpack.
+It also shows you how to serve a simple "Hello World" page using the Staticfile buildpack.
 
 <p class="note"><strong>Note</strong>: <a href="http://bosh.io/docs/trusted-certs.html">BOSH configured custom trusted certificates</a> are not supported by the Staticfile buildpack.</p>
 
 ### <a id='definitions'></a>Definitions
 
-**Staticfile app** — An app or content that requires no backend code other than the Nginx webserver, which the buildpack provides.
-   Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
+**Staticfile app**: An app or content that requires no backend code other than the Nginx webserver, which the buildpack provides. 
+Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
 
-**Staticfile buildpack** — The buildpack that provides runtime support for staticfile apps and apps with backends hosted elsewhere.
-To find which version of Nginx the current Staticfile buildpack uses, see the [release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
+**Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with backends hosted elsewhere.
+To find which version of Nginx the current Staticfile buildpack uses, see the [Staticfile buildpack release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
 
 ### <a id='staticfile'></a>Staticfile Requirement
 
-The presence of a file called `Staticfile` in the root directory for the app determines that <%= vars.product_name %> will use the Staticfile buildpack for the application.
+<%= vars.product_full %> requires a file named `Staticfile` in the root directory of the app to use the Staticfile buildpack with the app.
 
-### <a id='memory'></a>About Memory Usage
+### <a id='memory'></a>Memory Usage
 
-Nginx only requires 20&nbsp;M to serve static assets. 
-This is why Pivotal recommends using the `-m 64 M` command when pushing the app to reduce the RAM allocation from the 
-default 1&nbsp;G usually allocated to Cloud Foundry containers. 
+Nginx requires 20&nbsp;MB of RAM to serve static assets. 
+When using the Staticfile buildpack, we recommend pushing apps with the `-m 64 M` option to reduce RAM allocation from the default 1&nbsp;GB allocated to containers by default. 
 
-### <a id='sample'></a>Hello-World Tutorial
+### <a id='sample'></a>"Hello World" Tutorial
 
-If you are new to pushing apps in <%= vars.product_name %>, try following this procedure to create and push a single page app using the Staticfile buildpack.
-
-<p class="note"><strong>Note</strong>: To push your own Staticfile app, see <a href="#configure-and-push")>Configuring the Buildpack and Pushing the App</a>.</p>
+Follow the procedure below to create and push a single page app using the Staticfile buildpack.
 
 <table border='1' class='nice'>
 <tr>
@@ -44,64 +39,68 @@ If you are new to pushing apps in <%= vars.product_name %>, try following this p
 </tr>
 <tr>
   <td valign="top">1</td>
-  <td>Create and change into a root directory for the sample app in your workspace:
+  <td>Create and move into a root directory for the sample app in your workspace:
     <br> 
-    <code>
-    $ mkdir sample<br>
-    $ cd sample
-    </code>
+<pre class="terminal">
+$ mkdir sample
+$ cd sample
+</pre>
   </td>
 </tr>
 <tr>
   <td valign="top">2</td>
-  <td>Create an `index.html` file that contains some text:
+  <td>Create an <code>index.html</code> file that contains some text:
     <br>
-    <code>
-    $ echo 'Hello World' > index.html
-    </code>
+<pre class="terminal">
+$ echo 'Hello World' > index.html
+</pre>
   </td>
 </tr>
 <tr>
   <td valign="top">3</td>
-  <td> Create an empty file named `Staticfile`:
+  <td> Create an empty file named <code>Staticfile</code>:
     <br>
-    <code>
-    $ touch Staticfile
-    </code>
+<pre class="terminal">
+$ touch Staticfile
+</pre>
   </td>
 </tr>
 <tr>
   <td valign="top">4</td>
-  <td> Use <code>cf login</code> to log in to <%= vars.product_short %>.<br>
-    For more information, see <a href="../../cf-cli/getting-started.html#login">Login</a>.
+  <td> Use the <code>cf login</code> command to log in to
+<%= vars.product_short %>.<br>
+For more information, see the <a href="../../cf-cli/getting-started.html#login">Login</a> section of the <em>Getting Started with the cf CLI</em> documentation.
+<pre class="terminal">
+$ cf login
+</pre>
  </td>
 </tr>
 <tr>
   <td valign="top">5</td>
   <td> Push the sample app:<br>
-    <code>
-    $ cf push hello -m 64M
-    </code>
+<pre class="terminal">
+$ cf push hello -m 64M
+</pre>
   </td>
 </tr>
 <tr>
   <td valign="top">6</td>
-  <td>Find the URL of the hello-world app in the output.<br>
+  <td>Find the URL of the app in the output.<br>
     A fragment of output is shown below:
-  <pre class='terminal'>
-  Creating app hello in org sample-org / space sample-space as username<span>@</span>example.com...
-  OK
-  &#8230; 
-  requested state: started
-  instances: 1/1
-  usage: 64M x 1 instances
-  urls: hello.example.com
-  </pre>
+<pre class='terminal'>
+Creating app hello in org sample-org / space sample-space as username<span>@</span>example.com...
+OK
+&#8230; 
+requested state: started
+instances: 1/1
+usage: 64M x 1 instances
+urls: hello.example.com
+</pre>
   </td>
 </tr>
 <tr>
   <td valign="top">7</td>
-  <td>Navigate to the URL to see the hello app running.
+  <td>Navigate to the URL to see the sample app running.
   </td>
 </tr>
 </table>
@@ -109,13 +108,11 @@ If you are new to pushing apps in <%= vars.product_name %>, try following this p
 
 ## <a id='configure-and-push'></a>Configuring the Buildpack and Pushing the App
 
-This section describes various ways you can configure the staticbuildpack options and then how to push your staticfile app.
+This section describes various ways you can configure the Staticfile buildpack options and how to push your Staticfile app.
 
 ### <a id='config-options'></a>Configuration Options
 
 This table describes some of the aspects of the Staticfile buildpack that you can configure.
- 
-For instructions on _how to_ do these configurations, see [Configure Your App](#config-process) below.
 
 <table border='1' class='nice'>
 <tr>
@@ -126,21 +123,19 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
 <tr>
   <td id="root">Alternative root</td>
   <td>Allows you to specify a root directory other than the default, which is <code>index.html</code>.
-
-  For example, you can specify that the buildpack serves index.html and all other assets from an alternate folder 
-  where your HTML/CSS/JavaScript files are to be served from, such as <code>dist/</code> or <code>public/</code>.</td>
+  For example, you can specify that the buildpack serves index.html and all other assets from an alternate folder where your HTML/CSS/JavaScript files exist, such as <code>dist/</code> or <code>public/</code>.</td>
 </tr>
 <tr>
   <td id="dir-list">Directory list</td>
   <td>An HTML page that displays a directory index for your site. A sample of a directory list is shown below.<br>
  <img src="../images/directory-index.png" alt="directory index"><br>
-    If your site is missing an index.html, you display a directory list instead of the standard 404 error page.</td>
+    If your site is missing an index.html, your app displays a directory list instead of the standard 404 error page.</td>
 </tr>
 
 <tr>
   <td id="ssi">SSI</td>
   <td>Server Side Includes (SSI) allows you to show the contents of files on a web page on the web server. 
-      For general information about SSI, see the <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side Includes</a>) entry on Wikipedia.</td>
+For general information about SSI, see the <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side Includes</a> entry on Wikipedia.</td>
 <tr>
   <td id="pushstate">Pushstate routing</td>
   <td>Keeps browser-visible URLs clean for client-side JavaScript apps that serve multiple routes.
@@ -151,11 +146,8 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
 
 <tr>
   <td id="gzip">GZip file serving and compressing</td>
-  <td>The <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a> 
-      and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules 
-      are enabled by default so that Nginx can serve files stored in compressed GZ format 
-      and can uncompresses them for clients that do not support compressed content or responses. <br>
-      Occasionally, you might want to disable compression, for example if serving to very old browser clients.</td>
+<td>The <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a> 
+and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules are enabled by default. This allows Nginx to serve files stored in compressed GZ format, and to uncompresses them for clients that do not support compressed content or responses. <br>You may want to disable compression in particular circumstances, for example if serving to very old browser clients.</td>
 </tr>
 
 <tr>
@@ -171,15 +163,15 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
 
 <tr>
   <td>Force HTTPS</td>
-   <td>A way to enforce that all requests are sent via HTTPS. 
+   <td>A way to enforce that all requests are sent through HTTPS. 
        This redirects non-HTTPS requests as HTTPS requests. 
-       For an example of when to avoid forcing HTTPS, see <a href="#force-https">About FORCE_HTTPS with Reverse Proxies</a> below.</td>
+       For an example of when to avoid forcing HTTPS, see <a href="#force-https">About FORCE_HTTPS with Reverse Proxies</a>.</td>
 </tr>
 
 <tr>
   <td id="strict-security">HTTP Strict Transport Security</td>
   <td>Causes Nginx to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000</code>, thus forcing browser to make all subsequent requests over HTTPS.</td>
+ <code>Strict-Transport-Security: max-age=31536000</code>. This forces browsers to make all subsequent requests over HTTPS.</td>
 </tr>
 
 <tr>
@@ -191,11 +183,10 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
 
 ### <a id='config-process'></a>Configure Your App
 
-3. In the root directory of your app, create an empty file named `Staticfile`:
-
-    <code>
-    $ touch Staticfile
-    </code>
+1. In the root directory of your app, create an empty file named `Staticfile`:
+  <pre class='terminal'>
+$ touch Staticfile
+  </pre>
 
 2. Configure the Staticfile buildpack for the needs of your app.
 
@@ -205,8 +196,8 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
     </tr>
 
     <tr>
-    <td>serve <code>index.html</code> and other assets not from the root directory</tc>
-    <td>add this line to the <code>Staticfile</code>:<br><code><strong>root: DIRECTORY_NAME</strong></code><br>for example, <pre class='terminal'>root: public</pre></td>
+    <td>serve <code>index.html</code> and other assets from a location other than the root directory</tc>
+    <td>add this line to the <code>Staticfile</code>:<br><code><strong>root: YOUR-DIRECTORY-NAME</strong></code><br><br>For example, <code>root: public</code></td>
     <td><a href="#root">Alternative root</a></td>
     </tr>
     
@@ -229,30 +220,30 @@ For instructions on _how to_ do these configurations, see [Configure Your App](#
     </tr>
 
     <tr>
-    <td>disable gzip_static and gunzip modules so that...</td>
+    <td>disable gzip_static and gunzip modules</td>
     <td>add this line to the <code>Staticfile</code>:<br><code><strong>directory: visible</strong></code></td>
     <td><a href="#gzip">GZip</a></td>
     </tr>
 
     <tr>
     <td valign="top">enable basic authentication for your app or website</td>
-    <td>  1. create a hashed username and password pair for each user, using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a><br>
-  &#50;. create a file called <code>Staticfile.auth</code> in the root directory or alternative root directory and add one or more user/password lines to it. 
-    For example,<br> <code>bob:$apr1$DuUQEQp8$ZccZCHQElNSjrg.erwSFC0<br>alice:$apr1$4IRQGcD/$.UMFLnIHSD9ZHJ86TR4zx.</code><br>
+    <td>  1. Create a hashed username and password pair for each user, using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a><br>
+  &#50;. Create a file named <code>Staticfile.auth</code> in the root directory or alternative root directory, and add one or more user/password lines to it. 
+    For example,<br> <code>bob:$apr1$DuUQEQp8$ZccZCHQElNSjrgerwSFC0<br>alice:$apr1$4IRQGcD/$UMFLnIHSD9ZHJ86TR4zx</code><br>
     </td>
     <td><a href="#basic-auth">Basic authentication</a></td>
     </tr>
 
     <tr>
     <td>use a proxy for downloading dependencies during staging</td>
-    <td>Set the <code>http_proxy</code> and <code>https_proxy</code> environment variables.</td>
+    <td>set the <code>http_proxy</code> and <code>https_proxy</code> environment variables.</td>
     <td><a href="../proxy-usage.html">Proxy support</a></td>
     </tr>
 
     <tr>
     <td>force HTTPS</td>
-    <td>add the line<br><code><strong>FORCE_HTTPS: true</strong></code> to a file called <code>nginx.conf</code> in your root directory or alternate root directory.
-    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you are have a proxy server or load balancer that terminates SSL/TLS. 
+    <td>add the line<br><code><strong>FORCE_HTTPS: true</strong></code> to a file named <code>nginx.conf</code> in your root directory or alternate root directory.
+    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer that terminates SSL/TLS. 
 Doing so can cause infinite redirect loops, for example, 
 if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
     <td><a href="#force-https">Force HTTPS</a></td>
@@ -261,13 +252,13 @@ if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">
     <tr>
     <td>force the receiving browser to make subsequent requests over HTTPS</td>
     <td>add this line to the <code>Staticfile</code>:<br><code><strong>http_strict_transport_security: true</strong></code><br>
-        <p class="note"><strong>Note</strong>: Because of the long time this setting persists in the browser, only enable this setting after ensuring that everything is properly configured.</p></td>
+        <p class="note"><strong>Note</strong>: Because this setting persists in browsers for a long time, only enable this setting after ensuring you have completed your configuration.</p></td>
     <td><a href="#strict-security">HTTP Strict Transport Security</a></td>
     </tr>
 
     <tr>
     <td>make additional configuration changes to Nginx</td>
-    <td>add <code><strong>nginx.conf</strong></code> and <code><strong>mime.types</strong></code> files to your root folder or to the alternate root folder if you specified one.</td> 
+    <td>add <code><strong>nginx.conf</strong></code> and <code><strong>mime.types</strong></code> files to your root folder, or to the alternate root folder if you specified one.</td> 
     <td><a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">Nginx documentation</a></td>
     </tr>
     </table>
@@ -283,49 +274,35 @@ Follow the steps below to push your application.
 </tr>
 <tr valign="top">
   <td>1.</td>
-  <td>Use the <code>cf push</code> to push your app:<br>
-    <code>
-    $ <strong>cf push APP_NAME -m 64M</strong>
-    </code>
-    <br>
-    where <code>APP_NAME</code> is the name you want to give your application, for example, 
-    <code>my-app</code>:
-    <pre class='terminal'>
- $ cf push my-app -m 64M
- Creating app my-app in org sample-org / space sample-space as username@example.com...
- OK
- … 
- requested state: started
- instances: 1/1
- usage: 64M x 1 instances
- urls: my-app.example.com
-   </pre>
-   Or, if you do not have the buildpack or the installed version is out-of-date, push with the latest version using:<br>
-   <code>$ <strong>cf push APP_NAME -b https://github.com/cloudfoundry/staticfile-buildpack.git</strong></code> 
+  <td>Use the <code>cf push APP_NAME -m 64M</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
+<pre class='terminal'>
+$ cf push my-app -m 64M
+Creating app my-app in org sample-org / space sample-space as username@example.com...
+OK
+… 
+requested state: started
+instances: 1/1
+usage: 64M x 1 instances
+urls: my-app.example.com
+</pre>
+   Or, if you do not have the buildpack, or the installed version is out-of-date, use the <code>-b</code> option to specify the builpack as follows:<br>
+<code>cf push APP_NAME -b https://github.com/cloudfoundry/staticfile-buildpack.git</code> 
   </td>
 </tr>
 <tr valign="top">
   <td>2.</td>
-  <td>Find the URL of your app in the output from the push command above and navigate there to see your static app running.</td>
+  <td>Find the URL of your app in the output from the push command and navigate to it to see your static app running.</td>
 </tr>
 </table>
 
 ## <a id='help'></a>Help and Support
 
-### <a id='intro'></a> Introduction
+A number of channels exist where you can get more help when using the Staticfile buildpack, or with developing your own Staticfile buildpack.
 
-Here are some ways you can get more help with using the Staticfile buildpack or with developing your own Staticfile buildpack.
+* **Staticfile Buildpack Repo in Github**: Find more information about using and extending the Staticfile buildpack in [GitHub repository](https://github.com/cloudfoundry/staticfile-buildpack).
 
-### <a id='slack'></a>Slack
+* **Release Notes**: Find current information about this buildpack on the Staticfile buildpack [release page](https://github.com/cloudfoundry/staticfile-buildpack/releases) in GitHub.
 
-You can join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+* **Slack**: Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/).
 
-### <a id='relnotes'></a> Release Notes
-
-You can find current information about this buildpack on the Staticfile buildpack [release page](https://github.com/cloudfoundry/staticfile-buildpack/releases) in GitHub.
-
-### <a id='extend'></a> Staticfile Buildpack Repo in Github
-
-You can find more information about using and extending the Staticfile buildpack in Cloud Foundry in the
-[staticfile-buildpack GitHub repo](https://github.com/cloudfoundry/staticfile-buildpack).
 
