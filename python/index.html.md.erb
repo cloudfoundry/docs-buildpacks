@@ -62,7 +62,7 @@ To stage with the Python buildpack and start an application, do one of the follo
 
 ## <a id='vendoring'></a>Vendor App Dependencies ##
 
-As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must vendor its dependencies.
+If you are deploying in an environment that is disconnected from the Internet, your application [must vendor its dependencies](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md).
 
 For the Python buildpack, use `pip`:
 
