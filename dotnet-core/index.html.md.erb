@@ -15,6 +15,7 @@ This topic describes how to push Cloud Foundry apps using the .NET Core buildpac
 
 Cloud Foundry automatically uses the .NET Core buildpack when:
 
+- The pushed app contains one or more `*.csproj` or `*.fsproj` files.
 - The pushed app contains one or more `project.json` files.
 - The app is pushed from the output directory of the `dotnet publish` command.
 
@@ -24,11 +25,25 @@ If your Cloud Foundry deployment does not have the .NET Core buildpack installed
 $ cf push MY_APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
 </pre>
 
-If you do not want to use latest stable beta release of the .NET CLI, specify the version in the `global.json` file.
-
 Specify any non-default package sources in the `NuGet.Config` file.
 
 For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
+4
+## <a id='cli_tools'></a> .NET Core SDKs ##
+
+The first several releases of the .NET Core SDKs used `project.json` files for project build configuration. However, the current release of the .NET Core SDK uses MSBuild as its build tool, which uses `*.csproj` and `*.fsproj` files for configuration.
+
+Currently, the .NET Core buildpack includes both types of SDKs. If the pushed app contains a `global.json` file, the buildpack will install the version specfied by that file. Otherwise, the buildpack will choose the SDK to install as follows:
+
+1. If the app only contains `project.json` files, install the latest SDK that supports this configuration.
+2. If the app only contains `*.csproj` and `*.fsproj` files, install the latest SDK that uses MSBuild.
+3. If the app contains both file types without a `global.json`, the buildpack will throw an error as it cannot determine the proper SDK to install.
+
+<p class="note">
+  <strong>Note</strong>: Microsoft has removed support for project.json from the <a href="https://blogs.msdn.microsoft.com/dotnet/2016/11/16/announcing-net-core-tools-msbuild-alpha/">.NET Core SDK tools.</a>. As such, support for project.json apps in the buildpack will soon be deprecated.
+</p>
+
+
 
 ## <a id='port'></a>Configure the Listen Port ##
 
@@ -63,25 +78,18 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
     .UseConfiguration(config)
     ```
 
-1. Save the file, and then open `project.json`.
-
-1. Add the following dependency:
+1. Either add `Microsoft.Extensions.Confugration.CommandLine` as a dependency using `project.json`:
 
     ```json
     "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
     ```
 
-1. Add the following property to the `buildOptions` section:
+1. Or using `*.csproj`:
 
-    ```json
-    "copyToOutput": {
-        "include": [
-            "wwwroot",
-            "Areas/**/Views",
-            "Views",
-            "appsettings.json"
-        ]
-    }
+    ```xml
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine">
+        <Version>1.0.0</Version>
+    </PackageReference>
     ```
 
 1. Remove the following line from the `Startup` method:
@@ -118,18 +126,26 @@ public static void Main(string[] args)
 
 ## <a id='multiple_projects'></a>Deploy Apps with Multiple Projects ##
 
-To deploy an app that contains multiple projects, specify the project you want the buildpack to run as the main project.
+In order to deploy an app that contains multiple projects, a main project for the buildpack to run must be specified.
 
-Create a `.deployment` file in the root folder of the .NET solution file which sets the path to the main project. You can also specify the path to the main project as the project folder or the project file, `.xproj` or `.csproj`.
-
-For example, if a solution contains three projects in the `src` folder, the main project `MyApp.Web` plus `MyApp.DAL` and `MyApp.Services`, format the `.deployment` file as follows:
+To do so, create a `.deployment` file in the root folder of the app which sets the path to the main project as follows:
 
 ```text
 [config]
-project = src/MyApp.Web
+project = <main project>
 ```
 
-In this case, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Services` projects if the `project.json` file of the main project lists them as dependencies, `MyApp.Web`. The buildpack attempts to execute the main project with `dotnet run -p src/MyApp.Web`. You can also specify the path to `MyApp.Web` as `project = src/MyApp.Web/MyApp.Web.xproj`, assuming the project is an xproj project.
+1. If the app uses `project.json` set `project` to the directory containing the `project.json` file of the main project
+2. If the app uses MSBuild, set `project` to the `*.csproj` or `*.fsproj` file of the main project
+
+For example, if an app using MSBuild contains three projects in the `src` folder, the main project `MyApp.Web` plus `MyApp.DAL` and `MyApp.Services`, format the `.deployment` file as follows:
+
+```text
+[config]
+project = src/MyApp.Web/MyApp.Web.csproj
+```
+
+In this case, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Services` projects if the `MyApp.Web.csproj` file of the main project lists them as dependencies, `MyApp.Web`. The buildpack attempts to execute the main project with `dotnet run -p src/MyApp.Web/MyApp.Web.csproj`.
 
 ## <a id='disconnected_environments'></a>Push an App in a Disconnected Environment ##
 
