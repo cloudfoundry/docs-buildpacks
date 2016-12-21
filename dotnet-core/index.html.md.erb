@@ -5,15 +5,13 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the .NET Core buildpack [release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
+This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
-<p class="note">
-  <strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>. For apps which are not based on this new toolchain, please refer to the legacy <a href="#legacy">.NET buildpack.</a>
-</p>
+<p class="note"><strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>. For apps which are not based on this toolchain, refer to the legacy <a href="#legacy">.NET buildpack.</a></p>
 
 ## <a id='pushing_apps'></a> Push an App ##
 
-Cloud Foundry automatically uses the .NET Core buildpack when:
+Cloud Foundry automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
 - The pushed app contains one or more `*.csproj` or `*.fsproj` files.
 - The pushed app contains one or more `project.json` files.
@@ -28,30 +26,27 @@ $ cf push MY_APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
 Specify any non-default package sources in the `NuGet.Config` file.
 
 For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
-4
+
 ## <a id='cli_tools'></a> .NET Core SDKs ##
 
-The first several releases of the .NET Core SDKs used `project.json` files for project build configuration. However, the current release of the .NET Core SDK uses MSBuild as its build tool, which uses `*.csproj` and `*.fsproj` files for configuration.
+The first several releases of the .NET Core SDKs used `project.json` files for project build configuration. The current release of the .NET Core SDK uses MSBuild as its build tool, which uses `*.csproj` and `*.fsproj` files for configuration.
 
-Currently, the .NET Core buildpack includes both types of SDKs. If the pushed app contains a `global.json` file, the buildpack will install the version specfied by that file. Otherwise, the buildpack will choose the SDK to install as follows:
+Currently, the .NET Core buildpack includes both types of SDKs. If the pushed app contains a `global.json` file, the buildpack installs the version specified by that file. Otherwise, the buildpack chooses which SDK to install as follows:
 
-1. If the app only contains `project.json` files, install the latest SDK that supports this configuration.
-2. If the app only contains `*.csproj` and `*.fsproj` files, install the latest SDK that uses MSBuild.
-3. If the app contains both file types without a `global.json`, the buildpack will throw an error as it cannot determine the proper SDK to install.
+1. If the app only contains `project.json` files, the buildpack installs the latest SDK that supports this configuration.
+2. If the app only contains `*.csproj` and `*.fsproj` files, the buildpack installs the latest SDK that uses MSBuild.
+3. If the app contains both file types without a `global.json`, the buildpack throws an error, as it cannot determine the proper SDK to install.
 
-<p class="note">
-  <strong>Note</strong>: Microsoft has removed support for project.json from the <a href="https://blogs.msdn.microsoft.com/dotnet/2016/11/16/announcing-net-core-tools-msbuild-alpha/">.NET Core SDK tools.</a>. As such, support for project.json apps in the buildpack will soon be deprecated.
+<p class="note"><strong>Note</strong>: Microsoft has removed support for project.json from the <a href="https://blogs.msdn.microsoft.com/dotnet/2016/11/16/announcing-net-core-tools-msbuild-alpha/">.NET Core SDK tools</a>. Consequently, support for <code>project.json</code> apps in the buildpack will soon be deprecated.
 </p>
-
-
 
 ## <a id='port'></a>Configure the Listen Port ##
 
-For your .NET Core app to work on Cloud Foundry, you must modify the `Main` method to make the app listen on the port specified by the `$PORT` environment variable, which Cloud Foundry sets automatically.
+For your .NET Core app to work on Cloud Foundry, you must modify the `Main` method to configure the app to listen on the port specified by the `$PORT` environment variable, which Cloud Foundry sets automatically.
 
 1. Open the file that contains your `Main` method.
 
-1. Add a `using` statement to the top of the file:
+1. Add a `using` statement to the top of the file.
 
     ```c#
     using Microsoft.Extensions.Configuration;
@@ -66,31 +61,31 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
     ```
     This allows the buildpack to pass the correct port from `$PORT` to the app when running the initial startup command.
 
-1. Remove the following line from the `Main` method.
+1. Remove the following line from the `Main` method:
 
     ```c#
     .UseContentRoot(Directory.GetCurrentDirectory())
     ```
 
-1. Add this line after `.UseKestrel()`:
+1. Add the following line after `.UseKestrel()`:
 
     ```c#
     .UseConfiguration(config)
     ```
 
-1. Either add `Microsoft.Extensions.Confugration.CommandLine` as a dependency using `project.json`:
+1. Add `Microsoft.Extensions.Confugration.CommandLine` as a dependency using one of the following:
+    - `project.json`:
+        
+		  ```json
+        "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
+        ```
+    - `*.csproj`:
 
-    ```json
-    "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
-    ```
-
-1. Or using `*.csproj`:
-
-    ```xml
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine">
-        <Version>1.0.0</Version>
-    </PackageReference>
-    ```
+        ```xml
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine">
+            <Version>1.0.0</Version>
+        </PackageReference>
+        ```
 
 1. Remove the following line from the `Startup` method:
 
@@ -100,7 +95,7 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
-1. Save.
+1. Save your changes.
 
 With these changes, the `dotnet run` command copies your app `Views` to the build output, where the .NET CLI can find them. Refer to the following example `Main` method:
 
@@ -120,32 +115,29 @@ public static void Main(string[] args)
 }
 ```
 
-<p class="note">
-  <strong>Note</strong>: The samples provided in the <a href="https://github.com/aspnet/cli-samples">cli-samples repository</a> and the templates provided by Visual Studio and Yeoman work with this buildpack after you have followed the steps above.</a>
-</p>
+<p class="note"><strong>Note</strong>: The samples provided in the <a href="https://github.com/aspnet/cli-samples">cli-samples repository</a> and the templates provided by Visual Studio and Yeoman work with this buildpack after you have followed the steps above.</a></p>
 
 ## <a id='multiple_projects'></a>Deploy Apps with Multiple Projects ##
 
-In order to deploy an app that contains multiple projects, a main project for the buildpack to run must be specified.
-
-To do so, create a `.deployment` file in the root folder of the app which sets the path to the main project as follows:
+To deploy an app that contains multiple projects, you must specify a main project for the buildpack to run. Create a `.deployment` file in the root folder of the app which sets the path to the main project as follows:
 
 ```text
 [config]
 project = <main project>
 ```
 
-1. If the app uses `project.json` set `project` to the directory containing the `project.json` file of the main project
-2. If the app uses MSBuild, set `project` to the `*.csproj` or `*.fsproj` file of the main project
+1. If the app uses `project.json`, set `project` to the directory containing the `project.json` file of the main project.
 
-For example, if an app using MSBuild contains three projects in the `src` folder, the main project `MyApp.Web` plus `MyApp.DAL` and `MyApp.Services`, format the `.deployment` file as follows:
+2. If the app uses MSBuild, set `project` to the `*.csproj` or `*.fsproj` file of the main project.
+
+For example, if an app using MSBuild contains three projects in the `src` folder, the main project `MyApp.Web`, `MyApp.DAL`, and `MyApp.Services`, format the `.deployment` file as follows:
 
 ```text
 [config]
 project = src/MyApp.Web/MyApp.Web.csproj
 ```
 
-In this case, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Services` projects if the `MyApp.Web.csproj` file of the main project lists them as dependencies, `MyApp.Web`. The buildpack attempts to execute the main project with `dotnet run -p src/MyApp.Web/MyApp.Web.csproj`.
+In this example, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Services` projects if the `MyApp.Web.csproj` file of the main project lists them as dependencies, `MyApp.Web`. The buildpack attempts to execute the main project with `dotnet run -p src/MyApp.Web/MyApp.Web.csproj`.
 
 ## <a id='disconnected_environments'></a>Push an App in a Disconnected Environment ##
 
@@ -166,8 +158,8 @@ You can push apps with their other dependencies following these steps:
 
 You may need to disable NuGet package caching, or clear NuGet packages cached in the staging environment, in one of the following scenarios:
 
-* Your app is failing to stage because it runs out of space, exceeding the maximum allowable disk quota.
-* You have added pre-release packages to test a new feature, then decided to revert back to the main NuGet feed. The packages you changed may need to be removed from the cache to avoid conflicts.
+* Your app fails to stage because it runs out of space, exceeding the maximum allowable disk quota.
+* You have added pre-release packages to test a new feature, then decided to revert back to the main NuGet feed. You may need to remove the packages you changed from the cache to avoid conflicts.
 
 Disabling NuGet caching both clears any existing NuGet dependencies from the staging cache and prevents the buildpack from adding NuGet dependencies to the staging cache.
 
@@ -192,4 +184,4 @@ See the [Environment Variables](../../devguide/deploy-apps/manifest.html#env-blo
 
 ## <a id='legacy'></a>Legacy .NET Buildpack ##
 
-There is also a legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) built by the Cloud Foundry community which addresses applications not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/) (e.g. via Xamarin Studio, MonoDevelop or xbuild).
+A legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) exists, built by the Cloud Foundry community. This buildpack addresses applications not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/), for example from Xamarin Studio, MonoDevelop, or xbuild.
