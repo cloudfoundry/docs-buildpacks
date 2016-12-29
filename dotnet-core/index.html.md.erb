@@ -165,7 +165,7 @@ Disabling NuGet caching both clears any existing NuGet dependencies from the sta
 
 To disable NuGet package caching, set the `CACHE_NUGET_PACKAGES` environment variable to `false`. If the variable is not set, or set to a different value, there is no change. Perform one of the following procedures to set `CACHE_NUGET_PACKAGES` to `false`:
 
-* Locate your application manifest, `manifest.yml`, and set the `CACHE_NUGET_PACKAGES` environment variable, following the format of the example below:
+* Locate your app manifest, `manifest.yml`, and set the `CACHE_NUGET_PACKAGES` environment variable, following the format of the example below:
 
     ```yml
     ---
@@ -182,16 +182,15 @@ To disable NuGet package caching, set the `CACHE_NUGET_PACKAGES` environment var
 
 See the [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) section of the <em>Deploying with Application Manifests</em> topic for more information.
 
-## <a id='custom-libraries'></a>Adding Custom Libraries ##
+## <a id='custom-libraries'></a>Add Custom Libraries ##
 
-If an application requires external shared libraries which are not provided by the rootfs or the buildpack, the application developer can provided them by placing the libraries in a `ld_library_path` directory at the app root.
+If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in a `ld_library_path` directory at the app root.
 
-The .NET Core buildpack will automatically add the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH`, allowing these libraries to be accessed at runtime.
+<p class="note"><strong>Note</strong>:
+Ensure to keep these libraries up-to-date because they do not update automatically.</p>
 
-<p class="note"><strong>WARNING</strong>:
-The application developer must be careful to ensure these libraries do not fall out of date, as the Cloud Foundry operator will not be able to update them automatically
-</p>
+The .NET Core buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that  your app can access these libraries at runtime.
 
 ## <a id='legacy'></a>Legacy .NET Buildpack ##
 
-A legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) exists, built by the Cloud Foundry community. This buildpack addresses applications not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/), for example from Xamarin Studio, MonoDevelop, or xbuild.
+A legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) exists, built by the Cloud Foundry community. This buildpack addresses apps not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/), for example from Xamarin Studio, MonoDevelop, or xbuild.
