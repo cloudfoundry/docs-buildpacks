@@ -85,7 +85,7 @@ The following is an example of the "migrate frequently" method described in the
 [Migrating a Database in Cloud Foundry]
 (../../devguide/services/migrate-db.html#frequent-migration) topic.
 
-1. Create a Rakefile if one does not already exist, and add it to your application directory. 
+1. Create a Rakefile if one does not already exist, and add it to your application directory.
 1. In your Rakefile, add a Rake task to limit an idempotent command to the first instance of a deployed application:
 
     ~~~
@@ -327,6 +327,16 @@ directly from your web application.
 The gem enables this behavior by setting the
 `config.serve_static_assets` option to `true`, so you do not need to
 configure it manually.
+
+## <a id='custom-libraries'></a>Adding Custom Libraries ##
+
+If an application requires external shared libraries which are not provided by the rootfs or the buildpack, the application developer can provided them by placing the libraries in a `ld_library_path` directory at the app root.
+
+The Ruby buildpack will automatically add the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH`, allowing these libraries to be accessed at runtime.
+
+<p class="note"><strong>WARNING</strong>:
+The application developer must be careful to ensure these libraries do not fall out of date, as the Cloud Foundry operator will not be able to update them automatically
+</p>
 
 ## <a id='env-var'></a>Environment Variables ##
 
