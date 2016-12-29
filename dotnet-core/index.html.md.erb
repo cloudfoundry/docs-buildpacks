@@ -75,7 +75,7 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
 
 1. Add `Microsoft.Extensions.Confugration.CommandLine` as a dependency using one of the following:
     - `project.json`:
-        
+
 		  ```json
         "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
         ```
@@ -181,6 +181,16 @@ To disable NuGet package caching, set the `CACHE_NUGET_PACKAGES` environment var
     <pre class="terminal">$ cf set-env YOUR-APP CACHE_NUGET_PACKAGES false</pre>
 
 See the [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) section of the <em>Deploying with Application Manifests</em> topic for more information.
+
+## <a id='custom-libraries'></a>Adding Custom Libraries ##
+
+If an application requires external shared libraries which are not provided by the rootfs or the buildpack, the application developer can provided them by placing the libraries in a `ld_library_path` directory at the app root.
+
+The .NET Core buildpack will automatically add the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH`, allowing these libraries to be accessed at runtime.
+
+<p class="note"><strong>WARNING</strong>:
+The application developer must be careful to ensure these libraries do not fall out of date, as the Cloud Foundry operator will not be able to update them automatically
+</p>
 
 ## <a id='legacy'></a>Legacy .NET Buildpack ##
 
