@@ -292,7 +292,7 @@ $ cf push -f web-manifest.yml
 $ cf push -f worker-manifest.yml
 </pre>
 
-If the cf CLI asks for a URL for the worker app, select "none".
+If the cf CLI asks for a URL for the worker app, select **none**.
 
 ### <a id='test'></a>Test the App ###
 
@@ -330,14 +330,11 @@ configure it manually.
 
 ## <a id='custom-libraries'></a>Add Custom Libraries ##
 
-If your app requires external shared libraries that are not provided by the rootfs or the buildpack, 
-you must place the libraries in a `ld_library_path` directory at the app root.
+If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in an `ld_library_path` directory at the app root.
 
-<p class="note"><strong>Note</strong>:
-Ensure to keep these libraries up-to-date because they do not update automatically.</p>
+<p class="note"><strong>Note</strong>: You must keep these libraries up-to-date. They do not update automatically.</p>
 
-The Ruby buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that 
-your app can access these libraries at runtime.
+The Ruby buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
 
 ## <a id='env-var'></a>Environment Variables ##
 
