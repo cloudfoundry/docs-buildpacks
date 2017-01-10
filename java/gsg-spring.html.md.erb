@@ -85,7 +85,8 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <%=vars.product_short%> provides extensive support for creating and binding a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information about creating and binding a service connection for your app, refer to the [Configure Service Connections for Spring](./spring-service-bindings.html) topic.
 
-<p class="tip"><strong>Sample App Step: Create a Service Instance</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>mysql</code> plan, as the example below shows.
+<p class="tip"><strong>Sample App Step: Create a Service Instance</strong><br />Run <code>cf create-service 
+  spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
 
 <pre class="terminal">
 $ cf create-service cleardb spark mysql
