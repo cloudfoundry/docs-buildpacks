@@ -5,61 +5,58 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-When you use the Ruby buildpack, you get three Ruby-specific environment
-variables in addition to the regular [Cloud Foundry environment variables]
-(../../devguide/deploy-apps/environment-variable.html).
+<%=vars.product_full%> provides configuration information to applications through environment variables. 
+This topic describes the additional environment variables provided by the Ruby buildpack. 
 
-* `BUNDLE_BIN_PATH` — Location where Bundler installs binaries.
+For more information about the standard environment variables provided by <%=vars.product_full%>, see the [Cloud Foundry Environment Variables](../../devguide/deploy-apps/environment-variable.html) topic.
 
-    `BUNDLE_BIN_PATH:/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/bin/bundle`
+## Ruby Buildpack Environment Variables ##
 
-* `BUNDLE_GEMFILE` — Path to application's gemfile.
+The following table describes the environment variables provided by the Node buildpack.
 
-    `BUNDLE_GEMFILE:/home/vcap/app/Gemfile`
 
-* `BUNDLE_WITHOUT` — This variable causes Cloud Foundry to skip installation
-of gems in excluded groups. 
-Use this with Rails applications, where "assets" and "development" gem groups
-typically contain gems that are not needed when the app runs in production.
+<table border="1" class="nice" >
+  <tr>
+    <th>Environment Variable</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>BUNDLE_BIN_PATH</code></td>
+    <td>The directory where Bundler installs binaries. Example: <code>BUNDLE_BIN_PATH:/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/bin/bundle</code></td>
+  </tr>
+  <tr>
+    <td><code>BUNDLE_GEMFILE</code></td>
+    <td>The path to the Gemfile for the app. Example: <code>BUNDLE_GEMFILE:/home/vcap/app/Gemfile</code></td>
+  </tr>
+  <tr>
+    <td><code>BUNDLE_WITHOUT</code></td>
+    <td>Instructs Cloud Foundry to skip gem installation in excluded groups. Use this with Rails applications, where "assets" and "development" gem groups
+typically contain gems that are not needed when the app runs in production. Example: <code>BUNDLE_WITHOUT=assets</code>
+<br><br>
+For more information, see this [blog post](https://blog.pivotal.io/pivotal-cloud-foundry/products/polishing-cloud-foundrys-ruby-gem-support).</td>
+  </tr>
+  <tr>
+    <td><code>DATABASE_URL</code></td>
+    <td>The Ruby buildpack examines the <code>database_uri</code> for bound services to see if they match known database types. If known relational database services are bound to the application, the buildpack sets the <code>DATABASE_URL</code> environment variable as the first services in the list.
+<br><br>	 
+If your application requires that <code>DATABASE_URL</code> is set to the connection string for your service, and Cloud Foundry does not set it, use the Cloud Foundry Command Line Interface (cf CLI) <code>cf set-env</code> command to set this variable manually. Example: <pre class='terminal'>$ cf set-env my_app_name DATABASE_URL mysql://ab:ab@cd.example.com:33/ab_cd</pre></td>
+  </tr>
+  <tr>
+    <td><code>GEM_HOME</code></td>
+    <td>The directory where gems are installed. Example: <code>GEM_HOME:/home/vcap/app/vendor/bundle/ruby/1.9.1</code></td>
+  </tr>
+  <tr>
+    <td><code>GEM_PATH</code></td>
+    <td>The directory where gems can be found. Example: <code>GEM_PATH=/home/vcap/app/vendor/bundle/ruby/1.9.1:</code></td>
+  </tr>
+  <tr>
+    <td><code>RACK_ENV</code></td>
+    <td>The Rack deployment environment, which governs the middleware loaded to run the app. Valid value are <code>development</code>, <code>test</code>, and <code>production</code>. Example: <code>RAILS_ENV=production</code></td>
+  </tr>
+  <tr>
+    <td><code>RUBYOPT</code></td>
+    <td>Defines command-line options 
+passed to Ruby interpreter. Example: <code>RUBYOPT: -I/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/lib -rbundler/setup</code></td>
+  </tr>
+</table>
 
-    See [this]   (https://blog.pivotal.io/pivotal-cloud-foundry/products/polishing-cloud-foundrys-ruby-gem-support) blog post for more information.
-
-    `BUNDLE_WITHOUT=assets`
-
-* `DATABASE_URL` — The Ruby buildpack looks at the `database\_uri` for bound 
-services to see if they match known database types.
-If known relational database services are bound to the application, the 
-buildpack sets up the `DATABASE_URL` environment variable with the first one in
-the list.
-
-    If your application depends on `DATABASE\_URL` being set to the connection 
-    string for your service, and Cloud Foundry does not set it, you can set 
-    this variable manually.
-
-    `$ cf set-env my_app_name DATABASE_URL mysql://b5d435f40dd2b2:ebfc00ac@us-cdbr-east-03.cleardb.com:3306/ad_c6f4446532610ab`
-
-* `GEM_HOME` — Location where gems are installed.
-
-    `GEM_HOME:/home/vcap/app/vendor/bundle/ruby/1.9.1`
-
-* `GEM_PATH` — Location where gems can be found.
-
-    `GEM_PATH=/home/vcap/app/vendor/bundle/ruby/1.9.1:`
-
-* `RACK_ENV` — This variable specifies the Rack deployment environment: 
-development, deployment, or none.
-This governs what middleware is loaded to run the application.
-
-    `RACK_ENV=production`
-
-* `RAILS_ENV` — This variable specifies the Rails deployment environment: 
-development, test, or production.
-This controls which of the environment-specific configuration files will govern
-how the application will be executed.
-
-     `RAILS_ENV=production`
-
-* `RUBYOPT` — This Ruby environment variable defines command-line options 
-passed to Ruby interpreter.
-
-    `RUBYOPT: -I/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/lib -rbundler/setup`

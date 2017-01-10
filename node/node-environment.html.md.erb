@@ -5,14 +5,30 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-When you use the Node buildpack, you get three Node-specific environment
-variables in addition to the regular [Cloud Foundry environment variables]
-(../../devguide/deploy-apps/environment-variable.html).
+<%=vars.product_full%> provides configuration information to applications through environment variables. 
+This topic describes the additional environment variables provided by the Node buildpack. 
 
-* `BUILD_DIR` — The directory into which Node.js is copied each time a Node.js application is run.
+For more information about the standard environment variables provided by <%=vars.product_full%>, see the [Cloud Foundry Environment Variables](../../devguide/deploy-apps/environment-variable.html) topic.
 
-* `CACHE_DIR` — The directory that Node.js uses for caching.
+## Node Buildpack Environment Variables ##
 
-* `PATH` — The system path used by Node.js:
+The following table describes the environment variables provided by the Node buildpack.
 
-    `PATH=/home/vcap/app/bin:/home/vcap/app/node_modules/.bin:/bin:/usr/bin`
+<table border="1" class="nice" >
+  <tr>
+    <th>Environment Variable</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>BUILD_DIR</code></td>
+    <td>The directory where Node.js is copied each time a Node.js application runs.</td>
+  </tr>
+  <tr>
+    <td><code>CACHE_DIR</code></td>
+    <td>The directory Node.js uses for caching.</td>
+  </tr>
+  <tr>
+    <td><code>PATH</code></td>
+    <td>The system path used by Node.js: <code>PATH=/home/vcap/app/bin:/home/vcap/app/node_modules/.bin:/bin:/usr/bin</code></td>
+  </tr>
+</table>
