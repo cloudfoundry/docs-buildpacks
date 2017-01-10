@@ -8,7 +8,7 @@ owner: Java
 <%=vars.GSG_intro_sentence%>
 
 This guide is intended to walk you through deploying a Grails app to <%=vars.product_full%>.
-If you experience a problem following the steps below, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
+If you experience a problem following the steps below, refer to the <%=vars.known_issues%> or [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topics for more information.
 
 <p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_grails.git</code> to clone the <code>pong_matcher_grails</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
 
@@ -25,27 +25,27 @@ This section describes how to deploy a Grails application to <%=vars.product_sho
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html)
 * JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
 
-<p class="note"><strong>Note</strong>: You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to Step 8: Configure the Deployment Manifest.</p>
+<p class="note"><strong>Note</strong>: You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7 as described in _Step 8: Configure the Deployment Manifest_ of this topic.</p>
 
 ### Step 1: Declare App Dependencies ###
 
-Declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle, Grails, and Maven and provides documentation links for each build tool.
+Declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle, Grails, and Maven, and provides documentation links for each build tool.
 
 <table border="1" class="nice">
-<tr>
-  <th><strong>Build Tool</strong></th>
-  <th><strong>Build Script</strong></th>
+  <tr>
+    <th><strong>Build Tool</strong></th>
+    <th><strong>Build Script</strong></th>
     <th><strong>Documentation</strong></th>
-</tr>
-<tr>
-  <td>Gradle</td><td><code>build.gradle</code></td><td><a href="http://www.gradle.org/docs/current/userguide/userguide.html">Gradle User Guide</a></td>
-</tr>
-<tr>
-  <td>Grails</td><td><code>BuildConfig.groovy</code></td><td><a href="http://grails.org/doc/latest/guide/conf.html">Grails: Configuration - Reference Documentation</a></td>
-</tr>
-<tr>
-  <td>Maven</td><td><code>pom.xml</code></td><td><a href="http://maven.apache.org/guides/">Apache Maven Project Documentation</a></td>
-</tr>
+  </tr>
+  <tr>
+    <td>Gradle</td><td><code>build.gradle</code></td><td><a href="http://www.gradle.org/docs/current/userguide/userguide.html">Gradle User Guide</a></td>
+  </tr>
+  <tr>
+    <td>Grails</td><td><code>BuildConfig.groovy</code></td><td><a href="http://grails.org/doc/latest/guide/conf.html">Grails: Configuration - Reference Documentation</a></td>
+  </tr>
+  <tr>
+    <td>Maven</td><td><code>pom.xml</code></td><td><a href="http://maven.apache.org/guides/">Apache Maven Project Documentation</a></td>
+  </tr>
 </table>
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails/app/grails-app/conf/BuildConfig.groovy</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app, as the example below shows.
@@ -55,14 +55,13 @@ Declare all the dependency tasks for your app in the build script of your chosen
 
 ### Step 2: Allocate Sufficient Memory ###
 
-Use the `cf push -m` command to specify the amount of memory that should be allocated to the application. Memory allocated this way is done in preset amounts of `64M`, `128M`, `256M`, `512M`, `1G`, or `2G`. For example:
+Run the Cloud Foundry Command Line Interface (cf CLI) `cf push -m` command to specify the amount of memory that should be allocated to the application. Memory allocated this way is done in preset amounts of `64M`, `128M`, `256M`, `512M`, `1G`, or `2G`. For example:
 
 <pre class="terminal">
 $ cf push -m 128M
 </pre>
 
 When your app is running, you can use the `cf app APP_NAME` command to see memory utilization.
-
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_grails</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 1 GB to the app.</p>
 
@@ -85,7 +84,7 @@ Use a Procfile to declare required runtime processes for your web app and to spe
 
 ### Step 5: Create and Bind a Service Instance for a Grails Application ###
 
-This section describes using the CLI to configure a ClearDB managed service instance for an app. <%=vars.dev_console_1%>
+This section describes using the cf CLI to configure a ClearDB managed service instance for an app. <%=vars.dev_console_1%>
 
 <%=vars.product_short%> supports two types of service instances:
 
@@ -96,7 +95,7 @@ For more information about creating and using service instances, refer to the [S
 
 #### Create a Service Instance ####
 
-Run `cf marketplace` to view managed and user-provided services and plans available to you.
+Run the cf CLI `cf marketplace` command to view managed and user-provided services and plans available to you.
 
 The example shows two of the available managed database-as-a-service providers and their offered plans: `cleardb` database-as-a-service for MySQL-powered apps and `elephantsql` PostgreSQL as a Service.
 
@@ -105,19 +104,16 @@ $ cf marketplace
 Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
 OK
 
-service       plans        description
-...
+service       plans                     description
 
-cleardb   spark, boost, amp      Highly available MySQL for your apps
-...
-elephantsql   turtle, panda, elephant      PostgreSQL as a Service
-...
+cleardb       spark, boost, amp         Highly available MySQL for your apps
+elephantsql   turtle, panda, elephant   PostgreSQL as a Service
 
 </pre>
 
 Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
 
-<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>mysql</code> plan, as the example below shows.
+<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
 
 <pre class="terminal">
 $ cf create-service cleardb spark mysql
