@@ -59,39 +59,32 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
         .AddCommandLine(args)
         .Build();
     ```
-    This allows the buildpack to pass the correct port from `$PORT` to the app when running the initial startup command.
-
-1. Remove the following line from the `Main` method:
-
-    ```c#
-    .UseContentRoot(Directory.GetCurrentDirectory())
-    ```
-
 1. Add the following line after `.UseKestrel()`:
 
     ```c#
     .UseConfiguration(config)
     ```
 
-1. Add `Microsoft.Extensions.Confugration.CommandLine` as a dependency using one of the following:
+    This allows the buildpack to pass the correct port from `$PORT` to the app when running the initial startup command.
+
+
+
+
+1. Add `Microsoft.Extensions.Configuration.CommandLine` as a dependency using one of the following:
     - `project.json`:
 
-		  ```json
-        "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
+		```json
+        "Microsoft.Extensions.Configuration.CommandLine": "VERSION",
         ```
     - `*.csproj`:
 
         ```xml
         <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine">
-            <Version>1.0.0</Version>
+            <Version>VERSION</Version>
         </PackageReference>
         ```
 
-1. Remove the following line from the `Startup` method:
-
-    ```c#
-    .SetBasePath(env.ContentRootPath)
-    ```
+    where VERSION is the version of the package to use. Valid versions can be found on `https://www.nuget.org`.
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
@@ -109,6 +102,7 @@ public static void Main(string[] args)
     var host = new WebHostBuilder()
         .UseKestrel()
         .UseConfiguration(config)
+        .UseContentRoot(Directory.GetCurrentDirectory())
         .UseStartup<Startup>()
         .Build();
     host.Run();
