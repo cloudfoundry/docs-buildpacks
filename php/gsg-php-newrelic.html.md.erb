@@ -9,22 +9,27 @@ owner: Buildpacks
 
 ## <a id="configuration"></a> Configuration
 
-There are two ways to configure New Relic for the PHP buildpack.
+You can configure New Relic for the PHP buildpack in one of two ways:
 
-### With a CF service
-
-Bind a NewRelic service to the app. The buildpack will automatically detect and set up NewRelic.
-
-   This should work as long as the VCAP_SERVICES environment variable contains a service called `newrelic`. That service has a key called `credentials` and that, in turn, has a key called `licenseKey`.
-
-   *WARNING:* This will not work with user provided services.
+* With a license key
+* With a Cloud Foundry service
 
 ### With a License Key
 
-If you already have a New Relic account, use this method.
+Use this method if you already have a New Relic account,
 
-1. Go to the New Relic website to find your [license key](https://docs.newrelic.com/docs/accounts-partnerships/accounts/account-setup/license-key).
-1. Set the value of the environment variable `NEWRELIC_LICENSE` to your NewRelic license key, either through the [manifest.yml file](../../devguide/deploy-apps/manifest.html#env-block) or with the `cf set-env` command.
+1. In a web browser. navigate to the New Relic website to find your [license key](https://docs.newrelic.com/docs/accounts-partnerships/accounts/account-setup/license-key).
+
+1. Set the value of the environment variable `NEWRELIC_LICENSE` to your New Relic license key, either through the [manifest.yml file](../../devguide/deploy-apps/manifest.html#env-block) or by running the `cf set-env` command.
 
 For more information, see
 [https://github.com/cloudfoundry/php-buildpack#supported-software](https://github.com/cloudfoundry/php-buildpack#supported-software)
+
+### With a Cloud Foundry Service
+
+To configure New Relic for the PHP buildpack with a Cloud Foundry service, bind a New Relic service to the app. The buildpack automatically detects and configures New Relic.
+
+Your `VCAP_SERVICES` environment variable must contain a service named `newrelic`, the `newrelic` service must contain a key named `credentials`, and the `credentials` key must contain named `licenseKey`.
+
+<p class='note'><strong>NOTE</strong>: You cannot configure New Relic for the PHP buildpack with user-provided services.</p>
+
