@@ -22,7 +22,7 @@ This Ruby buildpack uses public accessible Amazon S3 hosting for these dependenc
 
 Online deployments of Cloud Foundry, such as [Pivotal Web Services](https://run.pivotal.io/), generally work well with third-party and Heroku buildpacks without modification.
 You can specify the use of these buildpacks with the `-b` option to the Cloud
-Foundry CLI.
+Foundry Command Line Interface (cf CLI).
 
 When building droplets, the Diego [cell](../concepts/architecture/index.html#diego-cell) <%= vars.buildpacks_index_dea %> executes the buildpack within a container whose network can reach the Internet entirely unimpeded.
 
