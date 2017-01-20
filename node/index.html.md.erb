@@ -99,6 +99,20 @@ The ```cf push``` command uploads the vendored dependencies with the app.
 <p class='note'><strong>Note</strong>: For an app to run in a disconnected environment, it must vendor its dependencies.
 For more information, see <a href="https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md">Disconnected environments</a>.</p>
 
+## <a id='yarn_disconnected'></a>Using Yarn in a disconnected environment ##
+
+Versions 1.5.28 and later of the Node.js buildpack include the ability to use the package manager [Yarn](https://yarnpkg.com/) in a disconnected environment. To do so, you must mirror the Yarn registry locally:
+
+<pre class="terminal">
+$ cd APP-DIR
+$ yarn config set yarn-offline-mirror ./npm-packages-offline-cache
+$ rm -rf node_modules/ yarn.lock # if they were previously generated
+$ yarn install
+</pre>
+
+When the app is pushed, the buildpack will look for an `npm-packages-offline-cache` directory at the top level of the app directory. If the directory exists, it will run Yarn in offline mode. Otherwise, it will run Yarn normally, which requires an internet connection.
+
+More information on using an offline mirror with yarn can be found [here](https://yarnpkg.com/blog/2016/11/24/offline-mirror).
 
 ## <a id='openssl'></a>OpenSSL Support ##
 
