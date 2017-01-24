@@ -32,14 +32,13 @@ The following table describes the environment variables provided by the Node bui
     <td><code>BUNDLE_WITHOUT</code></td>
     <td>Instructs Cloud Foundry to skip gem installation in excluded groups. Use this with Rails applications, where "assets" and "development" gem groups
 typically contain gems that are not needed when the app runs in production. Example: <code>BUNDLE_WITHOUT=assets</code>
-<br><br>
-For more information, see this <a href="https://blog.pivotal.io/pivotal-cloud-foundry/products/polishing-cloud-foundrys-ruby-gem-support">blog post</a><td>
+    </td>
   </tr>
   <tr>
     <td><code>DATABASE_URL</code></td>
-    <td>Cloud Foundry examines the <code>database_uri</code> for bound services to see if they match known database types. If known relational database services are bound to the application, then the <code>DATABASE_URL</code> environment variable is set to the first services in the list.
+    <td>Cloud Foundry examines the <code>database_uri</code> for bound services to see if they match known database types. If known relational database services are bound to the app, then the <code>DATABASE_URL</code> environment variable is set to the first services in the list.
 <br><br>
-If your application requires that <code>DATABASE_URL</code> is set to the connection string for your service, and Cloud Foundry does not set it, use the Cloud Foundry Command Line Interface (cf CLI) <code>cf set-env</code> command to set this variable manually. Example: <pre class='terminal'>$ cf set-env my_app_name DATABASE_URL mysql://ab:ab@cd.example.com:33/ab_cd</pre></td>
+If your application requires that <code>DATABASE_URL</code> is set to the connection string for your service, and Cloud Foundry does not set it, use the Cloud Foundry Command Line Interface (cf CLI) <code>cf set-env</code> command to set this variable manually. Example: <pre class='terminal'>$ cf set-env my_app_name DATABASE_URL mysql://example-database-connection-string</pre></td>
   </tr>
   <tr>
     <td><code>GEM_HOME</code></td>
