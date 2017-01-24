@@ -5,8 +5,8 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-<%=vars.product_full%> provides configuration information to applications through environment variables. 
-This topic describes the additional environment variables provided by the Ruby buildpack. 
+<%=vars.product_full%> provides configuration information to applications through environment variables.
+This topic describes the additional environment variables provided by the Ruby buildpack.
 
 For more information about the standard environment variables provided by <%=vars.product_full%>, see the [Cloud Foundry Environment Variables](../../devguide/deploy-apps/environment-variable.html) topic.
 
@@ -37,8 +37,8 @@ For more information, see this [blog post](https://blog.pivotal.io/pivotal-cloud
   </tr>
   <tr>
     <td><code>DATABASE_URL</code></td>
-    <td>The Ruby buildpack examines the <code>database_uri</code> for bound services to see if they match known database types. If known relational database services are bound to the application, the buildpack sets the <code>DATABASE_URL</code> environment variable as the first services in the list.
-<br><br>	 
+    <td>Cloud Foundry examines the <code>database_uri</code> for bound services to see if they match known database types. If known relational database services are bound to the application, then the <code>DATABASE_URL</code> environment variable is set to the first services in the list.
+<br><br>
 If your application requires that <code>DATABASE_URL</code> is set to the connection string for your service, and Cloud Foundry does not set it, use the Cloud Foundry Command Line Interface (cf CLI) <code>cf set-env</code> command to set this variable manually. Example: <pre class='terminal'>$ cf set-env my_app_name DATABASE_URL mysql://ab:ab@cd.example.com:33/ab_cd</pre></td>
   </tr>
   <tr>
@@ -55,7 +55,7 @@ If your application requires that <code>DATABASE_URL</code> is set to the connec
   </tr>
   <tr>
     <td><code>RUBYOPT</code></td>
-    <td>Defines command-line options 
+    <td>Defines command-line options
 passed to Ruby interpreter. Example: <code>RUBYOPT: -I/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/lib -rbundler/setup</code></td>
   </tr>
 </table>

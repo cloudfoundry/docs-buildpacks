@@ -17,8 +17,8 @@ the `VCAP_SERVICES` environment variable by name, tag, or label.
 
 ## <a id='vcap-services-defines-database-url'></a>VCAP\_SERVICES defines DATABASE\_URL ##
 
-At runtime, the Ruby buildpack creates a `DATABASE_URL` environment variable
-for every Ruby application based on the
+At runtime, Cloud Foundry creates a `DATABASE_URL` environment variable
+for every application based on the
 [VCAP_SERVICES](../../devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) environment variable.
 
 Example VCAP_SERVICES:
@@ -36,12 +36,12 @@ Example VCAP_SERVICES:
       ]
     }
 
-Based on this `VCAP_SERVICES`, the Ruby buildpack creates the following
+Based on this `VCAP_SERVICES`, Cloud Foundry creates the following
 `DATABASE_URL` environment variable:
 
     DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
 
-The Ruby buildpack uses the structure of the `VCAP_SERVICES` environment
+Cloud Foundry uses the structure of the `VCAP_SERVICES` environment
 variable to populate `DATABASE_URL`.
 Any service containing a JSON object with the following form will be recognized
 by Cloud Foundry as a candidate for `DATABASE_URL`:

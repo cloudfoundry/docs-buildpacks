@@ -375,11 +375,9 @@ For information about using this variable, see http://blog.cloudfoundry.com/2012
 
 ### <a id='DATABASE-URL'></a>DATABASE_URL ###
 
-The Ruby buildpack looks at the database\_uri for bound services to see if they
+Cloud Foundry looks at the database\_uri for bound services to see if they
 match known database types.
-If there are known relational database services bound to the app, the
-buildpack sets up the DATABASE_URL environment variable with the first one in
-the list.
+If there are known relational database services bound to the app, the DATABASE_URL environment variable is set using the first match in the list.
 
 If your app depends on DATABASE\_URL being set to the connection string
 for your service, and Cloud Foundry does not set it, you can set this variable
