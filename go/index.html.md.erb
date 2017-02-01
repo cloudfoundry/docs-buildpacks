@@ -74,9 +74,7 @@ applications:
 ```
 
 #### <a id='godeps_1.6'></a>Go 1.6 ####
-* [go 1.6 sample app](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_16_app/src/go_app)
-
-**NOTE**: if you are using godep with Go 1.6, you must set the `GO15VENDOREXPERIMENT` environment variable to 0, otherwise your app will not stage.
+* [go 1.6 sample app](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_16_app/src/go_app)ß
 
 An example `Godeps/Godeps.json`:
 
@@ -86,16 +84,6 @@ An example `Godeps/Godeps.json`:
     "GoVersion": "go1.6",
     "Deps": []
 }
-```
-
-An example `manifest.yml`:
-
-```yaml
----
-applications:
-  - name: my-app-name
-    env:
-      GO15VENDOREXPERIMENT: 0
 ```
 
 ### <a id='with_glide'></a>Push an App with Glide ###
@@ -160,6 +148,7 @@ applications:
      GOPACKAGENAME: github.com/example-org/example-project
 ```
 
+#### <a id='godeps_1.7'></a>Go 1.7 ####
 
 ## <a id='passing_symbol_linker'></a>Pass a Symbol and String to the Linker ##
 
