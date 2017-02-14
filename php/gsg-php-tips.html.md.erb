@@ -5,6 +5,50 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
+## How to use the PHP Buildpack with a recent framework
+
+The PHP buildpack has some ideosyncrasies that do not lead to pleasant deployment with recent frameworks (e.g. Symfony, Laravel, Zend and Yii). And there are a few things you need to do to make them play nice, this example uses Nginx.
+
+  1. In `.bp-config/options.json`, to prevent the buildpack from moving your files to the location it thinks best, and retaining the vendor directory you uploaded (if you uploaded it, which might be desireable if you use private packages).
+
+```
+{
+  "WEB_SERVER": "nginx",
+  "WEBDIR": "public",
+  "COMPOSER_VENDOR_DIR": "vendor"
+}
+```
+
+  2. In `.bp-config/nginx/server-locations.conf`, to make nginx rewrite your url's to allow for fancy url's.
+
+```
+        location / {
+            try_files $uri /index.php$is_args$args;
+        }
+
+        # Some basic cache-control for static files to be sent to the browser
+        location ~* \.(?:ico|css|js|gif|jpeg|jpg|png)$ {
+            expires         max;
+            add_header      Pragma public;
+            add_header      Cache-Control "public, must-revalidate, proxy-revalidate";
+        }
+
+        # Deny hidden files (.htaccess, .htpasswd, .DS_Store).
+        location ~ /\. {
+            deny            all;
+            access_log      off;
+            log_not_found   off;
+        }
+
+        location ~ .*\.php$ {
+            include         fastcgi_params;
+            fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_pass    php_fpm;
+        }
+```
+
+  3. In `composer.json`, make sure you are using a version markup for your `"php": ">=7.1"` that's supported (see below).
+
 ## <a id='buildpack'></a>About the PHP Buildpack ##
 
 For information about using and extending the PHP buildpack in Cloud Foundry,
