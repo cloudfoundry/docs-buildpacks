@@ -87,9 +87,12 @@ An example `Godeps/Godeps.json`:
 ```
 
 ### <a id='with_glide'></a>Push an App with Glide ###
-If you use [glide](https://github.com/Masterminds/glide) to specify or package your dependencies, make sure that you have created a valid `glide.yml` file in the root directory of your app by running `glide init`.
+If you use [glide](https://github.com/Masterminds/glide) to specify or package your dependencies, 
+make sure that you have created a valid `glide.yml` file in the root directory of your app by running `glide init`.
 
-To vendor your dependencies before pushing, run `glide install`. This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies. You must have a `glide.lock` file when pushing a vendored app. You do not need a `glide.lock` file when deploying a non-vendored app. 
+To vendor your dependencies before pushing, run `glide install`. 
+This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies. 
+You must have a `glide.lock` file when pushing a vendored app. You do not need a `glide.lock` file when deploying a non-vendored app. 
 
 ####<a id='glide_app'></a>Glide####
 * [Sample Go app with Glide](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_app_with_glide/src/go_app_with_glide)
@@ -104,7 +107,7 @@ import:
   - foo
 ```
 
-As with all go apps, you can specify go version in the `manifest.yml` file:
+You can specify Go version in the `manifest.yml` file:
 
 ```yaml
 ---
@@ -115,7 +118,8 @@ applications:
 ```
 
 ### <a id='pushing_Apps_with_native_Go_vendoring'></a>Push an App with Native Go Vendoring ###
-If you use the native Go vendoring system, which packages all local dependencies in the `vendor/` directory, you must specify your app's package name in the `GOPACKAGENAME` environment variable. 
+If you use the native Go vendoring system, which packages all local dependencies in the `vendor/` directory, 
+you must specify your app's package name in the `GOPACKAGENAME` environment variable. 
 
 An example `manifest.yml`:
 
@@ -129,7 +133,9 @@ applications:
 ```
 
 #### <a id='go 1.5'></a>Go 1.5 ####
-<p class='note'><strong>NOTE</strong>: For Go 1.5, native vendoring is disabled by default. You must set the <code>GO15VENDOREXPERIMENT</code> environment variable to <code>1</code> in your <code>manifest.yml</code> file to use this native vendoring.</p>
+<p class='note'><strong>NOTE</strong>: For Go 1.5, native vendoring is disabled by default. 
+You must set the <code>GO15VENDOREXPERIMENT</code> environment variable to <code>1</code> in your <code>manifest.yml</code> 
+file to use this native vendoring.</p>
 
 If you use the `vendor/` directory for dependencies, you can set the Go version with the `GOVERSION` environment variable.
 
@@ -162,11 +168,11 @@ applications:
      GOPACKAGENAME: app-package-name
 ```
 
-#### <a id='godeps_1.7'></a>Go 1.7+ ####
+#### <a id='godeps_1.7'></a>Go 1.7 and Later ####
 
 * [Sample Go 1.7 app with native vendoring](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_app_gopath_in_container/src/go_app).
 
-Go 1.7+ always has vendoring enabled, and you cannot disable it with an environment variable.
+Go 1.7 and later always has vendoring enabled, and you cannot disable it with an environment variable.
 
 An example `manifest.yml`:
 
@@ -182,7 +188,9 @@ applications:
 
 ## <a id='passing_symbol_linker'></a>Pass a Symbol and String to the Linker ##
 
-The Go buildpack supports the Go [linker's](https://golang.org/cmd/link/) ability, `-X symbol value`, to set the value of a string at link time. Set the `GO_LINKER_SYMBOL` and `GO_LINKER_VALUE` in the application's configuration  before pushing code.
+The Go buildpack supports the Go [linker's](https://golang.org/cmd/link/) ability, `-X symbol value`, 
+to set the value of a string at link time. 
+Set the `GO_LINKER_SYMBOL` and `GO_LINKER_VALUE` in the application's configuration  before pushing code.
 
 This can be used to embed the commit SHA or other build-specific data directly
 into the compiled executable.
@@ -192,7 +200,9 @@ For example usage, see the relevant [fixture app](https://github.com/cloudfoundr
 ## <a id='c_dependencies'></a>C Dependencies ##
 
 The Go buildpack supports building with C dependencies using [cgo](https://golang.org/cmd/cgo/). You can set config vars to specify cgo flags
-to, for example, specify paths for vendored dependencies. As an example, to build [gopgsqldriver](https://github.com/jbarham/gopgsqldriver), add the config var `CGO_CFLAGS` with the value `-I/app/code/vendor/include/postgresql` and include the relevant Postgres header files in `vendor/include/postgresql/` in your app.
+to, for example, specify paths for vendored dependencies. As an example, to build [gopgsqldriver](https://github.com/jbarham/gopgsqldriver), 
+add the config var `CGO_CFLAGS` with the value `-I/app/code/vendor/include/postgresql` 
+and include the relevant Postgres header files in `vendor/include/postgresql/` in your app.
 
 ## <a id='proxy_support'></a> Proxy Support ##
 

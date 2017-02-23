@@ -113,7 +113,8 @@ public static void Main(string[] args)
 
 ## <a id='multiple_projects'></a>Specify a .NET Framework Version ##
 
-It is advisable to only lock the .NET Framework to a minor version rather than a patch version. This is because buildpacks contain the two most recent patch versions of each minor line.
+Lock the .NET Framework to a minor version. Do not lock to a patch version, because 
+buildpacks contain only the two most recent patch versions of each minor version.
 
 To lock the .NET Framework version in a `.csproj` app:
 
