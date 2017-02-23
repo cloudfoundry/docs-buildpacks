@@ -104,6 +104,16 @@ import:
   - foo
 ```
 
+As with all go apps, you can specify go version in the `manifest.yml` file:
+
+```yaml
+---
+applications:
+  - name: my-app-name
+    env:
+      GOVERSION: go1.8
+```
+
 ### <a id='pushing_Apps_with_native_Go_vendoring'></a>Push an App with Native Go Vendoring ###
 If you use the native Go vendoring system, which packages all local dependencies in the `vendor/` directory, you must specify your app's package name in the `GOPACKAGENAME` environment variable. 
 
@@ -156,7 +166,7 @@ applications:
 
 * [Sample Go 1.7 app with native vendoring](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_app_gopath_in_container/src/go_app).
 
-Go 1.7 always has vendoring enabled, and you cannot disable it with an environment variable.
+Go 1.7+ always has vendoring enabled, and you cannot disable it with an environment variable.
 
 An example `manifest.yml`:
 
@@ -166,7 +176,7 @@ applications:
  - name: my-app-name
    command: example-project
    env:
-     GOVERSION: go1.7
+     GOVERSION: go1.8
      GOPACKAGENAME: app-package-name
 ```
 
