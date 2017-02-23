@@ -41,18 +41,18 @@ Specific versions of the Ruby runtime can be specified in the `Gemfile`:
 For MRI you can specify the version of Ruby by doing the following:
 
 ``` ruby
-ruby '2.2.3'
-```
-
-Beginning in [Ruby Buildpack v1.6.18](https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.6.18), Rubygems version operators are supported for the `ruby` directive. For example, the `~>` pessimistic operator is also supported:
-
-``` ruby
 ruby '~> 2.2.3'
 ```
 
 With this example declaration in the `Gemfile`, if Ruby versions `2.2.4`, `2.2.5`, and `2.3.0` are present in the Ruby buildpack, the app will use Ruby `2.2.5`.
 
 For more information about the `ruby` directive for Bundler Gemfiles, see [Bundler's documentation](http://bundler.io/gemfile_ruby.html).
+
+Prior to [Ruby Buildpack v1.6.18](https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.6.18), Rubygems version operators were not supported for the `ruby` directive. Thus you will need to specify an exact version, eg:
+
+``` ruby
+ruby '2.2.3'
+```
 
 ### <a id='jruby_runtime'></a>JRuby ###
 For JRuby you can specify the version of ruby by doing the following:
