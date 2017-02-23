@@ -111,6 +111,31 @@ public static void Main(string[] args)
 
 <p class="note"><strong>Note</strong>: The samples provided in the <a href="https://github.com/aspnet/cli-samples">cli-samples repository</a> and the templates provided by Visual Studio and Yeoman work with this buildpack after you have followed the steps above.</a></p>
 
+## <a id='multiple_projects'></a>Specify a .NET Framework Version ##
+
+It is advisable to only lock the .NET Framework to a minor version rather than a patch version. This is because buildpacks contain the two most recent patch versions of each minor line.
+
+To lock the .NET Framework version in a `.csproj` app:
+
+```
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.App">
+      <Version>1.1.*</Version>
+    </PackageReference>
+  </ItemGroup>
+```
+
+To lock the .NET Framework version in a `project.json` app:
+
+```
+  "dependencies": {
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.*"
+    }
+  }
+```
+
 ## <a id='multiple_projects'></a>Deploy Apps with Multiple Projects ##
 
 To deploy an app that contains multiple projects, you must specify a main project for the buildpack to run. Create a `.deployment` file in the root folder of the app which sets the path to the main project as follows:
