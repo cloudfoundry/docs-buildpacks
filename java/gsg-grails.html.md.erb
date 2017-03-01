@@ -25,7 +25,7 @@ This section describes how to deploy a Grails application to <%=vars.product_sho
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html)
 * JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
 
-<p class="note"><strong>Note</strong>: You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7 as described in _Step 8: Configure the Deployment Manifest_ of this topic.</p>
+<p class="note"><strong>Note</strong>: You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7 as described in <em>Step 8: Configure the Deployment Manifest<em> of this topic.</p>
 
 ### Step 1: Declare App Dependencies ###
 
@@ -61,7 +61,7 @@ Run the Cloud Foundry Command Line Interface (cf CLI) `cf push -m` command to sp
 $ cf push -m 128M
 </pre>
 
-When your app is running, you can use the `cf app APP_NAME` command to see memory utilization.
+When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_grails</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 1 GB to the app.</p>
 
@@ -111,7 +111,7 @@ elephantsql   turtle, panda, elephant   PostgreSQL as a Service
 
 </pre>
 
-Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
+Run `cf create-service SERVICE PLAN SERVICE-INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE-INSTANCE.
 
 <p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
 
@@ -128,7 +128,7 @@ When you bind an app to a service instance, <%=vars.product_short%> writes infor
 
 Most services support bindable service instances. Refer to your service provider's documentation to confirm if they support this functionality.
 
-You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`.
+You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE-INSTANCE`.
 
 Alternately, you can configure the deployment manifest file by adding a `services` sub-block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see the Sample App step.
 
@@ -155,7 +155,7 @@ Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/m
 
 ### Step 7: Log in and Target the API Endpoint ###
 
-Run `cf login -a API_ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%>
 
@@ -184,7 +184,7 @@ Once your app deploys, browse to your app URL. Search for the `urls` field in th
 <p class="tip"><strong>Sample App Step</strong><br />
 1. Change to the <code>app</code>directory, and run <code>./grailsw war</code> to build the app.
 <br />
-2. Run <code>cf push pong_matcher_grails -n HOST_NAME</code> to push the app.
+2. Run <code>cf push pong_matcher_grails -n HOST-NAME</code> to push the app.
 <br /><br />
 Example: <code>cf push pong_matcher_grails -n my-grails-app</code>
 </p>
@@ -262,7 +262,7 @@ See the [Manage Your Application with the cf CLI](#cli-manage) section for more 
 <p class="tip"><strong>Sample App Step</strong><br />
 To test the sample app, do the following:
 <br /><br />
-1. To export the test host, run <code>export HOST=SAMPLE_APP_URL</code>, substituting the URL for your app for <code>SAMPLE_APP_URL</code>.
+1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
 <br /><br />
 2. To clear the database from any previous tests, run:
 <br />
@@ -297,15 +297,6 @@ The last line of the output shows the <code>match_id</code>.
 <br />
 You should receive a <code>201 Created</code> response.
 </p>
-
-## <a id='alternative'></a>Alternative Methods for Pushing Apps ##
-
-### Integrate a Plugin for Your Build Tool ###
-
-<%=vars.product_short%> provides plugins for Maven and Gradle. You can deploy and manage your apps using Maven or Gradle command-line syntax and configure security credentials.
-
-For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
-
 
 ##<a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 

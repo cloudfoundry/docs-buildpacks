@@ -9,7 +9,7 @@ This topic describes how to push Cloud Foundry apps using the .NET Core buildpac
 
 <p class="note"><strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>. For apps which are not based on this toolchain, refer to the legacy <a href="#legacy">.NET buildpack.</a></p>
 
-## <a id='pushing_apps'></a> Push an App ##
+## <a id='pushing-apps'></a> Push an App ##
 
 Cloud Foundry automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
@@ -20,14 +20,14 @@ Cloud Foundry automatically uses the .NET Core buildpack when one or more of the
 If your Cloud Foundry deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
 
 <pre class="terminal">
-$ cf push MY_APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
+$ cf push MY-APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
 </pre>
 
 Specify any non-default package sources in the `NuGet.Config` file.
 
 For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
 
-## <a id='cli_tools'></a> .NET Core SDKs ##
+## <a id='cli-tools'></a> .NET Core SDKs ##
 
 The first several releases of the .NET Core SDKs used `project.json` files for project build configuration. The current release of the .NET Core SDK uses MSBuild as its build tool, which uses `*.csproj` and `*.fsproj` files for configuration.
 
@@ -111,7 +111,7 @@ public static void Main(string[] args)
 
 <p class="note"><strong>Note</strong>: The samples provided in the <a href="https://github.com/aspnet/cli-samples">cli-samples repository</a> and the templates provided by Visual Studio and Yeoman work with this buildpack after you have followed the steps above.</a></p>
 
-## <a id='multiple_projects'></a>Specify a .NET Framework Version ##
+## <a id='specify-version'></a>Specify a .NET Framework Version ##
 
 Lock the .NET Framework to a minor version. Do not lock to a patch version, because 
 buildpacks contain only the two most recent patch versions of each minor version.
@@ -137,7 +137,7 @@ To lock the .NET Framework version in a `project.json` app:
   }
 ```
 
-## <a id='multiple_projects'></a>Deploy Apps with Multiple Projects ##
+## <a id='multiple-projects'></a>Deploy Apps with Multiple Projects ##
 
 To deploy an app that contains multiple projects, you must specify a main project for the buildpack to run. Create a `.deployment` file in the root folder of the app which sets the path to the main project as follows:
 
@@ -159,7 +159,7 @@ project = src/MyApp.Web/MyApp.Web.csproj
 
 In this example, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Services` projects if the `MyApp.Web.csproj` file of the main project lists them as dependencies, `MyApp.Web`. The buildpack attempts to execute the main project with `dotnet run -p src/MyApp.Web/MyApp.Web.csproj`.
 
-## <a id='disconnected_environments'></a>Push an App in a Disconnected Environment ##
+## <a id='disconnected-environments'></a>Push an App in a Disconnected Environment ##
 
 For offline use, you can cache the binaries in `manifest.yml` with the buildpack.
 
@@ -174,7 +174,7 @@ You can push apps with their other dependencies following these steps:
 
 1. Push your app.
 
-## <a id='disabling_the_nuget_package_cache'></a>Disabling the NuGet Package Cache
+## <a id='disabling-nuget'></a>Disabling the NuGet Package Cache
 
 You may need to disable NuGet package caching, or clear NuGet packages cached in the staging environment, in one of the following scenarios:
 
@@ -208,7 +208,7 @@ If your app requires external shared libraries that are not provided by the root
 
 <p class="note"><strong>Note</strong>: You must keep these libraries up-to-date. They do not update automatically.</p>
 
-The .NET Core buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that  your app can access these libraries at runtime.
+The .NET Core buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
 
 ## <a id='legacy'></a>Legacy .NET Buildpack ##
 

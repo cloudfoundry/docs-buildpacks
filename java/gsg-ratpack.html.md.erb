@@ -58,7 +58,7 @@ Use the `cf push -m` command to specify the amount of memory that should be allo
 $ cf push -m 128M
 </pre>
 
-When your app is running, you can use the `cf app APP_NAME` command to see memory utilization.
+When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.</p>
 
@@ -107,7 +107,7 @@ rediscloud    30mb, 100mb, 1gb, 10gb, 50gb   Enterprise-Class Redis for Develope
 
 </pre>
 
-Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE_INSTANCE.
+Run `cf create-service SERVICE PLAN SERVICE-INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE-INSTANCE.
 
 <p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 30mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.
 
@@ -151,11 +151,11 @@ Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/m
 
 ### Step 7: Log in and Target the API Endpoint ###
 
-Run `cf login -a API_ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%>
 
-  <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
+  <p class="tip"><strong>Sample App Step</strong><br />You must perform this step to run the sample app.</p>
 
 ### Step 8: Deploy the Application ###
 
@@ -180,7 +180,7 @@ Once your app deploys, browse to your app URL. Search for the `urls` field in th
 <p class="tip"><strong>Sample App Step</strong><br />
 1. Change to the <code>app</code>directory, and run <code>./gradlew distZip</code> to build the app.
 <br />
-2. Run <code>cf push pong_matcher_groovy -n HOST_NAME</code> to push the app.
+2. Run <code>cf push pong_matcher_groovy -n HOST-NAME</code> to push the app.
 <br /><br />
 Example: <code>cf push pong_matcher_groovy -n groovy-ratpack-app</code>
 </p>
@@ -248,7 +248,7 @@ See the [Manage Your Application with the cf CLI](#cli-manage) section for more 
 <p class="tip"><strong>Sample App Step</strong><br />
 To test the sample app, do the following:
 <br /><br />
-1. To export the test host, run <code>export HOST=SAMPLE_APP_URL</code>, substituting the URL for your app for <code>SAMPLE_APP_URL</code>.
+1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
 <br /><br />
 2. To clear the database from any previous tests, run:
 <br />
@@ -283,14 +283,6 @@ The last line of the output shows the <code>match_id</code>.
 <br />
 You should receive a <code>201 Created</code> response.
 </p>
-
-## <a id='alternative'></a>Alternative Methods for Pushing Apps ##
-
-### Integrate a Plugin for Your Build Tool ###
-
-<%=vars.product_short%> provides plugins for Maven and Gradle. You can deploy and manage your apps using Maven or Gradle command-line syntax and configure security credentials.
-
-For more information, refer to the [Build Tool Integration](./build-tool-int.html) topic.
 
 ##<a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 
