@@ -226,56 +226,52 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
 #### Garden Container
 
-* **Error**: The Java process is terminated by the Garden container with `out of memory` event. See the following example.
+* **Error**: The Garden container terminates the Java process with the `out of memory` event. See the following example:
     <pre class="terminal">
     $ cf events APP-NAME
     time                          event         actor         description
-    2016-06-20T09:18:51.00+0100   app.crash     app-name      index: 0, reason: CRASHED, exit_description: out of memory, exit_status: 255
-</pre>
+    2016-06-20T09:18:51.00+0100   app.crash     app-name      index: 0, reason: CRASHED, exit\_description: out of memory, exit\_status: 255
+    </pre>
 
-The Garden container terminates the Java process when the actual OS-level memory the JVM has <strong>allocated</strong> (i.e., actually "taken" from the OS) more memory than the quota requested by the application, e.g., [via the manifest](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#memory).
+    This error appears when the JVM allocates more OS-level memory than the quota requested by the app, such as [through the manifest](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#memory).
 
-* **Cause 1: Insufficient native memory**: This type of error commonly means that the JVM requires more `native` memory. In the scope of the Java buildpack and the `memory calculator`, the term `native` means all memory allocated by the JVM that cannot be restrained specifically. This includes the memory footprint of OS-level threads, [direct NIO buffers](https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html), code cache, program counters, and more.
+* **Cause 1 - Insufficient native memory**: This error commonly means that the JVM requires more `native` memory. In the scope of the Java buildpack and the `memory calculator`, the term `native` means all memory allocated by the JVM that cannot be restrained specifically. This includes the memory footprint of OS-level threads, [direct NIO buffers](https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html), code cache, program counters, and more.
 
-* **Solution 1:**: It is difficult to determine how much `native` memory a Java app needs. A best practice is to [measure it](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) with realistic workloads and fine-tune it accordingly.
+* **Solution 1**: Determine how much `native` memory a Java app needs by [measuring it](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) with realistic workloads and fine-tuning it accordingly.
 The memory calculator supports configuration via the [`native` setting](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory-sizes).
 
-    <pre>
+    ```
     ---
     applications:
     - name: app-name
       memory: 1G
       env:
         JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {memory_sizes: {native: 150m}}]'
-    </pre>
+    ```
 
-In the example above, `150m` of the overall available `1G` are reserved for anything that is not `heap`, `metaspace` or `permgen`.
+    In the example above, `150m` of the overall available `1G` are reserved for anything that is not `heap`, `metaspace` or `permgen`. In less common cases, this may come from companion processes started by the JVM, such as the [Process API](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html).
 
-In less common cases, this may come from companion processes started by the JVM, e.g., via the [Process API](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html).
+* **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. In high load scenarios, an app uses a high number of threads, which consumes a significant amount of memory.
 
-* **Cause 2: Unconsidered amount of Threads**: A particularly important setting to deal with memory errors at Garden level is the footprint of Java threads in the JVM.
-The stack traces of each Java thread are stored outside the heap. In high load scenarios, where the application uses a high number of threads the stack size may lead to unexpected memory consumptions.
+* **Solution 2**: Correct the reserved memory for stack traces considering the maximum amount of threads.
 
-* **Solution 2:**: Correct the reserved memory for stack traces considering the maximum amount of threads.
+    The [`stack` setting](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory-sizes) of the memory calculator configures how much space the JVM reserves for each Java thread. You must multiply this value by how many threads your app requires. You can specify the amount of threads in the [`stack_threads` setting](https://github.com/jdeoliveira/mule-cf-java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory) of the memory calculator.
+    For example, if the estimated max thread count for an app is `800` and the amount of memory to represent the deepest stacktrace of a Java thread is `512KB`, you can configure the memory calculator with:
 
-The [`stack` setting](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory-sizes) of the memory calculator configures how much space the JVM reserves for each Java thread. You must multiply this value by how many threads your app requires. You can specify the amount of threads in the [`stack_threads` setting](https://github.com/jdeoliveira/mule-cf-java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory) of the memory calculator.
-For example, if the estimation of the maximum amount of threads by an application is `800` and the amount of memory to represent the deepest stacktrace of a Java thread is `512KB`, the memory calculator can be configured with:
-
-    <pre>
+    ```
     ---
     applications:
     - name: app-name
       memory: 1G
       env:
         JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {stack_threads: 800, memory_sizes: {stack: 512k}}]'
-    </pre>
+    ```
 
-In the example above, the overall memory amount reserved by the JVM for representing the stacks of Java threads is `800 * 512k = 400m`.
+    In the example above, the overall memory amount reserved by the JVM for representing the stacks of Java threads is `800 * 512k = 400m`.
 
-The right settings for `stack` and `stack_threads` depend on the app code, including the libraries it uses.
-For example, the maximum amount of threads an app may use under load depends on its implementation.
-It may even be the case that an app has no upper limit, such as in the case of [cavalier usage](http://dev.bizo.com/2014/06/cached-thread-pool-considered-harmlful.html) of [`CachedThreadPool` executors](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--).
-The same, of course, applies to the depth of the thread stacks and how much space the JVM should reserve for each of them.
+    The right settings for `stack` and `stack_threads` depend on the app code, including the libraries it uses.
+    It may even be the case that an app has no upper limit, such as in the case of [cavalier usage](http://dev.bizo.com/2014/06/cached-thread-pool-considered-harmlful.html) of [`CachedThreadPool` executors](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--).
+    However, you still must calculate the depth of the thread stacks and how much space the JVM should reserve for each of them.
 
 ### <a id='upload'></a>Troubleshoot Failed Upload ###
 
