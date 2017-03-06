@@ -176,24 +176,26 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
 
 <tr>
   <td>Custom Location configuration</td>
-  <td>To specify custom configuration to be included in the NGINX config, create a file with location scoped NGINX directives:
-  <br><br>
-  E.g. <b>nginx/conf/includes/custom_header.conf</b><br>
-  <code>
-  add_header X-MySiteName BestSiteEver;
-  </code><br><br>
+  <td>To specify custom configuration for NGINX, follow these steps:<br><br>
 
-  Then set the location_include variable in your <b>Staticfile</b> to its path:<br>
+   <ol>
+   <li>Create a file with location scoped NGINX directives. See the following example, which causes visitors of your site to receive the <code>X-MySiteName</code> HTTP header:
+    <br><br>
+    <b>File</b>: <code>nginx/conf/includes/custom_header.conf</code><br>
+    <b>Content</b>:
+    <code>add_header X-MySiteName BestSiteEver;</code><br><br>
 
-  <code style="width: 100%">
-  ...<br>
-  location_include: includes/*.conf<br>
-  ...<br>
-  </code><br><br>
+    <li>Set the <code>location_include</code> variable in your <b>Staticfile</b> to the  path of the file from the previous step:<br>
 
-  Visitors to your site will now receive the <code>X-MySiteName</code> http header.
-  <br><br>
-  For information on NGINX directives, see <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">NGINX
+    <code style="width: 100%">
+    ...<br>
+    location_include: includes/*.conf<br>
+    ...<br>
+    </code><br><br>
+    </li>
+
+  </ol>
+  For information about NGINX directives, see <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">NGINX
   documentation</a>.</td>
 </tr>
 
