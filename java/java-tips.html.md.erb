@@ -226,7 +226,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
 #### Garden Container
 
-<p class="note"><strong>Note</strong>: The solutions in this section require configuring the memory calculator, which is a sub-project of the CF Java buildpack that calculates suitable memory settings for Java apps when you push them. See the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">java-buildpack-memory-calculator</a> repository for more information. If you have any question about the memory calculator, you can use the <b>#java-buildpack</b> channel of the <a href="https://cloundfoundry.slack.com">Cloud Foundry</a> Slack organization.</p>
+<p class="note"><strong>Note</strong>: The solutions in this section require configuring the memory calculator, which is a sub-project of the CF Java buildpack that calculates suitable memory settings for Java apps when you push them. See the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">java-buildpack-memory-calculator</a> repository for more information. If you have questions about the memory calculator, you can ask them in the <b>#java-buildpack</b> channel of the <a href="https://cloundfoundry.slack.com">Cloud Foundry</a> Slack organization.</p>
 
 * **Error**: The Garden container terminates the Java process with the `out of memory` event. See the following example:
     <pre class="terminal">
@@ -235,9 +235,9 @@ A Java app may crash because of insufficient memory on the Garden container or t
     2016-06-20T09:18:51.00+0100   app.crash     app-name      index: 0, reason: CRASHED, exit\_description: out of memory, exit\_status: 255
     </pre>
 
-    This error appears when the JVM allocates more OS-level memory than the quota requested by the app, such as [through the manifest](https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#memory).
+    This error appears when the JVM allocates more OS-level memory than the quota requested by the app, such as [through the manifest](../../devguide/deploy-apps/manifest.html#memory).
 
-* **Cause 1 - Insufficient native memory**: This error commonly means that the JVM requires more `native` memory. In the scope of the Java buildpack and the memory calculator, the term `native` means the memory required for the JVM to work, along with forms of memory not covered in the other classifications of the memory calculator. This includes the memory footprint of OS-level threads, [direct NIO buffers](https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html), code cache, program counters, and more.
+* **Cause 1 - Insufficient native memory**: This error commonly means that the JVM requires more `native` memory. In the scope of the Java buildpack and the memory calculator, the term `native` means the memory required for the JVM to work, along with forms of memory not covered in the other classifications of the memory calculator. This includes the memory footprint of OS-level threads, [direct NIO buffers](https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html), code cache, program counters, and others.
 
 * **Solution 1**: Determine how much `native` memory a Java app needs by [measuring it](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) with realistic workloads and fine-tuning it accordingly.
 You can then configure the Java buildpack using the `native` [setting](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory-sizes) of the memory calculator, as in the example below:
@@ -251,14 +251,14 @@ You can then configure the Java buildpack using the `native` [setting](https://g
         JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {memory_sizes: {native: 150m}}]'
     ```
 
-    In this example, `150m` of the overall available `1G` are reserved for anything that is not `heap`, `metaspace`, or `permgen`. In less common cases, this may come from companion processes started by the JVM, such as the [Process API](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html).
+    This example shows that `150m` of the overall available `1G` is reserved for anything that is not `heap`, `metaspace`, or `permgen`. In less common cases, this may come from companion processes started by the JVM, such as the [Process API](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html).
 
-* **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under a heavy load, it uses a high number of threads and consumes a significant amount of memory.
+* **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under heavy load, it uses a high number of threads and consumes a significant amount of memory.
 
 * **Solution 2**: Set the reserved memory for stack traces to the correct value for your app.
-
-    You can use the `stack` [setting](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory-sizes) of the memory calculator to configure the amount of space the JVM reserves for each Java thread. You must multiply this value by how many threads your app requires. You can specify the amount of threads in the `stack_threads` [setting](https://github.com/jdeoliveira/mule-cf-java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory) of the memory calculator.
-    For example, if the estimated max thread count for an app is `800` and the amount of memory to represent the deepest stacktrace of a Java thread is `512KB`, you can configure the memory calculator as follows:
+<br>
+<br>You can use the `stack` [setting](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory-sizes) of the memory calculator to configure the amount of space the JVM reserves for each Java thread. You must multiply this value by the number of threads your app requires. Specify the number of threads in the `stack_threads` [setting](https://github.com/jdeoliveira/mule-cf-java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory) of the memory calculator.
+    For example, if you estimate the max thread count for an app at `800` and the amount of memory needed to represent the deepest stacktrace of a Java thread is `512KB`, configure the memory calculator as follows:
 
     ```
     ---
@@ -269,39 +269,36 @@ You can then configure the Java buildpack using the `native` [setting](https://g
         JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {stack_threads: 800, memory_sizes: {stack: 512k}}]'
     ```
 
-    In the example above, the overall memory amount reserved by the JVM for representing the stacks of Java threads is `800 * 512k = 400m`.
+    In this example, the overall memory amount reserved by the JVM for representing the stacks of Java threads is `800 * 512k = 400m`.
     <br><br>
     The correct settings for `stack` and `stack_threads` depend on your app code, including the libraries it uses. Your app may technically have no upper limit, such as in the case of [cavalier usage](http://dev.bizo.com/2014/06/cached-thread-pool-considered-harmlful.html) of `CachedThreadPool` [executors](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--).
-    However, you still must calculate the depth of the thread stacks and how much space the JVM should reserve for each of them.
+    However, you still must calculate the depth of the thread stacks and the amount of space the JVM should reserve for each of them.
 
 ### <a id='upload'></a>Troubleshoot Failed Upload ###
 
 If your application fails to upload when you push it to Cloud Foundry, it may be
 for one of the following reasons:
 
-* WAR is too large: An upload may fail due to the size of the WAR file.
+* **WAR is too large**: An upload may fail due to the size of the WAR file.
 Cloud Foundry testing indicates WAR files as large as 250 MB upload
 successfully.
 If a WAR file larger than that fails to upload, it may be a result of the file
 size.
 
-* Connection issues: Application uploads can fail if you have a slow Internet
-connection, or if you upload from a location that is very remote from the target
-Cloud Foundry instance.
+* **Connection issues**: Application uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target Cloud Foundry instance.
 If an application upload takes a long time, your authorization token can expire
 before the upload completes.
 A workaround is to copy the WAR to a server that is closer to the Cloud Foundry
 instance, and push it from there.
 
-* Out-of-date cf CLI client: Upload of a large WAR is faster and hence less
+* **Out-of-date cf CLI client**: Upload of a large WAR is faster and hence less
 likely to fail if you are using a recent version of the cf CLI.
 If you are using an older version of the cf CLI client to upload a large WAR, and having
 problems, try updating to the latest version of the cf CLI.
 
-* Incorrect WAR targeting: By default, `cf push` uploads everything in the
+* **Incorrect WAR targeting**: By default, `cf push` uploads everything in the
 current directory.
-For a Java application, a plain `cf push` push will upload source code and other
-unnecessary files, in addition to the WAR.
+For a Java application, `cf push` with no option flags uploads source code and other unnecessary files, in addition to the WAR.
 When you push a Java application, specify the path to the WAR:
 
     <pre class="terminal">
@@ -309,18 +306,18 @@ When you push a Java application, specify the path to the WAR:
     </pre>
 
     You can determine whether or not the path was specified for a previously
-    pushed application by looking at the application deployment manifest,
+    pushed application by examining the application deployment manifest,
     `manifest.yml`.
-    If the `path` attribute specifies the current directory, the manifest will
-    include a line like this:
+    If the `path` attribute specifies the current directory, the manifest
+    includes a line like the following:
 
     ```
     path: .
     ```
-    To re-push just the WAR, either:
+    To re-push just the WAR, do one of the following:
 
-    * Delete `manifest.yml` and push again, specifying the location of the WAR
-    using the `-p` flag, or
+    * Delete `manifest.yml` and run `cf push` again, specifying the location of 
+    the WAR using the `-p` flag.
     * Edit the `path` argument in `manifest.yml` to point to the WAR, and
     re-push the application.
 
