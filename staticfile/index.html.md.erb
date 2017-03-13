@@ -280,6 +280,12 @@ if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">
     </tr>
 
     <tr>
+      <td>Host Dot Files</td>
+      <td>To enable serving of hidden (dot files) use <code>host_dot_files: true</code> in the <code>Staticfile</code>.</td>
+      <td><a href="#host_dot_files">Host Dot Files</a></td>
+    </tr>
+
+    <tr>
     <td>force the receiving browser to make subsequent requests over HTTPS</td>
     <td>add this line to the <code>Staticfile</code>:<br><code><strong>http_strict_transport_security: true</strong></code><br>
         <p class="note"><strong>Note</strong>: Because this setting persists in browsers for a long time, only enable this setting after ensuring you have completed your configuration.</p></td>
