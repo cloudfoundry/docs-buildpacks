@@ -7,14 +7,14 @@ owner: Buildpacks
 
 ## <a id='overview'></a> Overview
 
-This topic describes how to configure the Staticfile buildpack and use it to push static content to the web. 
+This topic describes how to configure the Staticfile buildpack and use it to push static content to the web.
 It also shows you how to serve a simple "Hello World" page using the Staticfile buildpack.
 
 <p class="note"><strong>Note</strong>: <a href="http://bosh.io/docs/trusted-certs.html">BOSH configured custom trusted certificates</a> are not supported by the Staticfile buildpack.</p>
 
 ### <a id='definitions'></a>Definitions
 
-**Staticfile app**: An app or content that requires no backend code other than the Nginx webserver, which the buildpack provides. 
+**Staticfile app**: An app or content that requires no backend code other than the Nginx webserver, which the buildpack provides.
 Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
 
 **Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with backends hosted elsewhere.
@@ -26,8 +26,8 @@ To find which version of Nginx the current Staticfile buildpack uses, see the [S
 
 ### <a id='memory'></a>Memory Usage
 
-Nginx requires 20&nbsp;MB of RAM to serve static assets. 
-When using the Staticfile buildpack, we recommend pushing apps with the `-m 64 M` option to reduce RAM allocation from the default 1&nbsp;GB allocated to containers by default. 
+Nginx requires 20&nbsp;MB of RAM to serve static assets.
+When using the Staticfile buildpack, we recommend pushing apps with the `-m 64 M` option to reduce RAM allocation from the default 1&nbsp;GB allocated to containers by default.
 
 ### <a id='sample'></a>"Hello World" Tutorial
 
@@ -40,7 +40,7 @@ Follow the procedure below to create and push a single page app using the Static
 <tr>
   <td valign="top">1</td>
   <td>Create and move into a root directory for the sample app in your workspace:
-    <br> 
+    <br>
 <pre class="terminal">
 $ mkdir sample
 $ cd sample
@@ -90,7 +90,7 @@ $ cf push hello -m 64M
 <pre class='terminal'>
 Creating app hello in org sample-org / space sample-space as username<span>@</span>example.com...
 OK
-&#8230; 
+&#8230;
 requested state: started
 instances: 1/1
 usage: 64M x 1 instances
@@ -134,19 +134,19 @@ This table describes some of the aspects of the Staticfile buildpack that you ca
 
 <tr>
   <td id="ssi">SSI</td>
-  <td>Server Side Includes (SSI) allows you to show the contents of files on a web page on the web server. 
+  <td>Server Side Includes (SSI) allows you to show the contents of files on a web page on the web server.
 For general information about SSI, see the <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side Includes</a> entry on Wikipedia.</td>
 <tr>
   <td id="pushstate">Pushstate routing</td>
   <td>Keeps browser-visible URLs clean for client-side JavaScript apps that serve multiple routes.
-    For example, pushstate routing allows a single JavaScript file route to multiple anchor-tagged URLs 
+    For example, pushstate routing allows a single JavaScript file route to multiple anchor-tagged URLs
     that look like <code>/some/path1</code> instead of <code>/some#path1</code>.
   </td>
 </tr>
 
 <tr>
   <td id="gzip">GZip file serving and compressing</td>
-<td>The <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a> 
+<td>The <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a>
 and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules are enabled by default. This allows Nginx to serve files stored in compressed GZ format, and to uncompresses them for clients that do not support compressed content or responses. <br>You may want to disable compression in particular circumstances, for example if serving to very old browser clients.</td>
 </tr>
 
@@ -163,9 +163,14 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
 
 <tr>
   <td id="force-https">Force HTTPS</td>
-   <td>A way to enforce that all requests are sent through HTTPS. 
-       This redirects non-HTTPS requests as HTTPS requests. 
+   <td>A way to enforce that all requests are sent through HTTPS.
+       This redirects non-HTTPS requests as HTTPS requests.
        For an example of when to avoid forcing HTTPS, see <a href="#force-https">About FORCE_HTTPS with Reverse Proxies</a>.</td>
+</tr>
+
+<tr>
+  <td id="host_dot_files">Dot Files</td>
+  <td>By default hidden files (those starting with a <code>.</code>) are not served by this buildpack.</td>
 </tr>
 
 <tr>
@@ -176,7 +181,7 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
 
 <tr>
   <td>Custom Nginx configuration</td>
-  <td>Additional Nginx configuration can be applied, such as mapping file extensions to mime types. 
+  <td>Additional Nginx configuration can be applied, such as mapping file extensions to mime types.
       See the <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">Nginx documentation</a> for examples.</td>
 </tr>
 </table>
@@ -200,7 +205,7 @@ $ touch Staticfile
     <td>add this line to the <code>Staticfile</code>:<br><code><strong>root: YOUR-DIRECTORY-NAME</strong></code><br><br>For example, <code>root: public</code></td>
     <td><a href="#root">Alternative root</a></td>
     </tr>
-    
+
     <tr>
     <td>display a directory list instead of the standard 404 error</td>
     <td>add this line to the <code>Staticfile</code>:<br><code><strong>directory: visible</strong></code></td>
@@ -228,7 +233,7 @@ $ touch Staticfile
     <tr>
     <td valign="top">enable basic authentication for your app or website</td>
     <td>  1. Create a hashed username and password pair for each user, using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a><br>
-  &#50;. Create a file named <code>Staticfile.auth</code> in the root directory or alternative root directory, and add one or more user/password lines to it. 
+  &#50;. Create a file named <code>Staticfile.auth</code> in the root directory or alternative root directory, and add one or more user/password lines to it.
     For example,<br> <code>bob:$apr1$DuUQEQp8$ZccZCHQElNSjrgerwSFC0<br>alice:$apr1$4IRQGcD/$UMFLnIHSD9ZHJ86TR4zx</code><br>
     </td>
     <td><a href="#basic-auth">Basic authentication</a></td>
@@ -243,10 +248,16 @@ $ touch Staticfile
     <tr>
     <td>force HTTPS</td>
     <td>set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.
-    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer that terminates SSL/TLS. 
-Doing so can cause infinite redirect loops, for example, 
+    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer that terminates SSL/TLS.
+Doing so can cause infinite redirect loops, for example,
 if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
     <td><a href="#force-https">Force HTTPS</a></td>
+    </tr>
+
+    <tr>
+      <td>Host Dot Files</td>
+      <td>To enable serving of hidden (dot files) use <code>host_dot_files: true</code> in the <code>Staticfile</code>.</td>
+      <td><a href="#host_dot_files">Host Dot Files</a></td>
     </tr>
 
     <tr>
@@ -258,7 +269,7 @@ if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">
 
     <tr>
     <td>make additional configuration changes to Nginx</td>
-    <td>add <code><strong>nginx.conf</strong></code> and <code><strong>mime.types</strong></code> files to your root folder, or to the alternate root folder if you specified one.</td> 
+    <td>add <code><strong>nginx.conf</strong></code> and <code><strong>mime.types</strong></code> files to your root folder, or to the alternate root folder if you specified one.</td>
     <td><a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/">Nginx documentation</a></td>
     </tr>
     </table>
@@ -279,14 +290,14 @@ Follow the steps below to push your application.
 $ cf push my-app -m 64M
 Creating app my-app in org sample-org / space sample-space as username@example.com...
 OK
-… 
+…
 requested state: started
 instances: 1/1
 usage: 64M x 1 instances
 urls: my-app.example.com
 </pre>
    Or, if you do not have the buildpack, or the installed version is out-of-date, use the <code>-b</code> option to specify the builpack as follows:<br>
-<code>cf push APP_NAME -b https://github.com/cloudfoundry/staticfile-buildpack.git</code> 
+<code>cf push APP_NAME -b https://github.com/cloudfoundry/staticfile-buildpack.git</code>
   </td>
 </tr>
 <tr valign="top">
