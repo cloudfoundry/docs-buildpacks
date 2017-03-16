@@ -260,3 +260,11 @@ flags to create a unique URL:
 * `--random-route` to create a URL that includes the app name and random words.
 Using this option might create a long URL, depending on the number of words that
 the app name includes.
+
+### Error Occurs while Installing Ruby ###
+
+If you push an app using the Ruby buildpack, the `cf push` command may return the following error during staging: `An error occurred while installing ruby-VERSION-NUMBER`. To solve this, you can do one of the following:
+
+* Modify the `Gemfile` for your app to use a version of Ruby supported by the buildpack. 
+* Specify a buildpack number when pushing your app, such as this:
+	<pre class="terminal">$ cf push APP-NAME -b http<span>s</span>://github.com/cloudfoundry/ruby-buildpack#v1.6.28</pre>
