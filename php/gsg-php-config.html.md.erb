@@ -24,7 +24,7 @@ Below is an explanation of the common options you might need to change.
 | ADMIN\_EMAIL                 | The value used in HTTPD's configuration for [ServerAdmin]                                                                                                                                                                                                                                                                                            |
 | NGINX\_VERSION               | Sets the version of Nginx to use. By default, the buildpack uses the latest stable version.                                                                                                                                                                                                                      |
 | PHP\_VERSION                 | Sets the version of PHP to use. <br> Set to a minor instead of a patch version, <br> such as `"{PHP_70_LATEST}"`. See [options.json](https://github.com/cloudfoundry/php-buildpack/blob/4f5e50fabf66c5840210cbc64fcd4068d8a27448/cf_spec/fixtures/php_app_using_php_7_latest/.bp-config/options.json).             |
-| PHP\_EXTENSIONS              | A list of the [extensions](#php-extensions) to enable.  `bz2`, `zlib`, `curl`, and `mcrypt` are enabled by default.                                                                                                                                                                                                                                 |
+| PHP\_EXTENSIONS              | (DEPRECATED) A list of the [extensions](#php-extensions) to enable.  `bz2`, `zlib`, `curl`, and `mcrypt` are enabled by default.                                                                                                                                                                                                                                 |
 | PHP\_MODULES                 | A list of the [modules](#php-modules) to enable.  No modules are explicitly enabled by default, however the buildpack automatically chooses `fpm` or `cli`. You can explicitly enable any or all of: `fpm`, `cli`, `cgi`, and `pear`.                                                                                           |
 | ZEND\_EXTENSIONS             | A list of the Zend extensions to enable. Nothing is enabled by default.                                                                                                                                                                                                                                                                           |
 | APP\_START\_CMD              | When the `WEB_SERVER` option is set to 'none,' this command is used to start your app. If `WEB_SERVER` and `APP_START_CMD` are not set, then the buildpack searches for `app.php`, `main.php`, `run.php`, or `start.php` (in that order). This option accepts arguments. |
@@ -40,7 +40,9 @@ For details about supported versions, please read the [release notes](https://gi
 
 The buildpack automatically configures HTTPD, Nginx. and PHP for your application.  This section explains how to modify the configuration.
 
-The `.bp-config` directory in your application can contain configuration overrides for these components. Name the directories `httpd`, `nginx`, and `php`.
+The `.bp-config` directory in your application can contain configuration overrides for these components. Name the directories `httpd`, `nginx`, and `php` (although we suggest you use [php.ini.d](#php_ini_d) or [fpm.d](#fpm_d)).
+
+<p class='note'><strong>NOTE</strong>: If you override the php.ini or php-fpm.ini files many other forms of configuration will not work.</p>
 
 For example:
 ```
@@ -85,18 +87,50 @@ Include conf/extra/httpd-php.conf
 Include conf/extra/httpd-my-special-config.conf # This line includes your additional file.
 ```
 
+
+#### <a id="php_ini_d"></a> .bp-config/php/php.ini.d/
+
+The buildpack will add any `.bp-config/php/php.ini.d/<file>.ini` files it finds in the application to the PHP configuration. This can be used to change any value which is acceptable to php.ini [(list of directives)](http://php.net/manual/en/ini.list.php).
+
+For example adding a file `.bp-config/php/php.ini.d/something.ini` to your app, with contents
+
+```
+default_charset="UTF-8"
+default_mimetype="text/xhtml"
+```
+
+would override both the default charset and mimetype.
+
+##### Precedence
+
+In order of highest precedence, php config values come from.
+
+* php scripts using ini_set() to manually override config files
+* user.ini files (for local values)
+* .bp-config/php/php.ini.d overrides master value but, local value is still the one from user.ini
+
+#### <a id="fpm_d"></a> .bp-config/php/fpm.d/
+
+The buildpack will add any `.bp-config/php/fpm.d` files it finds in the application to the PHP-FPM configuration. This can bes used to change any value which is acceptable to `php-fpm.ini` [(list of directives)](http://php.net/manual/en/install.fpm.configuration.php)
+
 ### <a id="php-extensions"></a> PHP Extensions
 
-PHP extensions are easily enabled by setting the `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` option in `.bp-config/options.json`. Use these options to install bundled PHP extensions.
+The buildpack will add any `.bp-config/php/php.ini.d/<file>.ini` files it finds in the application to the PHP configuration. This can be used to enable PHP or ZEND extensions. For example,
 
-If an extension is already present and enabled in the compiled php, for example `intl`, you do not need to explicitly enable it through `PHP_EXTENSIONS` or `ZEND_EXTENSIONS` in `.bp-config/options.json` to use that extension.
+
+```
+extension=redis.so
+extension=gd.so
+zend_extension=opcache.so
+``` 
+
+If an extension is already present and enabled in the compiled php, for example `intl`, you do not need to explicitly enable it to use that extension.
 
 #### PHP\_EXTENSIONS vs. ZEND\_EXTENSIONS
 
 PHP has two kinds of extensions, "PHP extensions" and "Zend extensions". These [hook into the PHP executable in different ways](https://wiki.php.net/internals/extensions).
 
-The buildpack cannot know, in advance, what kind of extension you are requesting. This is why there are two variables, and why your app will fail if you say a Zend Extension
-is a PHP Extension, or vice versa.
+For this reason, they are specified differently in ini files. Your app will fail if a Zend Extension is specified as a PHP Extension, or vice versa.
 
 If you see this error:
 
@@ -106,7 +140,7 @@ php-fpm | [warn-ioncube] Please specify the Loader using 'zend_extension' in php
 php-fpm | NOTICE: PHP message: PHP Fatal error:  Unable to start example Loader module in Unknown on line 0
 ```
 
-Try moving the `example` extension from `PHP_EXTENSIONS` to `ZEND_EXTENSIONS`, then re-pushing your application.
+Try moving the `example` extension from `extension` to `zend_extension`, then re-pushing your application.
 
 If you see this error:
 
@@ -114,7 +148,7 @@ If you see this error:
 NOTICE: PHP message: PHP Warning:  example MUST be loaded as a Zend extension in Unknown on line 0
 ```
 
-Try moving the `example` extension from `ZEND_EXTENSIONS` to `PHP_EXTENSIONS`, then re-pushing your application.
+Try moving the `example` extension from `zend_extension` to `extension`, then re-pushing your application.
 
 ### <a id="php-modules"></a> PHP Modules
 
