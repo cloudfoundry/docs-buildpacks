@@ -38,9 +38,9 @@ For details about supported versions, please read the [release notes](https://gi
 
 ### <a id="engine-configurations"></a> HTTPD, Nginx, and PHP configuration
 
-The buildpack automatically configures HTTPD, Nginx. and PHP for your application.  This section explains how to modify the configuration.
+The buildpack automatically configures HTTPD, Nginx, and PHP for your application.  This section explains how to modify the configuration.
 
-The `.bp-config` directory in your application can contain configuration overrides for these components. Name the directories `httpd`, `nginx`, and `php` (although we suggest you use [php.ini.d](#php_ini_d) or [fpm.d](#fpm_d)).
+The `.bp-config` directory in your application can contain configuration overrides for these components. Name the directories `httpd`, `nginx`, and `php`. We recommend that you use [php.ini.d](#php_ini_d) or [fpm.d](#fpm_d)).
 
 <p class='note'><strong>NOTE</strong>: If you override the php.ini or php-fpm.ini files many other forms of configuration will not work.</p>
 
