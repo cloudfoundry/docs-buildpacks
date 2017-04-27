@@ -116,6 +116,7 @@ Versions 1.5.28 and later of the Node.js buildpack include the ability to use th
 <pre class="terminal">
 $ cd APP-DIR
 $ yarn config set yarn-offline-mirror ./npm-packages-offline-cache
+$ cp ~/.yarnrc .
 $ rm -rf node_modules/ yarn.lock # if they were previously generated
 $ yarn install
 </pre>
