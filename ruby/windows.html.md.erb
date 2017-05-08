@@ -1,0 +1,51 @@
+---
+title: Support for Windows Gemfiles
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+When a `Gemfile.lock` is generated on a Windows machine, it often contains gems
+with Windows-specific versions. This results in versions of gems such as
+mysql2, thin, and pg containing "-x86-mingw32." For example, a `Gemfile` that
+contains the following:
+
+```
+gem 'sinatra'
+gem 'mysql2'
+gem 'json'
+```
+
+When you run "bundle install" with the above `Gemfile` on a Windows machine, it
+would result in the following `Gemfile.lock`:
+
+```
+GEM remote: http://rubygems.org/
+specs:
+  json (1.7.3)
+  mysql2 (0.3.11-x86-mingw32)
+  rack (1.4.1)
+  rack-protection (1.2.0)
+  rack sinatra (1.3.2)
+  rack (~> 1.3, >= 1.3.6)
+  rack-protection (~> 1.2)
+  tilt (~> 1.3, >= 1.3.3)
+  tilt (1.3.3)
+PLATFORMS x86-mingw32
+DEPENDENCIES
+  json
+  mysql2
+  sinatra
+```
+
+
+Notice the "-x86-mingw32" in mysql2's version number. Since Cloud Foundry runs
+on Linux machines, this would fail to install. To mitigate this, the Ruby
+Buildpack will remove the `Gemfile.lock` and use bundler to resolve dependencies
+from the `Gemfile`.
+
+<p class="note"><strong>Note</strong>:
+Removing the `Gemfile.lock` will cause dependency versions to be resolved
+from the `Gemfile`. This could result in different versions being installed than
+those listed in the `Gemfile.lock`.
+</p>
