@@ -9,7 +9,7 @@ owner: Java
 
 This guide is intended to walk you through deploying a Spring app to <%=vars.product_full%>. You can choose whether to push a sample app, your own app, or both.
 
-If at any time you experience a problem following the steps below, try checking the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips.
+If at any time you experience a problem following the steps below, try checking the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic for more tips.
 
 <p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_spring</code> to clone the <code>pong_matcher_spring</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
 
@@ -23,10 +23,10 @@ This section describes how to deploy your Spring application to <%=vars.product_
 
 * A Spring app that runs locally on your workstation
 * Intermediate to advanced Spring knowledge
-* The [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html)
+* The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
 * JDK 1.6, 1.7, or 1.8 for Java 6, 7, or 8 configured on your workstation
 
-<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. For more information, refer to the <a href="../custom.html">Custom Buildpacks</a> topic.</p>
+<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. For more information, refer to the <a href="../../custom.html">Custom Buildpacks</a> topic.</p>
 
 ### Step 1: Declare App Dependencies  ###
 
@@ -83,7 +83,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 ### Step 4: Configure Service Connections for a Spring App ###
 
-<%=vars.product_short%> provides extensive support for creating and binding a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information about creating and binding a service connection for your app, refer to the [Configure Service Connections for Spring](./spring-service-bindings.html) topic.
+<%=vars.product_short%> provides extensive support for creating and binding a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information about creating and binding a service connection for your app, refer to the [Configure Service Connections for Spring](../configuring-service-connections/spring-service-bindings.html) topic.
 
 <p class="tip"><strong>Sample App Step: Create a Service Instance</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
 
@@ -108,7 +108,7 @@ applications:
 
 You can specify deployment options in a manifest file `manifest.yml` that the `cf push` command uses when deploying your app.
 
-Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic for more information.
+Refer to the [Deploying with Application Manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_spring</code> sample app does not require any additional configuration to deploy the app.</p>
 
@@ -126,7 +126,7 @@ Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space
 
 From the root directory of your application, run `cf push APP-NAME -p PATH-TO-FILE.war` to deploy your application.
 
-<p class="note"><strong>Note</strong>: Most Spring apps include an artifact, such as a <code>.jar</code>, <code>.war</code>, or <code>.zip</code> file. You must include the path to this file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. The example shows how to specify a path to the <code>.war</code> file for a Spring app. Refer to the <a href="./java-tips.html">Tips for Java Developers</a> topic for CLI examples for specific build tools, frameworks, and languages that create an app with an artifact.</p>
+<p class="note"><strong>Note</strong>: Most Spring apps include an artifact, such as a <code>.jar</code>, <code>.war</code>, or <code>.zip</code> file. You must include the path to this file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. The example shows how to specify a path to the <code>.war</code> file for a Spring app. Refer to the <a href="../java-tips.html">Tips for Java Developers</a> topic for CLI examples for specific build tools, frameworks, and languages that create an app with an artifact.</p>
 
 `cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
@@ -255,7 +255,7 @@ You can also integrate the Cloud Foundry Eclipse Plugin for STS.
 <%=vars.product_short%> provides an Eclipse plugin extension that enables you to
 deploy and manage Spring applications on a Cloud Foundry instance from the
 Spring Tool Suite (STS), version 3.0.0 and later.
-For more information, refer to the [Cloud Foundry Eclipse Plugin](./sts.html)
+For more information, refer to the [Cloud Foundry Eclipse Plugin](../sts.html)
 topic.
 You must follow the instructions in the [Install to STS from the IDE Extensions Tab](./sts.html#install-to-sts) and [Create a Cloud Foundry Server](./sts.html#cloud-foundry-server) sections before you can deploy and
 manage your apps with the plugin.
@@ -272,7 +272,7 @@ Run `cf help` to view a complete list of commands, grouped by task categories, a
 </p>
 
 ## <a id='troubleshoot'></a>Troubleshooting ##
-If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
+If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
 ### App Deploy Fails ###
 

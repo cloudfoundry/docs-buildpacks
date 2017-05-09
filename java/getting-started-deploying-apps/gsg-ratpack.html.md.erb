@@ -8,7 +8,7 @@ owner: Java
 <%=vars.GSG_intro_sentence%>
 
 This guide is intended to walk you through deploying a Ratpack app to <%=vars.product_full%>.
-If you experience a problem following the steps below, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
+If you experience a problem following the steps below, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
 <p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
 
@@ -22,7 +22,7 @@ This section describes how to deploy a Ratpack application to <%=vars.product_sh
 
 * A Ratpack app that runs locally on your workstation
 * Intermediate to advanced Ratpack knowledge
-* The [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html)
+* The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
 * JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
 
 <p class="note"><strong>Note</strong>: You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to Step 8: Configure the Deployment Manifest.</p>
@@ -73,7 +73,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 ### Step 4: (Optional) Configure a Procfile ###
 
-Use a Procfile to declare required runtime processes for your web app and to specify your web server. For more information, see the [Configuring a Production Server](../prod-server.html) topic.
+Use a Procfile to declare required runtime processes for your web app and to specify your web server. For more information, see the [Configuring a Production Server](../../prod-server.html) topic.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.</p>
 
@@ -86,7 +86,7 @@ This section describes using the CLI to configure a Redis managed service instan
 * Managed services integrate with <%=vars.product_short%> through service brokers that offer services and plans and manage the service calls between <%=vars.product_short%> and a service provider.
 * User-provided service instances enable you to connect your application to pre-provisioned external service instances.
 
-For more information about creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
+For more information about creating and using service instances, refer to the [Services Overview](./../../../devguide/services/index.html) topic.
 
 #### Create a Service Instance ####
 
@@ -145,7 +145,7 @@ applications:
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
-Refer to the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic for more information.
+Refer to the [Deploying with Application Manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_groovy</code> sample app does not require any additional configuration to deploy the app.</p>
 
@@ -163,7 +163,7 @@ Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space
 
 From the root directory of your application, run `cf push APP-NAME -p PATH-TO-FILE.distZip` to deploy your application.
 
-<p class="note"><strong>Note</strong>: You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="./java-tips.html">Tips for Java Developers</a> topic.</p>
+<p class="note"><strong>Note</strong>: You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="../java-tips.html">Tips for Java Developers</a> topic.</p>
 
 `cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
@@ -296,7 +296,7 @@ Run `cf help` to view a complete list of commands, grouped by task categories, a
 </p>
 
 ##<a id='troubleshoot'></a>Troubleshooting ##
-If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
+If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
 ### App Deploy Fails ###
 Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
