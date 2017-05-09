@@ -8,6 +8,50 @@ owner: Java
 Cloud Foundry can deploy a number of different JVM-based artifact types.
 For a more detailed explanation of what it supports, see the [Java Buildpack documentation][d].
 
+## <a id='buildpack'></a>Java Buildpack ##
+
+For detailed information about using, configuring, and extending the Cloud
+Foundry Java buildpack, see [Java Buildpack documentation](https://github.com/cloudfoundry/java-buildpack).
+
+## <a id='design'></a>Design ##
+The Java Buildpack is designed to convert artifacts that run on the JVM into
+executable applications.
+It does this by identifying one of the supported artifact types (Grails, Groovy,
+Java, Play Framework, Spring Boot, and Servlet) and downloading all additional
+dependencies needed to run.
+The collection of services bound to the application is also analyzed and any
+dependencies related to those services are also downloaded.
+
+As an example, pushing a WAR file that is bound to a PostgreSQL database and New
+Relic for performance monitoring would result in the following:
+
+<pre class="terminal">
+Initialized empty Git repository in /tmp/buildpacks/java-buildpack/.git/
+--> Java Buildpack source: https://github.com/cloudfoundry/java-buildpack#0928916a2dd78e9faf9469c558046eef09f60e5d
+--> Downloading Open Jdk JRE 1.7.0_51 from
+      http://.../openjdk/lucid/x86_64/openjdk-1.7.0_51.tar.gz (0.0s)
+        Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.9s)
+--> Downloading New Relic Agent 3.4.1 from
+      http://.../new-relic/new-relic-3.4.1.jar (0.4s)
+--> Downloading Postgresql JDBC 9.3.1100 from
+      http://.../postgresql-jdbc/postgresql-jdbc-9.3.1100.jar (0.0s)
+--> Downloading Spring Auto Reconfiguration 0.8.7 from
+      http://.../auto-reconfiguration/auto-reconfiguration-0.8.7.jar (0.0s)
+        Modifying /WEB-INF/web.xml for Auto Reconfiguration
+--> Downloading Tomcat 7.0.50 from
+      http://.../tomcat/tomcat-7.0.50.tar.gz (0.0s)
+        Expanding Tomcat to .java-buildpack/tomcat (0.1s)
+--> Downloading Buildpack Tomcat Support 1.1.1 from
+      http://.../tomcat-buildpack-support/tomcat-buildpack-support-1.1.1.jar (0.1s)
+--> Uploading droplet (57M)
+</pre>
+
+## <a id='configuration'></a>Configuration ##
+In most cases, the buildpack should work without any configuration.
+If you are new to Cloud Foundry, we recommend that you make your first attempts
+without modifying the buildpack configuration.
+If the buildpack requires some configuration, use [a fork of the buildpack][f].
+
 ## Java Client Library  ##
 
 The Cloud Foundry Client Library provides a Java API for interacting with a
@@ -120,8 +164,6 @@ Information about binding apps to services can be found on the following pages:
 * [Service Bindings for Play Framework Applications](./play-service-bindings.html)
 * [Service Bindings for Spring Applications](./spring-service-bindings.html)
 
------
-
 [b]: https://github.com/cloudfoundry/java-buildpack/blob/master/docs/container-spring_boot_cli.md
 [d]: https://github.com/cloudfoundry/java-buildpack#additional-documentation
 [g]: https://github.com/cloudfoundry/java-buildpack/blob/master/docs/container-groovy.md
@@ -129,50 +171,6 @@ Information about binding apps to services can be found on the following pages:
 [p]: http://www.playframework.com
 [r]: http://www.ratpack.io
 [s]: http://projects.spring.io/spring-boot/
-
-## <a id='buildpack'></a>Java Buildpack ##
-
-For detailed information about using, configuring, and extending the Cloud
-Foundry Java buildpack, see [https://github.com/cloudfoundry/java-buildpack](https://github.com/cloudfoundry/java-buildpack).
-
-## <a id='design'></a>Design ##
-The Java Buildpack is designed to convert artifacts that run on the JVM into
-executable applications.
-It does this by identifying one of the supported artifact types (Grails, Groovy,
-Java, Play Framework, Spring Boot, and Servlet) and downloading all additional
-dependencies needed to run.
-The collection of services bound to the application is also analyzed and any
-dependencies related to those services are also downloaded.
-
-As an example, pushing a WAR file that is bound to a PostgreSQL database and New
-Relic for performance monitoring would result in the following:
-
-<pre class="terminal">
-Initialized empty Git repository in /tmp/buildpacks/java-buildpack/.git/
---> Java Buildpack source: https://github.com/cloudfoundry/java-buildpack#0928916a2dd78e9faf9469c558046eef09f60e5d
---> Downloading Open Jdk JRE 1.7.0_51 from
-      http://.../openjdk/lucid/x86_64/openjdk-1.7.0_51.tar.gz (0.0s)
-        Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.9s)
---> Downloading New Relic Agent 3.4.1 from
-      http://.../new-relic/new-relic-3.4.1.jar (0.4s)
---> Downloading Postgresql JDBC 9.3.1100 from
-      http://.../postgresql-jdbc/postgresql-jdbc-9.3.1100.jar (0.0s)
---> Downloading Spring Auto Reconfiguration 0.8.7 from
-      http://.../auto-reconfiguration/auto-reconfiguration-0.8.7.jar (0.0s)
-        Modifying /WEB-INF/web.xml for Auto Reconfiguration
---> Downloading Tomcat 7.0.50 from
-      http://.../tomcat/tomcat-7.0.50.tar.gz (0.0s)
-        Expanding Tomcat to .java-buildpack/tomcat (0.1s)
---> Downloading Buildpack Tomcat Support 1.1.1 from
-      http://.../tomcat-buildpack-support/tomcat-buildpack-support-1.1.1.jar (0.1s)
---> Uploading droplet (57M)
-</pre>
-
-## <a id='configuration'></a>Configuration ##
-In most cases, the buildpack should work without any configuration.
-If you are new to Cloud Foundry, we recommend that you make your first attempts
-without modifying the buildpack configuration.
-If the buildpack requires some configuration, use [a fork of the buildpack][f].
 
 ## <a id='java-apps'></a>Java and Grails Best Practices ##
 
