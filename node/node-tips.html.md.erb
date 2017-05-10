@@ -7,6 +7,15 @@ owner: Buildpacks
 
 This topic provides Node-specific information to supplement the general guidelines in the [Deploy an Application](../../devguide/deploy-apps/deploy-app.html) topic.
 
+## <a id='buildpack'></a> About the Node.js Buildpack ##
+
+For information about using and extending the Node.js buildpack in Cloud
+Foundry, see the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack).
+
+You can find current information about this buildpack on the Node.js buildpack [release page](https://github.com/cloudfoundry/nodejs-buildpack/releases) in GitHub.
+
+The buildpack uses a default Node.js version. To specify the versions of Node.js and npm an app requires, edit the app’s `package.json`, as described in "node.js and npm versions" in the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack).
+
 ## <a id='packagejson'></a> Application Package File ##
 
 Cloud Foundry expects a `package.json` in your Node.js app.
@@ -103,15 +112,6 @@ $ cf push my-app -b https://github.com/cloudfoundry/nodejs-buildpack
 ## <a id='services'></a> Bind Services ##
 
 Refer to [Configure Service Connections for Node.js](./node-service-bindings.html).
-
-## <a id='buildpack'></a> About the Node.js Buildpack ##
-
-For information about using and extending the Node.js buildpack in Cloud
-Foundry, see the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack).
-
-You can find current information about this buildpack on the Node.js buildpack [release page](https://github.com/cloudfoundry/nodejs-buildpack/releases) in GitHub.
-
-The buildpack uses a default Node.js version. To specify the versions of Node.js and npm an app requires, edit the app’s `package.json`, as described in "node.js and npm versions" in the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack).
 
 ## <a id='env-var'></a>Environment Variables ##
 
