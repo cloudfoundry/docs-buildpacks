@@ -32,9 +32,9 @@ To log in to your Cloud Foundry instance and target its API endpoint, do the fol
 
 ## <a id="service-instance"></a> Step 2: (Optional) Create Service Instances
 
-An app that uses services, such as a database, messaging, or email server, is not fully functional until you provision the services and, if required, bind the services to the app. <%=vars.dev_console_1%>
-
 <p class="note"><strong>Note</strong>: If you use the sample Ruby on Rails app to go through this tutorial, Step 2 is not optional.</p>
+
+An app that uses services, such as a database, messaging, or email server, is not fully functional until you provision the services and, if required, bind the services to the app. <%=vars.dev_console_1%>
 
 You can provision service instances for an app that has already been pushed to Cloud Foundry. For more information about creating and using service instances, refer to the [Services Overview](./../../devguide/services/index.html) topic.
 
@@ -100,7 +100,7 @@ For more information about app manifests and supported attributes, refer to the 
 
 ### (Optional) Configure a Production Server ###
 
-For Ruby and Ruby on Rails apps, <%=vars.product_name%> uses WEBrick, the default web server for the Ruby standard library. However, <%=vars.product_name%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configuring a Production Server](../prod-server.html) topic for help with configuring a server other than WEBrick.
+For Ruby and Ruby on Rails apps, <%=vars.product_name%> uses WEBrick, the default standard Ruby web server library. However, <%=vars.product_name%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configuring a Production Server](../prod-server.html) topic for help with configuring a server other than WEBrick.
 
 ## <a id="deploy"></a> Step 4: Deploy a Ruby on Rails App
 
