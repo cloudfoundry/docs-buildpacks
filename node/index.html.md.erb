@@ -125,11 +125,13 @@ When you push the app, the buildpack looks for an `npm-packages-offline-cache` d
 
 For more information about using an offline mirror with Yarn, see the [Yarn Blog](https://yarnpkg.com/blog/2016/11/24/offline-mirror).
 
-### <a id='npm_integrity_check'></a>NPM integrity check###
+### <a id='integrity-check'></a>Integrity Check ###
 
-By default, the buildpack uses npm to download dependencies. Note that npm is known to lack any integrity checks of the downloaded packages which is a [security risk](http://cwe.mitre.org/data/definitions/494.html). If there are any missing dependencies, the buildpack will use `npm install` to resolve them or `npm rebuild` if dependencies are already vendored, which may result in code being downloaded and executed without verification.
+By default, the Node.js buildpack uses npm to download dependencies. Note that npm does not perform integrity checks of the downloaded packages, which is a [security risk](http://cwe.mitre.org/data/definitions/494.html).
 
-Yarn can be used as an alternative since it does verify dependencies.
+If missing dependencies are detected, the buildpack runs `npm install` for non-vendored dependencies or `npm rebuild` for dependencies that are already vendored. This may result in code being downloaded and executed without verification.
+
+You can use Yarn as an alternative that verifies dependencies.
 
 ## <a id='openssl'></a>OpenSSL Support ##
 
