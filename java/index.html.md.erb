@@ -15,12 +15,11 @@ See the following topics:
 * <a href="./configuring-service-connections/index.html" class="subnav">Configuring Service Connections</a>
 * <a href="./sts.html" class="subnav">Cloud Foundry Eclipse Plugin</a>
 * <a href="./java-client.html" class="subnav">Cloud Foundry Java Client Library</a>
-* <a href="./bosh_custom_trusted_certs.html" class="subnav">BOSH Configured Custom Trusted Certificate Support</a>
 
 See the [Java Buildpack Release Notes](https://github.com/cloudfoundry/java-buildpack/releases) for information about specific versions. 
 You can find the source for the Java buildpack on GitHub: [https://github.com/cloudfoundry/java-buildpack](https://github.com/cloudfoundry/java-buildpack)
 
-## Buildpack Logging and Application Logging ##
+## <a id='logging'></a>Buildpack Logging and Application Logging ##
 
 The buildpack only runs during the staging process, and therefore only logs
 staging information such as the downloaded components, configuration data, and work performed on your application by the buildpack.
@@ -38,3 +37,15 @@ Once staging completes, the buildpack stops logging. The Loggregator handles app
 
 Your application must write to STDOUT or STDERR for its logs to be included in
 the Loggregator stream. For more information, see the [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html) topic.
+
+## <a id='bosh-trusted-cert'></a>BOSH Custom Trusted Certificate Support
+
+Java Buildpack versions 3.7 and later support [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html).
+
+Run the following command to configure support for this feature:
+
+<pre class="terminal">
+$ cf set-env APP-NAME JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: true}'`
+</pre>
+
+Alternatively, you can modify the buildpack by setting the [<code>enabled</code>](https://github.com/cloudfoundry/java-buildpack/blob/master/config/container_certificate_trust_store.yml#L18) property to true in `config/container_certificate_trust_store.yml`. For more information, see the [Java buildpack repository on GitHub](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-container_certificate_trust_store.md).
