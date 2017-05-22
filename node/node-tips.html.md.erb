@@ -14,7 +14,7 @@ Foundry, see the [nodejs-buildpack repository](https://github.com/cloudfoundry/n
 
 You can find current information about this buildpack on the Node.js buildpack [release page](https://github.com/cloudfoundry/nodejs-buildpack/releases) in GitHub.
 
-The buildpack uses a default Node.js version. To specify the versions of Node.js and npm an app requires, edit the app’s `package.json`, as described in "node.js and npm versions" in the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack).
+The buildpack uses a default Node.js version. To specify the versions of Node.js and npm an app requires, edit the app's `package.json`, as described in "node.js and npm versions" in the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack).
 
 ## <a id='packagejson'></a> Application Package File ##
 
@@ -47,9 +47,7 @@ Example `package.json` file:
 ## <a id='port'></a> Application Port ##
 
 You must use the PORT environment variable to determine which port your
-app should listen on.
-In order to also run your app locally, you may want to make port 3000
-the default:
+app should listen on. To also run your app locally, set the default port as `3000`.
 
 ~~~javascript
 app.listen(process.env.PORT || 3000);
@@ -57,12 +55,10 @@ app.listen(process.env.PORT || 3000);
 
 ## <a id='port'></a> Low Memory Environments ##
 
-When running node apps, you might notice that instances are occassionally
+When running node apps, you might notice that instances are occasionally
 restarted due to memory constraints. Node does not know how much memory it is
 allowed to use, and thus sometimes allows the garbage collector to wait past
-the allowed amount of memory. To solve this, you can turn set `OPTIMIZE_MEMORY`,
-which will set `max_old_space_size` based on the available memory in the
-instance.
+the allowed amount of memory. To resolve this issue, set the `OPTIMIZE_MEMORY` environment variable to `true`. This sets `max_old_space_size` based on the available memory in the instance.
 
 <pre class="terminal">
 $ cf set-env my-app OPTIMIZE_MEMORY true
@@ -96,14 +92,12 @@ $ cf push my-app -c "node my-app.js"
 
 You do not need to run `npm install` before deploying your app.
 Cloud Foundry runs it for you when your app is pushed.
-If you prefer to run `npm install` and create a `node_modules` folder
-inside of your app, this is also supported.
+You can, if you prefer, run `npm install` and create a `node_modules` folder
+inside of your app.
 
 ## <a id='discovery'></a> Solve Discovery Problems ##
 
-If Cloud Foundry does not automatically detect that your app is a
-Node.js app, you can override the auto-detection by specifying the
-Node.js buildpack.
+If Cloud Foundry does not automatically detect that your app is a Node.js app, you can override auto-detection by specifying the Node.js buildpack.
 
 Add the buildpack into your `manifest.yml` and re-run `cf push` with your
 manifest:
@@ -130,14 +124,13 @@ Refer to [Configure Service Connections for Node.js](./node-service-bindings.htm
 
 You can access environments variable programmatically.
 
-For example, you can obtain `VCAP_SERVICES` like this:
+For example, you can obtain `VCAP_SERVICES` as follows:
 
 ```
 process.env.VCAP_SERVICES
 ```
 
-Environment variables available to you include both those [defined by the system]
-(../../devguide/deploy-apps/environment-variable.html#app-system-env)
+Environment variables available to you include both those [defined by the system](../../devguide/deploy-apps/environment-variable.html#app-system-env)
 and those defined by the Node.js buildpack, as described below.
 
 ### <a id='BUILD-DIR'></a>BUILD_DIR ###
