@@ -74,7 +74,7 @@ applications:
 ```
 
 #### <a id='godeps_1.6'></a>Go 1.6 ####
-* [Sample Go 1.6 app](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_16_app/src/go_app)
+* [Sample Go 1.6 app](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go16/src/go_app)
 
 An example `Godeps/Godeps.json`:
 
@@ -95,7 +95,7 @@ This will generate a `vendor` directory and a `glide.lock` file specifying the l
 You must have a `glide.lock` file when pushing a vendored app. You do not need a `glide.lock` file when deploying a non-vendored app. 
 
 ####<a id='glide_app'></a>Glide####
-* [Sample Go app with Glide](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_app_with_glide/src/go_app_with_glide)
+* [Sample Go app with Glide](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/glide_and_vendoring/src/glide_and_vendoring)
 
 An example `glide.yml` file:
 
@@ -152,7 +152,7 @@ applications:
 ```
 
 #### <a id='go-1.6'></a>Go 1.6 ####
-* [Sample Go 1.6 app with native vendoring](https://github.com/cloudfoundry/go-buildpack/tree/develop/cf_spec/fixtures/go_with_native_vendoring/src/go_app).
+* [Sample Go 1.6 app with native vendoring](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/vendored_custom_install_spec/src/go_app).
 
 Go 1.6 has vendoring enabled by default. Set the `GO15VENDOREXPERIMENT` environment variable to `0` to disable vendoring.
 
@@ -170,7 +170,7 @@ applications:
 
 #### <a id='godeps_1.7'></a>Go 1.7 and Later ####
 
-* [Sample Go 1.7 app with native vendoring](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go_app_gopath_in_container/src/go_app).
+* [Sample Go 1.7 app with native vendoring](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/gopath_in_container/src/go_app).
 
 Go 1.7 and later always has vendoring enabled, and you cannot disable it with an environment variable.
 
@@ -195,7 +195,7 @@ Set the `GO_LINKER_SYMBOL` and `GO_LINKER_VALUE` in the application's configurat
 This can be used to embed the commit SHA or other build-specific data directly
 into the compiled executable.
 
-For example usage, see the relevant [fixture app](https://github.com/cloudfoundry/go-buildpack/tree/develop/cf_spec/fixtures/go1.6_app_using_ldflags/src/go_app).
+For example usage, see the relevant [fixture app](https://github.com/cloudfoundry/go-buildpack/tree/master/cf_spec/fixtures/go16_ldflags/src/go_app).
 
 ## <a id='c_dependencies'></a>C Dependencies ##
 
