@@ -55,6 +55,19 @@ the default:
 app.listen(process.env.PORT || 3000);
 ~~~
 
+## <a id='port'></a> Low Memory Environments ##
+
+When running node apps, you might notice that instances are occassionally
+restarted due to memory constraints. Node does not know how much memory it is
+allowed to use, and thus sometimes allows the garbage collector to wait past
+the allowed amount of memory. To solve this, you can turn set `OPTIMIZE_MEMORY`,
+which will set `max_old_space_size` based on the available memory in the
+instance.
+
+<pre class="terminal">
+$ cf set-env my-app OPTIMIZE_MEMORY true
+</pre>
+
 ## <a id='start'></a> Application Start Command ##
 
 Node.js apps require a start command.
