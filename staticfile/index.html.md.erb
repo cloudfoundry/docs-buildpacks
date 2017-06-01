@@ -184,6 +184,7 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
   <td>To customize the <code>location</code> block of the NGINX configuration file, follow these steps:<br><br>
 
    <ol>
+   <li>Set a <code>root</code> directory (<code>location_include</code> only works in conjunction with <code>root</code>)</li>
    <li>Create a file with location scoped NGINX directives. See the following example, which causes visitors of your site to receive the <code>X-MySiteName</code> HTTP header:
     <br><br>
     <b>File</b>: <code>nginx/conf/includes/custom_header.conf</code><br>
@@ -194,6 +195,7 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
 
     <code style="width: 100%">
     ...<br>
+    root: public<br>
     location_include: includes/*.conf<br>
     ...<br>
     </code><br><br>
