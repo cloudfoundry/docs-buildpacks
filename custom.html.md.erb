@@ -109,9 +109,9 @@ The `app` directory contains `BUILD_DIR` contents, and `staging_info.yml` contai
 
 ## <a id='packaging-custom-buildpacks'></a> Package Custom Buildpacks ##
 
-Cloud Foundry buildpacks work with limited or no Internet connectivity. A Cloud Foundry operator can use the [buildpack packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem to give the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
+Cloud Foundry buildpacks can work with limited or no Internet connectivity. The [Buildpack Packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
 
-### Use the Buildpack Packager
+### <a id='use-buildpack-packager'></a> Use the Buildpack Packager
 
 1. Ensure that you have installed the [buildpack packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem.
 1. Create a manifest.yml in your buildpack.
@@ -130,9 +130,11 @@ The packager has the following option flags:
 
 For more information, see the documentation at the [buildpack-packager Github repo](https://github.com/cloudfoundry-incubator/buildpack-packager).
 
-### Use and Share the Packaged Buildpack
+### <a id='share-buildpack-package'></a> Use and Share the Packaged Buildpack
 
 After you have packaged your buildpack using `buildpack-packager` you can use the resulting `.zip` file locally, or share it with others by uploading it to any network location that is accessible to the CLI. Users can then specify the buildpack with the `-b` option when they push apps. See <a href="#deploying-with-custom-buildpacks">Deploying Apps with a Custom Buildpack</a> for details.
+
+<p class="note"><strong>Note</strong>: Offline buildpack packages may contain proprietary dependencies that require distribution licensing or export control measures.</p>
 
 <%=vars.upload_custom_buildpacks%>
 
@@ -160,8 +162,7 @@ To specify a default version:
   $ ./compile-extensions/bin/default\_version\_for manifest.yml go 1.6.3
   </pre>
 
-
-#### <a name="rules"></a> Rules for Specifying a Default Version
+#### Rules for Specifying a Default Version
 
 The `buildpack-packager` script validates this object according to the following rules:
 
