@@ -113,7 +113,7 @@ Cloud Foundry buildpacks can work with limited or no Internet connectivity. The 
 
 ### <a id='use-buildpack-packager'></a> Use the Buildpack Packager
 
-1. Ensure that you have installed the [buildpack packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem.
+1. Ensure that you have installed the [Buildpack Packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem.
 1. Create a manifest.yml in your buildpack.
 1. Run the packager in cached mode: 
   <pre class="terminal">$ buildpack-packager --cached</pre>
@@ -128,13 +128,13 @@ The packager has the following option flags:
 
 * `--use-custom-manifest`: To include a different manifest file in your packaged buildpack, you can call the packager with the `--use-custom-manifest PATH/TO/MANIFEST.YML` option. The packager generates a buildpack with the specified manifest. If you are building a cached buildpack, the packager vendors dependencies from the specified manifest as well.
 
-For more information, see the documentation at the [buildpack-packager Github repo](https://github.com/cloudfoundry-incubator/buildpack-packager).
+For more information, see the documentation at the [Buildpack Packager Github repository](https://github.com/cloudfoundry-incubator/buildpack-packager).
 
 ### <a id='share-buildpack-package'></a> Use and Share the Packaged Buildpack
 
 After you have packaged your buildpack using `buildpack-packager` you can use the resulting `.zip` file locally, or share it with others by uploading it to any network location that is accessible to the CLI. Users can then specify the buildpack with the `-b` option when they push apps. See <a href="#deploying-with-custom-buildpacks">Deploying Apps with a Custom Buildpack</a> for details.
 
-<p class="note"><strong>Note</strong>: Offline buildpack packages may contain proprietary dependencies that require distribution licensing or export control measures.</p>
+<p class="note"><strong>Note</strong>: Offline buildpack packages may contain proprietary dependencies that require distribution licensing or export control measures. For more information about offline buildpacks, refer to <a href="depend-pkg-offline.html#offline-buildpacks">Packaging Dependencies for Offline Buildpacks</a>.</p>
 
 <%=vars.upload_custom_buildpacks%>
 
