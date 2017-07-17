@@ -7,9 +7,16 @@ owner: Buildpacks
 
 This topic describes how buildpacks work in Cloud Foundry.
 
-## <a id='custom-buildpacks'></a>Buildpack Scripts ##
+## <a id='buildpack-scripts'></a>Buildpack Scripts ##
 
-A buildpack repository contains three main scripts, situated in a folder named `bin`.
+A buildpack repository contains the folllowing four main scripts, situated in a folder named `bin`:
+
+* `bin/detect` determines whether or not to apply the buildpack to an app
+* `bin/supply` supplies dependencies for an app
+* `bin/finalize` prepares the app for launch
+* `bin/release` provides feedback metadata to Cloud Foundry indicating how the app should be executed
+
+The `bin/supply` and `bin/finalize` scripts replace the deprecated `bin/compile` script. Older buildpacks may still use `bin/compile`, but they do not support applying multiple buildpacks to a single application.
 
 ### <a id='detect-script'></a>bin/detect ###
 
@@ -42,36 +49,13 @@ java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 o
 
 For more information, see the [Buildpack Detection](#buildpack-detection) section below.
 
-### <a id='compile-script'></a>bin/compile ###
+### <a id='supply-script'></a>bin/supply ###
 
-The `compile` script builds a droplet by packaging the app dependencies, assuring that the app has all the necessary components needed to run.
+The `supply` script supplies dependencies for the app, and runs for all buildpacks.
 
-The script is run with two arguments: the `build` directory for the app and the `cache` directory, which is a location the buildpack can use to store assets during the build process. During the execution of the `compile` script, all output sent to `STDOUT` is relayed through the cf CLI to the user.
+### <a id='finalize-script'></a>bin/finalize ###
 
-The following is an example of a simple `compile` script:
-
-~~~ruby
-#!/usr/bin/env ruby
-
-#sync output
-
-$stdout.sync = true
-
-build_path = ARGV[0]
-cache_path = ARGV[1]
-
-install_ruby
-
-private
-
-def install_ruby
-  puts "Installing Ruby"
-
-  # !!! build tasks go here !!!
-  # download ruby 
-  # install ruby
-end
-~~~
+The `finalize` script prepares the app for launch, and only runs for the last buildpack.
 
 ### <a id='release-script'></a>bin/release ###
 
@@ -110,6 +94,38 @@ staging_info.yml
 ```
 The `app` directory contains `BUILD_DIR` contents, and `staging_info.yml` contains the staging metadata saved in the droplet.
 
+### <a id='compile-script'></a>bin/compile (Deprecated)###
+
+The `compile` script builds a droplet by packaging the app dependencies, assuring that the app has all the necessary components needed to run.
+
+The script is run with two arguments: the `build` directory for the app and the `cache` directory, which is a location the buildpack can use to store assets during the build process. During the execution of the `compile` script, all output sent to `STDOUT` is relayed through the cf CLI to the user.
+
+The following is an example of a simple `compile` script:
+
+~~~ruby
+#!/usr/bin/env ruby
+
+#sync output
+
+$stdout.sync = true
+
+build_path = ARGV[0]
+cache_path = ARGV[1]
+
+install_ruby
+
+private
+
+def install_ruby
+  puts "Installing Ruby"
+
+  # !!! build tasks go here !!!
+  # download ruby 
+  # install ruby
+end
+~~~
+
+
 ##<a id='buildpack-detection'></a> Buildpack Detection
 
 When you push an app, Cloud Foundry uses a detection process to determine which buildpack to use. 
@@ -136,11 +152,6 @@ For a more detailed account of how Cloud Foundry interacts with the buildpack, s
 
 This section provides a detailed account of the sequence of interactions between the Cloud Foundry platform and the buildpack. The sequence of interactions differs depending on whether the platform [skips](#no-detection) or [performs](#detection) buildpack detection.
 
-This section uses the following placeholders:
-
-* `IDX` is the zero-padded index matching the position of the buildpack in the priority list.
-* `MD5` is the MD5 checksum of the buildpack's URL. 
-
 ###<a id='no-detection'></a> No Buildpack Detection
 
 The platform skips buildpack detection if the developer specifies one or more buildpacks in the application manifest or with the cf CLI using the `cf push APP-NAME -b BUILDPACK-NAME` command.
@@ -148,27 +159,24 @@ The platform skips buildpack detection if the developer specifies one or more bu
 If the platform skips detection, it performs the following interactions:
 
 1. For each buildpack except the last buildpack, the platform does the following:
-	1. Creates a `/tmp/deps/IDX/` directory
-	1. Creates a `/tmp/cache/MD5/` directory
-	1. Runs `/bin/supply /tmp/app/ /tmp/cache/MD5/ /tmp/deps/IDX`
-	1. Accepts any modification of `/tmp/deps/IDX/`
-	1. Accepts any modification of `/tmp/cache/MD5/`
+	1. Runs `/bin/supply` on the `app`, `cache`, and `deps` directory
+	1. Accepts any modification of the `deps` directory
+	1. Accepts any modification of the `cache` directory
 	1. May disallow modification to any other directory
 1. For the last buildpack, the platform does the following:
-	1. Creates `/tmp/cache/primary/` if not present
 	1. If `/bin/finalize` is present:
-		1. Creates `/tmp/deps/` if not present
-		1. If `/bin/supply` is present, runs `/bin/supply /tmp/app/ /tmp/cache/primary/ /tmp/deps/ IDX`
-		1. Accepts any modification of `/tmp/deps/IDX/`
-		1. May disallow modification of `/tmp/app/`
-		1. Runs `/bin/finalize /tmp/app/ /tmp/cache/primary/ /tmp/deps/ IDX`
-		1. Accepts any modification of `/tmp/app/`
+		1. Creates the `deps` directory if not present
+		1. If `/bin/supply` is present, runs `/bin/supply` on the `app`, `cache`, and `deps` directory 
+		1. Accepts any modification of the `deps` directory
+		1. May disallow modification of the `app` directory
+		1. Runs `/bin/finalize` on the `app`, `cache`, and `deps` directory 
+		1. Accepts any modification of the `app` directory
 	1. If `/bin/finalize` is not present:
-		1. Runs `/bin/compile /tmp/app/ /tmp/cache/primary/ ‘’`
-		1. Accepts any modification of `/tmp/app/`
+		1. Runs `/bin/compile` on the `app` and `cache` directory 
+		1. Accepts any modification of the `app` directory
 	1. Runs `/bin/release` to determine staging information
 
-At the conclusion of this process, `/tmp/deps/` is included at the root of the doplet, adjacent to `/tmp/app/`.
+At the conclusion of this process, the `deps` directory is included at the root of the droplet, adjacent to the `app` directory. 
 
 ###<a id='detection'></a> Buildpack Detection
 
@@ -182,15 +190,15 @@ If the platform performs detection, it performs the following interactions:
 1. Selects the first buildpack with a `/bin/detect` script that returns a zero exit status
 1. Creates `/tmp/cache/primary/` if not present
 1. If `/bin/finalize` is present:
-	1. Creates `/tmp/deps/` if not present
-	1. If `/bin/supply` is present, runs `/bin/supply /tmp/app/ /tmp/cache/primary/ /tmp/deps/ IDX`
-	1. Accepts any modification of `/tmp/deps/IDX/`
-	1. May disallow modification of `/tmp/app/`
-	1. Runs `/bin/finalize /tmp/app/ /tmp/cache/primary/ /tmp/deps/ IDX`
-	1. Accepts any modification of `/tmp/app/`
+	1. Creates the `deps` directory if not present
+	1. If `/bin/supply` is present, runs `/bin/supply` on the `app`, `cache`, and `deps` directory 
+	1. Accepts any modification of the `deps` directory
+	1. May disallow modification of the `app` directory
+	1. Runs `/bin/finalize` on the `app`, `cache`, and `deps` directory 
+	1. Accepts any modification of the `app` directory
 1. If `/bin/finalize` is not present:
-	1. Runs `/bin/compile /tmp/app/ /tmp/cache/primary/ ‘’`
-	1. Accepts any modification of `/tmp/app/`
+	1. Runs `/bin/compile` on the `app` and `cache` directory 
+	1. Accepts any modification of the `app` directory
 1. Runs `/bin/release` to determine staging information
 
-At the conclusion of this process, `/tmp/deps/` is included at the root of the doplet, adjacent to `/tmp/app/`.
+At the conclusion of this process, the `deps` directory is included at the root of the droplet, adjacent to the `app` directory. 
