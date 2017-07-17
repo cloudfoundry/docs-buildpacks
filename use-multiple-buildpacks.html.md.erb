@@ -1,0 +1,34 @@
+---
+title: Pushing an Application with Multiple Buildpacks
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how developers can push an application with multiple buildpacks.
+
+For more information about pushing applications to Cloud Foundry, see the [Deploy an Application](../devguide/deploy-apps/deploy-app.html) topic.
+
+##<a id='cfcli'></a> Specifying Buildpacks with the cf CLI
+
+To push an application with multiple buildpacks using the Cloud Foundry Command Line Interface (cf CLI), perform the following command:
+
+<pre class="terminal">
+$ cf push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2
+</pre>
+
+To see a list of available buildpacks, run `cf buildpacks`.
+
+For more information about using the cf CLI, see the [Cloud Foundry Command Line Interface](../cf-cli/index.html) topic.
+
+##<a id='manifest'></a> Specifying Buildpacks with a Manifest
+
+To specify multiple buildpacks using an application manifest, add the follow lines to the `manifest.yml` file:
+
+```
+buildpacks:
+- BUILDPACK-NAME-1
+- BUILDPACK-NAME-2
+```
+
+For more information about application manifests, see the [Deploying with Application Manifests](../devguide/deploy-apps/manifest.html) topic.	
