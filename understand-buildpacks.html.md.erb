@@ -104,7 +104,7 @@ end
 
 ### <a id='finalize-script'></a>bin/finalize ###
 
-The `finalize` script prepares the app for launch and runs only for the last buildpack. All output sent to `STDOUT` is relayed through the Cloud Foundry CLI to the user.
+The `finalize` script prepares the app for launch and runs only for the last buildpack. All output sent to `STDOUT` is relayed to the user through the Cloud Foundry CLI.
 
 The script is run with four arguments:
 
@@ -113,9 +113,9 @@ The script is run with four arguments:
 * The `deps` directory, which is where dependencies provided by all buildpacks are installed
 * The `index`, which is a number that represents the ordinal position of the buildpack
 
-The `finalize` script may find dependencies installed by the same buildpack's `supply` script in `deps`/`index`. It may also look in other directories within `deps` to find dependencies supplied by other buildpacks.
+The `finalize` script may find dependencies installed by the `supply` script of the same buildpack in `deps`/`index`. It may also look in other directories within `deps` to find dependencies supplied by other buildpacks.
 
-The `cache` directory provided to the `finalize` script is preserved even when the buildpack is upgraded or otherwise changes. The same buildpack's `supply` script also has access to this cache directory.
+The `cache` directory provided to the `finalize` script is preserved even when the buildpack is upgraded or otherwise changes. The `supply` script of this buildpack also has access to this cache directory.
 
 The following is an example of a simple `finalize` script:
 
