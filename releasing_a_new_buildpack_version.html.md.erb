@@ -45,13 +45,7 @@ into relevant changes. For more information, see [Modify Changelogs](#changelogs
 
 1. Push your changes to the `develop` branch:
   <pre class="terminal">
-  $ git push origin HEAD:{master,develop}
-  </pre>
-
-1. Merge your changes to the `master` branch:
-  <pre class="terminal">
-  $ git checkout master
-  $ git merge develop
+  $ git push origin HEAD develop
   </pre>
 
 ##<a id="concourse"></a>Concourse Buildpack Workflow
@@ -61,7 +55,9 @@ a Git tag to the buildpack and mark the tag as a release on Github.
 
 If `buildpacks-ci` is deployed to Concourse, the buildpack update passes through the following life cycle:
 
-1. Concourse triggers the `detect-new-buildpack-and-upload-artifacts` job in the pipeline for the updated buildpack. This job creates a cached and uncached buildpack and uploads them to an AWS S3 bucket. 
+1. Concourse triggers the `buildpack-to-master` job in the pipeline for the updated buildpack. This job merges develop onto the master branch of the buildpack.
+
+1. The `detect-new-buildpack-and-upload-artifacts` job triggers in the pipeline for the updated buildpack. This job creates a cached and uncached buildpack and uploads them to an AWS S3 bucket. 
 
 1. The `specs-lts-master` and `specs-edge-master` jobs trigger and
 run the buildpack test suite and the buildpack-specific tests of the [Buildpack Runtime Acceptance Tests (BRATS)](https://github.com/cloudfoundry/brats).
