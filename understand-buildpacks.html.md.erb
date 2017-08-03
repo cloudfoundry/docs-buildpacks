@@ -18,10 +18,10 @@ A buildpack repository may contain the following five scripts, situated in a fol
 * `bin/compile` deprecated alternative to `bin/supply` and `bin/finalize`
 
 The `bin/supply` and `bin/finalize` scripts replace the deprecated `bin/compile` script.
-Older buildpacks may still use `bin/compile` with the latest Cloud Foundry, but without support for applying multiple buildpacks to a single application.
+Older buildpacks may still use `bin/compile` with the latest version of Cloud Foundry. In this case, applying multiple buildpacks to a single app is not supported.
 Similarly, newer buildpacks may still provide `bin/compile` for compatibility with Heroku and older versions of Cloud Foundry.
 
-The `bin/supply` script is required for non-final buildpacks. The `bin/finalize` (or `bin/compile`) compile script is required for final buildpacks.
+The `bin/supply` script is required for non-final buildpacks. The `bin/finalize` (or `bin/compile`) script is required for final buildpacks.
 
 ### <a id='detect-script'></a>bin/detect ###
 
@@ -52,27 +52,28 @@ The following is an example of the detailed information returned by the Java bui
 java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
 ~~~
 
-Only a single buildpack is choosen by detection. When multiple buildpacks are desired, they must be explicitly specified.
+Only a single buildpack is detected by default. When multiple buildpacks are desired, they must be explicitly specified.
 
 For more information, see the [Buildpack Detection](#buildpack-detection) section below.
 
 ### <a id='supply-script'></a>bin/supply ###
 
-The `supply` script supplies dependencies for the app, and runs for all buildpacks. All output sent to `STDOUT` is relayed through the cf CLI to the user.
+The `supply` script provides dependencies for the app and runs for all buildpacks. All output sent to `STDOUT` is relayed to the user through the Cloud Foundry command line interface (CLI).
 
 The script is run with four arguments:
-1. The `build` directory for the app
-2. The `cache` directory, which is a location the buildpack can use to store assets during the build process
-3. The `deps` directory, which is where dependencies provided by all buildpacks are installed
-4. The `index`, which is a number that represents the ordinal position of the buildpack
 
-The `supply` script stores dependencies in `deps`/`index`, and may look in other directories in `deps` to find dependencies supplied by other buildpacks.
+* The `build` directory for the app
+* The `cache` directory, which is a location the buildpack can use to store assets during the build process
+* The `deps` directory, which is where dependencies provided by all buildpacks are installed
+* The `index`, which is a number that represents the ordinal position of the buildpack
+
+The `supply` script stores dependencies in `deps`/`index`. It may also look in other directories within `deps` to find dependencies supplied by other buildpacks.
 
 The `supply` script must not modify anything outside of the `deps`/`index` directory. Staging may fail if such modification is detected.
 
-The `cache` directory provided to the final buildpack's `supply` script is preserved even when the last buildpack is upgraded or otherwise changes. The `finalize` script also has access to this cache directory.
+The `cache` directory provided to the `supply` script of the final buildpack is preserved even when this buildpack is upgraded or otherwise changes. The `finalize` script also has access to this cache directory.
 
-The `cache` directories provided to the non-final buildpacks' `supply` scripts are cleared if those buildpacks are upgraded or otherwise change.
+The `cache` directories provided to the `supply` scripts of non-final buildpacks are cleared if those buildpacks are upgraded or otherwise change.
 
 The following is an example of a simple `supply` script:
 
@@ -103,15 +104,16 @@ end
 
 ### <a id='finalize-script'></a>bin/finalize ###
 
-The `finalize` script prepares the app for launch, and only runs for the last buildpack. All output sent to `STDOUT` is relayed through the cf CLI to the user.
+The `finalize` script prepares the app for launch and runs only for the last buildpack. All output sent to `STDOUT` is relayed through the Cloud Foundry CLI to the user.
 
 The script is run with four arguments:
-1. The `build` directory for the app
-2. The `cache` directory, which is a location the buildpack can use to store assets during the build process
-3. The `deps` directory, which is where dependencies provided by all buildpacks are installed
-4. The `index`, which is a number that represents the ordinal position of the buildpack
 
-The `finalize` script may find dependencies installed by the same buildpack's `supply` script in `deps`/`index`, and may look in other directories in `deps` to find dependencies supplied by other buildpacks.
+* The `build` directory for the app
+* The `cache` directory, which is a location the buildpack can use to store assets during the build process
+* The `deps` directory, which is where dependencies provided by all buildpacks are installed
+* The `index`, which is a number that represents the ordinal position of the buildpack
+
+The `finalize` script may find dependencies installed by the same buildpack's `supply` script in `deps`/`index`. It may also look in other directories within `deps` to find dependencies supplied by other buildpacks.
 
 The `cache` directory provided to the `finalize` script is preserved even when the buildpack is upgraded or otherwise changes. The same buildpack's `supply` script also has access to this cache directory.
 
@@ -183,7 +185,7 @@ logs/
 tmp/
 staging_info.yml
 ```
-The `app` directory contains `build` directory contents and `staging_info.yml` contains the staging metadata saved in the droplet.
+The `app` directory includes the contents of the `build` directory, and `staging_info.yml` contains the staging metadata saved in the droplet.
 
 ##<a id='buildpack-detection'></a> Buildpack Detection
 
