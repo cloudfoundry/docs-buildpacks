@@ -115,7 +115,7 @@ The script is run with four arguments:
 
 The `finalize` script may find dependencies installed by the `supply` script of the same buildpack in `deps`/`index`. It may also look in other directories within `deps` to find dependencies supplied by other buildpacks.
 
-The `cache` directory provided to the `finalize` script is preserved even when the buildpack is upgraded or otherwise changes. The `supply` script of this buildpack also has access to this cache directory.
+The `cache` directory provided to the `finalize` script is preserved even when the buildpack is upgraded or otherwise changes. The `supply` script of this buildpack also has access to the cache directory.
 
 The following is an example of a simple `finalize` script:
 
