@@ -176,19 +176,19 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
 <tr>
   <td id="strict-security">HTTP Strict Transport Security</td>
   <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000</code>. This forces browsers to make all subsequent requests over HTTPS. Defaults to a max age of one year.</td>
+ <code>Strict-Transport-Security: max-age=31536000</code>. This forces browsers to make all subsequent requests over HTTPS. Defaults to a max-age of one year.</td>
 </tr>
 
 <tr>
   <td id="strict-security-with-subdomains">HTTP Strict Transport Security Include SubDomains</td>
   <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains. Defaults to a max age of one year.</td>
+ <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains. Defaults to a max-age of one year.</td>
 </tr>
 
 <tr>
   <td id="strict-security-with-preload">HTTP Strict Transport Security Preload</td>
   <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains and add request inclusion to the Google Chrome's preload list. Defaults to a max age of one year.</td>
+ <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains and requests inclusion in browser-managed HSTS preload lists (see <a href="https://hstspreload.org">https://hstspreload.org</a>). Defaults to a max-age of one year.</td>
 </tr>
 
 <tr>
