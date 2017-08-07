@@ -9,7 +9,7 @@ This topic describes how buildpacks work in Cloud Foundry.
 
 ## <a id='buildpack-scripts'></a>Buildpack Scripts ##
 
-A buildpack repository may contain the following five scripts, situated in a folder named `bin`:
+A buildpack repository may contain the following five scripts in the `bin` directory:
 
 * `bin/detect` determines whether or not to apply the buildpack to an app
 * `bin/supply` supplies dependencies for an app
@@ -58,7 +58,7 @@ For more information, see the [Buildpack Detection](#buildpack-detection) sectio
 
 ### <a id='supply-script'></a>bin/supply ###
 
-The `supply` script provides dependencies for the app and runs for all buildpacks. All output sent to `STDOUT` is relayed to the user through the Cloud Foundry command line interface (CLI).
+The `supply` script provides dependencies for the app and runs for all buildpacks. All output sent to `STDOUT` is relayed to the user through the Cloud Foundry Command Line Interface (cf CLI).
 
 The script is run with four arguments:
 
@@ -104,7 +104,7 @@ end
 
 ### <a id='finalize-script'></a>bin/finalize ###
 
-The `finalize` script prepares the app for launch and runs only for the last buildpack. All output sent to `STDOUT` is relayed to the user through the Cloud Foundry CLI.
+The `finalize` script prepares the app for launch and runs only for the last buildpack. All output sent to `STDOUT` is relayed to the user through the cf CLI.
 
 The script is run with four arguments:
 
@@ -145,7 +145,7 @@ end
 
 ### <a id='compile-script'></a>bin/compile (Deprecated) ###
 
-The `compile` script is deprecated. It encompasses the behavior of the `supply` and `finalize` scripts for single-buildpack app by using the `build` directory to store dependencies.
+The `compile` script is deprecated. It encompasses the behavior of the `supply` and `finalize` scripts for single buildpack apps by using the `build` directory to store dependencies.
 
 The script is run with two arguments: the `build` directory for the app and the `cache` directory, which is a location the buildpack can use to store assets during the build process. During the execution of the `compile` script, all output sent to `STDOUT` is relayed through the cf CLI to the user.
 
