@@ -176,19 +176,7 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
 <tr>
   <td id="strict-security">HTTP Strict Transport Security</td>
   <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000</code>. This forces browsers to make all subsequent requests over HTTPS. Defaults to a max-age of one year.</td>
-</tr>
-
-<tr>
-  <td id="strict-security-with-subdomains">HTTP Strict Transport Security Include SubDomains</td>
-  <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains. Defaults to a max-age of one year.</td>
-</tr>
-
-<tr>
-  <td id="strict-security-with-preload">HTTP Strict Transport Security Preload</td>
-  <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains and requests inclusion in browser-managed HSTS preload lists (see <a href="https://hstspreload.org">https://hstspreload.org</a>). Defaults to a max-age of one year.</td>
+ <code>Strict-Transport-Security: max-age=31536000</code>. This forces browsers to make all subsequent requests over HTTPS.</td>
 </tr>
 
 <tr>
@@ -304,21 +292,6 @@ if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">
     <td>add this line to the <code>Staticfile</code>:<br><code><strong>http_strict_transport_security: true</strong></code><br>
         <p class="note"><strong>Note</strong>: Because this setting persists in browsers for a long time, only enable this setting after ensuring you have completed your configuration.</p></td>
     <td><a href="#strict-security">HTTP Strict Transport Security</a></td>
-    </tr>
-
-    <tr>
-    <td>force the receiving browser to make subsequent requests over HTTPS for all sub-domains</td>
-    <td>add this line to the <code>Staticfile</code>:<br><code><strong>http_strict_transport_security_include_subdomains: true</strong></code><br>
-        <p class="note"><strong>Note</strong>: This setting will default to http_strict_transport_security being true.</p></td>
-    <td><a href="#strict-security-with-subdomains">HTTP Strict Transport Security</a></td>
-    </tr>
-
-    <tr>
-    <td>force the receiving browser to make subsequent requests over HTTPS and add it to the Chrome's HSTS Preload list</td>
-    <td>add this line to the <code>Staticfile</code>:<br><code><strong>http_strict_transport_security_preload: true</strong></code><br>
-        <p class="note"><strong>Note</strong>: This setting will default to http_strict_transport_security being true.</p></td>
-        <p class="note"><strong>Note</strong>: This setting will default to http_strict_transport_security_include_subdomains being true.</p></td>
-    <td><a href="#strict-security-with-preload">HTTP Strict Transport Security</a></td>
     </tr>
 
     <tr>
