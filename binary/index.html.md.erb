@@ -60,7 +60,7 @@ func main() {
 }
 ```
 
-Your binary should run without any additional runtime dependencies on the 
+Your binary should run without any additional runtime dependencies on the
 cflinuxfs2 or lucid64 root filesystem (rootfs).
 Any such dependencies should be statically linked to the binary.
 
@@ -90,8 +90,8 @@ To run docker on Mac OS X, we recommend [boot2docker](http://boot2docker.io/).
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-Certificates deployed through [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) exist in the 
-`/etc/ssl/certs` directory and can be used by binary applications.
+Your platform operator can configure the platform to [add the custom certificates into the application container](https://docs.cloudfoundry.org/adminguide/trusted-system-certificates.html).
+The custom trusted certificates will be added to the `/etc/ssl/certs` directory and can be used by binary applications.
 
 ## <a id='help_support'></a>Help and Support ##
 
