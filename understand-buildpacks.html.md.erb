@@ -23,6 +23,10 @@ Similarly, newer buildpacks may still provide `bin/compile` for compatibility wi
 
 The `bin/supply` script is required for non-final buildpacks. The `bin/finalize` (or `bin/compile`) script is required for final buildpacks.
 
+<p class="note"><strong>Note</strong>: In this document, the terms <em>non-final buildpack</em> and <em>final buildpack</em>, or <em>last buildpack</em>, are used to describe the process of applying multiple buildpacks to an app. See the following example: <code>cf push APP-NAME -b FIRST-BUILDPACK -b SECOND-BUILDPACK -b FINAL-BUILDPACK</code>.</p>
+
+<p class="note"><strong>Note</strong>: If you use only one buildpack for your app, this buildpack behaves as a final, or last, buildpack.</p>
+
 ### <a id='detect-script'></a>bin/detect ###
 
 The `detect` script determines whether or not to apply the buildpack to an app. The script is called with one argument, the `build` directory for the app. The `build` directory contains the app files uploaded when a user performs a `cf push`. 
