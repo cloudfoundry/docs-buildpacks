@@ -62,10 +62,8 @@ If `buildpacks-ci` is deployed to Concourse, the buildpack update passes through
 1. The `specs-lts-master` and `specs-edge-master` jobs trigger and
 run the buildpack test suite and the buildpack-specific tests of the [Buildpack Runtime Acceptance Tests (BRATS)](https://github.com/cloudfoundry/brats).
 
-1. The `buildpack-release` job triggers and creates a tag for the new version.
-
 1. If you are using [Pivotal Tracker](https://www.pivotaltracker.com), paste the links for
-the `specs-edge-master`, `specs-lts-master`, and `buildpack-release` builds in the related buildpack release story
+the `specs-edge-master` and `specs-lts-master` builds in the related buildpack release story
 and deliver that story.
 
 1. Your project manager can manually trigger the `buildpack-to-github` and `buildpack-to-pivnet` jobs on Concourse as part
