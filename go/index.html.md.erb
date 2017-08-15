@@ -211,8 +211,7 @@ the `http_proxy` and/or `https_proxy` environment variables. For more informatio
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-Go uses certificates stored in `/etc/ssl/certs` and supports [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html) with no additional configuration necessary. 
-
+Go uses certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to [add the custom certificates into the application container](https://docs.cloudfoundry.org/adminguide/trusted-system-certificates.html).
 ## <a id='help_support'></a>Help and Support ##
 
 Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
