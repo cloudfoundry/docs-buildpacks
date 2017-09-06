@@ -11,24 +11,23 @@ For more information about pushing applications to Cloud Foundry, see the [Deplo
 
 ##<a id='cfcli'></a> Specifying Buildpacks with the cf CLI
 
-To push an application with multiple buildpacks using the Cloud Foundry Command Line Interface (cf CLI), perform the following command:
+To push an application with multiple buildpacks using the Cloud Foundry Command Line Interface (cf CLI), perform the following procedure:
 
-<pre class="terminal">
-$ cf v3-push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2
-</pre>
+1. Ensure you are using the cf CLI v6.30.0+:
+	<pre class="terminal">$ cf version
+	cf version 6.30.0+decf883fc.2017-09-01
+	</pre>
+	For more information about upgrading the cf CLI, see the [Installing the cf CLI](../cf-cli/install-go-cli.html)
+1. Push the application with the binary buildpack with the `--no-start` flag:
+	<pre class="terminal">$ cf push YOUR-APP --no-start -b binary_buildpack</pre>
+1. Upgrade the application to multiple buildpacks, and specify the buildpacks:
+	<pre class="terminal">
+	$ cf v3-push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2
+	</pre>
+	To see a list of available buildpacks, run `cf buildpacks`.
 
-To see a list of available buildpacks, run `cf buildpacks`.
+If you are using an application manifest, you cannot include the `buildpack` key or future pushes will not function properly. 
+
+<p class="note"><strong>Note</strong>: This procedure is temporary until <code>cf v3-push</code> supports application manifests.</p>
 
 For more information about using the cf CLI, see the [Cloud Foundry Command Line Interface](../cf-cli/index.html) topic.
-
-##<a id='manifest'></a> Specifying Buildpacks with a Manifest
-
-To specify multiple buildpacks using an application manifest, add the follow lines to the `manifest.yml` file:
-
-```
-buildpacks:
-- BUILDPACK-NAME-1
-- BUILDPACK-NAME-2
-```
-
-For more information about application manifests, see the [Deploying with Application Manifests](../devguide/deploy-apps/manifest.html) topic.	
