@@ -27,7 +27,7 @@ The `bin/supply` script is required for non-final buildpacks. The `bin/finalize`
 
 <p class="note"><strong>Note</strong>: If you use only one buildpack for your app, this buildpack behaves as a final, or last, buildpack.</p>
 
-<p class="note"><strong>Note</strong>: When using multi buildpack support, the last buildpack in order is the final buildpack and is able to make changes to the app, and determine a start command, all other specified buildpacks are "non final" and only supply dependencies.</p>
+<p class="note"><strong>Note</strong>: When using multi-buildpack support, the last buildpack in order is the final buildpack, and is able to make changes to the app and determine a start command. All other specified buildpacks are non-final and only supply dependencies.</p>
 
 ### <a id='detect-script'></a>bin/detect ###
 
