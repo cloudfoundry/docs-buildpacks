@@ -14,7 +14,7 @@ Buildpacks can use proxies via the `http_proxy` and/or `https_proxy` environment
 All of the buildpacks will automatically utilize these proxy environment variables correctly. If any of them contact the internet during staging, it will be through the proxy host.
 The binary buildpack will not use a proxy because it does not use the internet at all during staging.
 
-To set a proxy for your buildpack, perform one of the following procedures:
+To set a proxy to be used by buildpacks during staging, perform one of the following procedures:
 
 * Set the environment variables by adding the following section to the `env` block of the application manifest [file](../devguide/deploy-apps/manifest.html#env-block):
 	<pre><code>---
