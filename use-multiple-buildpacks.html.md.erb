@@ -20,14 +20,10 @@ To push an application with multiple buildpacks using the Cloud Foundry Command 
 	For more information about upgrading the cf CLI, see the [Installing the cf CLI](../cf-cli/install-go-cli.html)
 1. Push the application with the binary buildpack with the `--no-start` flag:
 	<pre class="terminal">$ cf push YOUR-APP --no-start -b binary_buildpack</pre>
-1. Upgrade the application to multiple buildpacks, and specify the buildpacks:
-	<pre class="terminal">
-	$ cf v3-push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2
-	</pre>
+
+1. <%= vars.v3_push %>
 	To see a list of available buildpacks, run `cf buildpacks`.
 
 If you are using an application manifest, you cannot include the `buildpack` key or future pushes will not function properly. 
-
-<p class="note"><strong>Note</strong>: This procedure is temporary until <code>cf v3-push</code> supports application manifests.</p>
 
 For more information about using the cf CLI, see the [Cloud Foundry Command Line Interface](../cf-cli/index.html) topic.
