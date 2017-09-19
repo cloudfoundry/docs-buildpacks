@@ -156,14 +156,10 @@ By default, Cloud Foundry uses the default branch of the buildpack's git reposit
 $ cf push my-new-app -b https://github.com/johndoe/my-buildpack.git#my-branch-name
 </pre>
 
-Additionally, you can use tags or shas in a git repository, as follows:
+Additionally, you can use tags in a git repository, as follows:
 
 <pre class="terminal">
 $ cf push my-new-app -b https://github.com/johndoe/my-buildpack#v1.4.2
-</pre>
-
-<pre class="terminal">
-$ cf push my-new-app -b https://github.com/johndoe/my-buildpack#a2951e298bd22732fceb3968d541015120dbaf93
 </pre>
 
 The app will then be deployed to Cloud Foundry, and the buildpack will be cloned from the repository and applied to the app.
