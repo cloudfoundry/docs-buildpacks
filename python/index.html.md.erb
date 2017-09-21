@@ -21,7 +21,7 @@ You can find the list of supported Python versions in the [Python buildpack rele
 
 ## <a id='runtime'></a>Specify a Python Version ##
 
-You can specific versions of the Python runtime within a `runtime.txt` file. For example:
+You can specify a version of the Python runtime by including it within a `runtime.txt` file. For example:
 
 <pre class="terminal">
 $ cat runtime.txt
@@ -30,7 +30,7 @@ python-3.5.2
 
 The buildpack only supports the stable Python versions, which are listed in the `manifest.yml` and [Python buildpack release notes](https://github.com/cloudfoundry/python-buildpack/releases).
 
-If you try to use a binary that is not currently supported, staging your app fails and you will see the following error message:
+If you try to use a binary that is not currently supported, staging your app fails and you see the following error message:
 
 <pre class="terminal">
 Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
