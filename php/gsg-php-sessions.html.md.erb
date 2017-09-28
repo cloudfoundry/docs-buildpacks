@@ -9,7 +9,7 @@ owner: Buildpacks
 
 When your application has one instance, it's mostly safe to use the default session storage, which is the local file system.  You would only see problems if your single instance crashes as the local file system would go away and you'd lose your sessions.  For many applications, this will work just fine but please consider how this will impact your application.
 
-If you have multiple application instances or you need a more robust solution for your application, then you'll want to use Redis or Memcached as a backing store for your session data.  The build pack supports both and when one is bound to your application it will detected it and automatically configure PHP to use it for session storage.
+If you have multiple application instances or you need a more robust solution for your application, then you'll want to use Redis or Memcached as a backing store for your session data.  The build pack supports both and when one is bound to your application it will detect it and automatically configure PHP to use it for session storage.
 
 By default, there's no configuration necessary. Create a Redis or Memcached service, make sure the service name contains `redis-sessions` or `memcached-sessions` and then bind the service to the application.
 
