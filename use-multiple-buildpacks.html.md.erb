@@ -14,29 +14,35 @@ For more information about pushing applications to Cloud Foundry, see the [Deplo
 To push an application with multiple buildpacks using the Cloud Foundry Command Line Interface (cf CLI), perform the following procedure:
 
 1. Ensure you are using the cf CLI v6.32.0+:
-	<pre class="terminal">$ cf version
-	cf version 6.32.0+0191c33d9.2017-09-26
-	</pre>
-	For more information about upgrading the cf CLI, see the [Installing the cf CLI](../cf-cli/install-go-cli.html)
+  <pre class="terminal">$ cf version
+  cf version 6.32.0+0191c33d9.2017-09-26
+  </pre>
+  For more information about upgrading the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html).
 1. Push the application with the binary buildpack with the `--no-start` flag:
-	<pre class="terminal">$ cf push YOUR-APP --no-start -b binary_buildpack</pre>
-	This command pushes the application but does not start it.
+  <pre class="terminal">$ cf push YOUR-APP --no-start -b binary_buildpack</pre>
+  This command pushes the application but does not start it.
 1. Upgrade the application to multiple buildpacks, and specify the buildpacks:
-	<pre class="terminal">
-	$ cf v3-push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2
-	</pre>
-	To see a list of available buildpacks, run `cf buildpacks`.
+  <pre class="terminal">
+  $ cf v3-push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2
+  </pre>
+  This command changes the buildpack and starts the application. To see a list of available buildpacks, run `cf buildpacks`.
 
-	This command changes the buildpack and starts the application. 
-	<p class="note"><strong>Note</strong>: The two-push workflow is currently required because only <code>v3-push</code> supports multiple buildpacks.</p>
+  <p class="note"><strong>Note</strong>: The two-push workflow is currently required because only <code>v3-push</code> supports multiple buildpacks.</p>
 
-Keep in mind the following about the `v3-push` command:
+For more information about V3 commands, see the [Using Experimental cf CLI Commands](../devguide/v3-commands.html) topic. The `v3-push` command has the following restrictions:
 
-* `v3-push` currently only supports a subset of features of `push`. In particular, it does not support:
-	* application manifests
-	* flags to set the stack or modify the default mapped route 
-	* exclusions from a `.cfignore` file
-* If you are using an application manifest, you cannot include the `buildpack` key or future pushes will not function properly.
-* You can use the following commands to update the configuration of an application started with `v3-push`: `map-route`, `bind-service`, `v3-set-env`, `v3-scale`, `v3-set-health-check`. For more information about V3 commands, see the [Using Experimental cf CLI Commands](../devguide/v3-commands.html) topic.
+* `v3-push` currently only supports a subset of features of `push`. In particular, it does not support the following:
+  * application manifests
+  * flags to set the stack or modify the default mapped route 
+  * exclusions from a `.cfignore` file
+* If you use an application manifest, you cannot include the `buildpack` key or future pushes will not function properly.
+* You can use the following commands to update the configuration of an application started with `v3-push`: 
+  * `map-route`
+  * `bind-service`
+  * `v3-set-env`
+  * `v3-scale`
+  * `v3-set-health-check`
+
+For more information about V3 commands, see the [Using Experimental cf CLI Commands](../devguide/v3-commands.html) topic.
 
 For more information about using the cf CLI, see the [Cloud Foundry Command Line Interface](../cf-cli/index.html) topic.
