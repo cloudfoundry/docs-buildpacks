@@ -74,7 +74,7 @@ This will generate a `vendor` directory and a `glide.lock` file specifying the l
 You must have a `glide.lock` file when pushing a vendored app. You do not need a `glide.lock` file when deploying a non-vendored app. 
 
 ####<a id='glide_app'></a>Glide####
-* [Sample Go app with Glide](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/glide_and_vendoring/src/glide_and_vendoring)
+* [Sample Go app with Glide](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/with_glide)
 
 An example `glide.yml` file:
 
@@ -131,7 +131,7 @@ applications:
 ```
 
 #### <a id='go-1.6'></a>Go 1.6 ####
-* [Sample Go 1.6 app with native vendoring](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/vendored_custom_install_spec/app).
+* [Sample Go 1.6 app with native vendoring](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/native_vendoring).
 
 Go 1.6 has vendoring enabled by default. Set the `GO15VENDOREXPERIMENT` environment variable to `0` to disable vendoring.
 
