@@ -5,13 +5,13 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to create custom buildpacks for Cloud Foundry.
+This topic describes how to create custom buildpacks for <%= vars.app_runtime_first %>.
 
 For more information about how buildpacks work, see the [Understanding Buildpacks](understand-buildpacks.html) topic.
 
 ## <a id='packaging-custom-buildpacks'></a> Package Custom Buildpacks ##
 
-Cloud Foundry buildpacks can work with limited or no Internet connectivity. The [Buildpack Packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
+<%= vars.app_runtime %> buildpacks can work with limited or no Internet connectivity. The [Buildpack Packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
 
 ### <a id='use-buildpack-packager'></a> Use the Buildpack Packager
 
@@ -57,7 +57,7 @@ default_versions:
 
 To specify a default version:
 
-1. Add the `default_version` object to your manifest, following the [rules](#rules) below. You can find a complete example manifest in the Cloud Foundry [go-buildpack](https://github.com/cloudfoundry/go-buildpack/blob/f1a380f2f3a8012491c6007948af74676713dd50/manifest.yml) repository. 
+1. Add the `default_version` object to your manifest, following the [rules](#rules) below. You can find a complete example manifest in the <%= vars.app_runtime %> [go-buildpack](https://github.com/cloudfoundry/go-buildpack/blob/f1a380f2f3a8012491c6007948af74676713dd50/manifest.yml) repository. 
 
 1. Run the `default_version_for` script from the [compile-extensions](https://github.com/cloudfoundry/compile-extensions) repository, passing the path of your `manifest.yml` and the dependency name as arguments. The following command uses the example manifest from step 1:
   <pre class="terminal">
@@ -98,7 +98,7 @@ The `buildpack-packager` script validates this object according to the following
 
 ##<a id='contract'></a> Core Buildpack Communication Contract
 
-This section describes the communication contract followed by the Cloud Foundry core buildpacks. This contract enables buildpacks to interact with one another, so that developers can use multiple buildpacks with their applications.
+This section describes the communication contract followed by the <%= vars.app_runtime %> core buildpacks. This contract enables buildpacks to interact with one another, so that developers can use multiple buildpacks with their applications.
 
 Buildpack developers must ensure their custom buildpacks follow the contract.
 
@@ -129,7 +129,7 @@ For the last buildpack:
 * To make use of dependencies provided by the previously applied buildpacks, the last buildpack must scan `/tmp/deps/` for index-named directories containing `config.yml.` 
 * To make use of dependencies provided by previous buildpacks, the last buildpack:
 	* May use `/bin` during staging, or make it available in $PATH during launch
-	* May use `/lib` during staging, or make it available in $LD_LIBRARY_PATH during launch
+	* May use `/lib` during staging, or make it available in $LD\_LIBRARY\_PATH during launch
 	* May use `/include`, `/pkgconfig`, or `/env` during staging
 	* May copy files from `/profile.d` to `/tmp/app/.profile.d` during staging
 	* May use the supplied config object in `config.yml` during the staging process
@@ -150,7 +150,7 @@ Alternatively, you can use a private git repository, with https and username/pas
 $ cf push my-new-app -b https://username:password@github.com/johndoe/my-buildpack.git
 </pre>
 
-By default, Cloud Foundry uses the default branch of the buildpack's git repository. You can specify a different branch using the git url as shown in the following example:
+By default, <%= vars.app_runtime %> uses the default branch of the buildpack's git repository. You can specify a different branch using the git url as shown in the following example:
 
 <pre class="terminal">
 $ cf push my-new-app -b https://github.com/johndoe/my-buildpack.git#my-branch-name
@@ -162,7 +162,7 @@ Additionally, you can use tags in a git repository, as follows:
 $ cf push my-new-app -b https://github.com/johndoe/my-buildpack#v1.4.2
 </pre>
 
-The app will then be deployed to Cloud Foundry, and the buildpack will be cloned from the repository and applied to the app.
+The app will then be deployed to <%= vars.app_runtime %>, and the buildpack will be cloned from the repository and applied to the app.
 
  <p class="note"><strong>Note</strong>: If a buildpack is specified using `cf push -b` the `detect` step will be skipped and as a result, no buildpack `detect` scripts will be run.
  </p>
