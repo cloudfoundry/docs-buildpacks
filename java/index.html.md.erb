@@ -19,7 +19,7 @@ See the following topics:
 See the [Java Buildpack Release Notes](https://github.com/cloudfoundry/java-buildpack/releases) for information about specific versions. 
 You can find the source for the Java buildpack on GitHub: [https://github.com/cloudfoundry/java-buildpack](https://github.com/cloudfoundry/java-buildpack)
 
-## <a id='logging'></a>Buildpack and Application Logging ##
+## <a id='logging'></a> Buildpack and Application Logging ##
 
 The buildpack only runs during the staging process, and therefore only logs
 staging information such as the downloaded components, configuration data, and work performed on your application by the buildpack.
@@ -38,7 +38,7 @@ Once staging completes, the buildpack stops logging. The Loggregator handles app
 Your application must write to STDOUT or STDERR for its logs to be included in
 the Loggregator stream. For more information, see the [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html) topic.
 
-## <a id='bosh-trusted-cert'></a>BOSH Custom Trusted Certificate Support
+## <a id='bosh-trusted-cert'></a> BOSH Custom Trusted Certificate Support
 
 Java Buildpack versions 3.7 and later support [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html).
 
@@ -47,3 +47,23 @@ Run the following command to configure support for this feature:
 <pre class="terminal">
 $ cf set-env APP-NAME JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: true}'`
 </pre>
+
+## <a id='memory-constraints'></a> Memory Constraints in Java Buildpack 4.0
+
+The new memory calculator in Java Buildpack 4.0 accounts for the following memory regions:
+* Heap (`-Xmx`)
+* Metaspace (`-XX:MaxMetaspaceSize`)
+* Thread Stacks (`-Xss`)
+* Direct Memory (`-XX:MaxDirectMemorySize`)
+* Code Cache (`-XX:ReservedCodeCacheSize`)
+* Compressed Class Space (`-XX:CompressedClassSpaceSize`)
+
+Applications which previously ran in 512M or smaller containers may no longer be able to. Most applications will run if they use the Cloud Foundry default container size of 1G without any modifications. However, you can configure those memory regions directly as needed.
+
+The Java buildpack optimizes for all non-heap memory regions first and leaves the remainder for the heap.
+
+The Java buildpack builds a print a histogram of the heap to the logs when the JVM encounters a terminal failure.
+
+The Cloud Foundry default Java buildpack is currently 3.x, in order to allow time for applications to upgrade to 4.x.
+
+For more information, see [Java Buildpack 4.0](https://www.cloudfoundry.org/just-released-java-buildpack-4-0/).
