@@ -51,11 +51,17 @@ $ cf set-env APP-NAME JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: tr
 ## <a id='memory-constraints'></a> Memory Constraints in Java Buildpack 4.0
 
 The new memory calculator in Java Buildpack 4.0 accounts for the following memory regions:
+
 * Heap (`-Xmx`)
+
 * Metaspace (`-XX:MaxMetaspaceSize`)
+
 * Thread Stacks (`-Xss`)
+
 * Direct Memory (`-XX:MaxDirectMemorySize`)
+
 * Code Cache (`-XX:ReservedCodeCacheSize`)
+
 * Compressed Class Space (`-XX:CompressedClassSpaceSize`)
 
 Applications which previously ran in 512M or smaller containers may no longer be able to. Most applications will run if they use the Cloud Foundry default container size of 1G without any modifications. However, you can configure those memory regions directly as needed.
