@@ -40,13 +40,24 @@ the Loggregator stream. For more information, see the [Application Logging in Cl
 
 ## <a id='bosh-trusted-cert'></a> BOSH Custom Trusted Certificate Support
 
-Java Buildpack versions 3.7 and later support [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html).
+Java Buildpack versions 3.7 and later support [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html). Java Buildpack pulls the contents of `/etc/ssl/certs/ca-certificates.crt` and `$CF_INSTANCE_CERT/$CF_INSTANCE_KEY` by default.
 
-Run the following command to configure support for this feature:
+The log output for Diego Instance Identity-based `KeyStore` will appear as follows:
 
-<pre class="terminal">
-$ cf set-env APP-NAME JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: true}'`
-</pre>
+<code>
+Adding System Key Manager
+Adding Key Manager for /etc/cf-instance-credentials/instance.key and /etc/cf-instance-credentials/instance.crt
+Start watching /etc/cf-instance-credentials/instance.crt
+Start watching /etc/cf-instance-credentials/instance.key
+Initialized KeyManager for /etc/cf-instance-credentials/instance.key and /etc/cf-instance-credentials/instance.crt
+</code>
+
+The log output for Diego Trusted Certificate-based `TrustStore` will appear as follows:
+
+<code>Adding System Trust Manager
+Adding TrustManager for /etc/ssl/certs/ca-certificates.crt
+Start watching /etc/ssl/certs/ca-certificates.crt
+Initialized TrustManager for /etc/ssl/certs/ca-certificates.crt</code>
 
 ## <a id='memory-constraints'></a> Memory Constraints in Java Buildpack 4.0
 
