@@ -5,12 +5,12 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-For <%=vars.product_short%> to automatically invoke a Rake task while a Ruby or Ruby on Rails app is deployed, you must:
+For <%=vars.product_short%> to automatically invoke a Rake task while a Ruby or Ruby on Rails app is deployed, you must do the following:
 
- * Include the Rake task in your app.
- * Configure the application start command using the `command` attribute in the application manifest.
+ * Include the Rake task in your app
+ * Configure the application start command using the `command` attribute in the application manifest
 
-The following is an example of how to invoke a Rake database migration task at application startup.
+The following is an example that shows how to invoke a Rake database migration task at application startup.
 
 1. Create a file with the Rake task name and the extension `.rake`, and store it in the `lib/tasks` directory of your application.
 

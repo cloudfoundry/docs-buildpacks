@@ -3,9 +3,7 @@ title: Environment Variables Defined by the Ruby Buildpack
 owner: Buildpacks
 ---
 
-<strong><%= modified_date %></strong>
-
-<%=vars.product_full%> provides configuration information to applications through environment variables.
+<%=vars.product_full%> provides configuration information to apps through environment variables.
 This topic describes the additional environment variables provided by the Ruby buildpack.
 
 For more information about the standard environment variables provided by <%=vars.product_full%>, see the [Cloud Foundry Environment Variables](../../devguide/deploy-apps/environment-variable.html) topic.
@@ -38,7 +36,7 @@ typically contain gems that are not needed when the app runs in production. Exam
     <td><code>DATABASE_URL</code></td>
     <td>Cloud Foundry examines the <code>database_uri</code> for bound services to see if they match known database types. If known relational database services are bound to the app, then the <code>DATABASE_URL</code> environment variable is set to the first services in the list.
 <br><br>
-If your application requires that <code>DATABASE_URL</code> is set to the connection string for your service, and Cloud Foundry does not set it, use the Cloud Foundry Command Line Interface (cf CLI) <code>cf set-env</code> command to set this variable manually. Example: <pre class='terminal'>$ cf set-env my_app_name DATABASE_URL mysql://example-database-connection-string</pre></td>
+If your application requires that <code>DATABASE_URL</code> is set to the connection string for your service, and Cloud Foundry does not set it, use the Cloud Foundry Command Line Interface (cf CLI) <code>cf set-env</code> command to set this variable manually. Example: <pre class='terminal'>$ cf set-env my-app DATABASE_URL mysql://example-database-connection-string</pre></td>
   </tr>
   <tr>
     <td><code>GEM_HOME</code></td>
@@ -50,7 +48,11 @@ If your application requires that <code>DATABASE_URL</code> is set to the connec
   </tr>
   <tr>
     <td><code>RACK_ENV</code></td>
-    <td>The Rack deployment environment, which governs the middleware loaded to run the app. Valid value are <code>development</code>, <code>test</code>, and <code>production</code>. Example: <code>RAILS_ENV=production</code></td>
+    <td>The Rack deployment environment, which governs the middleware loaded to run the app. Valid value are <code>development</code>, <code>deployment</code>, and <code>none</code>. Example: <code>RACK_ENV=none</code></td>
+  </tr>
+  <tr>
+    <td><code>RAILS_ENV</code></td>
+    <td>The Rails deployment environment, which controls which environment-specific configuration file governs how the app is executed. Valid value are <code>development</code>, <code>test</code>, and <code>production</code>. Example: <code>RAILS_ENV=production</code></td>
   </tr>
   <tr>
     <td><code>RUBYOPT</code></td>
