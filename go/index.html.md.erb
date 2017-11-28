@@ -108,7 +108,7 @@ applications:
   - name: my-app-name
     command: go-online
     env:
-      GOPACKAGENAME: app-package-name
+      GOPACKAGENAME: example.com/user/app-package-name
 ```
 
 #### <a id='go 1.5'></a>Go 1.5 ####
@@ -126,7 +126,7 @@ applications:
   - name: my-app-name
     env:
       GOVERSION: go1.5
-      GOPACKAGENAME: app-package-name
+      GOPACKAGENAME: example.com/user/app-package-name
       GO15VENDOREXPERIMENT: 1
 ```
 
@@ -144,7 +144,7 @@ applications:
    command: example-project
    env:
      GOVERSION: go1.6
-     GOPACKAGENAME: app-package-name
+     GOPACKAGENAME: example.com/user/app-package-name
 ```
 
 #### <a id='godeps_1.7'></a>Go 1.7 and Later ####
@@ -162,7 +162,7 @@ applications:
    command: example-project
    env:
      GOVERSION: go1.8
-     GOPACKAGENAME: app-package-name
+     GOPACKAGENAME: example.com/user/app-package-name
 ```
 
 ## <a id='passing_symbol_linker'></a>Pass a Symbol and String to the Linker ##
