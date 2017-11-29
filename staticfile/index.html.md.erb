@@ -287,7 +287,7 @@ $ touch Staticfile
     <tr>
     <td>force HTTPS</td>
     <td>set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.
-    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer that terminates SSL/TLS without setting X-Forwarded-Proto header.
+    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer that terminates SSL/TLS but not set X-Forwarded-Proto header.
 Doing so can cause infinite redirect loops, for example,
 if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
     <td><a href="#force-https">Force HTTPS</a></td>
