@@ -27,7 +27,7 @@ run HelloWorld.new
 
 Cloud Foundry supports the Rails asset pipeline.
 If you do not precompile assets before deploying your app, Cloud Foundry
-will precompile them when staging the app.
+precompiles them when staging the app.
 Precompiling before deploying reduces the time it takes to stage an app.
 
 Use the following command to precompile assets before deployment:
@@ -67,10 +67,6 @@ the Rake task.
 An app start command is configured in the app manifest file,
 `manifest.yml`, using the `command` attribute.
 
-If you have previously deployed the app, the app manifest should already exist.
-There are two ways to create a manifest.
-You can manually create the file and save it in the app root directory before you deploy the app for the first time.
-If you do not manually create the manifest file, the Cloud Foundry Command Line Interface (cf CLI) prompts you to supply deployment settings when you first push the app, and will create and save the manifest file for you, with the settings you specified interactively.
 For more information about app manifests and supported attributes, see
 the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic.
 
@@ -143,9 +139,9 @@ For other alternatives, see
 
 ### <a id='example-app'></a>Create an Example App ###
 
-For the purposes of the example app, we will use Sidekiq.
+For the purposes of the example app, we use Sidekiq.
 
-First, create a Rails app with an arbitrary model called "Things":
+First, create a Rails app with an arbitrary model named "Things":
 
 <pre class="terminal">
 $ rails create rails-sidekiq
@@ -178,7 +174,7 @@ Install the bundle.
 $ bundle install
 </pre>
 
-Create a worker (in app/workers) for Sidekiq to carry out its tasks:
+In `app/workers`, create a worker for Sidekiq to carry out its tasks:
 
 <pre class="terminal">
 $ touch app/workers/thing_worker.rb
@@ -203,7 +199,7 @@ class ThingWorker
 end
 ~~~
 
-This worker will create n number of things, where n is the value passed to the
+This worker create `n` number of things, where `n` is the value passed to the
 worker.
 
 Create a controller for "Things":
@@ -243,7 +239,7 @@ $ touch app/views/things/index.html.erb
 
 This app needs to be deployed twice for it to work, once as a Rails web
 app and once as a standalone Ruby app.
-The easiest way to do this is to keep separate Cloud Foundry manifests for each
+One way to do this is to keep separate Cloud Foundry manifests for each
 app type:
 
 Web Manifest: Save this as `web-manifest.yml`:
@@ -295,9 +291,9 @@ Test the app by visiting the new action on the "Thing" controller at
 the assigned url.
 In this example, the URL would be `http://sidekiq.cloudfoundry.com/thing/new`.
 
-This will create a new Sidekiq job which will be queued in Redis, then picked
+This creates a new Sidekiq job which is queued in Redis, then picked
 up by the worker app.
-The browser is then redirected to `/thing` which will show the collection of
+The browser is then redirected to `/thing` which shows the collection of
 "Things".
 
 ### <a id='scale'></a>Scale Workers ###
