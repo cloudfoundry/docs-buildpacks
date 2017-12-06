@@ -76,22 +76,22 @@ The `buildpack-packager` script validates this object according to the following
     - name: go
       version: 1.6.3
     - name: go
-      version: 1.3.1
+      version: 1.7.5
     ```
 
-* If you specify a `default_version` for a dependency, you must also list that dependency and version under the `dependencies` section of the manifest. The following example causes `buildpack-packager` to fail with an error because the manifest specifies `version: 1.6.3` for the `go` dependency, but lists `version: 1.5.4` under `dependencies`. 
+* If you specify a `default_version` for a dependency, you must also list that dependency and version under the `dependencies` section of the manifest. The following example causes `buildpack-packager` to fail with an error because the manifest specifies `version: 1.9.2` for the `go` dependency, but lists `version: 1.7.5` under `dependencies`. 
 
     ```yml
     # Incorrect; will fail to package
     default_versions:
     - name: go
-      version: 1.6.3
+      version: 1.9.2
 
     dependencies:
     - name: go
-      version: 1.5.4
-      uri: https://storage.googleapis.com/golang/go1.5.4.linux-amd64.tar.gz
-      md5: 27b1c469797292064c65c995ffe30386
+      version: 1.7.5
+      uri: https://storage.googleapis.com/golang/go1.7.5.linux-amd64.tar.gz
+      md5: c8cb76e2308c792e2705c2eb1b55de95
       cf_stacks:
       - cflinuxfs2
      ```
