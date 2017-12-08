@@ -16,7 +16,7 @@ buildpack.
 For example:
 
 <pre class="terminal">
-$ cf push my_app -b https://github.com/cloudfoundry/binary-buildpack.git
+$ cf push my_app -b https://github.com/cloudfoundry/binary_buildpack.git
 </pre>
 
 You can provide Cloud Foundry with the shell command to execute your binary in
@@ -31,7 +31,7 @@ web: ./app
 * **Command line**: Use `cf push APP-NAME` with the `-c` option:
 
 <pre class="terminal">
-$ cf push my_app -c './app' -b binary-buildpack
+$ cf push my_app -c './app' -b binary_buildpack
 </pre>
 
 ## <a id='compiling'></a> Compile your Binary ##
