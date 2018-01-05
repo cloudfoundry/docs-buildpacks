@@ -138,20 +138,34 @@ The `.extensions` directory should also exist at the root of your project direct
 
 ## <a id="troubleshooting"></a>Troubleshooting ##
 
-There are a couple of easy ways to debug the buildpack:
+To troubleshoot problems using the buildpack, you can do one of the following:
 
-  0. Check the output from the buildpack. It writes some basic information to stdout, like the files that are being downloaded. It writes information should something fail, specifically, stack traces.
+1. Review the output from the buildpack. The buildpack writes basic information to stdout, for example the files that it downloads. The buildpack also writes information in the form of stack traces when a process fails.
 
-  0. Check the logs from the buildpack. The buildpack writes logs to disk. Retrieve them with the command, as the following example shows:
+1. Review the logs from the buildpack. The buildpack writes logs to disk. Follow the steps below to access these logs: 
+  1. Run `cf ssh APP-NAME` to ssh into the app container, replacing `APP-NAME` with the name of your app.
+  1. Run `cat app/.bp/logs/bp.log` to view the logs.
+  <pre class="terminal">
+  $ cf ssh my-app
+  $ cat app/.bp/logs/bp.log
+  </pre>
 
-    <pre class="terminal">
-    $ cf ssh APP
-    $ cat app/.bp/logs/bp.log
-    </pre>
+By default, log files contain more detail than output to stdout. Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the buildpack to set its log level to `DEBUG`, and to output logs to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
 
-  This log is more detailed than the stdout output, but is still terse.
+### Increased Log Output with fpm.d ###
 
-  Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the buildpack to set its log level to `DEBUG` and it writes to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
+If you use [fpm.d](./gsg-php-config.html#fpm_d), follow the steps below to configure `fpm` to redirect worker stdout and stderr into the logs. 
+
+1. Create a file in the `.bp-config/php/fpm.d/` directory of your app.
+
+1. Add `catch_workers_output=yes` to the file you created.
+
+1. Push your app.
+
+For more information about allowed configuration settings in the `.bp-config/php/fpm.d` directory, see the [List of global php-fpm.conf directives](http://php.net/manual/en/install.fpm.configuration.php).
+
+You can see an example [fmp fixture and configuration file](https://github.com/cloudfoundry/php-buildpack/blob/633bc6f0c078043186673a90d9727188501a866b/cf_spec/fixtures/php_71_with_fpm_d/.bp-config/php/fpm.d/output.conf) in the php-buildpack GitHub repository.
+
 
 [Environment Variables documentation]:../../devguide/deploy-apps/manifest.html#env-block
 [application configuration files]:./gsg-php-config.html
