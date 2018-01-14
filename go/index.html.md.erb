@@ -17,6 +17,7 @@ The Go buildpack will be automatically detected in the following circumstances:
 - Your app has a `vendor/` directory and has any files ending with `.go`.
 - Your app has a `GOPACKAGENAME` environment variable specified and has any files ending with `.go`.
 - Your app has a `glide.yml` file and is using [glide](https://github.com/Masterminds/glide), starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.7.9">1.7.9</a>.
+- Your app has a `Gopkg.toml` file and is using [dep](https://github.com/golang/dep), starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.8.9">1.8.9</a>.
 
 If your Cloud Foundry deployment does not have the Go Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
 
@@ -50,7 +51,7 @@ If you do not specify a start command in a `Procfile`, in the manifest, or with 
 ### <a id='with_godep'></a>Push an App with godep ###
 If you are using [godep](https://github.com/tools/godep) to package your dependencies, make sure that you have created a valid `Godeps/Godeps.json` file in the root directory of your app by running `godep save`.
 
-When using godep, you can fix your Go version in  `GoVersion` key of the `Godeps/Godeps.json` file.
+When using godep, you can fix your Go version in `GoVersion` key of the `Godeps/Godeps.json` file.
 
 #### <a id='godeps_1.6'></a>Go 1.6 ####
 * [Sample Go 1.6 app](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/go16/src/go_app)
@@ -66,12 +67,12 @@ An example `Godeps/Godeps.json`:
 ```
 
 ### <a id='with_glide'></a>Push an App with Glide ###
-If you use [glide](https://github.com/Masterminds/glide) to specify or package your dependencies, 
+If you use [glide](https://github.com/Masterminds/glide) to specify or package your dependencies,
 make sure that you have created a valid `glide.yml` file in the root directory of your app by running `glide init`.
 
-To vendor your dependencies before pushing, run `glide install`. 
-This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies. 
-You must have a `glide.lock` file when pushing a vendored app. You do not need a `glide.lock` file when deploying a non-vendored app. 
+To vendor your dependencies before pushing, run `glide install`.
+This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies.
+You must have a `glide.lock` file when pushing a vendored app. You do not need a `glide.lock` file when deploying a non-vendored app.
 
 ####<a id='glide_app'></a>Glide####
 * [Sample Go app with Glide](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/with_glide)
@@ -94,11 +95,40 @@ applications:
   - name: my-app-name
     env:
       GOVERSION: go1.8
+      ```
+
+### <a id='with_dep'></a>Push an App with dep ###
+If you use [dep](https://github.com/golang/dep) to specify or package your dependencies,
+make sure that you have created a valid `Gopkg.toml` file in the root directory of your app by running `dep init`.
+
+To vendor your dependencies before pushing, run `dep ensure`.
+This will generate a `vendor` directory and a `Gopkg.lock` file specifying the latest compatible versions of your dependencies.
+You must have a `Gopkg.lock` file when pushing a vendored app. You do not need a `Gopkg.lock` file when deploying a non-vendored app.
+
+####<a id='dep_app'></a>dep####
+* [Sample Go app with dep](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/go18_dep)
+
+An example `Gopkg.toml` file:
+
+```toml
+[[constraint]]
+  branch = "master"
+  name = "github.com/ZiCog/shiny-thing"
+```
+
+You can specify Go version in the `manifest.yml` file:
+
+```yaml
+---
+applications:
+  - name: my-app-name
+    env:
+      GOVERSION: go1.8
 ```
 
 ### <a id='pushing_Apps_with_native_Go_vendoring'></a>Push an App with Native Go Vendoring ###
-If you use the native Go vendoring system, which packages all local dependencies in the `vendor/` directory, 
-you must specify your app's package name in the `GOPACKAGENAME` environment variable. 
+If you use the native Go vendoring system, which packages all local dependencies in the `vendor/` directory,
+you must specify your app's package name in the `GOPACKAGENAME` environment variable.
 
 An example `manifest.yml`:
 
@@ -148,8 +178,8 @@ applications:
 
 ## <a id='passing_symbol_linker'></a>Pass a Symbol and String to the Linker ##
 
-The Go buildpack supports the Go [linker's](https://golang.org/cmd/link/) ability, `-X symbol value`, 
-to set the value of a string at link time. 
+The Go buildpack supports the Go [linker's](https://golang.org/cmd/link/) ability, `-X symbol value`,
+to set the value of a string at link time.
 Set the `GO_LINKER_SYMBOL` and `GO_LINKER_VALUE` in the application's configuration  before pushing code.
 
 This can be used to embed the commit SHA or other build-specific data directly
@@ -160,8 +190,8 @@ For example usage, see the relevant [fixture app](https://github.com/cloudfoundr
 ## <a id='c_dependencies'></a>C Dependencies ##
 
 The Go buildpack supports building with C dependencies using [cgo](https://golang.org/cmd/cgo/). You can set config vars to specify cgo flags
-to, for example, specify paths for vendored dependencies. As an example, to build [gopgsqldriver](https://github.com/jbarham/gopgsqldriver), 
-add the config var `CGO_CFLAGS` with the value `-I/app/code/vendor/include/postgresql` 
+to, for example, specify paths for vendored dependencies. As an example, to build [gopgsqldriver](https://github.com/jbarham/gopgsqldriver),
+add the config var `CGO_CFLAGS` with the value `-I/app/code/vendor/include/postgresql`
 and include the relevant Postgres header files in `vendor/include/postgresql/` in your app.
 
 ## <a id='proxy_support'></a> Proxy Support ##
