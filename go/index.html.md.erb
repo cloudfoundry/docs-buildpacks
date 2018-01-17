@@ -16,7 +16,8 @@ The Go buildpack will be automatically detected in the following circumstances:
 - Your app has been packaged with [godep](https://github.com/tools/godep) using `godep save`.
 - Your app has a `vendor/` directory and has any files ending with `.go`.
 - Your app has a `GOPACKAGENAME` environment variable specified and has any files ending with `.go`.
-- Your app has a `glide.yml` file and is using [glide](https://github.com/Masterminds/glide), starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.7.9">1.7.9</a>.
+- Your app has a `glide.yml` file and is using [glide](https://github.com/Masterminds/glide), starting in buildpack version <a href="https://github.com/cloudfoundry/go-buildpack/releases/tag/v1.7.9">1.7.9</a>.
+
 
 If your Cloud Foundry deployment does not have the Go Buildpack installed, or the installed version is out of date, you can use the latest version with the command:
 
