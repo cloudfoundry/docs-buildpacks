@@ -31,6 +31,8 @@ python-3.5.2
 
 The buildpack only supports the stable Python versions, which are listed in the `manifest.yml` and [Python buildpack release notes](https://github.com/cloudfoundry/python-buildpack/releases).
 
+To request the latest Python version in a patch line, replace the patch version with `x`: `3.6.x`. To request the latest version in a minor line, replace the minor version: `3.x`.
+
 If you try to use a binary that is not currently supported, staging your app fails and you see the following error message:
 
 <pre class="terminal">
