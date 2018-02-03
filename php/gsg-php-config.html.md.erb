@@ -68,7 +68,7 @@ You can find the default configuration files in the [PHP Buildpack `/defaults/co
 
 You should be careful when modifying configurations, as doing so can cause your application to fail, or cause Cloud Foundry to fail to stage your application.
 
-You can add your own configuration files. The components will not know about these, so you must ensure that they are included. For example, you can add an include directive to the [httpd configuration](https://github.com/cloudfoundry/php-buildpack/blob/master/defaults/config/httpd/2.4.x/httpd.conf) to include your file:
+You can add your own configuration files. The components will not know about these, so you must ensure that they are included. For example, you can add an include directive to the [httpd configuration](https://github.com/cloudfoundry/php-buildpack/blob/master/defaults/config/httpd/httpd.conf) to include your file:
 
 ```
 ServerRoot "${HOME}/httpd"
