@@ -82,3 +82,12 @@ The Java buildpack prints a histogram of the heap to the logs when the JVM encou
 The Cloud Foundry default Java buildpack is currently 3.x to allows time for apps to be upgrade to 4.x.
 
 For more information, see [Java buildpack 4.0](https://www.cloudfoundry.org/just-released-java-buildpack-4-0/).
+
+## <a id='header-constrains'></a> Limitation with X-Forward headers
+As a CF provider, our Gorouter IPs run in the 100.64 range. Tomcat's RemoteIPValve by default only trusts private IP ranges for headers like X-Forwarded-For and X-Forwarded-Proto.
+To trust also these IPs, we configure the Tomcat internalProxies list with the corresponding RemoteIPValve as standard for all applications. This is done with setting the default environment variable for the Tomcat config to point to our configuration:
+<pre>
+JBP_CONFIG_TOMCAT: '{ tomcat: { external_configuration_enabled: true }, external_configuration: { repository_root: "https://tomcat-external-configuration.lyra-836.appcloud.swisscom.com" } }'
+</pre>
+
+If you overwrite this environment variable with your own special configuraiton, please make sure that you also include our settings to avoid problems with the mentioned headers.
