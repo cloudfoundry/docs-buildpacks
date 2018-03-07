@@ -7,7 +7,7 @@ owner: Buildpacks
 
 <%=vars.GSG_intro_sentence%>
 
-This document is intended to guide you through the process of deploying PHP applications to <%=vars.product_full%>. If you experience a problem with deploying PHP apps, check the [Troubleshooting](#troubleshooting) section below.
+This topic is intended to guide you through the process of deploying PHP apps to <%=vars.product_full%>. If you experience a problem deploying PHP apps, review the  [Troubleshooting](#troubleshooting) section below.
 
 ## <a id="getting-started"></a>Getting Started ##
 
@@ -20,7 +20,7 @@ This document is intended to guide you through the process of deploying PHP appl
 
 <pre class="terminal">
 $ mkdir my-php-app
-$cd my-php-app
+$ cd my-php-app
 $ cat << EOF > index.php
 &lt;?php
   phpinfo();
@@ -29,9 +29,9 @@ EOF
 $ cf push my-php-app -m 128M
 </pre>
 
-Change "my-php-app" to a unique name, otherwise you get an error and the push fails.
+Change "my-php-app" to a unique name or you may see an error and a failed push.
 
-The example above creates and pushes a test application, "my-php-app", to Cloud Foundry.
+The example above creates and pushes a test application to Cloud Foundry.
 
 Here is a breakdown of what happens when you run the example above:
 
@@ -134,7 +134,7 @@ Beyond the `WEBDIR` and `LIBDIR` directories, the buildpack also supports a `.bp
 
 The `.bp-config` directory should exist at the root of your project directory and it is the location of application-specific configuration files.  Application-specific configuration files override the default settings used by the buildpack. This link explains [application configuration files] in depth.
 
-The `.extensions` directory should also exist at the root of your project directory and it is the location of application-specific custom extensions.  Application-specific custom extensions allow you, the developer, to override or enhance the behavior of the buildpack. This link explains [extensions] in more detail.
+The `.extensions` directory should also exist at the root of your project directory and it is the location of application-specific custom extensions.  Application-specific custom extensions allow you, the developer, to override or enhance the behavior of the buildpack. See the [php-buildpack README](https://github.com/cloudfoundry/php-buildpack/blob/master/README.md) in GitHub for more information about extensions.
 
 ## <a id="troubleshooting"></a>Troubleshooting ##
 
@@ -170,6 +170,5 @@ You can see an example [fmp fixture and configuration file](https://github.com/c
 [Environment Variables documentation]:../../devguide/deploy-apps/manifest.html#env-block
 [application configuration files]:./gsg-php-config.html
 [include_path]:http://us1.php.net/manual/en/ini.core.php#ini.include-path
-[extensions]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/development.md#extensions
 [provide your own Apache or Nginx configurations]:./gsg-php-config.html#engine-configurations
 [configuration option]:./gsg-php-config.html
