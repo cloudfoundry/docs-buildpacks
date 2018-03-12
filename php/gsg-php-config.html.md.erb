@@ -42,7 +42,7 @@ The buildpack automatically configures HTTPD, Nginx, and PHP for your applicatio
 
 The `.bp-config` directory in your application can contain configuration overrides for these components. Name the directories `httpd`, `nginx`, and `php`. We recommend that you use [php.ini.d](#php_ini_d) or [fpm.d](#fpm_d).
 
-<p class='note'><strong>NOTE</strong>: If you override the <code>php.ini</code> or <code>php-fpm.ini</code> files, many other forms of configuration will not work.</p>
+<p class='note'><strong>NOTE</strong>: If you override the <code>php.ini</code> or <code>php-fpm.conf</code> files, many other forms of configuration will not work.</p>
 
 For example:
 ```
@@ -109,7 +109,17 @@ In order of highest precedence, php configuration values come from the following
 
 #### <a id="fpm_d"></a> .bp-config/php/fpm.d/
 
-The buildpack adds any `.bp-config/php/fpm.d` files it finds in the application to the PHP-FPM configuration. You can use this to change any value acceptable to `php-fpm.ini`. See [http://php.net/manual/en/install.fpm.configuration.php](http://php.net/manual/en/install.fpm.configuration.php) for a list of directives.
+The buildpack adds any files it finds in the application under `.bp-config/php/fpm.d` that end with `.conf` (i.e `my-config.conf`) to the PHP-FPM configuration.  You can use this to change any value acceptable to `php-fpm.conf`. See [http://php.net/manual/en/install.fpm.configuration.php](http://php.net/manual/en/install.fpm.configuration.php) for a list of directives.
+
+PHP FPM config snippets are included by the buildpack into the global section of the configuration file.  If you need to apply configuration settings for a PHP FPM worker, that needs to be indicated in your configuration file as well.
+
+For example:
+
+```
+; This option is specific to the `www` pool
+[www]
+catch_workers_output = yes
+```
 
 ### <a id="php-extensions"></a> PHP Extensions
 
