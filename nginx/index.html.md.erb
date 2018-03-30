@@ -1,0 +1,66 @@
+---
+title: NGINX Buildpack
+owner: Buildpacks
+---
+
+<strong><%= modified_date %></strong>
+
+## <a id='overview'></a> Overview
+
+This topic describes how to configure your NGINX application for use with the NGINX buildpack and how to push your NGINX app to Cloud Foundry.
+
+
+### <a id='nginx'></a>NGINX Setup
+
+We recommend using the [default NGINX directory structure](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) when setting up your NGINX.  This setup contains
+
+* A root folder for all web assets
+* A mime type configuration file
+* A NGINX configuration file
+* A yaml file that defines what version of NGINX you want to use
+
+Any custom configuration changes you make should be made from these default files to ensure compatability with the buildpack
+
+### <a id='custom_nginx_configuration'></a> Push Your App ###
+
+Follow the steps below to push your application.
+
+<table border='1' class='nice'>
+<tr>
+<th>Step</th>
+<th>Action</th>
+</tr>
+<tr valign="top">
+  <td>1.</td>
+  <td>Use the <code>cf push APP_NAME</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
+<pre class='terminal'>
+$ cf push my-app 
+Creating app my-app in org sample-org / space sample-space as username@example.com...
+OK
+…
+requested state: started
+instances: 1/1
+usage: 1GB x 1 instances
+urls: my-app.example.com
+</pre>
+   Or, if you do not have the buildpack, or the installed version is out-of-date, use the <code>-b</code> option to specify the buildpack as follows:<br>
+<code>cf push APP_NAME -b https://github.com/cloudfoundry/nginx-buildpack.git</code>
+  </td>
+</tr>
+<tr valign="top">
+  <td>2.</td>
+  <td>Find the URL of your app in the output from the push command and navigate to it to see your static app running.</td>
+</tr>
+</table>
+
+## <a id='help'></a>Help and Support
+
+A number of channels exist where you can get more help when using the Staticfile buildpack, or with developing your own Staticfile buildpack.
+
+* **Staticfile Buildpack Repository in Github**: Find more information about using and extending the Staticfile buildpack in [GitHub repository](https://github.com/cloudfoundry/staticfile-buildpack).
+
+* **Release Notes**: Find current information about this buildpack on the NGINX buildpack [release page](https://github.com/cloudfoundry/nginx-buildpack/releases) in GitHub.
+
+* **Slack**: Join the #buildpacks channel in the [Cloud Foundry Slack community](http://slack.cloudfoundry.org/).
+
+
