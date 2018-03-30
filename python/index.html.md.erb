@@ -98,6 +98,19 @@ For examples, see our sample apps:
 
 To use [Pipenv](https://docs.pipenv.org) instead of pip (directly) for installing dependencies, place a `Pipfile` in the root directory. Easiest to let Pipenv generate this for you.
 
+## NLTK Support ##
+
+To use NLTK copora in your app, you can include an `nltk.txt` file in the root of your application. Each line in the file specifies one dataset to download.
+The full list of data sets available this way can be found [on the NLTK website](http://www.nltk.org/nltk_data/). The `id` listed for the corpora on that page is the string you should include in  your app's `nltk.txt`.
+
+Example `nltk.txt`:
+```
+brown
+wordnet
+```
+
+Having an `nltk.txt` file only causes the buildpack to download the corpora; you still need to specify NLTK as a dependency of your app as usual if you want to use it to process the corpora files.
+
 ## <a id='proxy_support'></a> Proxy Support ##
 
 If you need to use a proxy to download dependencies during staging, you can set
