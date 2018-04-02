@@ -21,6 +21,40 @@ We recommend using the [default NGINX directory structure](https://github.com/cl
 
 Any custom configuration changes you make should be made from these default files to ensure compatability with the buildpack
 
+### <a id='modules'></a> Dynamic Modules
+
+#### <a id='provided-modules'></a> Buildpack-Provided Modules
+
+Starting with nginx-buildpack v0.0.5 and greater, the following dynamic modules will be built in and loadable via NGINX's `load_module` directive.
+
+* Stream module: `ngx_stream_module.so`
+
+To use a built-in dynamic module, use the following syntax near the top of your `nginx.conf`:
+
+  ```
+  load_module {{.NginxModulesDir}}/<module file name>;
+  ```
+
+For example, to use the stream module:
+
+  ```
+  load_module {{.NginxModulesDir}}/ngx_stream_module.so;
+  ```
+
+#### <a id='user-modules'></a> User-Provided Modules
+
+Users can also supply their own dynamic modules by placing them in the application directory and supplying a path to it in the `nginx.conf` file, using the following syntax:
+
+  ```
+  load_module <path to module>;
+  ```
+
+For example, to use a module called `my_module.so` inside a `modules` directory:
+
+  ```
+  load_module modules/my_module.so;
+  ```
+
 ### <a id='custom_nginx_configuration'></a> Push Your App ###
 
 Follow the steps below to push your application.
@@ -34,7 +68,7 @@ Follow the steps below to push your application.
   <td>1.</td>
   <td>Use the <code>cf push APP_NAME</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
 <pre class='terminal'>
-$ cf push my-app 
+$ cf push my-app
 Creating app my-app in org sample-org / space sample-space as username@example.com...
 OK
 …
