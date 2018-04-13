@@ -58,7 +58,7 @@ app.listen(process.env.PORT || 3000);
 When running node apps, you might notice that instances are occasionally
 restarted due to memory constraints. Node does not know how much memory it is
 allowed to use, and thus sometimes allows the garbage collector to wait past
-the allowed amount of memory. To resolve this issue, set the `OPTIMIZE_MEMORY` environment variable to `true`. This sets `max_old_space_size` based on the available memory in the instance.
+the allowed amount of memory. To resolve this issue, set the `OPTIMIZE_MEMORY` environment variable to `true` (requires node v6.12.0 or greater). This sets `max_old_space_size` based on the available memory in the instance.
 
 <pre class="terminal">
 $ cf set-env my-app OPTIMIZE_MEMORY true
