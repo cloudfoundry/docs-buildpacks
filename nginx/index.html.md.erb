@@ -12,28 +12,26 @@ This topic describes how to configure your NGINX application for use with the NG
 
 ### <a id='nginx'></a>NGINX Setup
 
-We recommend using the [default NGINX directory structure](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) when setting up your NGINX webserver.  This setup contains -
+We recommend using the [default NGINX directory structure](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) for your NGINX webserver.
+
+The NGINX webserver setup includes:
 
 * A root folder for all static web content
 * A mime type configuration file
 * A NGINX configuration file
 * A yaml file that defines what version of NGINX you want to use
 
-Any custom configuration changes you make should be made from these default files to ensure compatability with the buildpack
+Any custom configuration changes should be made from these default files to ensure compatability with the buildpack.
 
 ### <a id='modules'></a> Dynamic Modules
 
 #### <a id='provided-modules'></a> Buildpack-Provided Modules
 
-Starting with nginx-buildpack v0.0.5 and greater, the following dynamic modules will be built in and loadable via NGINX's `load_module` directive.
+For nginx-buildpack v0.0.5 and later, the following dynamic modules will be built in and loadable by NGINX's `load_module` directive.
 
 * Stream module: `ngx_stream_module.so`
 
-To use a built-in dynamic module, use the following syntax near the top of your `nginx.conf`:
-
-  ```
-  load_module {{.NginxModulesDir}}/<module file name>;
-  ```
+To use a built-in dynamic module, use the `load_module {{.NginxModulesDir}}/<module file name>;` syntax at the top of your `nginx.conf`.
 
 For example, to use the stream module:
 
@@ -43,7 +41,7 @@ For example, to use the stream module:
 
 #### <a id='user-modules'></a> User-Provided Modules
 
-Users can also supply their own dynamic modules by placing them in the application directory and supplying a path to it in the `nginx.conf` file, using the following syntax:
+Users can supply their own dynamic modules by placing them in the application directory and supplying a path to the module in the `nginx.conf` file. To configure a user-provided dynamic module, use the following syntax:
 
   ```
   load_module <path to module>;
@@ -77,7 +75,7 @@ instances: 1/1
 usage: 1GB x 1 instances
 urls: my-app.example.com
 </pre>
-   Or, if you do not have the buildpack, or the installed version is out-of-date, use the <code>-b</code> option to specify the buildpack as follows:<br>
+   If you do not have the buildpack, or the installed version is out-of-date, use the <code>-b</code> option to specify the buildpack as follows:<br>
 <code>cf push APP_NAME -b https://github.com/cloudfoundry/nginx-buildpack.git</code>
   </td>
 </tr>
@@ -87,7 +85,7 @@ urls: my-app.example.com
 </tr>
 </table>
 
-## <a id='help'></a>Help and Support
+## <a id='help'></a>Buildpack Support
 
 A number of channels exist where you can get more help when using the NGINX buildpack, or with developing your own NGINX buildpack.
 
