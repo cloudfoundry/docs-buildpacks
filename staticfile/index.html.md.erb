@@ -286,7 +286,8 @@ $ touch Staticfile
 
     <tr>
     <td>force HTTPS</td>
-    <td>set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.
+    <td>set the <code>FORCE_HTTPS</code> environment variable to <code>true</code> <strong>OR</strong><br>
+        add this line to the <code>Staticfile</code>:<br><code><strong>force_https: true</strong></code>
     <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer that terminates SSL/TLS.
 Doing so can cause infinite redirect loops, for example,
 if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
