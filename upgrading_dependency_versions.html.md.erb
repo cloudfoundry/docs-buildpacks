@@ -202,8 +202,8 @@ __Bundler__:
 __PHP__:
 
 * **Verified with**: The SHA256 of the `.tar.gz` file from the [PHP Downloads](http://php.net/downloads.php) page.
-* For PHP5 versions, the CF buildpacks team enqueues builds in the `php-builds.yml` file in the `binary-builds` branch. For PHP7 versions, the CF buildpacks team enqueues builds in the `php7-builds.yml` file in the `binary-builds` branch.
-* **Example**: [Enqueuing binary builds for PHP 5.5.37, 5.6.23, and 7.0.8](https://github.com/cloudfoundry/buildpacks-ci/commit/cfb02b7d590996d3727dea9192d2da1ae0aaa595)
+* To enqueue builds for PHP, you need to edit a file in the `public-buildpacks-ci-robots` repo. For PHP5 versions, the CF buildpacks team enqueues builds in the `binary-builds/php-builds.yml` file. For PHP7 versions, the CF buildpacks team enqueues builds in the `binary-builds/php7-builds.yml` file.
+* **Example**: [Enqueuing binary builds for PHP 7.2.5 and 7.0.30](https://github.com/cloudfoundry/public-buildpacks-ci-robots/commit/3353b2d4343f955fdfb34c04358d92c4045aa4e3)
 
 __Nginx__:
 
