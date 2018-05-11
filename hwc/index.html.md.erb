@@ -16,14 +16,6 @@ for running .NET Applications on Windows.
 
 HWC relies on `Web.config` configuration for hosting the .NET Applications.
 
-#### <a id='shadow-copy'></a> Shadow Copy Setting
-[Shadow Copy](https://msdn.microsoft.com/en-us/library/ms228159(v=vs.100).aspx)
-is a hosting option that copies assemblies for an application in the `bin` directory
-to the application's temporary files directory. This features is turned off and
-unnecessary for applications runinng under Cloud Foundry. An app can override this
-setting in application's `web.config`.
-
-
 ### <a id='push-your-app'></a> Push Your App ###
 
 Follow the steps below to push your application.
@@ -55,6 +47,34 @@ urls: my-app.example.com
   <td>Find the URL of your app in the output from the push command and navigate to it to see your HWC app running.</td>
 </tr>
 </table>
+
+### <a id='features'></a> Features ###
+
+Below are a set of features that can be used with HWC buildpack
+
+#### <a id='context-path'></a> Context Path Routing
+
+Any HWC hosted application will use the `VCAP_APPLICATION` environment variable
+to read out the bound application uris. Any context path that exists in the
+application's bound route will be used to properly setup the `applicationHost.config`
+to host the application under a non-root context path.
+
+Follow the steps to use Context Path Routing and access `app2` under `app1`'s URL. e.g `app1.example.com/app2`
+
+<pre class='terminal'>
+$ cf push app1 #find the URL for your app1
+$ cf push app2 --no-start --no-route
+$ cf map-route app2 example.com --hostname app1 --path app2
+$ cf start app2
+</pre>
+
+#### <a id='shadow-copy'></a> Shadow Copy Setting
+[Shadow Copy](https://msdn.microsoft.com/en-us/library/ms228159(v=vs.100).aspx)
+is a hosting option that copies assemblies for an application in the `bin` directory
+to the application's temporary files directory. This features is turned off and
+unnecessary for applications runinng under Cloud Foundry. An app can override this
+setting in application's `web.config`.
+
 
 ## <a id='help'></a>Buildpack Support
 
