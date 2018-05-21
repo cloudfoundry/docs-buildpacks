@@ -10,11 +10,11 @@ owner: Buildpacks
 This topic describes how to configure your .NET application for use with the
 HWC buildpack and how to push your .NET application to Cloud Foundry.
 HWC is a wrapper around [Hosted Web Core API](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx)
-for running .NET Applications on Windows.
+for running .NET apps on Windows.
 
 ### <a id='hwc'></a>HWC Setup
 
-HWC relies on `Web.config` configuration for hosting the .NET Applications.
+HWC relies on `Web.config` configuration for hosting the .NET apps.
 
 ### <a id='push-your-app'></a> Push Your App ###
 
@@ -27,7 +27,7 @@ Follow the steps below to push your application.
 </tr>
 <tr valign="top">
   <td>1.</td>
-  <td>Use the <code>cf push APP_NAME</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
+  <td>Run the command <code>cf push APP_NAME</code> to push your app, replacing <code>APP_NAME</code> with the name you want to give your app. For example:<br>
 <pre class='terminal'>
 $ cf push my-app
 Creating app my-app in org sample-org / space sample-space as username@example.com...
@@ -44,13 +44,13 @@ urls: my-app.example.com
 </tr>
 <tr valign="top">
   <td>2.</td>
-  <td>Find the URL of your app in the output from the push command and navigate to it to see your HWC app running.</td>
+  <td>Find the URL of your app in the output from the <code>push command</code> and navigate to it to see your HWC app running.</td>
 </tr>
 </table>
 
 ### <a id='features'></a> Features ###
 
-Below are a set of features that can be used with HWC buildpack.
+The HWS buildpack supports context path routing and a Shadow Copy option, as described below.
 
 #### <a id='context-path'></a> Context Path Routing
 
@@ -68,6 +68,7 @@ $ cf start app2
 </pre>
 
 #### <a id='shadow-copy'></a> Shadow Copy Setting
+
 [Shadow Copy](https://msdn.microsoft.com/en-us/library/ms228159(v=vs.100).aspx)
 is a hosting option that copies assemblies for an app in the `bin` directory
 to the app's temporary files directory. This features is turned off and
@@ -77,7 +78,7 @@ setting in its `web.config` file.
 
 ## <a id='help'></a>Buildpack Support
 
-A number of channels exist where you can get more help when using the HWC buildpack, or with developing your own HWC buildpack.
+For help using the HWC buildpack or with developing your own HWC buildpack, see the following resources: 
 
 * **HWC Buildpack Repository in Github**: Find more information about using and extending the HWC buildpack in [GitHub repository](https://github.com/cloudfoundry/hwc-buildpack).
 
