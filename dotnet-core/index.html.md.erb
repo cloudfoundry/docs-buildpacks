@@ -29,16 +29,38 @@ For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemi
 
 ## <a id='cli-tools'></a> .NET Core SDKs ##
 
-The first several releases of the .NET Core SDKs used `project.json` files for project build configuration. The current release of the .NET Core SDK uses MSBuild as its build tool, which uses `*.csproj` and `*.fsproj` files for configuration.
+To pin the .NET Core SDK to a specific version or a version line, use a `buildpack.yml` file at the app root:
 
-Currently, the .NET Core buildpack includes both types of SDKs. If the pushed app contains a `global.json` file, the buildpack installs the version specified by that file. Otherwise, the buildpack chooses which SDK to install as follows:
+```
+dotnet-core:
+  sdk: 2.1.201
+```
 
-1. If the app only contains `project.json` files, the buildpack installs the latest SDK that supports this configuration.
-2. If the app only contains `*.csproj` and `*.fsproj` files, the buildpack installs the latest SDK that uses MSBuild.
-3. If the app contains both file types without a `global.json`, the buildpack throws an error, as it cannot determine the proper SDK to install.
+Other acceptable formats include:
 
-<p class="note"><strong>Note</strong>: Microsoft has removed support for project.json from the <a href="https://blogs.msdn.microsoft.com/dotnet/2016/11/16/announcing-net-core-tools-msbuild-alpha/">.NET Core SDK tools</a>. Consequently, support for <code>project.json</code> apps in the buildpack will soon be deprecated.
-</p>
+```
+dotnet-core:
+  sdk: 2.1.x
+```
+
+```
+dotnet-core:
+  sdk: 2.x
+```
+
+```
+dotnet-core:
+  sdk: 2.x.x
+```
+
+The buildpack chooses which SDK to install based on files present at the app root, according to the following order of precedence:
+
+1. `buildpack.yml`
+2. `global.json`
+3. `*.fsproj` (the buildpack installs the latest 1.1.x SDK)
+
+**Note:** The app will still respect the SDK version specified in `global.json` at runtime, so it is suggested to overlap the versions specified in `global.json` and `buildpack.yml` if both are provided.
+
 
 ## <a id='port'></a>Configure the Listen Port ##
 
