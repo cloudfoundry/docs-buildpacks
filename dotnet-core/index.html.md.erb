@@ -124,15 +124,19 @@ To lock the .NET Framework version in a `.csproj` app:
   </ItemGroup>
 ```
 
-To lock the .NET Framework version in a `project.json` app:
+In a `.runtimeconfig.json` app, the latest .NET Framework patch version will be used by default. To pin to a specific .NET Framework version, include the `applyPatches` property and set it to false:
 
 ```
-  "dependencies": {
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.*"
-    }
+{
+  "runtimeOptions": {
+    "tfm": "netcoreapp2.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "2.0.0"
+    },
+    "applyPatches": false
   }
+}
 ```
 
 ## <a id='multiple-projects'></a>Deploy Apps with Multiple Projects ##
