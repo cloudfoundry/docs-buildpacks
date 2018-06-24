@@ -330,7 +330,7 @@ public class MongoConfig {
         Cloud cloud = cloudFactory.getCloud();
         MongoServiceInfo serviceInfo = (MongoServiceInfo) cloud.getServiceInfo("my-mongodb");
         String serviceID = serviceInfo.getID();
-        return cloud.getServiceConnector(serviceID, DataSource.class, null);
+        return cloud.getServiceConnector(serviceID, MongoDbFactory.class, null);
     }
 
     @Bean
