@@ -29,14 +29,14 @@ For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemi
 
 ## <a id='cli-tools'></a> .NET Core SDKs ##
 
-To pin the .NET Core SDK to a specific version or a version line, use a `buildpack.yml` file at the app root:
+To pin the .NET Core SDK to a specific version or version line, create a `buildpack.yml` file at the app root and add the following:
 
 ```
 dotnet-core:
   sdk: 2.1.201
 ```
 
-Other acceptable formats include:
+The following formats are also valid:
 
 ```
 dotnet-core:
@@ -53,14 +53,13 @@ dotnet-core:
   sdk: 2.x.x
 ```
 
-The buildpack chooses which SDK to install based on files present at the app root, according to the following order of precedence:
+The buildpack chooses which SDK to install based on the files present at the app root, according to the following order of precedence:
 
 1. `buildpack.yml`
 2. `global.json`
-3. `*.fsproj` (the buildpack installs the latest 1.1.x SDK)
+3. If the app contains only `*.fsproj` files, the buildpack installs the latest 1.1.x SDK.
 
-**Note:** The app will still respect the SDK version specified in `global.json` at runtime, so it is suggested to overlap the versions specified in `global.json` and `buildpack.yml` if both are provided.
-
+<p class="note"><strong>Note</strong>: The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in both <code>global.json</code> and <code>buildpack.yml</code>, ensure that you specify the same versions in both files.</p>
 
 ## <a id='port'></a>Configure the Listen Port ##
 
