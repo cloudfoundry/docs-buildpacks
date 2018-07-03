@@ -11,11 +11,12 @@ For more information about how buildpacks work, see the [Understanding Buildpack
 
 ## <a id='packaging-custom-buildpacks'></a> Package Custom Buildpacks ##
 
-<%= vars.app_runtime %> buildpacks can work with limited or no Internet connectivity. The [Buildpack Packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
+<%= vars.app_runtime %> buildpacks can work with limited or no Internet connectivity.
+The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager/buildpack-packager) gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
 
 ### <a id='use-buildpack-packager'></a> Use the Buildpack Packager
 
-1. Ensure that you have installed the [Buildpack Packager](https://github.com/cloudfoundry-incubator/buildpack-packager) RubyGem.
+1. Ensure that you have installed the [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager).
 1. Create a manifest.yml in your buildpack.
 1. Run the packager in cached mode: 
   <pre class="terminal">$ buildpack-packager --cached</pre>
@@ -30,7 +31,7 @@ The packager has the following option flags:
 
 * `--use-custom-manifest`: To include a different manifest file in your packaged buildpack, call the packager with the `--use-custom-manifest PATH/TO/MANIFEST.YML` option. The packager generates a buildpack with the specified manifest. If you are building a cached buildpack, the packager vendors dependencies from the specified manifest as well.
 
-For more information, see the documentation at the [Buildpack Packager Github repository](https://github.com/cloudfoundry-incubator/buildpack-packager).
+For more information, see the documentation in the [buildpack-packager Github repository](https://github.com/cloudfoundry/libbuildpack/tree/master/packager).
 
 ### <a id='share-buildpack-package'></a> Use and Share the Packaged Buildpack
 
