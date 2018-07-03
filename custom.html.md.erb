@@ -19,17 +19,11 @@ The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/maste
 1. Ensure that you have installed the [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager).
 1. Create a manifest.yml in your buildpack.
 1. Run the packager in cached mode: 
-  <pre class="terminal">$ buildpack-packager --cached</pre>
+  <pre class="terminal">$ buildpack-packager build -cached -any-stack</pre>
 
 The packager will add (almost) everything in your buildpack directory into a zip file. It will exclude anything marked for exclusion in your manifest.
 
 In cached mode, the packager downloads and adds dependencies as described in the manifest.
-
-The packager has the following option flags:
-
-* `--force-download`: By default, the packager stores the dependencies that it downloads while building a cached buildpack in a local cache at `~/.buildpack-packager`. Storing dependencies enables the packager to avoid re-downloading them when repackaging similar buildpacks. Running `buildpack-packager --cached` with the `--force-download` option forces the packager to download dependencies from the S3 host and ignore the local cache. When packaging an uncached buildpack, `--force-download` does nothing.
-
-* `--use-custom-manifest`: To include a different manifest file in your packaged buildpack, call the packager with the `--use-custom-manifest PATH/TO/MANIFEST.YML` option. The packager generates a buildpack with the specified manifest. If you are building a cached buildpack, the packager vendors dependencies from the specified manifest as well.
 
 For more information, see the documentation in the [buildpack-packager Github repository](https://github.com/cloudfoundry/libbuildpack/tree/master/packager).
 
