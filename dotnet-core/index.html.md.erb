@@ -138,11 +138,10 @@ buildpacks contain only the two most recent patch versions of each minor version
 To lock the .NET Framework version in a `.csproj` app:
 
 ```
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.App">
-      <Version>1.1.*</Version>
-    </PackageReference>
-  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameworkVersion>2.1.*</RuntimeFrameworkVersion>
+  </PropertyGroup>
 ```
 
 In a `.runtimeconfig.json` app, the latest .NET Framework patch version is used by default. To pin to a specific .NET Framework version, include the `applyPatches` property and set it to `false`:
