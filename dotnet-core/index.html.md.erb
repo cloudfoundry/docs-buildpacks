@@ -24,6 +24,8 @@ $ cf push MY-APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
 
 ## <a id='source-based'></a>Source-based, Non-published Workflow ##
 
+To use this workflow, simply `cf push` the source code for your app (i.e. not the resultant directory of a `dotnet publish`).
+
 This is the recommended workflow because the buildpack can keep all your dependencies in-sync and up-to-date.
 When using this workflow, here are some edge-cases you may run into:
 
@@ -92,7 +94,7 @@ To deploy an [FDD](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#
 
 1. Push your app.
 
-**Note**: Do not set `applyPatches: false` in  `*.runtimeconfig.json`. This will prevent your app from receiving updates to the runtime version.
+**Note**: Do not set `applyPatches: false` in  `*.runtimeconfig.json`. This will prevent your app from receiving updates to the runtime version and assemblies.
 
 ## <a id='self-contained'></a>Self-Contained Deployments (SCD) Workflow ##
 This workflow is not recommended. Because this workflow results in a prepublished binary, we are unable to keep all your dependencies in-sync and up-to-date.
@@ -103,11 +105,13 @@ The SCD workflow is the same as the FDD workflow, except you must specify a runt
 dotnet publish -r ubuntu14.04-x64
 ```
 
+The specified runtime should also be included in the `RuntimeIdenfiers` section of the project file.
+
 See [more details for FDD vs SCD deployments](https://docs.microsoft.com/en-us/dotnet/core/deploying/)
 
 ## <a id='offline'></a>Offline Workflow - Push an App in a Disconnected Environment##
 
-Using the [Framework Dependent Deployment (FDD) workflow](#framework-dependent) is the recommended deployment method for an offline environment, as it will allow the deployed application to use the latest runtime provided by the offline buildpack. 
+Using the [Framework Dependent Deployment (FDD) workflow](#framework-dependent) is the recommended deployment method for an offline environment, as it will allow the deployed application to use the latest runtime provided by the offline buildpack. It is possible to use the [Self-Contained Deployment (SCD) workflow](#self-contained) in an offline setting, but it is not recommended.
 
 ## <a id='dotnet-sdk'></a> .NET Core SDKs ##
 To pin the .NET Core SDK to a specific version or version line, create a `buildpack.yml` file at the app root and add the following:
