@@ -9,8 +9,19 @@ owner: Buildpacks
 
 This topic describes how to configure your NGINX application for use with the NGINX buildpack and how to push your NGINX app to Cloud Foundry.
 
+## <a id='pushing-apps'></a> Push an App ##
 
-### <a id='nginx'></a>NGINX Setup
+Cloud Foundry automatically uses the NGINX buildpack when one or more of the following conditions are met:
+
+- The pushed app contains an `nginx.conf` file.
+
+If your Cloud Foundry deployment does not have the NGINX buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
+
+<pre class="terminal">
+$ cf push MY-APP -b https://github.com/cloudfoundry/nginx-buildpack.git
+</pre>
+
+## <a id='nginx'></a>NGINX Setup ##
 
 We recommend using the [default NGINX directory structure](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) for your NGINX webserver.
 
@@ -19,71 +30,56 @@ The NGINX webserver setup includes:
 * A root folder for all static web content
 * A mime type configuration file
 * A NGINX configuration file
-* A yaml file that defines what version of NGINX you want to use
+* A `buildpacks.yml` yaml file that defines what version of NGINX you want to use
 
 Any custom configuration changes should be made from these default files to ensure compatability with the buildpack.
 
-### <a id='modules'></a> Dynamic Modules
+## <a id='templating'></a> nginx.conf Templating
+When writing an `nginx.conf` file to be used with the NGINX buildpack, there is a templating syntax available. This allows you to load modules and bind to ports based on values known at launch time.
 
-#### <a id='provided-modules'></a> Buildpack-Provided Modules
+### <a id='port'></a> Port
+When setting the port you're listening on, use `{{port}}` in your `nginx.conf`. This will interpolate in the value of `$PORT`.
 
-For nginx-buildpack v0.0.5 and later, the following dynamic modules will be built in and loadable by NGINX's `load_module` directive.
+<p class="note"><strong>Note</strong>: It is required to use <code>{{port}}</code> in your <code>nginx.conf</code>.</p>
+
+For example, to have an nginx server listen on `$PORT`:
+```
+server {
+  listen {{port}};
+}
+```
+
+### <a id='env'></a> Environment Variables
+Use `{{env "<variable name>"}}` to get the value of `$variable_name`. This value will be filled in at staging and at launch.
+
+For example, to turn gzipping of files served on or off based on an env variable:
+```
+gzip {{env "GZIP_DOWNLOADS"}};
+```
+When `GZIP_DOWNLOADS` is set to `off`, NGINX will not gzip things. When `GZIP_DOWNLOADS` is set to `on`, it will.
+
+### <a id='provided-modules'></a> Buildpack-Provided Modules
+
+For nginx-buildpack v0.0.5 and later, the following dynamic modules will be built in:
 
 * Stream module: `ngx_stream_module.so`
 
-To use a built-in dynamic module, use the `load_module {{.NginxModulesDir}}/<module file name>;` syntax at the top of your `nginx.conf`.
+To use a built-in dynamic module, use the `{{module "<module file name>"}}` syntax at the top of your `nginx.conf`.
 
 For example, to use the stream module:
 
   ```
-  load_module {{.NginxModulesDir}}/ngx_stream_module.so;
+  {{module "ngx_stream_module"}}
   ```
 
-#### <a id='user-modules'></a> User-Provided Modules
-
-Users can supply their own dynamic modules by placing them in the application directory and supplying a path to the module in the `nginx.conf` file. To configure a user-provided dynamic module, use the following syntax:
-
-  ```
-  load_module <path to module>;
-  ```
+## <a id='user-modules'></a> User-Provided Modules
+Users can supply their own dynamic modules by placing them in the application directory and supplying a relative path to the module in the `nginx.conf` file. To configure a user-provided dynamic module, use the standard `nginx.conf` syntax: `load_module <path to module>;`.
 
 For example, to use a module called `my_module.so` inside a `modules` directory:
 
   ```
   load_module modules/my_module.so;
   ```
-
-### <a id='custom_nginx_configuration'></a> Push Your App ###
-
-Follow the steps below to push your application.
-
-<table border='1' class='nice'>
-<tr>
-<th>Step</th>
-<th>Action</th>
-</tr>
-<tr valign="top">
-  <td>1.</td>
-  <td>Use the <code>cf push APP_NAME</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
-<pre class='terminal'>
-$ cf push my-app
-Creating app my-app in org sample-org / space sample-space as username@example.com...
-OK
-…
-requested state: started
-instances: 1/1
-usage: 1GB x 1 instances
-urls: my-app.example.com
-</pre>
-   If you do not have the buildpack, or the installed version is out-of-date, use the <code>-b</code> option to specify the buildpack as follows:<br>
-<code>cf push APP_NAME -b https://github.com/cloudfoundry/nginx-buildpack.git</code>
-  </td>
-</tr>
-<tr valign="top">
-  <td>2.</td>
-  <td>Find the URL of your app in the output from the push command and navigate to it to see your NGINX app running.</td>
-</tr>
-</table>
 
 ## <a id='help'></a>Buildpack Support
 
