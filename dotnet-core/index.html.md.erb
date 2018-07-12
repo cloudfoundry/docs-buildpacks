@@ -109,9 +109,35 @@ The specified runtime should also be included in the `RuntimeIdenfiers` section 
 
 See [more details for FDD vs SCD deployments](https://docs.microsoft.com/en-us/dotnet/core/deploying/)
 
+
 ## <a id='offline'></a>Offline Workflow - Push an App in a Disconnected Environment##
 
 Using the [Framework Dependent Deployment (FDD) workflow](#framework-dependent) is the recommended deployment method for an offline environment, as it will allow the deployed application to use the latest runtime provided by the offline buildpack. It is possible to use the [Self-Contained Deployment (SCD) workflow](#self-contained) in an offline setting, but it is not recommended.
+
+## <a id='runtime-store'></a>Runtime Package Store
+*This section applies only to source-based and framework-dependent deployment workflows*
+
+
+The recommended workflow for maintaining AspNetCore assemblies is to update your `.csproj` file with:
+
+```
+<PropertyGroup>
+  <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+</PropertyGroup>
+```
+
+This is results in a fully vendored app but will require fewer buildpack updates.
+
+If you do not want to use this option you can set `buildpack.yml` to your desired .NET SDK line to keep the SDK up to date:
+
+```
+---
+dotnet-core:
+	sdk: 2.0.x
+```
+
+**Note:** Dotnet releases `2.0.x` AspNetCore assemblies in the `2.1.200`-`2.1.299` SDK versions. `2.1.x` assemblies are released in the `2.1.300` and above SDK versions.
+
 
 ## <a id='dotnet-sdk'></a> .NET Core SDKs ##
 To pin the .NET Core SDK to a specific version or version line, create a `buildpack.yml` file at the app root and add the following:
