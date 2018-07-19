@@ -34,7 +34,7 @@ You should make any custom configuration changes based on these default files to
 
 ## <a id='templating'></a> Create the nginx.conf File
 
-Use the templating syntax when you create an `nginx.conf` file to use with the NGINX buildpack. This templating syntax loads modules and binds to ports based on values known at launch time.
+Use the templating syntax when you create an `nginx.conf` file. This templating syntax loads modules and binds to ports based on values known at launch time.
 
 ### <a id='port'></a> Port ###
 
@@ -52,19 +52,20 @@ server {
 
 ### <a id='env'></a> Environment Variables ###
 
-To use an environment variable, include `{{env "YOUR-VARIABLE"}}`. Replace YOUR-VARIABLE with the name of an environment variable. At staging and at launch, the value of the environment variable replaces the template syntax.
+To use an environment variable, include `{{env "YOUR-VARIABLE"}}`. Replace YOUR-VARIABLE with the name of an environment variable. At staging and at launch, the current value of the environment variable is retrieved.
 
-For example, include the following in your `nginx.conf` file to enable or disable the GZipping of files served based on the environment variable `GZIP_DOWNLOADS`:
+For example, include the following in your `nginx.conf` file to enable or disable GZipping based on the value of `GZIP_DOWNLOADS`:
 
 ```
 gzip {{env "GZIP_DOWNLOADS"}};
 ```
 
-When you set the environment variable `GZIP_DOWNLOADS` to `off`, NGINX does not GZip files. When you set `GZIP_DOWNLOADS` to `on`, NGINX GZips files served.
+* If you set `GZIP_DOWNLOADS` to `off`, NGINX does not GZip files.
+* If you set `GZIP_DOWNLOADS` to `on`, NGINX GZips files.
 
 ### <a id='provided-modules'></a> Buildpack-Provided Modules  ###
 
-The nginx-buildpack v0.0.5 and later include the following built-in module:
+The nginx-buildpack v0.0.5 and later includes the following built-in module:
 
 * Stream module: `ngx_stream_module.so`
 
@@ -80,7 +81,7 @@ For example, to use the stream module, include the following at the top of your 
 
 Users can supply their own dynamic modules by placing them in the app directory and providing a relative path to the module in the `nginx.conf` file.
 
-To use a user-provided dynamic module, include `load_module PATH-TO-MODULE;` in your `nginx.conf` file. Replace PATH-TO-MODULE with the relative path to the user-provided module.
+To include a user-provided dynamic module, add `load_module PATH-TO-MODULE;` to your `nginx.conf` file. Replace PATH-TO-MODULE with the relative path to the user-provided module.
 
 For example, to use a module named `my_module.so` that is located within the `modules` directory, include the following in your `nginx.conf` file:
 
