@@ -52,7 +52,7 @@ server {
 
 ### <a id='env'></a> Environment Variables ###
 
-To use an environment variable, include `{{env "YOUR-VARIABLE"}}`. Replace YOUR-VARIABLE with the name of an environment variable. At staging and at launch, the current value of the environment variable is retrieved.
+To use an environment variable, include `{{env "YOUR-VARIABLE"}}`. Replace `YOUR-VARIABLE` with the name of an environment variable. At staging and at launch, the current value of the environment variable is retrieved.
 
 For example, include the following in your `nginx.conf` file to enable or disable GZipping based on the value of `GZIP_DOWNLOADS`:
 
@@ -65,11 +65,9 @@ gzip {{env "GZIP_DOWNLOADS"}};
 
 ### <a id='provided-modules'></a> Buildpack-Provided Modules  ###
 
-The nginx-buildpack v0.0.5 and later includes the following built-in module:
+The nginx-buildpack v0.0.5 and later includes the `ngx_stream_module.so` built-in module.
 
-* Stream module: `ngx_stream_module.so`
-
-To use a built-in dynamic module, include `{{module "MODULE-FILE-NAME"}}` at the top of your `nginx.conf` file. Replace MODULE-FILE-NAME with the name of the built-in module. 
+To use a built-in dynamic module, include `{{module "MODULE-FILE-NAME"}}` at the top of your `nginx.conf` file. Replace `MODULE-FILE-NAME` with the name of the built-in module. 
 
 For example, to use the stream module, include the following at the top of your `nginx.conf` file:
 
@@ -77,11 +75,11 @@ For example, to use the stream module, include the following at the top of your 
 {{module "ngx_stream_module"}}
 ```
 
-## <a id='user-modules'></a> User-Provided Modules ##
+### <a id='user-modules'></a> User-Provided Modules ##
 
 Users can supply their own dynamic modules by placing them in the app directory and providing a relative path to the module in the `nginx.conf` file.
 
-To include a user-provided dynamic module, add `load_module PATH-TO-MODULE;` to your `nginx.conf` file. Replace PATH-TO-MODULE with the relative path to the user-provided module.
+To include a user-provided dynamic module, add `load_module PATH-TO-MODULE;` to your `nginx.conf` file. Replace `PATH-TO-MODULE` with the relative path to the user-provided module.
 
 For example, to use a module named `my_module.so` that is located within the `modules` directory, include the following in your `nginx.conf` file:
 
