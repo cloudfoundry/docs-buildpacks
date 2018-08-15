@@ -61,7 +61,7 @@ Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST:...
 Staging failed: Buildpack compilation step failed
 </pre>
 
-## <a id='npm_version'></a>Specify an npm Version##
+## <a id='npm_version'></a>Specify an npm Version ##
 
 To specify an npm version, set `engines.npm` in the `package.json` file to the semantic versioning specification (semver) range or the specific version of npm you are using:
 
@@ -93,9 +93,13 @@ Please remove the npm version specification in package.json (...)
 Staging failed: Buildpack compilation step failed
 </pre>
 
-## <a id='vendoring'></a>Vendor App Dependencies ##
+## <a id='using_npm_or_yarn'></a>Using NPM or Yarn ##
 
-To vendor dependencies for an app using the Node.js buildpack, run `npm install` from your app directory. This command vendors dependencies into the `node_modules` directory of your app directory.
+By default, the Node.js buildpack assumes you are using NPM. If you would like to use [Yarn](https://yarnpkg.com/) instead, you must provide a [`yarn.lock`](https://yarnpkg.com/lang/en/docs/yarn-lock/) in your top-level app directory.
+
+## <a id='vendoring'></a>Vendoring App Dependencies ##
+
+To vendor dependencies for an app using the Node.js buildpack, run `npm install` (or `yarn install`, if you are using Yarn) from your app directory. This command vendors dependencies into the `node_modules` directory of your app directory.
 
 For example, the following example vendors dependencies into the `my-nodejs-app/node_modules` directory:
 
@@ -106,12 +110,21 @@ $ npm install
 
 The `cf push` command uploads the vendored dependencies with the app.
 
-<p class='note'><strong>Note</strong>: For an app to run in a disconnected environment, it must vendor its dependencies.
-For more information, see <a href="https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md">Disconnected environments</a>.</p>
+<p class='note'><strong>Note</strong>: For an app to run in a disconnected environment, it must vendor its dependencies and provide a lock file.</p>
 
-### <a id='yarn_disconnected'></a>Using Yarn in a Disconnected Environment ##
+### <a id='offline_environments'></a>Usage in Offline Environments ###
 
-Versions 1.5.28 and later of the Node.js buildpack include the ability to use the package manager [Yarn](https://yarnpkg.com/) in a disconnected environment. To do so, you must mirror the Yarn registry locally:
+When vendoring apps for usage in offline environments, it is important to also supply a [lock file](https://docs.npmjs.com/files/package-locks).
+NPM's lock file is called [`package-lock.json`](https://docs.npmjs.com/files/package-lock.json), and Yarn's lock file is called [`yarn.lock`](https://yarnpkg.com/lang/en/docs/yarn-lock/).
+This lock file will inform the package manager of the exact versions of dependencies and transitive dependencies to look for when running `npm install` or `yarn install`.
+Because of this, it is important to keep `package.json`, the vendored `node_modules` directory, and your lock file all in sync to avoid network calls.
+
+<p class='note'><strong>Note</strong>: <code>package-lock.json</code> is only supported by NPM 5.x and later. For earlier versions of NPM, provide a <a href='https://docs.npmjs.com/files/shrinkwrap.json'><code>npm-shrinkwrap.json</code></a> file instead.</p>
+
+#### <a id='yarn_offline'></a>Yarn Offline Mode ####
+
+Versions 1.5.28 and later of the Node.js buildpack include the ability to use Yarn in offline mode.
+To do so, you must mirror the Yarn registry locally by providing an `npm-packages-offline-cache` directory:
 
 <pre class="terminal">
 $ cd APP-DIR
@@ -122,7 +135,9 @@ $ rm -rf node_modules/ yarn.lock # if they were previously generated
 $ yarn install
 </pre>
 
-When you push the app, the buildpack looks for an `npm-packages-offline-cache` directory at the top level of the app directory. If this directory exists, the buildpack runs Yarn in offline mode. Otherwise, it runs Yarn normally, which requires an Internet connection.
+When you push the app, the buildpack looks for an `npm-packages-offline-cache` directory at the top level of the app directory.
+If this directory exists, the buildpack runs Yarn in offline mode. Otherwise, it runs Yarn normally, which may require an Internet connection.
+It is not strictly necessary to provide a `node_modules` directory when running Yarn in offline mode, as the offline cache will provide the dependencies.
 
 For more information about using an offline mirror with Yarn, see the [Yarn Blog](https://yarnpkg.com/blog/2016/11/24/offline-mirror).
 
