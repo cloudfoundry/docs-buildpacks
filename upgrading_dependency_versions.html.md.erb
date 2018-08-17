@@ -113,7 +113,7 @@ After you build the binary for a dependency that you can access and download fro
         md5: 535342030a11abeb11497824bf642bf2
         uri: https://pivotal-buildpacks.s3.amazonaws.com/concourse-binaries/ruby/ruby-2.3.0-linux-x64.tgz
         cf_stacks:
-          - cflinuxfs2
+          - cflinuxfs3
     ```
     * Follow the current structure of the manifest. For example, if the manifest includes the two most recent patch versions for each minor version of the language, you should also include the two most recent patch versions for each minor version of the language, such as both `ruby-2.1.9` and `ruby-2.1.8`.
     * Copy the `uri` and the `md5` from the `build-BINARY-NAME` job that ran in the Concourse binary-builder pipeline and add them to the manifest.
