@@ -61,14 +61,14 @@ func main() {
 ```
 
 Your binary should run without any additional runtime dependencies on the
-cflinuxfs2 or lucid64 root filesystem (rootfs).
+cflinuxfs3 or lucid64 root filesystem (rootfs).
 Any such dependencies should be statically linked to the binary.
 
-To boot a docker container running the cflinuxfs2 filesystem, run the following
+To boot a docker container running the cflinuxfs3 filesystem, run the following
 command:
 
 <pre class="terminal">
-$ docker run -it cloudfoundry/cflinuxfs2 bash
+$ docker run -it cloudfoundry/cflinuxfs3 bash
 </pre>
 
 To boot a docker container running the lucid64 filesystem, run the following
@@ -83,7 +83,7 @@ To compile the above Go application on the rootfs, golang must be installed. `ap
 When deploying your binary to Cloud Foundry, use `cf push` with the `-s` option to specify the root filesystem it should run against.
 
 <pre class="terminal">
-$ cf push my_app -s (cflinuxfs2|lucid64)
+$ cf push my_app -s (cflinuxfs3|lucid64)
 </pre>
 
 To run docker on Mac OS X, we recommend [boot2docker](http://boot2docker.io/).
