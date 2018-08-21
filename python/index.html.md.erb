@@ -86,6 +86,27 @@ $ pip install --download vendor -r requirements.txt --no-binary :all:
 <p class="note"><strong>Note</strong>: To ensure proper installation of dependencies, we recommend non-binary vendored dependencies. The above <code>pip install</code> command achieves this.</p>
 
 
+## <a id='private-repos'></a> Private Dependency Repository
+
+If you are deploying in an environment that needs to use a private dependency repository, you can add the configuration of that repository to the `requirements.txt` file.
+
+```
+--index-url=https://my.repo.com/api/pypi/ext_pypi/simple
+fixtures==2.0.0
+```
+
+If the private repository uses a custom SSL cert that is installed on the platform you may see an error like this.
+```
+Could not fetch URL https://my.repo.com/api/pypi/ext_pypi/simple/fixtures/: There was a problem confirming the ssl certificate: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:777) - skipping
+``` 
+
+To fix it, set an environment variable in the `manifest.yml` to tell `pip` to use the os truststore instead of its own.
+```
+---
+env:
+  PIP_CERT: /etc/ssl/certs/ca-certificates.crt
+```
+
 ## <a id='cfenv'></a> Parse Environment Variables
 
 The `cfenv` package provides access to Cloud Foundry application environment settings by parsing all the relevant environment variables. The settings are returned as a class instance. See [https://github.com/jmcarp/py-cfenv](https://github.com/jmcarp/py-cfenv) for more information.
