@@ -7,23 +7,59 @@ owner: Buildpacks
 
 This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
-<p class="note"><strong>Note</strong>: The .NET Core buildpack only works with <a href="https://www.microsoft.com/net/core">ASP.NET Core</a>. For apps which are not based on this toolchain, refer to the legacy <a href="#legacy">.NET buildpack.</a></p>
+## <a id='requirements'></a>Requirements
 
-## <a id='pushing-apps'></a> Push an App ##
+Use the .NET Core buildpack for .NET Core apps.
 
-Cloud Foundry automatically uses the .NET Core buildpack when one or more of the following conditions are met:
+<%= vars.product_full %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
 - The pushed app contains one or more `*.csproj` or `*.fsproj` files.
 - The pushed app contains one or more `project.json` files.
 - The app is pushed from the output directory of the `dotnet publish` command.
 
-If your Cloud Foundry deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
+For .NET Console apps, use the [Binary](../binary/index.html) buildpack.
 
+For ASP.NET MVC, ASP.NET Web Forms, and Windows Communication Foundation (WCF) apps, use the [HWC](../hwc/index.html) buildpack.
+
+## <a id='pushing-apps'></a> Push an App ##
+
+Follow the steps below to push your application.
+
+<table border='1' class='nice'>
+<tr>
+<th>Step</th>
+<th>Action</th>
+</tr>
+<tr valign="top">
+  <td>1.</td>
+  <td>(Optional) Specify any non-default package sources in the <code>NuGet.Config</code> file.</td>
+</tr>
+<tr valign="top">
+  <td>2.</td>
+  <td>Use the <code>cf push APP_NAME</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
+<pre class='terminal'>
+$ cf push my-app
+Creating app my-app in org sample-org / space sample-space as username@example.com...
+OK
+…
+requested state: started
+instances: 1/1
+usage: 1GB x 1 instances
+urls: my-app.example.com
+</pre>
+If your <%= vars.product_full %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the <code>-b</code> option to specify the buildpack:
 <pre class="terminal">
 $ cf push MY-APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
 </pre>
+  </td>
+</tr>
+<tr valign="top">
+  <td>3.</td>
+  <td>Find the URL of your app in the output from the push command and navigate to it to see your HWC app running.</td>
+</tr>
+</table>
 
-Specify any non-default package sources in the `NuGet.Config` file.
+
 
 For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
 
@@ -132,7 +168,7 @@ public static void Main(string[] args)
 
 ## <a id='specify-version'></a>Specify a .NET Framework Version ##
 
-Lock the .NET Framework to a minor version. Do not lock to a patch version, because 
+Lock the .NET Framework to a minor version. Do not lock to a patch version, because
 buildpacks contain only the two most recent patch versions of each minor version.
 
 To lock the .NET Framework version in a `.csproj` app:
@@ -231,7 +267,3 @@ If your app requires external shared libraries that are not provided by the root
 <p class="note"><strong>Note</strong>: You must keep these libraries up-to-date. They do not update automatically.</p>
 
 The .NET Core buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
-
-## <a id='legacy'></a>Legacy .NET Buildpack ##
-
-A legacy [.NET buildpack](https://github.com/cloudfoundry-community/.net-buildpack) exists, built by the Cloud Foundry community. This buildpack addresses apps not based on .NET Core. However, it requires you to write and compile your apps using [Mono](http://www.mono-project.com/), for example from Xamarin Studio, MonoDevelop, or xbuild.
