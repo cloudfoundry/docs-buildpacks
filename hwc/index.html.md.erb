@@ -8,13 +8,67 @@ owner: Buildpacks
 ## <a id='overview'></a> Overview
 
 This topic describes how to configure your .NET application for use with the
-HWC buildpack and how to push your .NET application to Cloud Foundry.
+HWC buildpack and how to push your .NET application to <%= vars.product_full %>.
 HWC is a wrapper around [Hosted Web Core API](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx)
 for running .NET Applications on Windows.
+
+Before you push your first app using the HWC buildpack, see the [Getting Started](https://dotnet-cookbook.cfapps.io/intro/getting_started/) guide in the <em>.NET Cookbook</em>.
+
+### <a id='requirements'></a>Requirements
+
+The HWC buildpack requires .NET Framework v4.0 or later.
+
+Use the HWC buildpack for the following app types:
+
+* ASP.NET MVC
+* ASP.NET Web Forms
+* Windows Communication Foundation (WCF)
+
+For .NET Console apps, use the [Binary](../binary/index.html) buildpack.
+
+For .NET Core apps, use the [.NET Core](../dotnet-core/index.html) buildpack.
 
 ### <a id='hwc'></a>HWC Setup
 
 HWC relies on `Web.config` configuration for hosting the .NET Applications.
+
+Most `Web.config` files work out of the box with PCF, but watch out for the following:
+
+- Integrated Windows Authentication (IWA) is disabled in PCF.
+- Do not use HTTP modules that are not included in the .NET SDK. For example, the Microsoft URL Rewrite module.
+- Do not use HTTP modules that cannot be deployed in your app’s `bin` directory.
+- SQL server connection strings must use fully qualified domain names.
+
+### <a id="error-handling"></a>Application Error Handling
+
+Before you push your app for the first time, add a global error handler to your app's `Global.asax.cs`.
+The global error handler can send logs to PCF through `stdout`.
+
+If you already have a global exception handler, ensure that it logs to `stdout`.
+For example, if you use a logging framework, configure a console appender so that log statements write to `stdout`.
+
+<p class="note"><strong>Note</strong>: Without a global error handler, you will not receive any log information from your app if it crashes on startup.</p>
+
+To configure a global error handler that logs to `stdout`, add the following to your app's `Global.asax.cs`:
+
+<pre class="terminal">
+void Application_Error(object sender, EventArgs e)
+{
+    Exception lastError = Server.GetLastError();
+    Console.WriteLine("Unhandled exception: " + lastError.Message + lastError.StackTrace);
+}
+</pre>
+
+After you have added a global error handler, unhandled exception logs and their stack traces are sent to PCF.
+You can view the logs in Apps Manager or from the command line.
+
+To view logs from the command line, run `cf logs MY-APP --recent`, replacing `MY-APP` with the name of your app.
+
+For example:
+
+<pre class="terminal">
+$ cf logs example-app --recent
+</pre>
 
 ### <a id='push-your-app'></a> Push Your App ###
 
@@ -38,8 +92,6 @@ instances: 1/1
 usage: 1GB x 1 instances
 urls: my-app.example.com
 </pre>
-   If you do not have the buildpack, or the installed version is out-of-date, use the <code>-b</code> option to specify the buildpack as follows:<br>
-<code>cf push APP_NAME -b https://github.com/cloudfoundry/hwc-buildpack.git</code>
   </td>
 </tr>
 <tr valign="top">
@@ -53,6 +105,9 @@ urls: my-app.example.com
 Below are a set of features that can be used with HWC buildpack.
 
 #### <a id='context-path'></a> Context Path Routing
+
+<p class="note"><strong>Note</strong>: In IIS, context path routing is known as URL rewrite.
+Not all URL rewrite features work as expected when replaced by context path routing.</p>
 
 HWC-hosted apps use the `VCAP_APPLICATION` environment variable
 to read out the bound app URIs. Any context path that exists underneath the root in the
@@ -72,8 +127,15 @@ $ cf start app2
 is a hosting option that copies assemblies for an app in the `bin` directory
 to the app's temporary files directory. This features is turned off and
 unnecessary for apps running under Cloud Foundry. An app can override this
-setting in its `web.config` file.
+setting in its `Web.config` file.
 
+#### <a id='http-compression'></a>Dynamic and Static HTTP Compression
+
+The HWC buildpack enables dynamic and static HTTP compression by default.
+You can disable HTTP compression in your app's `Web.config` file.
+
+Dynamic HTTP compression is hardcoded at level 9.
+Static HTTP compression is hardcoded at level 4.
 
 ## <a id='help'></a>Buildpack Support
 
