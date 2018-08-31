@@ -9,66 +9,48 @@ owner: Buildpacks
 
 This topic describes how to configure your .NET application for use with the
 HWC buildpack and how to push your .NET application to <%= vars.product_full %>.
-HWC is a wrapper around [Hosted Web Core API](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx)
-for running .NET Applications on Windows.
+The HWC buildpack provides a runtime server that uses the [Hosted Web Core API](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx)
+for running .NET applications in Windows containers.
 
 Before you push your first app using the HWC buildpack, see the [Getting Started](https://dotnet-cookbook.cfapps.io/intro/getting_started/) guide in the <em>.NET Cookbook</em>.
 
 ### <a id='requirements'></a>Requirements
 
-The HWC buildpack requires .NET Framework v4.0 or later.
+The HWC buildpack provides access to .NET Framework 4.5.1 and later, made available by the Windows root file system (rootfs).
 
-Use the HWC buildpack for the following app types:
+The HWC buildpack supports the following common application types by default:
 
 * ASP.NET MVC
 * ASP.NET Web Forms
+* ASP.NET WebAPI Apps
 * Windows Communication Foundation (WCF)
 
-For .NET Console apps, use the [Binary](../binary/index.html) buildpack.
+For .NET Console apps and Windows executables, use the [Binary](../binary/index.html) buildpack.
 
-For .NET Core apps, use the [.NET Core](../dotnet-core/index.html) buildpack.
+You can deploy .NET Core apps to either a Windows stack or a Linux stack.
+
+To deploy a .NET Core app to a Linux stack, use the [.NET Core](../dotnet-core/index.html) buildpack pushed to cflinuxfs2 or cflinuxfs3.
+
+To deploy a .NET Core app to a Windows stack, build it as a self-contained app and push it with the [Binary](../binary/index.html) buildpack, specifying the Windows 2016 stack with a custom start command.
 
 ### <a id='hwc'></a>HWC Setup
 
-HWC relies on `Web.config` configuration for hosting the .NET Applications.
+HWC relies on a `Web.config` configuration file for configuring the .NET applications.
 
-Most `Web.config` files work out of the box with PCF, but watch out for the following:
+Most `Web.config` files work out of the box with <%= vars.product_short %>, with the following constraints:
 
-- Integrated Windows Authentication (IWA) is disabled in PCF.
-- Do not use HTTP modules that are not included in the .NET SDK. For example, the Microsoft URL Rewrite module.
-- Do not use HTTP modules that cannot be deployed in your app’s `bin` directory.
+- Integrated Windows Authentication (IWA) is not yet supported on <%= vars.product_short %>.
 - SQL server connection strings must use fully qualified domain names.
+- Place connection string values in environment variables or [user-provided service instances](../../devguide/services/user-provided.html).
+
+The HWC buildpack includes a default configuration for the `applicationHost.config`, similar to IIS.
 
 ### <a id="error-handling"></a>Application Error Handling
 
-Before you push your app for the first time, add a global error handler to your app's `Global.asax.cs`.
-The global error handler can send logs to PCF through `stdout`.
+Before you push your app for the first time, add a global error handler.
+Without a global error handler, you will not receive any log information from your app if it crashes on startup.
 
-If you already have a global exception handler, ensure that it logs to `stdout`.
-For example, if you use a logging framework, configure a console appender so that log statements write to `stdout`.
-
-<p class="note"><strong>Note</strong>: Without a global error handler, you will not receive any log information from your app if it crashes on startup.</p>
-
-To configure a global error handler that logs to `stdout`, add the following to your app's `Global.asax.cs`:
-
-<pre class="terminal">
-void Application_Error(object sender, EventArgs e)
-{
-    Exception lastError = Server.GetLastError();
-    Console.WriteLine("Unhandled exception: " + lastError.Message + lastError.StackTrace);
-}
-</pre>
-
-After you have added a global error handler, unhandled exception logs and their stack traces are sent to PCF.
-You can view the logs in Apps Manager or from the command line.
-
-To view logs from the command line, run `cf logs MY-APP --recent`, replacing `MY-APP` with the name of your app.
-
-For example:
-
-<pre class="terminal">
-$ cf logs example-app --recent
-</pre>
+To configure a global error handler that logs to `stdout`, see [Application Error Handling](https://dotnet-cookbook.cfapps.io/intro/getting_started/#application-error-handling) in the <em>.NET Cookbook</em>.
 
 ### <a id='push-your-app'></a> Push Your App ###
 
@@ -81,9 +63,12 @@ Follow the steps below to push your application.
 </tr>
 <tr valign="top">
   <td>1.</td>
-  <td>Use the <code>cf push APP_NAME</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
+  <td>Publish your app from Visual Studio. On the command line, navigate to the directory that contains the published app files.</td>
+<tr valign="top">
+  <td>2.</td>
+  <td>Use the <code>cf push APP_NAME -s windows2016</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
 <pre class='terminal'>
-$ cf push my-app
+$ cf push my-app -s windows2016
 Creating app my-app in org sample-org / space sample-space as username@example.com...
 OK
 …
@@ -95,7 +80,7 @@ urls: my-app.example.com
   </td>
 </tr>
 <tr valign="top">
-  <td>2.</td>
+  <td>3.</td>
   <td>Find the URL of your app in the output from the push command and navigate to it to see your HWC app running.</td>
 </tr>
 </table>
@@ -105,9 +90,6 @@ urls: my-app.example.com
 Below are a set of features that can be used with HWC buildpack.
 
 #### <a id='context-path'></a> Context Path Routing
-
-<p class="note"><strong>Note</strong>: In IIS, context path routing is known as URL rewrite.
-Not all URL rewrite features work as expected when replaced by context path routing.</p>
 
 HWC-hosted apps use the `VCAP_APPLICATION` environment variable
 to read out the bound app URIs. Any context path that exists underneath the root in the
@@ -134,8 +116,20 @@ setting in its `Web.config` file.
 The HWC buildpack enables dynamic and static HTTP compression by default.
 You can disable HTTP compression in your app's `Web.config` file.
 
-Dynamic HTTP compression is hardcoded at level 9.
-Static HTTP compression is hardcoded at level 4.
+Dynamic HTTP compression is hardcoded at level 4.
+Static HTTP compression is hardcoded at level 9.
+
+#### <a id='url-rewrite'></a>URL Rewrite
+
+The HWC buildpack supports the URL Rewrite module.
+It is preinstalled in the Windows file system.
+
+#### <a id='profile-scripts'></a>Profile Scripts
+
+The HWC buildpack allows developers to provide `.profile` scripts with their applications.
+You can use a `.profile` script to perform app-specific initialization tasks, such as setting custom environment variables.
+
+For information about configuring `.profile` scripts, see the [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) section of <em>Deploy an Application</em>.
 
 ## <a id='help'></a>Buildpack Support
 

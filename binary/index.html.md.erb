@@ -93,10 +93,13 @@ To run docker on Mac OS X, we recommend [boot2docker](http://boot2docker.io/).
 Your platform operator can configure the platform to [add the custom certificates into the application container](https://docs.cloudfoundry.org/adminguide/trusted-system-certificates.html).
 The custom trusted certificates will be added to the `/etc/ssl/certs` directory and can be used by binary applications.
 
-## <a id='dotnet-console'></a>.NET Console Applications
+## <a id='dotnet-console'></a>.NET Apps
 
 If you are pushing a .NET Console app using the binary buildpack, see [Console Applications](https://dotnet-cookbook.cfapps.io/headless/console_app/) in the <em>.NET Cookbook</em> for more information.
 
+You can deploy .NET Core apps to a Windows stack using the binary buildpack. Build it as a self-contained app and push it with the binary buildpack, specifying the Windows 2016 stack with a custom start command.
+
+To deploy a .NET Core app to a Linux stack, use the [.NET Core](../dotnet-core/index.html) buildpack pushed to cflinuxfs2 or cflinuxfs3.
 For all other .NET apps, see [HWC Buildpack](../hwc/index.html).
 
 ## <a id='help_support'></a>Help and Support ##

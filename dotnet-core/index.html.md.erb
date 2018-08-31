@@ -9,7 +9,11 @@ This topic describes how to push Cloud Foundry apps using the .NET Core buildpac
 
 ## <a id='requirements'></a>Requirements
 
-Use the .NET Core buildpack for .NET Core apps.
+You can deploy .NET Core apps to either a Windows stack or a Linux stack.
+
+To deploy a .NET Core app to a Linux stack, use the [.NET Core](../dotnet-core/index.html) buildpack pushed to cflinuxfs2 or cflinuxfs3.
+
+To deploy a .NET Core app to a Windows stack, build it as a self-contained app and push it with the [Binary](../binary/index.html) buildpack, specifying the Windows 2016 stack with a custom start command.
 
 <%= vars.product_full %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
@@ -17,9 +21,9 @@ Use the .NET Core buildpack for .NET Core apps.
 - The pushed app contains one or more `project.json` files.
 - The app is pushed from the output directory of the `dotnet publish` command.
 
-For .NET Console apps, use the [Binary](../binary/index.html) buildpack.
+For .NET Console apps and Windows executables, use the [Binary](../binary/index.html) buildpack.
 
-For ASP.NET MVC, ASP.NET Web Forms, and Windows Communication Foundation (WCF) apps, use the [HWC](../hwc/index.html) buildpack.
+For ASP.NET MVC, ASP.NET Web Forms, ASP.NET WebAPI, and Windows Communication Foundation (WCF) apps, use the [HWC](../hwc/index.html) buildpack.
 
 ## <a id='pushing-apps'></a> Push an App ##
 
