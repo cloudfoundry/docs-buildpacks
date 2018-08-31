@@ -65,24 +65,27 @@ gzip {{env "GZIP_DOWNLOADS"}};
 
 ### <a id='loading-modules'></a> Loading Dynamic Modules  ###
 
-To load an NGINX module, use the following syntax in your app's `nginx.conf`:
+To load an NGINX module, use the following syntax in your app's `nginx.conf` file:
 
 ```{{module "MODULE-NAME"}}```
 
-If you've provided a module in a `modules` directory located at the root of your app, the buildpack will instruct NGINX to load that module.
-Otherwise the buildpack will instruct NGINX to search for a matching built-in module.
+If you have provided a module in a `modules` directory located at the root of your app, the buildpack instructs NGINX to load that module.
+If you have not provided a module, the buildpack instructs NGINX to search for a matching built-in module.
+
 As of v0.0.5 of the buildpack, the `ngx_stream_module` is available as a built-in module.
 
-For example, if you'd like to load a custom module called `ngx_hello_module`, provide `modules/ngx_hello_module.so` in your app directory and place the following at the top of your `nginx.conf`:
+For example, to load a custom module named `ngx_hello_module`, provide a 
+`modules/ngx_hello_module.so` file in your app directory and add the following to the top of your `nginx.conf` file:
 
 ```{{module "ngx_hello_module"}}```
 
-If you'd like to load a built-in module like `ngx_stream_module`, simply use the following without the need to provide an `ngx_stream_module.so` file:
+To load a built-in module like `ngx_stream_module`, add the following to 
+the top of your `nginx.conf` file. You do not need to provide an `ngx_stream_module.so` file:
 
 ```{{module "ngx_stream_module"}}```
 
-<p class="note"><strong>Note</strong>: If, for some reason, you'd like to name your modules directory something other than <code>modules</code>, you can use NGINX's <code>load_module</code> directive, providing a path to the module relative to your <code>nginx.conf</code>'s location. For example:
-<pre>load_module some_module_dir/my_module.so</pre></p>
+<p class="note"><strong>Note</strong>: To name your modules directory something other than <code>modules</code>, use the NGINX <code>load_module</code> directive, providing a path to the module relative to the location of your <code>nginx.conf</code> file. For example:
+<code>load_module some_module_dir/my_module.so</code></p>
 
 ## <a id='help'></a>Buildpack Support ##
 
