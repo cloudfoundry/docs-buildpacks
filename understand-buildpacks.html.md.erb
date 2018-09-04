@@ -198,6 +198,30 @@ staging_info.yml
 ```
 The `app` directory includes the contents of the `build` directory, and `staging_info.yml` contains the staging metadata saved in the droplet.
 
+## <a id='stack-association'></a> Stack Association ##
+
+<p class="note"><strong>Note</strong>: This functionality is supported as of CAPI <a href="https://github.com/cloudfoundry/capi-release/releases/tag/1.58.0">v1.58.0</a> and cf CLI v6.39.0.</p>
+
+Each buildpack in your Cloud Foundry deployment is associated with a stack. You can see this when you run `cf buildpacks`: there is a `stack` column in the output that shows a corresponding stack for each buildpack. 
+
+Because of this stack association, buildpacks do not have to be uniquely named. This helps in managing similar buildpacks that are compatible with different stacks. 
+
+The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) includes a `-stack` option. If you use this option and upload a buildpack to Cloud Foundry, the Cloud Controller detects the stack association and creates a stack record for the buildpack. Buildpacks with a missing stack record default to the system stack.     
+
+## <a id='stack-cli'></a> Managing Stack Association with the cf CLI ##
+
+The cf CLI commands for managing buildpacks include functionality to support assocation between buildpacks and stacks. The `update-buildpack`, `rename-buildpack`, and `delete-buildpack` commands all include a `-s` flag for specifying a stack. 
+
+For example, you can have two buildpacks named `my-buildpack`, one that specifies `stack_a` and one that specifies `stack_b`. If you want to delete the buildpack that uses `stack_a`, you can run `cf delete-buildpack my-buildpack -s stack_a`. 
+
+When operating on buildpacks with the cf CLI, consider the following:
+
+* The `-s` flag is required when there are two buildpacks with the same name. If you are operating on a uniquely named buildpack, you do not need to provide specify its stack. 
+* If you have two buildpacks of the same name, one with a stack record and one without, running cf CLI commands without `-s` operates on the buildpack with the missing stack record. 
+* The output of `cf buildpacks` shows no stack reference if the buildpack does not have a stack record. This may happen particularly with custom buildpacks uploaded before Cloud Foundry added stack association. In this case, you must manually assign a stack to the buildpack by running `cf update-buildpack BUILDPACK-NAME -s STACK-NAME`.
+* You cannot upload a buildpack with `cf create-buildpack` if a buildpack of the same name already exists and it has a missing stack record. 
+
+
 ##<a id='buildpack-detection'></a> Buildpack Detection
 
 When you push an app, Cloud Foundry uses a detection process to determine a single buildpack to use. 
