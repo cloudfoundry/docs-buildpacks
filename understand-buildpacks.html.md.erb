@@ -202,11 +202,26 @@ The `app` directory includes the contents of the `build` directory, and `staging
 
 <p class="note"><strong>Note</strong>: This functionality is supported as of CAPI <a href="https://github.com/cloudfoundry/capi-release/releases/tag/1.58.0">v1.58.0</a> and cf CLI v6.39.0.</p>
 
+<p class="note warning"><strong>WARNING</strong>: To avoid security exposure, ensure that you migrate your apps and custom buildpacks to use the <code>cflinuxfs3</code> stack based on Ubuntu 18.04 (Bionic Beaver). <code>cflinuxfs2</code> is based on Ubuntu 14.04 (Trusty Tahr), which reaches end of general support (EOGS) in April 2019. </p>
+
 Each buildpack in your Cloud Foundry deployment is associated with a stack. You can see this when you run `cf buildpacks`: there is a `stack` column in the output that shows a corresponding stack for each buildpack. 
 
 Because of this stack association, buildpacks do not have to be uniquely named. This helps in managing similar buildpacks that are compatible with different stacks. 
 
-The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) includes a `-stack` option. If you use this option and upload a buildpack to Cloud Foundry, the Cloud Controller detects the stack association and creates a stack record for the buildpack. Buildpacks with a missing stack record default to the system stack.     
+The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) includes a `-stack` option. If you use this option and upload a buildpack to Cloud Foundry, the Cloud Controller detects the stack association and creates a stack record for the buildpack. 
+
+## <a id='no-stack-record'></a> Buildpacks without a Stack Record ##
+
+Some buildpacks may have a missing stack record. For example, if you uploaded a custom buildpack before Cloud Foundry introduced stack assocation. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record. 
+
+In this case, you must manually assign a stack to the buildpack by running `cf update-buildpack BUILDPACK-NAME -s STACK-NAME`.
+
+Buildpacks with a missing stack record will continue to work, but there may be errors when attempting to manage them with the cf CLI. 
+
+Consider the following behavior when pushing apps to a deployment that has buildpacks with a missing stack record:
+
+* If you push an app and specify a stack with `cf push app-name -s stack`, Cloud Foundry uses that stack. Otherwise, it uses the system default, `cflinuxfs2`. 
+* You may see warnings in the buildpack detection output of the `cf push` command when Cloud Foundry detects buildpacks without a stack record. 
 
 ## <a id='stack-cli'></a> Managing Stack Association with the cf CLI ##
 
@@ -216,9 +231,8 @@ For example, you can have two buildpacks named `my-buildpack`, one that specifie
 
 When operating on buildpacks with the cf CLI, consider the following:
 
-* The `-s` flag is required when there are two buildpacks with the same name. If you are operating on a uniquely named buildpack, you do not need to provide specify its stack. 
+* The `-s` flag is required when there are two buildpacks with the same name. If you are operating on a uniquely named buildpack, you do not need to specify its stack. 
 * If you have two buildpacks of the same name, one with a stack record and one without, running cf CLI commands without `-s` operates on the buildpack with the missing stack record. 
-* The output of `cf buildpacks` shows no stack reference if the buildpack does not have a stack record. This may happen particularly with custom buildpacks uploaded before Cloud Foundry added stack association. In this case, you must manually assign a stack to the buildpack by running `cf update-buildpack BUILDPACK-NAME -s STACK-NAME`.
 * You cannot upload a buildpack with `cf create-buildpack` if a buildpack of the same name already exists and it has a missing stack record. 
 
 
