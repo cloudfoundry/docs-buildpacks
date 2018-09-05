@@ -21,7 +21,7 @@ The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/maste
 
 Some buildpacks may have a missing stack record. For example, if you uploaded a custom buildpack before Cloud Foundry introduced stack assocation. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record. 
 
-In this case, you must manually assign a stack to the buildpack. To do this, run `cf update-buildpack BUILDPACK-NAME -p PATH/TO/BUILDPACK`, where the path contains a `manifest.yml` with a stack as a top level property. See [Managing Custom Buildpacks](../adminguide/buildpacks.html) for more information. 
+In this case, you must manually assign a stack to the buildpack. To do this, run `cf update-buildpack BUILDPACK-NAME -p PATH/TO/BUILDPACK`, where the path contains a `manifest.yml` with a stack as a top level property. See [Creating Custom Buildpacks](./custom.html) for more information. 
 
 Buildpacks with a missing stack record will continue to work, but are more manageable when the stack record is present. 
 
