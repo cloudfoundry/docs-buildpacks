@@ -57,7 +57,7 @@ If the buildpack requires some configuration, use [a fork of the buildpack][f].
 The Cloud Foundry Client Library provides a Java API for interacting with a
 Cloud Foundry instance.
 This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven
-plugin, the Cloud Foundry Gradle plugin, the [Cloud Foundry STS integration](./sts.html), and other Java-based tools.
+plugin, the Cloud Foundry Gradle plugin, and other Java-based tools.
 
 For information about using this library, see the [Java Cloud Foundry Library](./java-client.html) page.
 
@@ -323,9 +323,9 @@ When you push a Java application, specify the path to the WAR:
 
 Because of the way that Cloud Foundry deploys your applications and isolates them, it is not possible to connect to your application with the remote Java debugger. Instead, instruct the application to connect to the Java debugger on your local machine.
 
-Here are the instructions for setting up remote debugging when using BOSH Lite or a CloudFoundry installation.
+Here are the instructions for setting up remote debugging when using BOSH Lite or a Cloud Foundry installation.
 
-1. Open your project in [Eclipse](./sts.html).
+1. Open your project in Eclipse.
 1. Right-click on your project, go to **Debug as** and pick **Debug Configurations**.
 1. Create a new **Remote Java Application**.
 1. Make sure your project is selected, pick **Standard (Socket Listen)** from the **Connection Type** drop down and set a port. Make sure this port is open if you are running a firewall.

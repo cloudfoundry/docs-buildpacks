@@ -218,7 +218,7 @@ __HTTPD__:
 __Composer__:
 
 * **Verified with**: The SHA256 of the `composer.phar` file from the [Composer Downloads](https://getcomposer.org/download/) page
-* For Composer, there is no build process as the `composer.phar` file is the binary. In the manual process, connect to the `pivotal-buildpacks` S3 bucket using the correct AWS credentials. Create a new directory with the name of the
+* For Composer, there is no build process as the `composer.phar` file is the binary. In the manual process, connect to the appropriate S3 bucket using the correct AWS credentials. Create a new directory with the name of the
 composer version, for example `1.0.2`, and put the appropriate `composer.phar` file into that directory. For Composer `v1.0.2`, connect and create the `php/binaries/trusty/composer/1.0.2` directory. Then place the `composer.phar` file into that directory so the binary is available at `php/binaries/trusty/composer/1.0.2/composer.phar`.
 
     <p class="note"><strong>Note</strong>: The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/binary-builder.yml">binary-builder</a> pipeline automates the process of detecting, uploading, and updating Composer in the manifest.</p>

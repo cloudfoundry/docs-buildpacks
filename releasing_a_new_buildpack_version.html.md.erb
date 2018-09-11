@@ -66,8 +66,8 @@ run the buildpack test suite and the buildpack-specific tests of the [Buildpack 
 the `specs-edge-master` and `specs-lts-master` builds in the related buildpack release story
 and deliver that story.
 
-1. Your project manager can manually trigger the `buildpack-to-github` and `buildpack-to-pivnet` jobs on Concourse as part
-of the acceptance process. This releases the buildpack to Pivotal Network and to Github.
+1. Your project manager can manually trigger the `buildpack-to-github` job on Concourse as part
+of the acceptance process. This releases the buildpack to GitHub.
 
 1. After the buildpack has been released to Github, the `cf-release` pipeline is triggered using the manual trigger of
 the `recreate-bosh-lite` job on that pipeline. If the new buildpack has been released to Github, the CF that
