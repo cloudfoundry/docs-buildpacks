@@ -11,7 +11,18 @@ This topic describes the stack association feature for Cloud Foundry buildpacks.
 
 ## <a id='overview'></a> Overview ##
 
-Each buildpack in your Cloud Foundry deployment is associated with a stack. You can see this when you run `cf buildpacks`: there is a `stack` column in the output that shows a corresponding stack for each buildpack. 
+Each buildpack in your Cloud Foundry deployment is associated with a stack. You can see this when you run `cf buildpacks`: there is a `stack` column in the output that shows a corresponding stack for each buildpack. See the following example: 
+
+<pre class="terminal">
+$ cf buildpacks
+Getting buildpacks...
+
+buildpack                position   enabled   locked   filename                                             stack
+staticfile_buildpack     1          true      false    staticfile_buildpack-cached-cflinuxfs2-v1.4.29.zip   cflinuxfs2
+java_buildpack_offline   2          true      false    java-buildpack-offline-cflinuxfs2-v4.12.1.zip        cflinuxfs2
+ruby_buildpack           3          true      false    ruby_buildpack-cached-cflinuxfs2-v1.7.21.zip         cflinuxfs2
+. . . 
+</pre>
 
 Because of this stack association, buildpacks do not have to be uniquely named. This helps in managing similar buildpacks that are compatible with different stacks. 
 
