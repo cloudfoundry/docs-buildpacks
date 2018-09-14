@@ -7,65 +7,69 @@ owner: Buildpacks
 
 This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
-## <a id='requirements'></a>Requirements
-
-You can deploy .NET Core apps to either a Windows stack or a Linux stack.
-
-To deploy a .NET Core app to a Linux stack, use the [.NET Core](../dotnet-core/index.html) buildpack pushed to cflinuxfs2 or cflinuxfs3.
-
-To deploy a .NET Core app to a Windows stack, build it as a self-contained app and push it with the [Binary](../binary/index.html) buildpack, specifying the Windows 2016 stack with a custom start command.
-
-<%= vars.product_full %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
+<%= vars.product_windows %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
 - The pushed app contains one or more `*.csproj` or `*.fsproj` files.
 - The pushed app contains one or more `project.json` files.
 - The app is pushed from the output directory of the `dotnet publish` command.
 
-For .NET Console apps and Windows executables, use the [Binary](../binary/index.html) buildpack.
+For information about deploying different types of .NET apps, follow the links in the table below.
 
-For ASP.NET MVC, ASP.NET Web Forms, ASP.NET WebAPI, and Windows Communication Foundation (WCF) apps, use the [HWC](../hwc/index.html) buildpack.
+<table>
+  <tr>
+    <th>Type of .NET App</th>
+    <th>Buildpack</th>
+  </tr>
+  <tr>
+    <td>
+        ASP.NET MVC<br>
+        ASP.NET Web Forms<br>
+        ASP.NET WebAPI Apps<br>
+        Windows Communication Foundation (WCF)
+    </td>
+    <td><a href="../hwc/index.html">HWC</a></td>
+  </tr>
+  <tr>
+    <td>.NET Console</td>
+    <td><a href="../binary/index.html">Binary</a></td>
+  </tr>
+  <tr>
+    <td>.NET Core pushed to Linux stack</td>
+    <td><a href="../dotnet-core/index.html">.NET Core</a></td>
+  </tr>
+  <tr>
+    <td>.NET Core pushed to Windows stack</td>
+    <td><a href="../binary/index.html">Binary</a></td>
+  </tr>
+</table>
 
 ## <a id='pushing-apps'></a> Push an App ##
 
 Follow the steps below to push your application.
 
-<table border='1' class='nice'>
-<tr>
-<th>Step</th>
-<th>Action</th>
-</tr>
-<tr valign="top">
-  <td>1.</td>
-  <td>(Optional) Specify any non-default package sources in the <code>NuGet.Config</code> file.</td>
-</tr>
-<tr valign="top">
-  <td>2.</td>
-  <td>Use the <code>cf push APP_NAME</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
-<pre class='terminal'>
-$ cf push my-app
-Creating app my-app in org sample-org / space sample-space as username@example.com...
-OK
-…
-requested state: started
-instances: 1/1
-usage: 1GB x 1 instances
-urls: my-app.example.com
-</pre>
-If your <%= vars.product_full %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the <code>-b</code> option to specify the buildpack:
-<pre class="terminal">
-$ cf push MY-APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
-</pre>
-  </td>
-</tr>
-<tr valign="top">
-  <td>3.</td>
-  <td>Find the URL of your app in the output from the push command and navigate to it to see your HWC app running.</td>
-</tr>
-</table>
+1. (Optional) Specify any non-default package sources in the `NuGet.Config` file.
 
+1. Run `cf push APP-NAME` command to push your app, where `APP-NAME` is the name you want to give your app. For example:
 
+    <pre class='terminal'>
+    $ cf push my-app
+    Creating app my-app in org sample-org / space sample-space as username@example.com...
+    OK
+    ...
+    requested state: started
+    instances: 1/1
+    usage: 1GB x 1 instances
+    urls: my-app.example.com
+    </pre>
+    If your <%= vars.product_windows %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
 
-For a basic example, see this [Hello World sample](https://github.com/IBM-Bluemix/aspnet-core-helloworld).
+    <pre class="terminal">
+    $ cf push MY-APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
+    </pre>
+
+1. Find the URL of your app in the output from the push command and navigate to it to see your HWC app running.  In the example above, `my-app.example.com` is the URL of your app.
+
+For a basic example app, see [ASP.NET Core getting started application](https://github.com/IBM-Bluemix/aspnet-core-helloworld) in GitHub.
 
 ## <a id='cli-tools'></a> .NET Core SDKs ##
 
@@ -99,11 +103,11 @@ The buildpack chooses which SDK to install based on the files present at the app
 2. `global.json`
 3. If the app contains only `*.fsproj` files, the buildpack installs the latest 1.1.x SDK.
 
-<p class="note"><strong>Note</strong>: The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in both <code>global.json</code> and <code>buildpack.yml</code>, ensure that you specify the same versions in both files.</p>
+<p class="note"><strong>Note</strong>: The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in both <code>global.json</code> and <code>buildpack.yml</code> files, ensure that you specify the same versions in both files.</p>
 
 ## <a id='port'></a>Configure the Listen Port ##
 
-For your .NET Core app to work on Cloud Foundry, you must modify the `Main` method to configure the app to listen on the port specified by the `$PORT` environment variable, which Cloud Foundry sets automatically.
+For your .NET Core app to work on <%= vars.product_windows %>, you must modify the `Main` method to configure the app to listen on the port specified by the `$PORT` environment variable. <%= vars.product_windows %> sets this environment variable automatically.
 
 1. Open the file that contains your `Main` method.
 
@@ -134,7 +138,7 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
 1. Add `Microsoft.Extensions.Configuration.CommandLine` as a dependency using one of the following:
     - `project.json`:
 
-		```json
+		```
         "Microsoft.Extensions.Configuration.CommandLine": "VERSION",
         ```
     - `*.csproj`:
@@ -145,7 +149,7 @@ For your .NET Core app to work on Cloud Foundry, you must modify the `Main` meth
         </PackageReference>
         ```
 
-    Where `VERSION` is the version of the package to use. Valid versions can be found on `https://www.nuget.org`.
+    In the above examples, replace `VERSION` with the version of the package to use. Valid versions can be found at https://www.nuget.org.
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
@@ -170,21 +174,25 @@ public static void Main(string[] args)
 }
 ```
 
-## <a id='specify-version'></a>Specify a .NET Framework Version ##
+## <a id='specify-version'></a>Specify a .NET Framework Version
 
-Lock the .NET Framework to a minor version. Do not lock to a patch version, because
+Specify a minor version of the .NET Framework.
+Do not specify a patch version, because
 buildpacks contain only the two most recent patch versions of each minor version.
 
-To lock the .NET Framework version in a `.csproj` app:
+###.csproj Apps
+Add the following to a `.csproj` app to lock the .NET Framework version:
 
 ```
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RuntimeFrameworkVersion>2.1.*</RuntimeFrameworkVersion>
-  </PropertyGroup>
+<PropertyGroup>
+  <TargetFramework>netcoreapp2.1</TargetFramework>
+  <RuntimeFrameworkVersion>2.1.*</RuntimeFrameworkVersion>
+</PropertyGroup>
 ```
 
-In a `.runtimeconfig.json` app, the latest .NET Framework patch version is used by default. To pin to a specific .NET Framework version, include the `applyPatches` property and set it to `false`:
+###.runtimeconfig.json Apps
+
+In a `.runtimeconfig.json` app, the latest .NET Framework patch version is used by default. To pin to a specific .NET Framework version, add the `applyPatches` property and set it to `false`.
 
 ```
 {
@@ -199,7 +207,7 @@ In a `.runtimeconfig.json` app, the latest .NET Framework patch version is used 
 }
 ```
 
-## <a id='multiple-projects'></a>Deploy Apps with Multiple Projects ##
+## <a id='multiple-projects'></a>Deploy Apps with Multiple Projects
 
 To deploy an app that contains multiple projects, you must specify a main project for the buildpack to run. Create a `.deployment` file in the root folder of the app which sets the path to the main project as follows:
 
@@ -208,9 +216,13 @@ To deploy an app that contains multiple projects, you must specify a main projec
 project = <main project>
 ```
 
-1. If the app uses `project.json`, set `project` to the directory containing the `project.json` file of the main project.
+### project.json Apps
 
-2. If the app uses MSBuild, set `project` to the `*.csproj` or `*.fsproj` file of the main project.
+If the app uses `project.json`, set `project` to the directory containing the `project.json` file of the main project.
+
+### MSBuild Apps
+
+If the app uses MSBuild, set `project` to the `*.csproj` or `*.fsproj` file of the main project.
 
 For example, if an app using MSBuild contains three projects in the `src` folder, the main project `MyApp.Web`, `MyApp.DAL`, and `MyApp.Services`, format the `.deployment` file as follows:
 
@@ -221,7 +233,7 @@ project = src/MyApp.Web/MyApp.Web.csproj
 
 In this example, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Services` projects if the `MyApp.Web.csproj` file of the main project lists them as dependencies, `MyApp.Web`. The buildpack attempts to execute the main project with `dotnet run -p src/MyApp.Web/MyApp.Web.csproj`.
 
-## <a id='disconnected-environments'></a>Push an App in a Disconnected Environment ##
+## <a id='disconnected-environments'></a>Push an App in a Disconnected Environment
 
 For offline use, you can cache the binaries in `manifest.yml` with the buildpack.
 

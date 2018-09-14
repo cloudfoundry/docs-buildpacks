@@ -5,97 +5,98 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-## <a id='overview'></a> Overview
+This topic describes how to configure your .NET Framework apps for use with the HWC buildpack and how to push your .NET Framework apps to <%= vars.product_windows_full %>.
 
-This topic describes how to configure your .NET application for use with the
-HWC buildpack and how to push your .NET application to <%= vars.product_full %>.
-The HWC buildpack provides a runtime server that uses the [Hosted Web Core API](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx)
-for running .NET applications in Windows containers.
-
-Before you push your first app using the HWC buildpack, see the [Getting Started](https://dotnet-cookbook.cfapps.io/intro/getting_started/) guide in the <em>.NET Cookbook</em>.
-
-### <a id='requirements'></a>Requirements
+The HWC buildpack provides a runtime server that uses the Hosted Web Core API for running .NET Framework applications in Windows Server containers. For more information, see [Hosted Web Core API Reference](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx) in the Microsoft documentation.
 
 The HWC buildpack provides access to .NET Framework 4.5.1 and later, made available by the Windows root file system (rootfs).
+Using the HWC buildpack requires deploying Windows cells with <%= vars.product_windows %>. 
 
-The HWC buildpack supports the following common application types by default:
+The HWC buildpack supports the following common app types by default:
 
 * ASP.NET MVC
 * ASP.NET Web Forms
 * ASP.NET WebAPI Apps
 * Windows Communication Foundation (WCF)
 
-For .NET Console apps and Windows executables, use the [Binary](../binary/index.html) buildpack.
+For information about deploying different types of .NET apps, follow the links in the table below.
 
-You can deploy .NET Core apps to either a Windows stack or a Linux stack.
+<table>
+  <tr>
+    <th>Type of .NET App</th>
+    <th>Buildpack</th>
+  </tr>
+  <tr>
+    <td>.NET Console</td>
+    <td><a href="../binary/index.html">Binary</a></td>
+  </tr>
+  <tr>
+    <td>.NET Core pushed to Linux stack</td>
+    <td><a href="../dotnet-core/index.html">.NET Core</a></td>
+  </tr>
+  <tr>
+    <td>.NET Core pushed to Windows stack</td>
+    <td><a href="../binary/index.html">Binary</a></td>
+  </tr>
+</table>
 
-To deploy a .NET Core app to a Linux stack, use the [.NET Core](../dotnet-core/index.html) buildpack pushed to cflinuxfs2 or cflinuxfs3.
+Before you push your first app using the HWC buildpack, see the [Getting Started](https://dotnet-cookbook.cfapps.io/intro/getting_started/) guide in the <em>.NET Cookbook</em>.
 
-To deploy a .NET Core app to a Windows stack, build it as a self-contained app and push it with the [Binary](../binary/index.html) buildpack, specifying the Windows 2016 stack with a custom start command.
-
-### <a id='hwc'></a>HWC Setup
+## <a id='hwc'></a>Configure HWC
 
 HWC relies on a `Web.config` configuration file for configuring the .NET applications.
 
-Most `Web.config` files work out of the box with <%= vars.product_short %>, with the following constraints:
+Most `Web.config` files work out of the box with <%= vars.product_windows %>, with the following constraints:
 
-- Integrated Windows Authentication (IWA) is not yet supported on <%= vars.product_short %>.
+- Integrated Windows Authentication (IWA) is not yet supported on <%= vars.product_windows %>.
 - SQL server connection strings must use fully qualified domain names.
 - Place connection string values in environment variables or [user-provided service instances](../../devguide/services/user-provided.html).
 
 The HWC buildpack includes a default configuration for the `applicationHost.config`, similar to IIS.
 
-### <a id="error-handling"></a>Application Error Handling
+## <a id="error-handling"></a>Add a Global Error Handler
 
 Before you push your app for the first time, add a global error handler.
 Without a global error handler, you will not receive any log information from your app if it crashes on startup.
 
 To configure a global error handler that logs to `stdout`, see [Application Error Handling](https://dotnet-cookbook.cfapps.io/intro/getting_started/#application-error-handling) in the <em>.NET Cookbook</em>.
 
-### <a id='push-your-app'></a> Push Your App ###
+## <a id='push-your-app'></a> Push an App
 
 Follow the steps below to push your application.
 
-<table border='1' class='nice'>
-<tr>
-<th>Step</th>
-<th>Action</th>
-</tr>
-<tr valign="top">
-  <td>1.</td>
-  <td>Publish your app from Visual Studio. On the command line, navigate to the directory that contains the published app files.</td>
-<tr valign="top">
-  <td>2.</td>
-  <td>Use the <code>cf push APP_NAME -s windows2016</code> command to push your app. Replace <code>APP_NAME</code> with the name you want to give your application. For example:<br>
-<pre class='terminal'>
-$ cf push my-app -s windows2016
-Creating app my-app in org sample-org / space sample-space as username@example.com...
-OK
-…
-requested state: started
-instances: 1/1
-usage: 1GB x 1 instances
-urls: my-app.example.com
-</pre>
-  </td>
-</tr>
-<tr valign="top">
-  <td>3.</td>
-  <td>Find the URL of your app in the output from the push command and navigate to it to see your HWC app running.</td>
-</tr>
-</table>
+1. Build your app in Visual Studio. On the command line, navigate to the directory that contains the app files.
 
-### <a id='features'></a> Features ###
+1. Run `cf push APP-NAME -s windows2016 -b hwc_buildpack` to push your app, where `APP-NAME` is the name you want to give your app. For example:
+
+    <pre class='terminal'>
+    $ cf push my-app -s windows2016 -b hwc_buildpack
+    Creating app my-app in org sample-org / space sample-space as username@example.com...
+    OK
+    ...
+    requested state: started
+    instances: 1/1
+    usage: 1GB x 1 instances
+    urls: my-app.example.com
+    </pre>
+
+1. Find the URL of your app in the output from the push command and navigate to it to see your HWC app running. In the example above, `my-app.example.com` is the URL of your app.
+
+## <a id='features'></a> Features
 
 Below are a set of features that can be used with HWC buildpack.
 
-#### <a id='context-path'></a> Context Path Routing
+### <a id='context-path'></a> Context Path Routing
+
+Context path routing is a feature analogous to IIS virtual directories.
+It enables multiple applications to share the same route hostname.
 
 HWC-hosted apps use the `VCAP_APPLICATION` environment variable
 to read out the bound app URIs. Any context path that exists underneath the root in the
 app's bound route corresponds to the `applicationHost.config`.
 
-Run the following commands to define context path routing that makes `app2` accessible under `app1`'s URL. e.g `app1.example.com/app2`:
+Run the following commands to define context path routing that makes `app2` accessible under `app1`'s URL.
+For example, `app1.example.com/app2`:
 
 <pre class='terminal'>
 $ cf push app1 #find the URL for your app1
@@ -104,14 +105,14 @@ $ cf map-route app2 example.com --hostname app1 --path app2
 $ cf start app2
 </pre>
 
-#### <a id='shadow-copy'></a> Shadow Copy Setting
+### <a id='shadow-copy'></a> Shadow Copy Setting
 [Shadow Copy](https://msdn.microsoft.com/en-us/library/ms228159(v=vs.100).aspx)
 is a hosting option that copies assemblies for an app in the `bin` directory
 to the app's temporary files directory. This features is turned off and
 unnecessary for apps running under Cloud Foundry. An app can override this
 setting in its `Web.config` file.
 
-#### <a id='http-compression'></a>Dynamic and Static HTTP Compression
+### <a id='http-compression'></a>Dynamic and Static HTTP Compression
 
 The HWC buildpack enables dynamic and static HTTP compression by default.
 You can disable HTTP compression in your app's `Web.config` file.
@@ -119,24 +120,24 @@ You can disable HTTP compression in your app's `Web.config` file.
 Dynamic HTTP compression is hardcoded at level 4.
 Static HTTP compression is hardcoded at level 9.
 
-#### <a id='url-rewrite'></a>URL Rewrite
+### <a id='url-rewrite'></a>URL Rewrite
 
 The HWC buildpack supports the URL Rewrite module.
 It is preinstalled in the Windows file system.
 
-#### <a id='profile-scripts'></a>Profile Scripts
+### <a id='profile-scripts'></a>Profile Scripts
 
-The HWC buildpack allows developers to provide `.profile` scripts with their applications.
-You can use a `.profile` script to perform app-specific initialization tasks, such as setting custom environment variables.
+The HWC buildpack allows developers to provide `.profile.bat` scripts with their applications.
+You can use a `.profile.bat` script to perform app-specific initialization tasks, such as setting custom environment variables.
 
-For information about configuring `.profile` scripts, see the [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) section of <em>Deploy an Application</em>.
+For information about configuring `.profile.bat` scripts, see the [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) section of <em>Deploy an Application</em>.
 
 ## <a id='help'></a>Buildpack Support
 
-A number of channels exist where you can get more help when using the HWC buildpack, or with developing your own HWC buildpack.
+A number of channels exist where you can get more help when using the HWC buildpack, or when developing your own HWC buildpack.
 
-* **HWC Buildpack Repository in Github**: Find more information about using and extending the HWC buildpack in [GitHub repository](https://github.com/cloudfoundry/hwc-buildpack).
+* **HWC Buildpack Repository in GitHub**: Find more information about using and extending the HWC buildpack in the [HWC buildpack repository](https://github.com/cloudfoundry/hwc-buildpack) in GitHub.
 
-* **Release Notes**: Find current information about this buildpack on the HWC buildpack [release page](https://github.com/cloudfoundry/hwc-buildpack/releases) in GitHub.
+* **Release Notes**: Find current information about this buildpack on the [HWC buildpack release page](https://github.com/cloudfoundry/hwc-buildpack/releases) in GitHub.
 
 * **Slack**: Join the #buildpacks channel in the [Cloud Foundry Slack community](http://slack.cloudfoundry.org/).
