@@ -15,6 +15,8 @@ To push an application with multiple buildpacks using the Cloud Foundry Command 
 
 <p class="note"><strong>Note</strong>: You must use cf CLI v6.38 or later.</p>
 
+<p class="note"><strong>Note</strong>: Note if you are using a <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#buildpack">manifest property</a> for multiple buildpacks, note that this feature does not work with <a href="https://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#deprecated">deprecated manifest</a> properties.</p>
+
 1. Run the following command to ensure that you are using the cf CLI v6.38 or later:
   <pre class="terminal">$ cf version
   </pre>
