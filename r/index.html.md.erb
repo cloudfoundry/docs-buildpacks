@@ -28,7 +28,7 @@ The R buildpack does not generate a [default start command](../../devguide/deplo
 
 To stage with the R buildpack and start an application, do one of the following:
 
--  Supply a Procfile. For more information about Procfiles, see the [Configuring a Production Server](../prod-server.html) topic. The following example Procfile specifies `R` as the start command for a web app with the entrypoint `simple.r`:
+-  Supply a Procfile. For more information about Procfiles, see the [Configuring a Production Server](../prod-server.html) topic. The following example Procfile specifies `R -f` as the start command for a web app with the entrypoint `simple.r`:
 
     ```
     web: R -f simple.r
@@ -36,13 +36,13 @@ To stage with the R buildpack and start an application, do one of the following:
 
 - Specify a start command with `-c`:
 
-    <pre class="terminal">
+    ```
     $ cf push r-app -c "R -f simple.r"
-    </pre>
+    ```
 
 - Specify a start command in the application manifest by setting the `command` attribute. For more information, see the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#start-commands) topic.
 
-## <a id='vendoring'></a> Specifying App Dependencies
+## <a id='specifying_dependencies'></a> Specifying App Dependencies
 
 As of v0.0.5, the following packages are provided by the buildpack:
 
@@ -63,11 +63,15 @@ packages:
 ```
 
 
-## <a id='vendoring'></a> Vendor App Dependencies
+## <a id='vendoring'></a> Vendoring App Dependencies
 
 If you are deploying in an environment that is disconnected from the Internet, your application [must vendor its dependencies](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md).
 
-Inside your `r.yml`, provide the names of your vendored packages in the `packages` list:
+To set up your own custom, local CRAN-like repository to vendor your packages, create the `src/contrib` directories and populate them with your package source tarballs. For more information, check out this [step-by-step guide](https://rstudio.github.io/packrat/custom-repos.html).
+
+Add the `src/contrib` directories containing your package tarballs to a `vendor_r` directory at the root of your app. This directory is named as such so as not to conflict with vendor directories of other languages, such as python.
+
+Then, inside your `r.yml`, provide the names of your vendored packages in the `packages` list:
 
 <pre class="terminal">
 
@@ -78,10 +82,22 @@ packages:
       - name: jsonlite
 </pre>
 
-Provide the vendored packages into a `vendor_r` directory at the root of your app. This directory is named as such so as not to conflict with vendor directories of other languages, such as python.
 
 `cf push` uploads your vendored dependencies. The buildpack installs them directly from the `vendor_r/` directory.
 
+Example app directory tree:
+
+```
+├── r.yml
+├── simple-app.r
+└── vendor_r
+    └── src
+        └── contrib
+            ├── PACKAGES
+            ├── PACKAGES.gz
+            ├── jsonlite_1.5.tar.gz
+            └── stringr_1.3.1.tar.gz
+```
 
 ## <a id='proxy_support'></a> Proxy Support
 
@@ -98,7 +114,7 @@ R uses certificates stored in `/etc/ssl/certs`. Your platform operator can confi
 
 Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
 
-For more information about using and extending the Python buildpack in Cloud Foundry, see the [python-buildpack GitHub repository](https://github.com/cloudfoundry/python-buildpack).
+For more information about using and extending the R buildpack in Cloud Foundry, see the [R-buildpack GitHub repository](https://github.com/cloudfoundry/r-buildpack).
 
-You can find current information about this buildpack on the [Python buildpack
-release page](https://github.com/cloudfoundry/python-buildpack/releases) in GitHub.
+You can find current information about this buildpack on the [R buildpack
+release page](https://github.com/cloudfoundry/r-buildpack/releases) in GitHub.
