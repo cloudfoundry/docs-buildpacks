@@ -52,7 +52,10 @@ default_versions:
 
 To specify a default version:
 
-1. Add the `default_version` object to your manifest, following the [rules](#rules) below. You can find a complete example manifest in the <%= vars.app_runtime %> [go-buildpack](https://github.com/cloudfoundry/go-buildpack/blob/f1a380f2f3a8012491c6007948af74676713dd50/manifest.yml) repository. 
+1. Add the `default_version` object to your manifest, following the [rules](#rules) below.
+For a complete example, see 
+[manifest.yml](https://github.com/cloudfoundry/go-buildpack/blob/master/manifest.yml) in the 
+go-buildpack repository in GitHub.
 
 1. Run the `default_version_for` script from the [compile-extensions](https://github.com/cloudfoundry/compile-extensions) repository, passing the path of your `manifest.yml` and the dependency name as arguments. The following command uses the example manifest from step 1:
   <pre class="terminal">

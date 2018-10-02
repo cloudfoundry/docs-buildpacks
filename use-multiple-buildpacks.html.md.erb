@@ -7,6 +7,8 @@ owner: Buildpacks
 
 This topic describes how developers can push an application with multiple buildpacks.
 
+<p class="note"><strong>Note</strong>: As an alternative to the cf CLI procedure below, you can specify multiple buildpacks in your <a href="../devguide/deploy-apps/manifest.html#buildpack">application manifest</a>. This is not compatible with <a href="..//devguide/deploy-apps/manifest.html#deprecated">Deprecated App Manifest Features</a>.</p>
+
 For more information about pushing applications to <%= vars.product_full %>, see the [Deploy an Application](../devguide/deploy-apps/deploy-app.html) topic.
 
 ##<a id='cfcli'></a> Specifying Buildpacks with the cf CLI
@@ -19,13 +21,14 @@ To push an application with multiple buildpacks using the Cloud Foundry Command 
   <pre class="terminal">$ cf version
   </pre>
   For more information about upgrading the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html).
-1. Push the application with the binary buildpack with the `--no-start` flag:
-  <pre class="terminal">$ cf push YOUR-APP --no-start -b binary_buildpack</pre>
-  This command pushes the application but does not start it.
-1. Upgrade the application to multiple buildpacks, and specify the buildpacks:
+1. To push your app with multiple buildpacks, specify each buildpack with a `-b` flag: 
   <pre class="terminal">
-  $ cf push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2
+  $ cf push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2 ... -b FINAL-BUILDPACK-NAME
   </pre>
-  This command changes the buildpack and starts the application. To see a list of available buildpacks, run `cf buildpacks`.
+  The last buildpack you specify is the **final buildpack**, which can modify the launch environment and set the start command.
+  <br><br>
+  To see a list of available buildpacks, run `cf buildpacks`.
+
+For more information on multi-buildpack order, see the [Understanding Buildpacks](understand-buildpacks.html) topic.
 
 For more information about using the cf CLI, see the [Cloud Foundry Command Line Interface](../cf-cli/index.html) topic.
