@@ -3,24 +3,22 @@ title: R Buildpack
 owner: Buildpacks
 ---
 
-<strong><%= modified_date %></strong>
-
 <% if vars.product_name == "CF" %>
 
 <div class="quick-links">
   <ul>
     <li><a href="#pushing_apps"> Push an App</a></li>
     <li><a href="#supported_versions">Supported Versions</a></li>
-    <ul>
-      <li><a href="#start_command">Start Command</a></li>
-    </ul>
-    <li><a href="specifying_dependencies">Specifying App Dependencies</a></li>
-    <li><a href="vendoring">Vendoring App Dependencies</a></li>
-    <li><a href="proxy_support">Proxy Support</a></li>
-    <li><a href="bosh_trusted_cert">BOSH Configured Custom Trusted Certificate Support</a></li>
-    <li><a href="help_support">Help and Support</a></li>
+    <li><a href="#start_command">Start Command</a></li>
+    <li><a href="#specifying_dependencies">Specifying App Dependencies</a></li>
+    <li><a href="#vendoring">Vendoring App Dependencies</a></li>
+    <li><a href="#proxy_support">Proxy Support</a></li>
+    <li><a href="#bosh_trusted_cert">BOSH Configured Custom Trusted Certificate Support</a></li>
+    <li><a href="#help_support">Help and Support</a></li>
  </ul>
 </div>
+
+<strong><%= modified_date %></strong>
 
 ## <a name='pushing_apps'></a> Push an App
 
@@ -39,7 +37,7 @@ You can find the list of supported R versions in the
 [R buildpack release notes](https://github.com/cloudfoundry/r-buildpack/releases).
 
 
-### <a name='start_command'></a>Start Command ###
+## <a name='start_command'></a>Start Command ###
 
 The R buildpack does not generate a default start command for your applications. Instead, you must specify a start command for your app.
 
