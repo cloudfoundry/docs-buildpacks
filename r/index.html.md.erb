@@ -20,6 +20,8 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
+This topic describes how to push your R app to Cloud Foundry and how to configure your R app to use the R buildpack.
+
 ## <a name='pushing_apps'></a> Push an App
 
 Cloud Foundry automatically uses the R buildpack if it detects a
@@ -43,7 +45,7 @@ The R buildpack does not generate a default start command for your applications.
 
 To stage an app with the R buildpack and start the app, do one of the following:
 
-- **Option 1:**  Supply a Procfile. For more information about Procfiles, see  [Configuring a Production Server](../prod-server.html). The following example Procfile specifies `R -f` as the start command for a web app with the entrypoint `simple.r`:
+- **Option 1:**  Supply a Procfile. For more information about Procfiles, see [Production Server Configuration](../prod-server.html). The following example Procfile specifies `R -f` as the start command for a web app with the entrypoint `simple.r`:
 
     ```
     web: R -f simple.r
