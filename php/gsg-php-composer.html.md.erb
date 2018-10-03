@@ -38,24 +38,24 @@ The buildpack runs with a set of default values for Composer. You can adjust the
 
 By default, the PHP buildpack uses the `composer.json` and `composer.lock` files that reside inside the root directory, or in the directory specified as `WEBDIR` in your `options.json`. If you have composer files inside your app, but not in the default directories, use a `COMPOSER_PATH` environment variable for your app to specify this custom location, relative to the app root directory. Note that the `composer.json` and `composer.lock` files must be in the same directory.
 
-## <a id="github-api-limits"></a> Github API Request Limits
+## <a id="github-api-limits"></a> GitHub API Request Limits
 
-Composer uses Github's API to retrieve zip files for installation into the application folder. If you do not vendor dependencies before pushing an app, Composer will fetch dependencies during staging using the Github API.
+Composer uses GitHub's API to retrieve zip files for installation into the application folder. If you do not vendor dependencies before pushing an app, Composer will fetch dependencies during staging using the GitHub API.
 
-Github's API is request-limited. If you reach your daily allowance of API requests (typically 60), Github's API returns a `403` error and staging fails.
+GitHub's API is request-limited. If you reach your daily allowance of API requests (typically 60), GitHub's API returns a `403` error and staging fails.
 
 There are two ways to avoid the request limit:
 
   0. Vendor dependencies before pushing your application.
-  0. Supply a Github OAuth API token.
+  0. Supply a GitHub OAuth API token.
 
 ### Vendor Dependencies
 
 To vendor dependencies, you must run `composer install` before you push your application. You might also need to configure `COMPOSER_VENDOR_DIR` to "vendor".
 
-### Supply a Github Token
+### Supply a GitHub Token
 
-Composer can use [Github API OAuth tokens](https://help.github.com/articles/creating-an-access-token-for-command-line-use/), which increase your request limit, typically to 5000 per day.
+Composer can use [GitHub API OAuth tokens](https://help.github.com/articles/creating-an-access-token-for-command-line-use/), which increase your request limit, typically to 5000 per day.
 
 During staging, the buildpack looks for this token in the environment variable `COMPOSER_GITHUB_OAUTH_TOKEN`. If you supply a valid token, Composer uses it. This mechanism does not work if the token is invalid.
 
