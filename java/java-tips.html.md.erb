@@ -202,7 +202,7 @@ or you override the default memory settings of your buildpack as described
 in the [https://github.com/cloudfoundry/java-buildpack#configuration-and-extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension)
 with the properties listed  in the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md).
 For more information about configuring custom buildpacks and manifests, refer to
-the [Custom Buildpacks](../../buildpacks/custom.html) and [Deploying with
+the [Custom Buildpacks](../custom.html) and [Deploying with
 Application Manifests](../../devguide/deploy-apps/manifest.html) topics.
 
 When your app is running, you can use the `cf app APP-NAME` command to see
@@ -336,7 +336,7 @@ The debugger should now be running. If you switch to the Debug perspective, you 
 Next, push your application to Cloud Foundry and instruct Cloud Foundry to connect to the debugger running on your local machine using the following instructions:
 
 1. Edit your `manifest.yml` file. Set the instances count to 1. If you set this greater than one, multiple applications try to connect to your debugger.
-1. Also in `manifest.yml`, add the [`env` section](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) and create a variable called `JAVA_OPTS`.
+1. Also in `manifest.yml`, add an `env` block and create a variable named `JAVA_OPTS`. For more information about the `env` blick, see [Environment Variables] (../../devguide/deploy-apps/manifest.html#env-block) in _Deploying with Application Manifests_.
 1. Add the remote debugger configuration to the `JAVA_OPTS` variable: `-agentlib:jdwp=transport=dt_socket,address=YOUR-IP-ADDRESS:YOUR-PORT`.
 1. Save the `manifest.yml` file.
 1. Run `cf push`.
