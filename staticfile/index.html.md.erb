@@ -22,7 +22,11 @@ To find which version of NGINX the current Staticfile buildpack uses, see the [S
 
 ### <a id='staticfile'></a>Staticfile Requirement
 
-<%= vars.product_full %> requires a file named `Staticfile` in the root directory of the app to use the Staticfile buildpack with the app.
+<%= vars.product_full %> requires a file named `Staticfile` in the root directory of the app. 
+This file alerts <%= vars.product_short %> to use the Staticfile buildpack with the app.
+
+The `Staticfile` can be an empty file or it can contain configuration settings for your app. 
+For more information, see [Configuring the Buildpack and Pushing the App](#configure-and-push).
 
 ### <a id='memory'></a>Memory Usage
 
@@ -365,6 +369,10 @@ urls: my-app.example.com
   <td>Find the URL of your app in the output from the push command and navigate to it to see your static app running.</td>
 </tr>
 </table>
+
+## <a id='examples'></a>Example Staticfile Buildpack Apps
+
+For different examples of apps that use the Staticfile buildpack, see the [fixtures](https://github.com/cloudfoundry/staticfile-buildpack/tree/master/fixtures) directory in the Staticfile buildpack GitHub repo.
 
 ## <a id='help'></a>Help and Support
 
