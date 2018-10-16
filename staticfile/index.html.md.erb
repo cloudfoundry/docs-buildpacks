@@ -169,7 +169,10 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
   <td id="force-https">Force HTTPS</td>
    <td>A way to enforce that all requests are sent through HTTPS.
        This redirects non-HTTPS requests as HTTPS requests.
-       For an example of when to avoid forcing HTTPS, see <a href="#force-https">About FORCE_HTTPS with Reverse Proxies</a>.</td>
+       <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a 
+        proxy server or load balancer that terminates SSL/TLS.
+        Doing so can cause infinite redirect loops, for example,
+        if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
 </tr>
 
 <tr>
@@ -290,10 +293,7 @@ $ touch Staticfile
     <tr>
     <td>force HTTPS</td>
     <td>set the <code>FORCE_HTTPS</code> environment variable to <code>true</code> <strong>OR</strong><br>
-        add this line to the <code>Staticfile</code>:<br><code><strong>force_https: true</strong></code>
-    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer that terminates SSL/TLS.
-Doing so can cause infinite redirect loops, for example,
-if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
+        add this line to the <code>Staticfile</code>:<br><code><strong>force_https: true</strong></code></td>
     <td><a href="#force-https">Force HTTPS</a></td>
     </tr>
 
