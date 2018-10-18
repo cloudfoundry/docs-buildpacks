@@ -88,8 +88,12 @@ $ pip install --download vendor -r requirements.txt --no-binary :all:
 
 ## <a id='private-repos'></a> Private Dependency Repository
 
-If you deploy apps in an environment that needs to use a private dependency
-repository, add the URL of the repository to the `requirements.txt` file in the
+To deploy apps in an environment that needs to use a private dependency
+repository, you have two options.
+
+### <a id='private-repos-pip'></a> PIP
+
+If you're installing dependencies using PIP, then add the URL of the repository to the `requirements.txt` file in the
 following format:
 
 ```
@@ -113,6 +117,32 @@ For example:
 ---
 env:
   PIP_CERT: /etc/ssl/certs/ca-certificates.crt
+```
+
+### <a id='private-repos-conda'></a> Conda
+
+If you're installing dependencies using Conda, then add add `channels` block to the `environment.yml` file. Add your custom channels and add `nodefaults`, which tells Conda to only use the channels specified here.
+
+```
+channels:
+  - https://conda.example.com/repo
+  - nodefaults
+```
+
+If the private repository uses a custom SSL certificate that is installed on the platform, you may see an error similar to the following:
+<pre class="terminal">
+Error: Connection error: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:581):
+</pre>
+
+This error occurs because `conda` does not use system certificates by default.
+To resolve this issue, set the `CONDA_SSL_VERIFY` environment variable in the `manifest.yml` file to point to the system certificate store.
+
+For example:
+
+```
+---
+env:
+  CONDA_SSL_VERIFY: /etc/ssl/certs/ca-certificates.crt
 ```
 
 ## <a id='cfenv'></a> Parse Environment Variables
