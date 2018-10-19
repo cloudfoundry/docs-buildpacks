@@ -57,7 +57,7 @@ If the buildpack requires some configuration, use [a fork of the buildpack][f].
 The Cloud Foundry Client Library provides a Java API for interacting with a
 Cloud Foundry instance.
 This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven
-plugin, the Cloud Foundry Gradle plugin, the [Cloud Foundry STS integration](./sts.html), and other Java-based tools.
+plugin, the Cloud Foundry Gradle plugin, and other Java-based tools.
 
 For information about using this library, see the [Java Cloud Foundry Library](./java-client.html) page.
 
@@ -202,7 +202,7 @@ or you override the default memory settings of your buildpack as described
 in the [https://github.com/cloudfoundry/java-buildpack#configuration-and-extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension)
 with the properties listed  in the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md).
 For more information about configuring custom buildpacks and manifests, refer to
-the [Custom Buildpacks](../../buildpacks/custom.html) and [Deploying with
+the [Custom Buildpacks](../custom.html) and [Deploying with
 Application Manifests](../../devguide/deploy-apps/manifest.html) topics.
 
 When your app is running, you can use the `cf app APP-NAME` command to see
@@ -323,9 +323,9 @@ When you push a Java application, specify the path to the WAR:
 
 Because of the way that Cloud Foundry deploys your applications and isolates them, it is not possible to connect to your application with the remote Java debugger. Instead, instruct the application to connect to the Java debugger on your local machine.
 
-Here are the instructions for setting up remote debugging when using BOSH Lite or a CloudFoundry installation.
+Here are the instructions for setting up remote debugging when using BOSH Lite or a Cloud Foundry installation.
 
-1. Open your project in [Eclipse](./sts.html).
+1. Open your project in Eclipse.
 1. Right-click on your project, go to **Debug as** and pick **Debug Configurations**.
 1. Create a new **Remote Java Application**.
 1. Make sure your project is selected, pick **Standard (Socket Listen)** from the **Connection Type** drop down and set a port. Make sure this port is open if you are running a firewall.
@@ -336,7 +336,7 @@ The debugger should now be running. If you switch to the Debug perspective, you 
 Next, push your application to Cloud Foundry and instruct Cloud Foundry to connect to the debugger running on your local machine using the following instructions:
 
 1. Edit your `manifest.yml` file. Set the instances count to 1. If you set this greater than one, multiple applications try to connect to your debugger.
-1. Also in `manifest.yml`, add the [`env` section](http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html#env-block) and create a variable called `JAVA_OPTS`.
+1. Also in `manifest.yml`, add an `env` block and create a variable named `JAVA_OPTS`. For more information about the `env` blick, see [Environment Variables] (../../devguide/deploy-apps/manifest.html#env-block) in _Deploying with Application Manifests_.
 1. Add the remote debugger configuration to the `JAVA_OPTS` variable: `-agentlib:jdwp=transport=dt_socket,address=YOUR-IP-ADDRESS:YOUR-PORT`.
 1. Save the `manifest.yml` file.
 1. Run `cf push`.

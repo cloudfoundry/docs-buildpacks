@@ -8,9 +8,8 @@ Use the binary buildpack for running arbitrary binary web servers.
 
 ## <a id='pushing_apps'></a> Push an App ##
 
-Unlike most other Cloud Foundry buildpacks, you must specify the binary 
-buildpack to use it when staging your binary file.
-On a command line, use `cf push APP-NAME` with the `-b` option to specify the 
+Specify the binary buildpack to stage an app as a binary file.
+On a command line, use `cf push APP-NAME` with the `-b` option to specify the
 buildpack.
 
 For example:
@@ -25,20 +24,20 @@ the following two ways:
 * **Procfile**: In the root directory of your app, add a `Procfile` that
 specifies a `web` task:
 
-```yaml
-web: ./app
-```
+    ```yaml
+    web: ./app
+    ```
 * **Command line**: Use `cf push APP-NAME` with the `-c` option:
 
-<pre class="terminal">
-$ cf push my_app -c './app' -b binary_buildpack
-</pre>
+    <pre class="terminal">
+    $ cf push my_app -c './app' -b binary_buildpack
+    </pre>
 
 ## <a id='compiling'></a> Compile your Binary ##
 Cloud Foundry expects your binary to bind to the port specified by the `PORT`
 environment variable.
 
-The following example in [Go](https://golang.org/) binds a binary to the PORT 
+The following example in [Go](https://golang.org/) binds a binary to the PORT
 environment variable:
 
 ```go
@@ -61,17 +60,17 @@ func main() {
 ```
 
 Your binary should run without any additional runtime dependencies on the
-cflinuxfs2 or lucid64 root filesystem (rootfs).
+cflinuxfs3 or lucid64 root filesystem (rootfs).
 Any such dependencies should be statically linked to the binary.
 
-To boot a docker container running the cflinuxfs2 filesystem, run the following
+To boot a Docker container running the cflinuxfs3 filesystem, run the following
 command:
 
 <pre class="terminal">
-$ docker run -it cloudfoundry/cflinuxfs2 bash
+$ docker run -it cloudfoundry/cflinuxfs3 bash
 </pre>
 
-To boot a docker container running the lucid64 filesystem, run the following
+To boot a Docker container running the lucid64 filesystem, run the following
 command:
 
 <pre class="terminal">
@@ -83,23 +82,51 @@ To compile the above Go application on the rootfs, golang must be installed. `ap
 When deploying your binary to Cloud Foundry, use `cf push` with the `-s` option to specify the root filesystem it should run against.
 
 <pre class="terminal">
-$ cf push my_app -s (cflinuxfs2|lucid64)
+$ cf push my_app -s (cflinuxfs3|lucid64)
 </pre>
-
-To run docker on Mac OS X, we recommend [boot2docker](http://boot2docker.io/).
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-Your platform operator can configure the platform to [add the custom certificates into the application container](https://docs.cloudfoundry.org/adminguide/trusted-system-certificates.html).
-The custom trusted certificates will be added to the `/etc/ssl/certs` directory and can be used by binary applications.
+Your platform operator can configure the platform to add the custom certificates into the application container.
+The custom trusted certificates are added to the `/etc/ssl/certs` directory and can be used by binary applications.
+
+For more information, see [Configuring Trusted System Certificates for Applications] (https://docs.cloudfoundry.org/running/trusted-system-certificates.html).
+
+## <a id='dotnet-console'></a>.NET Apps
+
+If you are pushing a .NET Console app using the binary buildpack, see [Console Applications](https://dotnet-cookbook.cfapps.io/headless/console_app/) in the <em>.NET Cookbook</em> for more information.
+
+You can deploy .NET Core apps to a Windows stack using the binary buildpack. Build it as a self-contained app and push it with the binary buildpack, specifying the `windows2016` stack with a custom start command.
+
+For information about deploying different types of .NET apps, follow the links in the table below.
+
+<table>
+  <tr>
+    <th>Type of .NET App</th>
+    <th>Buildpack</th>
+  </tr>
+  <tr>
+    <td>
+        ASP.NET MVC<br>
+        ASP.NET Web Forms<br>
+        ASP.NET WebAPI Apps<br>
+        Windows Communication Foundation (WCF)
+    </td>
+    <td><a href="../hwc/index.html">HWC</a></td>
+  </tr>
+  <tr>
+    <td>.NET Core pushed to Linux stack</td>
+    <td><a href="../dotnet-core/index.html">.NET Core</a></td>
+  </tr>
+</table>
 
 ## <a id='help_support'></a>Help and Support ##
 
 Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
 
-For more information about using and extending the binary buildpack in Cloud 
+For more information about using and extending the binary buildpack in Cloud
 Foundry, see the [binary-buildpack GitHub repository](https://github.com/cloudfoundry/binary-buildpack).
 
 You can find current information about this buildpack on the binary buildpack
-[release page](https://github.com/cloudfoundry/binary-buildpack/releases) in 
+[release page](https://github.com/cloudfoundry/binary-buildpack/releases) in
 GitHub.

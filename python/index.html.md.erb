@@ -7,13 +7,13 @@ owner: Buildpacks
 
 ## <a id='pushing_apps'></a> Push an App
 
-Cloud Foundry automatically uses this buildpack if it detects a 
+Cloud Foundry automatically uses this buildpack if it detects a
 `requirements.txt` or `setup.py` file in the root directory of your project.
 
 If your Cloud Foundry deployment does not have the Python Buildpack installed, or the installed version is out of date, you can use the latest version by specifying it with the `-b` option when you push your app. For example:
 
 <pre class="terminal">
-$ cf push my_app -b https://github.com/cloudfoundry/buildpack-python.git
+$ cf push my_app -b https://github.com/cloudfoundry/python-buildpack.git
 </pre>
 
 
@@ -64,7 +64,7 @@ To stage with the Python buildpack and start an application, do one of the follo
     $ cf push python-app -c "waitress-serve --port=$PORT DJANGO-WEB-APP.wsgi:MY-APP"
     </pre>
 
-- Specify a start command in the application manifest by setting the `command` attribute. For more information, see the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#start-commands) topic. 
+- Specify a start command in the application manifest by setting the `command` attribute. For more information, see the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#start-commands) topic.
 
 
 ## <a id='vendoring'></a> Vendor App Dependencies
@@ -85,6 +85,35 @@ $ pip install --download vendor -r requirements.txt --no-binary :all:
 
 <p class="note"><strong>Note</strong>: To ensure proper installation of dependencies, we recommend non-binary vendored dependencies. The above <code>pip install</code> command achieves this.</p>
 
+
+## <a id='private-repos'></a> Private Dependency Repository
+
+If you deploy apps in an environment that needs to use a private dependency
+repository, add the URL of the repository to the `requirements.txt` file in the
+following format:
+
+```
+--index-url=https://example.com/api/pypi/ext_pypi/simple
+fixtures==2.0.0
+```
+
+If the private repository uses a custom SSL certificate that is installed on the platform, you may see an error similar to the following:
+<pre class="terminal">
+Could not fetch URL <span>https:</span>//example.com/api/pypi/ext_pypi/simple/fixtures/:
+There was a problem confirming the ssl certificate:
+[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:777) - skipping
+</pre>
+
+This error occurs because `pip` does not use system cerificates by default.
+To resolve this issue, set the `PIP_CERT` environment variable in the `manifest.yml` file to point to the system certificate store.
+
+For example:
+
+```
+---
+env:
+  PIP_CERT: /etc/ssl/certs/ca-certificates.crt
+```
 
 ## <a id='cfenv'></a> Parse Environment Variables
 
@@ -123,7 +152,7 @@ Having an `nltk.txt` file only causes the buildpack to download the corpora. You
 ## <a id='proxy_support'></a> Proxy Support
 
 If you need to use a proxy to download dependencies during staging, you can set
-the `http_proxy` and `https_proxy` environment variables. For more information, see the [Proxy Usage Documentation](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
+the `http_proxy` and `https_proxy` environment variables. For more information, see the [Proxy Usage Documentation](../proxy-usage.html).
 
 
 ## <a id='bosh_trusted_cert'></a> BOSH Configured Custom Trusted Certificate Support

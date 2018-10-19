@@ -22,7 +22,11 @@ To find which version of NGINX the current Staticfile buildpack uses, see the [S
 
 ### <a id='staticfile'></a>Staticfile Requirement
 
-<%= vars.product_full %> requires a file named `Staticfile` in the root directory of the app to use the Staticfile buildpack with the app.
+<%= vars.product_full %> requires a file named `Staticfile` in the root directory of the app. 
+This file alerts <%= vars.product_short %> to use the Staticfile buildpack with the app.
+
+The `Staticfile` can be an empty file or it can contain configuration settings for your app. 
+For more information, see [Configuring the Buildpack and Pushing the App](#configure-and-push).
 
 ### <a id='memory'></a>Memory Usage
 
@@ -165,7 +169,10 @@ and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</
   <td id="force-https">Force HTTPS</td>
    <td>A way to enforce that all requests are sent through HTTPS.
        This redirects non-HTTPS requests as HTTPS requests.
-       For an example of when to avoid forcing HTTPS, see <a href="#force-https">About FORCE_HTTPS with Reverse Proxies</a>.</td>
+       <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a 
+        proxy server or load balancer that terminates SSL/TLS.
+        Doing so can cause infinite redirect loops, for example,
+        if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
 </tr>
 
 <tr>
@@ -286,10 +293,7 @@ $ touch Staticfile
     <tr>
     <td>force HTTPS</td>
     <td>set the <code>FORCE_HTTPS</code> environment variable to <code>true</code> <strong>OR</strong><br>
-        add this line to the <code>Staticfile</code>:<br><code><strong>force_https: true</strong></code>
-    <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer that terminates SSL/TLS.
-Doing so can cause infinite redirect loops, for example,
-if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
+        add this line to the <code>Staticfile</code>:<br><code><strong>force_https: true</strong></code></td>
     <td><a href="#force-https">Force HTTPS</a></td>
     </tr>
 
@@ -366,11 +370,15 @@ urls: my-app.example.com
 </tr>
 </table>
 
+## <a id='examples'></a>Example Staticfile Buildpack Apps
+
+For different examples of apps that use the Staticfile buildpack, see the [fixtures](https://github.com/cloudfoundry/staticfile-buildpack/tree/master/fixtures) directory in the Staticfile buildpack GitHub repo.
+
 ## <a id='help'></a>Help and Support
 
 A number of channels exist where you can get more help when using the Staticfile buildpack, or with developing your own Staticfile buildpack.
 
-* **Staticfile Buildpack Repository in Github**: Find more information about using and extending the Staticfile buildpack in [GitHub repository](https://github.com/cloudfoundry/staticfile-buildpack).
+* **Staticfile Buildpack Repository in GitHub**: Find more information about using and extending the Staticfile buildpack in [GitHub repository](https://github.com/cloudfoundry/staticfile-buildpack).
 
 * **Release Notes**: Find current information about this buildpack on the Staticfile buildpack [release page](https://github.com/cloudfoundry/staticfile-buildpack/releases) in GitHub.
 

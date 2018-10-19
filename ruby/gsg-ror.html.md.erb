@@ -33,7 +33,9 @@ The newly created directory contains a `manifest.yml` file, which assists CF wit
 
 ##<a id='service'></a>Step 3: Create a Service Instance ##
 
-Run the following terminal command to create a PostgreSQL service instance for the sample app. Our service instance is `rails-postgres`. It uses the [`elephantsql`](http://www.elephantsql.com/) service and the `turtle` plan.
+Run the following terminal command to create a PostgreSQL service instance for the sample app.
+Our service instance is `rails-postgres`. It uses the `elephantsql` service and the `turtle` plan.
+For more information about the `elephantsql` service, see [ElephantSQL](http://www.elephantsql.com/).
 
   <pre class="terminal">
   $ cf create-service elephantsql turtle rails-postgres
@@ -88,11 +90,11 @@ instances: 1/1
 usage: 512M x 1 instances
 urls: cf-sample-app-rails.cfapps.io
 last uploaded: Fri Dec 22 18:08:32 UTC 2017
-stack: cflinuxfs2
+stack: cflinuxfs3
 buildpack: ruby
 
      state     since                    cpu    memory          disk           details
-#0   running   2017-12-22 10:09:57 AM   0.0%   20.7M of 512M   186.8M of 1G
+#0   running   2018-8-17 10:09:57 AM   0.0%   20.7M of 512M   186.8M of 1G
 </pre>
 
 <p class='note'><strong>Note</strong>: If you want to view log activity while the app deploys, launch a new terminal window and run <code>cf logs cf-sample-app-rails</code>.

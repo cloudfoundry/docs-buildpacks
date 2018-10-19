@@ -1,0 +1,69 @@
+---
+title: Stack Association 
+owner: Buildpacks
+---
+
+This topic describes the stack association feature for <%= vars.first_product_name %> buildpacks. 
+
+<p class="note"><strong>Note</strong>: This functionality is supported as of CAPI <a href="https://github.com/cloudfoundry/capi-release/releases/tag/1.58.0">v1.58.0</a> and cf CLI  <a href="https://github.com/cloudfoundry/cli/releases/tag/v6.39.0">v6.39.0</a>.</p>
+
+<p class="note warning"><strong>WARNING</strong>: To avoid security exposure, ensure that you migrate your apps and custom buildpacks to use the <code>cflinuxfs3</code> stack based on Ubuntu 18.04 (Bionic Beaver). <code>cflinuxfs2</code> is based on Ubuntu 14.04 (Trusty Tahr), which reaches end of general support (EOGS) in April 2019. </p>
+
+## <a id='overview'></a> Overview ##
+
+Each buildpack in your <%= vars.product_name %> deployment is associated with a stack. You can see this when you run `cf buildpacks`: there is a `stack` column in the output that shows a corresponding stack for each buildpack. See the following example: 
+
+<pre class="terminal">
+$ cf buildpacks
+Getting buildpacks...
+
+buildpack                position   enabled   locked   filename                                             stack
+staticfile_buildpack     1          true      false    staticfile_buildpack-cached-cflinuxfs2-v1.4.29.zip   cflinuxfs2
+java_buildpack_offline   2          true      false    java-buildpack-offline-cflinuxfs2-v4.12.1.zip        cflinuxfs2
+ruby_buildpack           3          true      false    ruby_buildpack-cached-cflinuxfs2-v1.7.21.zip         cflinuxfs2
+. . . 
+</pre>
+
+Because of this stack association, buildpacks do not have to be uniquely named. This helps in managing similar buildpacks that are compatible with different stacks. 
+
+The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) includes a `-stack` option. If you use this option and upload a buildpack to <%= vars.product_name %>, the Cloud Controller detects the stack association and creates a stack record for the buildpack. 
+
+## <a id='no-stack-record'></a> Buildpacks without a Stack Record ##
+
+Some buildpacks may have a missing stack record. For example, if you uploaded a custom buildpack before <%= vars.product_name %> introduced stack assocation. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record. 
+
+In this case, you must manually assign a stack to the buildpack. To do this, run `cf update-buildpack BUILDPACK-NAME -p PATH/TO/BUILDPACK`, where the path contains a `manifest.yml` with a stack as a top level property. See [Creating Custom Buildpacks](./custom.html) for more information. 
+
+Buildpacks with a missing stack record will continue to work, but are more manageable when the stack record is present. 
+
+Consider the following behavior when pushing apps to a deployment that has buildpacks with a missing stack record:
+
+* If you push an app and specify a stack with `cf push app-name -s stack`, <%= vars.product_name %> uses that stack. Otherwise, it uses the system default, `cflinuxfs2`. 
+* You may see additional logging in the buildpack detection output of the `cf push` command when <%= vars.product_name %> detects buildpacks without a stack record. 
+
+## <a id='stack-cli'></a> Managing Stack Association with the cf CLI ##
+
+The cf CLI commands for managing buildpacks include functionality to support assocation between buildpacks and stacks. The `update-buildpack`, `rename-buildpack`, and `delete-buildpack` commands all include a `-s` flag for specifying a stack. 
+
+When operating on buildpacks with the cf CLI, consider the following:
+
+* You cannot upload a buildpack with `cf create-buildpack` if a buildpack of the same name already exists and it has a missing stack record. 
+* When using `cf create-buildpack`, you may inadvertently create a duplicate buildpack with a `nil` stack. `cf create-buildpack` does not disallow creation of buildpacks with no stack association.
+* The `-s` flag is required when there are two buildpacks with the same name. If you are operating on a uniquely named buildpack, you do not need to specify its stack. 
+* If you have two buildpacks of the same name, one with a stack record and one without, running cf CLI commands without `-s` operates on the buildpack with the missing stack record. 
+
+### <a id='examples-cli'></a> Example Scenarios 
+
+See the following examples of managing buildpacks with the cf CLI, which are applicable when running `cf update-buildpack`, `cf rename-buildpack`, or `cf delete-buildpack`:
+
+* **Updating, renaming, or deleting a uniquely-named buildpack:**
+	* You have a single buildpack named `my-buildpack`, and it is associated with `stack_a`.  If you want to delete the buildpack, you can run `cf delete-buildpack my-buildpack`.<br><br>
+	You can also provide `-s stack_a`, but the option is not required if you have a uniquely-named buildpack.
+* **Updating, renaming, or deleting a uniquely-named buildpack that has a `nil` stack:**
+	* You have a single buildpack named `my-buildpack`, and it is not associated with a stack.  If you want to delete the buildpack, you can run `cf delete-buildpack my-buildpack`.
+* **Updating, renaming, or deleting a buildpack when another buildpack exists with the same name, and both buildpacks have stack associations:**
+	* You have two buildpacks named `my-buildpack`, one that is associated with `stack_a` and the other associated with `stack_b`. If you want to delete the buildpack that uses `stack_a`, you can run `cf delete-buildpack my-buildpack -s stack_a`.
+* **Updating, renaming, or deleting a buildpack when another buildpack exists with the same name. One buildpack has a stack association, and the other buildpack has a `nil` stack:** 
+	* You have two buildpacks named `my-buildpack`, one associated with  `stack_a` and the other associated with no (`nil`) stack association:
+		* If you want to delete the buildpack that uses `stack_a`, you can run `cf delete-buildpack my-buildpack -s stack_a`. 
+		* If you want to delete the buildpack that is associated with the `nil` stack, run `cf delete-buildpack my-buildpack`.
