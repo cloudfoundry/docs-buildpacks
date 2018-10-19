@@ -186,14 +186,14 @@ The buildpack chooses which SDK to install based on the files present at the app
 
 <p class="note"><strong>Note</strong>: The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in both <code>global.json</code> and <code>buildpack.yml</code> files, ensure that you specify the same versions in both files.</p>
 
-## <a id='dotnet-framework'></a>Specifying .NET Framework Versions
-### <a id='dotnet-framework-source-based'></a>For source-based apps
+## <a id='dotnet-runtime'></a>Specifying .NET Runtime Versions
+### <a id='dotnet-runtime-source-based'></a>For source-based apps
 
-Specify a minor version of the .NET Framework.
+Specify a minor version of the .NET Runtime.
 Do not specify a patch version, because
 buildpacks contain only the two most recent patch versions of each minor version.
 
-Add the following to your `.csproj` or `.fsproj` file to lock the .NET Framework version:
+Add the following to your `.csproj` or `.fsproj` file to lock the .NET Runtime version:
 
 ```
 <PropertyGroup>
@@ -202,9 +202,9 @@ Add the following to your `.csproj` or `.fsproj` file to lock the .NET Framework
 </PropertyGroup>
 ```
 
-### <a id='dotnet-framework-fdd'></a>For framework-dependent apps
+### <a id='dotnet-runtime-fdd'></a>For framework-dependent apps
 
-In your `.runtimeconfig.json` app, the latest .NET Framework patch version is used by default. To pin to a specific .NET Framework version, add the `applyPatches` property and set it to `false`.
+In your `.runtimeconfig.json` app, the latest .NET Runtime patch version is used by default. To pin to a specific .NET Runtime version, add the `applyPatches` property and set it to `false`.
 
 ```
 {
