@@ -89,11 +89,13 @@ $ pip install --download vendor -r requirements.txt --no-binary :all:
 ## <a id='private-repos'></a> Private Dependency Repository
 
 To deploy apps in an environment that needs to use a private dependency
-repository, you have two options.
+repository, you have the following options:
+- [PIP](#private-repos-pip)
+- [Conda](#private-repos-conda)
 
 ### <a id='private-repos-pip'></a> PIP
 
-If you're installing dependencies using PIP, then add the URL of the repository to the `requirements.txt` file in the
+To install dependencies using PIP, add the URL of the repository to the `requirements.txt` file in the
 following format:
 
 ```
@@ -103,9 +105,9 @@ fixtures==2.0.0
 
 If the private repository uses a custom SSL certificate that is installed on the platform, you may see an error similar to the following:
 <pre class="terminal">
-Could not fetch URL <span>https:</span>//example.com/api/pypi/ext_pypi/simple/fixtures/:
+Could not fetch URL <span>https:</span>//example.com/api/pypi/ext\_pypi/simple/fixtures/:
 There was a problem confirming the ssl certificate:
-[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:777) - skipping
+[SSL: CERTIFICATE\_VERIFY\_FAILED] certificate verify failed (\_ssl.c:777) - skipping
 </pre>
 
 This error occurs because `pip` does not use system cerificates by default.
@@ -121,7 +123,11 @@ env:
 
 ### <a id='private-repos-conda'></a> Conda
 
-If you're installing dependencies using Conda, then add add `channels` block to the `environment.yml` file. Add your custom channels and add `nodefaults`, which tells Conda to only use the channels specified here.
+To install dependencies using Conda, add a `channels` block to the `environment.yml` file.
+
+In the `channels` block, list custom channels and add `nodefaults`. Specifying `nodefaults` tells Conda to only use the channels in the channels block.
+
+For example:
 
 ```
 channels:
@@ -131,7 +137,7 @@ channels:
 
 If the private repository uses a custom SSL certificate that is installed on the platform, you may see an error similar to the following:
 <pre class="terminal">
-Error: Connection error: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:581):
+Error: Connection error: [SSL: CERTIFICATE\_VERIFY\_FAILED] certificate verify failed (\_ssl.c:581):
 </pre>
 
 This error occurs because `conda` does not use system certificates by default.
