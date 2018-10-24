@@ -213,17 +213,19 @@ dotnet-core:
   sdk: 2.x
 ```
 
-The buildpack chooses which SDK to install based on the files present at the app root using the following order of precedence:
+The buildpack chooses what SDK to install based on the files present at the app root in the following order of precedence:
 
 1. `buildpack.yml`
 1. `global.json`
 1. `*.fsproj`
 
 <p class="note"><strong>Note</strong>: The app respects the SDK version specified in <code>global.json</code> at runtime.
-If you provide versions in both <code>global.json</code> and <code>buildpack.yml</code> files,
+If you provide versions in the <code>global.json</code> and <code>buildpack.yml</code> files,
 ensure that you specify the same versions in both files.</p>
 
 ## <a id='dotnet-runtime'></a>Specify .NET Runtime Versions
+
+This section explains how to specify a .NET Runtime version for source-based and framework-dependent apps.
 
 ### <a id='dotnet-runtime-source-based'></a>Source-Based Apps
 
@@ -231,7 +233,7 @@ For source-based apps, specify a minor version of the .NET Runtime.
 Do not specify a patch version because
 buildpacks contain only the two most recent patch versions of each minor version.
 
-To lock the .NET Runtime version, add the following to your `.csproj` or `.fsproj` file :
+If you want to lock the .NET Runtime version, add the following to your `.csproj` or `.fsproj` file:
 
 ```
 <PropertyGroup>
