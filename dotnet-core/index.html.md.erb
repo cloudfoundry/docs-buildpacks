@@ -60,9 +60,9 @@ Follow the steps below to push your app.
     </pre>
     If your <%= vars.product_windows %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
 
-    <pre class="terminal">
-    $ cf push MY-APP -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
-    </pre>
+    <pre>cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git</pre>
+
+    Where `APP-NAME` is the name of your app.
 
 1. Find the URL of your app in the output from the push command and navigate to it to see your app running.  In the example above, `my-app.example.com` is the URL of your app.
 
@@ -146,7 +146,9 @@ To set `CACHE_NUGET_PACKAGES` to `false`, do one of the following:
 
 * Use `cf set-env` to set the `CACHE_NUGET_PACKAGES` environment variable on the command line:
 
-    <pre class="terminal">$ cf set-env YOUR-APP CACHE_NUGET_PACKAGES false</pre>
+    <pre>cf set-env APP-NAME CACHE_NUGET_PACKAGES false</pre>
+
+    Where `APP-NAME` is the name of your app.
 
 For more information, see the [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) section
 of the <em>Deploying with Application Manifests</em> topic.
@@ -161,7 +163,11 @@ in the Microsoft documentation.
 
 To deploy an FDD using the buildpack, do the following:
 
-1. Publish the app by running the `dotnet publish [-f YOUR-FRAMEWORK] [-c Release]` command.
+1. Publish the app by running the `dotnet publish` command:
+
+    <pre>dotnet publish [-f YOUR-FRAMEWORK] [-c Release]</pre>
+
+    Where `YOUR-FRAMEWORK` is your target framework.
 
 1. Navigate to the `bin/Release/YOUR-FRAMEWORK/YOUR-RUNTIME/publish` directory.
 Alternatively, if your app uses a `manifest.yml`, specify a path to the output folder of `dotnet publish`.
@@ -187,9 +193,9 @@ the buildpack is not able to keep all your dependencies in sync and up to date.<
 When using the SCD workflow for deploying your app,
 you must specify a runtime in the `dotnet publish` command. For example:
 
-```
-dotnet publish -r ubuntu14.04-x64
-```
+<pre class='terminal'>
+$ dotnet publish -r ubuntu14.04-x64
+</pre>
 
 In addition, you must include the specified runtime in the `RuntimeIdentifiers` section of the project file.
 
