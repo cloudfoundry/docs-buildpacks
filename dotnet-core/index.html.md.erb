@@ -70,22 +70,20 @@ For a basic example app, see [ASP.NET Core getting started application](https://
 
 ## <a id='source-based'></a>Source-Based, Non-Published Deployments
 
-When using this workflow, you push the source code for your app to Cloud Foundry by running the `cf push` command.
-Note that for a source-based, non-published deployment, you push the source code for your app, not the output directory of the `dotnet publish` command.
+To use this workflow, push the source code for your app, not the output directory of the `dotnet publish` command,
+to Cloud Foundry by running the `cf push` command.
 
 The source-based, non-published workflow ensures the buildpack can keep all your dependencies in sync and up to date.
-For additional information about using source-based, non-published deployments, see the following sections:
+For additional information about using this workflow, see the following sections:
 
 * [Deploy Apps with Multiple Projects](#multiple-projects)
 * [Use Non-Default Package Sources](#non-default-package-sources)
-* [Disable and Clear Your NuGet Package Cache](#disabling-nuget)
+* [Disable and Clear the NuGet Package Cache](#disabling-nuget)
 
 ### <a id='multiple-projects'></a>Deploy Apps with Multiple Projects
 
 If you want to deploy an app that contains multiple projects, you must specify your main project for the buildpack to run.
-
-To specify your main project, create a `.deployment` file in the root folder of the app
-that sets the path to the main project in the following format:
+Create a `.deployment` file in the root folder of the app that sets the path to the main project as follows:
 
 ```text
 [config]
@@ -93,7 +91,7 @@ project = PATH-TO-YOUR-MAIN-PROJECT
 ```
 
 Where `PATH-TO-YOUR-MAIN-PROJECT` is the location of your main project.
-Set `project` to the `*.csproj` or `*.fsproj` file of your main project.
+Set `project` to the `*.csproj` or `*.fsproj` file of the main project.
 
 For example, if an app contains three projects in the `src` folder,
 the main project `MyApp.Web` as well as `MyApp.DAL` and `MyApp.Services`,
@@ -106,7 +104,7 @@ project = src/MyApp.Web/MyApp.Web.csproj
 
 In this example, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Services` projects
 if the `MyApp.Web.csproj` file of the main project lists them as dependencies.
-The buildpack attempts to execute the main project using the `dotnet run -p src/MyApp.Web/MyApp.Web.csproj` command.
+The buildpack attempts to execute the main project with `dotnet run -p src/MyApp.Web/MyApp.Web.csproj`.
 
 ### <a id='non-default-package-sources'></a>Use Non-Default Package Sources
 
@@ -115,27 +113,28 @@ you must specify those package sources in the `NuGet.Config` file.
 For information about `NuGet.Config`,
 see [nuget.config reference](https://docs.microsoft.com/en-us/nuget/reference/nuget-config-file)
 in the Microsoft documentation.
+For a basic example of a .NET Core app,
+see the [aspnet-core-helloworld](https://github.com/IBM-Bluemix/aspnet-core-helloworld) repository on GitHub.
 
-### <a id='disabling-nuget'></a>Disable and Clear Your NuGet Package Cache
+### <a id='disabling-nuget'></a>Disable and Clear the NuGet Package Cache
 
 You may need to disable NuGet package caching or clear NuGet packages cached in the staging environment
 in one of the following scenarios:
 
 * Your app fails to stage because it runs out of space, exceeding the maximum allowable disk quota.
-* You have added pre-release packages to test a new feature and then decided to revert back to the main NuGet feed.
+* You have added pre-release packages to test a new feature, and then decided to revert back to the main NuGet feed.
 You may need to remove the packages you changed from the cache to avoid conflicts.
 
 Disabling NuGet caching clears any existing NuGet dependencies from the staging cache
 and prevents the buildpack from adding NuGet dependencies to the staging cache.
-
 To disable NuGet package caching, set the `CACHE_NUGET_PACKAGES` environment variable to `false`.
 If the variable is not set, no change is required.
 
-To set `CACHE_NUGET_PACKAGES` to `false`, do one of the following:
+To set `CACHE_NUGET_PACKAGES` to `false`, perform one of the following:
 
 * Locate your app manifest, `manifest.yml`, and set the `CACHE_NUGET_PACKAGES` environment variable to `false`:
 
-    ```
+    ```yml
     ---
     applications:
     - name: sample-aspnetcore-app
@@ -153,17 +152,17 @@ of the <em>Deploying with Application Manifests</em> topic.
 
 ## <a id='framework-dependent'></a>Framework-Dependent Deployments##
 
-For a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies.
-Cloud Foundry recommends using this workflow if you deploy an app in an offline setting.
+This is the recommended workflow if you deploy an app in an offline setting.
+
+In a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies.
 For information about deploying FDDs, see
 [Framework-dependent deployments (FDD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#framework-dependent-deployments-fdd)
 in the Microsoft documentation.
-
 To deploy an FDD using the buildpack, do the following:
 
 1. Publish the app by running the `dotnet publish [-f YOUR-FRAMEWORK] [-c Release]` command.
 
-1. Navigate to the `bin/Release/YOUR-FRAMEWORK/YOUR-RUNTIME/publish` directory.
+1. Navigate to the `bin/Debug|Release/YOUR-FRAMEWORK/YOUR-RUNTIME>/publish` directory.
 Alternatively, if your app uses a `manifest.yml`, specify a path to the output folder of `dotnet publish`.
 This allows you to push your app from any directory.
 
@@ -175,7 +174,7 @@ from receiving updates to the runtime version and assemblies.</p>
 
 ## <a id='self-contained'></a>Self-Contained Deployments##
 
-For a self-contained deployment (SCD), you deploy your app, third-party dependencies,
+In a self-contained deployment (SCD), you deploy your app, third-party dependencies,
 and the version of .NET Core that you used to build your app. For information about SCDs,
 see [Self-contained deployments (SCD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/#self-contained-deployments-scd)
 in the Microsoft documentation.
@@ -263,7 +262,7 @@ To pin to a specific .NET Runtime version, add the `applyPatches` property and s
 For offline environments, Cloud Foundry recommends using the [Framework-Dependent Deployments](#framework-dependent)
 workflow. This workflow enables the deployed app to use the latest runtime provided by the offline buildpack.
 
-## <a id='runtime-store'></a>Maintain ASP.NET Core Assemblies
+## <a id='runtime-store'></a>Maintain Runtime Package Store
 
 <p class="note"><strong>Note:</strong> This section applies only to source-based and framework-dependent deployments.</p>
 
@@ -356,6 +355,6 @@ public static void Main(string[] args)
 
 If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in an `ld_library_path` directory at the app root.
 
-<p class="note"><strong>Note</strong>: You must keep these libraries up to date. They do not update automatically.</p>
+<p class="note"><strong>Note</strong>: You must keep these libraries up-to-date. They do not update automatically.</p>
 
 The .NET Core buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
