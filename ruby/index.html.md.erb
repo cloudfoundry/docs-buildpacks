@@ -24,7 +24,7 @@ For more detailed information about deploying Ruby applications see the followin
 * <a href="./ruby-service-bindings.html" class="subnav">Configuring Service Connections for Ruby</a>
 * <a href="./windows.html" class="subnav">Support for Windows Gemfiles</a>
 
-You can find the source for the Ruby buildpack in the [Ruby buildpack repository](https://github.com/cloudfoundry/ruby-buildpack) on GitHub.
+You can find the source for the Ruby buildpack in the [Ruby buildpack repository](https://github.com/cloudfoundry/cf-buildpack-ruby) on GitHub.
 
 ## <a id='supported_versions'></a>Supported Versions ##
 
@@ -109,18 +109,18 @@ the Loggregator stream. For more information, see the [Application Logging in Cl
 
 If you are deploying a Rails application, the buildpack may or may not automatically install the necessary plugin or gem for logging, depending on the Rails version of the application:
 
-* Rails 2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application. For more information about the `rails_log_stdout` plugin, refer to the [GitHub README](https://github.com/ddollar/rails_log_stdout).
+* Rails 2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application. For more information about the `rails_log_stdout` plugin, refer to the [Github README](https://github.com/ddollar/rails_log_stdout).
 
-* Rails 3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, refer to the [GitHub README](https://github.com/heroku/rails_12factor).
+* Rails 3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, refer to the [Github README](https://github.com/heroku/rails_12factor).
 
-* Rails 4.x: The buildpack only issues a warning message that the `rails_12factor` gem is not present, but does not install the gem. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, refer to the [GitHub README](https://github.com/heroku/rails_12factor).
+* Rails 4.x: The buildpack only issues a warning message that the `rails_12factor` gem is not present, but does not install the gem. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, refer to the [Github README](https://github.com/heroku/rails_12factor).
 
-For more information about the `rails_12factor` gem, refer to the [GitHub README](https://github.com/heroku/rails_12factor).
+For more information about the `rails_12factor` gem, refer to the [Github README](https://github.com/heroku/rails_12factor).
 
 ## <a id='proxy_support'></a> Proxy Support ##
 
 If you need to use a proxy to download dependencies during staging, you can set
-the `http_proxy` and/or `https_proxy` environment variables. For more information, see the [Proxy Usage Docs](../proxy-usage.html).
+the `http_proxy` and/or `https_proxy` environment variables. For more information, see the [Proxy Usage Docs](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html).
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
@@ -134,7 +134,7 @@ Ruby uses certificates stored in `/etc/ssl/certs`. Your platform operator can co
 
 Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
 
-For more information about using and extending the Ruby buildpack in Cloud Foundry, see the [Ruby buildpack repository](https://github.com/cloudfoundry/ruby-buildpack) on GitHub.
+For more information about using and extending the Ruby buildpack in Cloud Foundry, see the [Ruby buildpack repository](https://github.com/cloudfoundry/cf-buildpack-ruby) on GitHub.
 
 You can find current information about the Ruby buildpack in the [release notes for the Ruby buildpack](https://github.com/cloudfoundry/ruby-buildpack/releases) on GitHub.
 

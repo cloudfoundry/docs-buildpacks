@@ -25,7 +25,7 @@ The packager will add (almost) everything in your buildpack directory into a zip
 
 In cached mode, the packager downloads and adds dependencies as described in the manifest.
 
-For more information, see the documentation in the [buildpack-packager GitHub repository](https://github.com/cloudfoundry/libbuildpack/tree/master/packager).
+For more information, see the documentation in the [buildpack-packager Github repository](https://github.com/cloudfoundry/libbuildpack/tree/master/packager).
 
 ### <a id='share-buildpack-package'></a> Use and Share the Packaged Buildpack
 
@@ -52,10 +52,7 @@ default_versions:
 
 To specify a default version:
 
-1. Add the `default_version` object to your manifest, following the [rules](#rules) below.
-For a complete example, see 
-[manifest.yml](https://github.com/cloudfoundry/go-buildpack/blob/master/manifest.yml) in the 
-go-buildpack repository in GitHub.
+1. Add the `default_version` object to your manifest, following the [rules](#rules) below. You can find a complete example manifest in the <%= vars.app_runtime %> [go-buildpack](https://github.com/cloudfoundry/go-buildpack/blob/f1a380f2f3a8012491c6007948af74676713dd50/manifest.yml) repository. 
 
 1. Run the `default_version_for` script from the [compile-extensions](https://github.com/cloudfoundry/compile-extensions) repository, passing the path of your `manifest.yml` and the dependency name as arguments. The following command uses the example manifest from step 1:
   <pre class="terminal">
@@ -136,7 +133,7 @@ For the last buildpack:
 
 Once a custom buildpack has been created and pushed to a public git repository, the git URL can be passed via the cf CLI when pushing an app.
 
-For example, for a buildpack that has been pushed to GitHub:
+For example, for a buildpack that has been pushed to Github:
 
 <pre class="terminal">
 $ cf push my-new-app -b git://github.com/johndoe/my-buildpack.git
@@ -167,7 +164,7 @@ The app will then be deployed to <%= vars.app_runtime %>, and the buildpack will
 
 <%= vars.disable_custom %>
 
- <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that GitHub recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
+ <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that Github recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
 
 
 
