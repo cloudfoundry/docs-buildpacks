@@ -95,7 +95,10 @@ Staging failed: Buildpack compilation step failed
 
 ## <a id='using_npm_or_yarn'></a>Using NPM or Yarn ##
 
-By default, the Node.js buildpack assumes you are using NPM. If you would like to use [Yarn](https://yarnpkg.com/) instead, you must provide a [`yarn.lock`](https://yarnpkg.com/lang/en/docs/yarn-lock/) in your top-level app directory.
+By default, the Node.js buildpack assumes you are using NPM. If you want to use 
+[Yarn](https://yarnpkg.com/) instead, you must provide a `yarn.lock` in your top-level app 
+directory. For more information, see [yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock/) in 
+the Yarn documentation.
 
 ## <a id='vendoring'></a>Vendoring App Dependencies ##
 
@@ -114,10 +117,14 @@ The `cf push` command uploads the vendored dependencies with the app.
 
 ### <a id='offline_environments'></a>Usage in Offline Environments ###
 
-When vendoring apps for usage in offline environments, you must supply a [lock file](https://docs.npmjs.com/files/package-locks).
-NPM's lock file is called [`package-lock.json`](https://docs.npmjs.com/files/package-lock.json), and Yarn's lock file is called [`yarn.lock`](https://yarnpkg.com/lang/en/docs/yarn-lock/).
+When vendoring apps for usage in offline environments, you must supply a lock file. For information 
+about npm lockfiles, see [npm-package-locks](https://docs.npmjs.com/files/package-locks) in the NPM 
+documentation. For information about the NPM lock file, see 
+[package-lock.json](https://docs.npmjs.com/files/package-lock.json) in the NPM 
+documentation. For information about the Yarn lock file, see 
+[yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock/) in the Yarn documentation.
 
-This lock file will inform the package manager of the exact versions of dependencies and transitive dependencies to look for when running `npm install` or `yarn install`. For this reason, you must keep `package.json`, the vendored `node_modules` directory, and your lock file all in sync to avoid network calls.
+This lock file informs the package manager of the exact versions of dependencies and transitive dependencies to look for when running `npm install` or `yarn install`. For this reason, you must keep `package.json`, the vendored `node_modules` directory, and your lock file synchronized to avoid network calls.
 
 <p class='note'><strong>Note</strong>: <code>package-lock.json</code> is only supported by NPM 5.x and later. For earlier versions of NPM, provide a <a href='https://docs.npmjs.com/files/shrinkwrap.json'><code>npm-shrinkwrap.json</code></a> file instead.</p>
 
@@ -157,7 +164,7 @@ packages binaries of Node.js with OpenSSL that are statically linked. The Node.j
 ## <a id='proxy_support'></a> Proxy Support ##
 
 If you need to use a proxy to download dependencies during staging, you can set
-the `http_proxy` and/or `https_proxy` environment variables. For more information, see the [Proxy Usage](http://docs.cloudfoundry.org/buildpacks/proxy-usage.html) topic.
+the `http_proxy` and/or `https_proxy` environment variables. For more information, see the [Proxy Usage](../proxy-usage.html) topic.
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
