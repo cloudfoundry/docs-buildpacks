@@ -44,7 +44,7 @@ For information about deploying different types of .NET apps, follow the links i
 
 ## <a id='pushing-apps'></a> Push an App ##
 
-Follow the steps below to push your application.
+Follow the steps below to push your app.
 
 1. Run `cf push APP-NAME` command to push your app, where `APP-NAME` is the name you want to give your app. For example:
 
@@ -66,7 +66,7 @@ Follow the steps below to push your application.
 
 1. Find the URL of your app in the output from the push command and navigate to it to see your app running.  In the example above, `my-app.example.com` is the URL of your app.
 
-For a basic example app, see [ASP.NET Core getting started application](https://github.com/IBM-Bluemix/aspnet-core-helloworld) in GitHub.
+For a basic example app, see [ASP.NET Core getting started app](https://github.com/IBM-Bluemix/aspnet-core-helloworld) in GitHub.
 
 ## <a id='source-based'></a>Source-Based, Non-Published Deployments
 
@@ -245,7 +245,7 @@ If you want to lock the .NET Runtime version, add the following to your `.csproj
 ### <a id='dotnet-runtime-fdd'></a>Framework-Dependent Apps
 
 In your `.runtimeconfig.json` app, the latest .NET Runtime patch version is used by default.
-To pin to a specific .NET Runtime version, add the `applyPatches` property and set it to `false`.
+If you want to set a specific .NET Runtime version, add the `applyPatches` property and set it to `false` as follows:
 
 ```
 {
@@ -279,7 +279,7 @@ For maintaining ASP.NET Core assemblies, update your `.csproj` file with the fol
 
 This results in a fully vendored app that requires fewer buildpack updates.
 
-Alternatively, you can set `buildpack.yml` to your desired .NET SDK line to keep the SDK up to date:
+Alternatively, to keep your SDK up to date, you can set `buildpack.yml` to the .NET SDK line you want to use:
 
 ```
 ---
@@ -324,11 +324,12 @@ you must modify the `Main` method to configure the app to listen on the port spe
 
     ```
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine">
-        <Version>VERSION</Version>
+      <Version>VERSION</Version>
     </PackageReference>
     ```
 
-    In the above example, replace `VERSION` with the version of the package to use. You can find valid versions at https://www.nuget.org.
+    In the above example, replace `VERSION` with the version of the package to use.
+    To find a list of valid versions, navigate to https://www.nuget.org.
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
