@@ -128,7 +128,7 @@ To configure these options, add the configuration property as a new line in your
   <td>Specifies a root directory other than the default. Use this option to serve <code>index.html</code> and other assets, such as HTML, CSS, or JavaScript files, from a location other than the root directory. 
   For example, you can specify an alternate folder such as <code>dist/</code> or <code>public/</code>.</td>
  </td>
-    <td>root: YOUR-DIRECTORY-NAME</code><br><br>
+    <td><code>root: YOUR-DIRECTORY-NAME</code><br><br>
       For example:<br><code>root: public</code></td>
 </tr>
 <tr>
@@ -170,7 +170,7 @@ content to very old browser clients.</td>
   <td id="basic-auth">Basic authentication</td>
   <td>Allows you to enable basic authentication for your app or website. 
     A sample basic authentication dialog box is shown below:<br><br>
-      <img src="../images/basicauth.png">
+      <img src="../images/basicauth.png"> <br/><br/>
       You can create a hashed username and password pair for each user 
       by using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a></td>
    <td>Add a new <code>Staticfile.auth</code> to the root or alternative root directory. 
@@ -207,7 +207,7 @@ content to very old browser clients.</td>
 
 <tr>
   <td id="host_dot_files">Dot files</td>
-  <td>By default, hidden files (those starting with a <code>.</code>) are not served by this buildpack.</td>
+  <td>By default, hidden files, which are those starting with a <code>.</code>, are not served by this buildpack.</td>
   <td><code>host_dot_files: true</code></td>
 </tr>
 
@@ -231,7 +231,7 @@ to make all subsequent requests over HTTPS. Defaults to a max-age of one year.
 <tr>
   <td id="strict-security-with-preload">HSTS preload</td>
   <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains and requests inclusion in browser-managed HSTS preload lists. For more inforamtion, see <a href="https://hstspreload.org">https://hstspreload.org</a>). Defaults to a max-age of one year.
+ <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains and requests inclusion in browser-managed HSTS preload lists. For more information, see <a href="https://hstspreload.org">https://hstspreload.org</a>). Defaults to a max-age of one year.
   <p class="note"><strong>Note</strong>: Setting this property to <code>true</code> also makes <code>http_strict_transport_security</code> and <code>http_strict_transport_security_include_subdomains</code> default to true.</p></td>
  <td><code>http_strict_transport_security_preload: true</code></td>
 </tr>
@@ -284,9 +284,11 @@ types {
 Follow the steps below to push your application.
 
 1. Create an empty file named `Staticfile` in the root directory of your app:
-  <pre class='terminal'>
-$ touch Staticfile
-  </pre>
+   
+    ```
+    touch Staticfile
+    ```
+
 1. Modify `Staticfile` for the needs of your app. 
    For a list of configuration options, see [Configuring the Buildpack](#configure).
 1. To push your app, run the following command:
