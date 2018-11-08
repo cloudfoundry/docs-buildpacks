@@ -7,8 +7,7 @@ owner: Buildpacks
 
 ## <a id='overview'></a> Overview
 
-This topic describes how to configure the Staticfile buildpack and use it to push static content to the web.
-It also shows you how to serve a simple "Hello World" page using the Staticfile buildpack.
+This topic describes how to configure and use the Staticfile buildpack.
 
 <p class="note"><strong>Note</strong>: <a href="http://bosh.io/docs/trusted-certs.html">BOSH configured custom trusted certificates</a> are not supported by the Staticfile buildpack.</p>
 
@@ -20,12 +19,12 @@ Examples of staticfile apps are front-end JavaScript apps, static HTML content, 
 **Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with backends hosted elsewhere.
 To find which version of NGINX the current Staticfile buildpack uses, see the [Staticfile buildpack release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
 
-### <a id='staticfile'></a>Staticfile Requirement
+### <a id='staticfile'></a>Staticfile Detection
 
-<%= vars.product_full %> requires a file named `Staticfile` in the root directory of the app. 
-This file alerts <%= vars.product_short %> to use the Staticfile buildpack with the app.
+If you create a file named `Staticfile` in the root directory of your app, Cloud Foundry automatically
+uses the Staticfile buildpack when you push your app.
 
-The `Staticfile` can be an empty file, or it can contain configuration settings for your app.
+The `Staticfile` file can be an empty file, or it can contain configuration settings for your app.
 For more information,
 see [Configuring the Buildpack](#configure) and [Pushing the App](#push_app).
 
@@ -33,82 +32,6 @@ see [Configuring the Buildpack](#configure) and [Pushing the App](#push_app).
 
 NGINX requires 20&nbsp;MB of RAM to serve static assets.
 When using the Staticfile buildpack, we recommend pushing apps with the `-m 64M` option to reduce RAM allocation from the default 1&nbsp;GB allocated to containers by default.
-
-### <a id='sample'></a>"Hello World" Tutorial
-
-Follow the procedure below to create and push a single page app using the Staticfile buildpack.
-
-<table border='1' class='nice'>
-<tr>
-  <th>Step</th><th>Action</th>
-</tr>
-<tr>
-  <td valign="top">1</td>
-  <td>Create and move into a root directory for the sample app in your workspace:
-    <br>
-<pre class="terminal">
-$ mkdir sample
-$ cd sample
-</pre>
-  </td>
-</tr>
-<tr>
-  <td valign="top">2</td>
-  <td>Create an <code>index.html</code> file that contains some text:
-    <br>
-<pre class="terminal">
-$ echo 'Hello World' > index.html
-</pre>
-  </td>
-</tr>
-<tr>
-  <td valign="top">3</td>
-  <td> Create an empty file named <code>Staticfile</code>:
-    <br>
-<pre class="terminal">
-$ touch Staticfile
-</pre>
-  </td>
-</tr>
-<tr>
-  <td valign="top">4</td>
-  <td> Use the <code>cf login</code> command to log in to
-<%= vars.product_short %>.<br>
-For more information, see the <a href="../../cf-cli/getting-started.html#login">Login</a> section of the <em>Getting Started with the cf CLI</em> documentation.
-<pre class="terminal">
-$ cf login
-</pre>
- </td>
-</tr>
-<tr>
-  <td valign="top">5</td>
-  <td> Push the sample app:<br>
-<pre class="terminal">
-$ cf push hello -m 64M
-</pre>
-  </td>
-</tr>
-<tr>
-  <td valign="top">6</td>
-  <td>Find the URL of the app in the output.<br>
-    A fragment of output is shown below:
-<pre class='terminal'>
-Creating app hello in org sample-org / space sample-space as username<span>@</span>example.com...
-OK
-&#8230;
-requested state: started
-instances: 1/1
-usage: 64M x 1 instances
-urls: hello.example.com
-</pre>
-  </td>
-</tr>
-<tr>
-  <td valign="top">7</td>
-  <td>Navigate to the URL to see the sample app running.
-  </td>
-</tr>
-</table>
 
 ## <a id='configure'></a>Configuring the Buildpack
 
@@ -282,44 +205,81 @@ types {
 
 ## <a id='push_app'></a> Pushing the App ###
 
-Follow the steps below to push your application.
+To push your app, you can use either the system Staticfile buildpack or specify a Staticfile buildpack.
 
-1. Create an empty file named `Staticfile` in the root directory of your app:
-   
-    ```
-    touch Staticfile
-    ```
+### Option 1: Use the System Staticfile Buildpack
 
-1. Modify `Staticfile` for the needs of your app. 
-   For a list of configuration options, see [Configuring the Buildpack](#configure).
-1. To push your app, run the following command:
+To use the Staticfile buildpack installed in your deployment, run the command below in the root directory of the app.
+The root directory of the app must contain a file named `Staticfile`.
 
-    ```
-    cf push APP_NAME -m 64M
-    ``` 
+```
+cf push APP-NAME
+```
+Where <code>APP-NAME</code> is the name you want to give your app.
 
-    Where <code>APP_NAME</code> correponds to the name you want to give your application. 
-    For example:<br>
-    <pre class='terminal'>
-    $ cf push my-app -m 64M
-    Creating app my-app in org sample-org / space sample-space as username<span>@</span>example.com...
-    OK
-    …
-    requested state: started
-    instances: 1/1
-    usage: 64M x 1 instances
-    urls: my-app.example.com
-    </pre>
+For example:
 
-1. If you do not have the buildpack, or the installed version is out-of-date, use the <code>-b</code> option to specify the buildpack as follows:
+<pre class='terminal'>
+$ cf push my-app
+Creating app my-app in org sample-org / space sample-space as username<span>@</span>example.com...
+OK
+...
+requested state: started
+instances: 1/1
+usage: 1G x 1 instances
+urls: my-app.example.com
+last uploaded: Wed Apr 1 12:55:41 UTC 2020
+stack: cflinuxfs2
+buildpack: staticfile
 
-    ```
-    cf push APP_NAME -m 64M -b https://github.com/cloudfoundry/staticfile-buildpack.git
-    ``` 
+     state     since                    cpu    memory        disk         details
+#0   running   2020-04-01 12:55:57 PM   0.0%   12.6M of 1G   5.9M of 1G
+</pre>
 
-    Where <code>APP_NAME</code> correponds to the name you want to give your application. 
-1. Find the URL of your app in the output from the push command. For example, the URL in the output above is `my-app.example.com`.
-1. In a browser, navigate to the URL to see your static app running.
+### Option 2: Specify a Staticfile Buildpack
+
+To explicitly specify a Staticfile buildpack, run the command below
+in the root directory of the app. You may want to specify a buildpack if your
+deployment does not have the Staticfile buildpack installed or the installed
+version is outdated.
+
+```
+cf push APP-NAME -b BUILDPACK-NAME-OR-PATH
+```
+Where:
+
+  * `APP-NAME` is the name you want to give your app.
+  * `BUILDPACK-NAME-OR-PATH` is either the name of a buildpack that is installed in your deployment or the path to
+  a buildpack. You can find the Cloud Foundry Staticfile buildpack in the [Staticfile repository](https://github.com/cloudfoundry/staticfile-buildpack.git)
+  on GitHub.
+
+For example:
+
+<pre class='terminal'>
+$ cf push my-app -b https://github.com/cloudfoundry/staticfile-buildpack.git
+Creating app my-app in org sample-org / space sample-space as username<span>@</span>example.com...
+OK
+...
+requested state: started
+instances: 1/1
+usage: 1G x 1 instances
+urls: my-app.example.com
+last uploaded: Wed Apr 1 12:55:41 UTC 2020
+stack: cflinuxfs2
+buildpack: https://github.com/cloudfoundry/staticfile-buildpack.git
+
+     state     since                    cpu    memory        disk         details
+#0   running   2020-04-01 12:55:57 PM   0.0%   12.6M of 1G   5.9M of 1G
+</pre>
+
+### Verifying the Push
+
+After you push the app, follow the steps below to verify that the push was successful:
+
+1. Find the URL of your app in the output of the `cf push` command.
+For example, the URL in the terminal output above is `my-app.example.com`.
+
+1. In a browser, navigate to the URL to view your app.
 
 ## <a id='examples'></a>Example Staticfile Buildpack Apps
 
