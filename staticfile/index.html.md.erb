@@ -33,177 +33,247 @@ see [Configuring the Buildpack](#configure) and [Pushing an App](#push_app).
 NGINX requires 20&nbsp;MB of RAM to serve static assets.
 When using the Staticfile buildpack, we recommend pushing apps with the `-m 64M` option to reduce RAM allocation from the default 1&nbsp;GB allocated to containers by default.
 
-## <a id='configure'></a>Configuring the Buildpack
+## <a id='configure'></a>Configure the Buildpack
 
 This section describes configuration options available for the Staticfile buildpack. If you need to make configuration changes to NGINX
 that are not listed in the table below, use the NGINX Buildpack instead of the Staticfile buildpack. For more information, see <a href="../nginx/index.html">NGINX Buildpack</a>.
 
-To configure these options, add the configuration property as a new line in your `Staticfile`, unless otherwise instructed below. 
+### <a id='staticfile'></a>Staticfile File Configuration
+
+To configure these options, add the configuration property as a new line in your `Staticfile` file
+as described in the following table.
 
 <table border='1' class='nice'>
-<tr>
-  <th>Option</th>
-  <th>Description</th>
-  <th>Staticfile Configuration</th>
-</tr>
-
-<tr>
-  <td id="root">Alternative root</td>
-  <td>Specifies a root directory other than the default. Use this option to serve <code>index.html</code> and other assets, such as HTML, CSS, or JavaScript files, from a location other than the root directory. 
-  For example, you can specify an alternate folder such as <code>dist/</code> or <code>public/</code>.</td>
- </td>
-    <td><code>root: YOUR-DIRECTORY-NAME</code><br><br>
-      For example:<br><code>root: public</code></td>
-</tr>
-<tr>
-  <td id="dir-list">Directory list</td>
-  <td>Displays an HTML page that shows a directory index for your site. A sample of a directory list is shown below.<br>
- <img src="../images/directory-index.png" alt="directory index" style="margin: 20px"><br>
-    If your site is missing an <code>index.html</code> file, your app displays a directory list instead of the standard 404 error page.</td>
-  <td>
-   <code>directory: visible</code>
-  </td>
-</tr>
-
-<tr>
-  <td id="ssi">SSI</td>
-  <td>Enables Server Side Includes (SSI), which allow you to embed the contents of one or more files into a web page on a web server.
-For general information about SSI, see the <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side Includes</a> entry on Wikipedia.</td>
-  <td><code>ssi: enabled</strong></code> </td>
-</tr>
-<tr>
-  <td id="pushstate">Pushstate routing</td>
-  <td>Keeps browser-visible URLs clean for client-side JavaScript apps that serve multiple routes.
-    For example, pushstate routing allows a single JavaScript file to route to multiple anchor-tagged URLs
-    that look like <code>/some/path1</code> instead of <code>/some#path1</code>.
-  </td>
-  <td><code>pushstate: enabled</code>
-  </td>
-</tr>
-
-<tr>
-  <td id="gzip">GZip file serving and compression</td>
-<td>Disables <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a>
-and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules, which are enabled by default. 
-These modules allow NGINX to serve files stored in compressed GZ format and to uncompress them for clients that do not support compressed content or responses.<br><br>You may want to disable compression under particular circumstances such as serving 
-content to very old browser clients.</td>
-<td><code>gzip: off</code>
-</tr>
-
-<tr>
-  <td id="basic-auth">Basic authentication</td>
-  <td>Allows you to enable basic authentication for your app or website. 
-    A sample basic authentication dialog box is shown below:<br><br>
-      <img src="../images/basicauth.png"> <br/><br/>
-      You can create a hashed username and password pair for each user 
-      by using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a></td>
-   <td>Add a new <code>Staticfile.auth</code> to the root or alternative root directory. 
-    In the new file, add one or more username and password entries using the following format.
-  <br>
-  <code>USERNAME:HASHED_PASSWORD</code>
-  <br><br>For example: 
-  <code>
-  bob:$apr1$DuUQEQp8$ZccZCHQElNSjrgerwSFC0
-  <br>alice:$apr1$4IRQGcD/$UMFLnIHSD9ZHJ86TR4zx</code>
+  <tr>
+    <th width="35%">Staticfile Configuration Property</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td id="root">
+      <code>root: YOUR-DIRECTORY-NAME</code><br><br>
+      Example:<br>
+      <code>root: public</code>
     </td>
-</tr>
-
-<tr>
-  <td>Proxy support</td>
-  <td>Allows you to use a proxy when downloading dependencies during the staging of your app.</td>
-  <td><code>http_proxy: HTTP_URL</code><br>
-    <code>https_proxy: HTTPS_URL</code>
-    <br><br>For example:<br> <code>http_proxy: http://www.example.com/</code>
-    <br><code>https_proxy: https://www.example.com/</code></td>
-</tr>
-
-<tr>
-  <td id="force-https">Force HTTPS</td>
-   <td>Forces all requests to be sent through HTTPS.
-       This redirects non-HTTPS requests as HTTPS requests.
-       <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a 
-        proxy server or load balancer that terminates SSL/TLS.
-        Doing so can cause infinite redirect loops, for example,
-        if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p></td>
-    <td><code>force_https: true</code><br/><br/>
-    Alternatively, set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.<br></td>
-</tr>
-
-<tr>
-  <td id="host_dot_files">Dot files</td>
-  <td>By default, hidden files, which are those starting with a <code>.</code>, are not served by this buildpack.</td>
-  <td><code>host_dot_files: true</code></td>
-</tr>
-
-<tr>
-  <td id="strict-security">HTTP Strict Transport Security (HSTS)</td>
-  <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000</code>. This forces receiving browsers 
-to make all subsequent requests over HTTPS. Defaults to a max-age of one year.
- <p class="note"><strong>Note</strong>: Because this setting persists in browsers for a long time, only enable this setting after you ensure that you have completed the configuration of your app.</p></td>
-  <td><code>http_strict_transport_security: true</code></td>
-</tr>
-
-<tr>
-  <td id="strict-security-with-subdomains">HSTS includes subdomains</td>
-  <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains. Defaults to a max-age of one year.
-<p class="note"><strong>Note</strong>: Setting this property to <code>true</code> also makes <code>http_strict_transport_security</code> default to true.</p></td>
- <td><code>http_strict_transport_security_include_subdomains: true</code></td>
-</tr>
-
-<tr>
-  <td id="strict-security-with-preload">HSTS preload</td>
-  <td>Causes NGINX to respond to all requests with the header
- <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. This forces browsers to make all subsequent requests over HTTPS including subdomains and requests inclusion in browser-managed HSTS preload lists. For more information, see <a href="https://hstspreload.org">https://hstspreload.org</a>). Defaults to a max-age of one year.
-  <p class="note"><strong>Note</strong>: Setting this property to <code>true</code> also makes <code>http_strict_transport_security</code> and <code>http_strict_transport_security_include_subdomains</code> default to true.</p></td>
- <td><code>http_strict_transport_security_preload: true</code></td>
-</tr>
-
-<tr>
-  <td>Custom location configuration</td>
-  <td>Allows you to specify custom location definitions with additional directives.
-  For information about NGINX directives, see <a href="https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files/">Creating NGINX Plus and NGINX Configuration Files</a> and <a href="https://nginx.org/en/docs/dirindex.html">Alphabetical index of directives</a> in the <i>NGINX documentation</i>.</td>
-  <td>
-    To customize the <code>location</code> block of the NGINX configuration file, follow these steps:<br><br>
-   <ol>
-   <li>Set an alternative <code>root</code> directory. The <code>location_include</code> property only works in conjunction with an alternative <code>root</code>.</li>
-   <li>Create a file with location-scoped NGINX directives. See the following example, which causes visitors of your site to receive the <code>X-MySiteName</code> HTTP header:
-    <br><br>
-    <b>File</b>: <code>nginx/conf/includes/custom_header.conf</code><br>
-    <b>Content</b>:
-    <code>add_header X-MySiteName BestSiteEver;</code><br>
-    <li>Set the <code>location_include</code> variable in your <b>Staticfile</b> to the path of 
-      the file from the previous step. The path is relative to <code>nginx/conf</code>.<br>
-    <pre>
-...
-root: public
-location_include: includes/*.conf
-...</pre>
-    </li>
-  </ol>
-</td>
-</tr>
-<tr>
-  <td>Additional MIME type support</td>
-  <td>Allows you to configure additional MIME types on your NGINX server. <br><br>
-    To add MIME types, add a <code>mime.types</code> file to your root folder, 
-    or to the alternate root folder if you specified one.<br><br>
-    For more information about the <code>mime.types</code> file, see <a href="https://www.nginx.com/resources/wiki/start/topics/examples/full/#mime-types">Full Example Configuration</a> in the <i>NGINX documentation</i>.</td>
-  <td>Sample MIME types file:<br/>
-  <pre>
-types {
-        text/html     html htm shtml;
-        text/css      css;
-        text/xml      xml rss;
-        image/gif     gif;
-        ...
-      }</pre>
-</td>
-</tr>
+    <td><strong>Alternative root</strong>: Specifies a root directory other than the default. Use
+      this option to serve <code>index.html</code> and other assets, such as HTML, CSS, or
+      JavaScript files, from a location other than the root directory.<br><br>
+      For example, you can specify an alternate folder such as <code>dist</code> or
+      <code>public</code>.
+    </td>
+  </tr>
+  <tr>
+    <td id="dir-list">
+      <code>directory: visible</code>
+    </td>
+    <td><strong>Directory list</strong>: Displays an HTML page that shows a directory index for
+      your site. A sample of a directory list is shown below.<br>
+      <img src="../images/directory-index.png" alt="directory index" style="margin: 20px"><br>
+      If your site is missing an <code>index.html</code> file, your app displays a directory list
+      instead of the standard 404 error page.
+    </td>
+  </tr>
+  <tr>
+    <td id="ssi">
+      <code>ssi: enabled</code>
+    </td>
+    <td><strong>SSI</strong>: Enables Server Side Includes (SSI), which allow you to embed the
+      contents of one or more files into a web page on a web server. For general information about
+      SSI, see the <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side
+      Includes</a> entry on Wikipedia.
+    </td>
+  </tr>
+  <tr>
+    <td id="pushstate">
+      <code>pushstate: enabled</code>
+    </td>
+    <td><strong>Pushstate routing</strong>: Keeps browser-visible URLs clean for client-side
+      JavaScript apps that serve multiple routes. For example, pushstate routing allows a single
+      JavaScript file to route to multiple anchor-tagged URLs that look like
+      <code>/some/path1</code> instead of <code>/some#path1</code>.
+    </td>
+  </tr>
+  <tr>
+    <td id="gzip">
+      <code>gzip: off</code>
+    </td>
+    <td><strong>GZip file serving and compression</strong>: Disables
+      <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a>
+      and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules,
+      which are enabled by default. These modules allow NGINX to serve files stored in compressed
+      GZ format and to uncompress them for clients that do not support compressed content or
+      responses.<br><br>
+      You may want to disable compression under particular circumstances such as serving content to
+      very old browser clients.
+    </td>
+  </tr>
+  <tr>
+    <td id="proxy-support">
+      <code>http_proxy: HTTP-URL</code><br>
+      <code>https_proxy: HTTPS-URL</code><br><br>
+      Example:<br>
+      <code>http_proxy: http://www.example.com/</code><br>
+      <code>https_proxy: https://www.example.com/</code>
+    </td>
+    <td><strong>Proxy support</strong>: Allows you to use a proxy when downloading dependencies during the staging of your app.
+    </td>
+  </tr>
+  <tr>
+    <td id="force-https">
+      <code>force_https: true</code><br><br>
+      Alternatively, set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.
+    </td>
+    <td><strong>Force HTTPS</strong>: Forces all requests to be sent through HTTPS. This redirects
+      non-HTTPS requests as HTTPS requests.
+      <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a
+      proxy server or load balancer that terminates SSL/TLS. Doing so can cause infinite redirect
+      loops, for example, if you use
+      <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with
+      CloudFlare.</p>
+    </td>
+  </tr>
+  <tr>
+    <td id="host-dot-files">
+      <code>host_dot_files: true</code>
+    </td>
+    <td><strong>Dot files</strong>: By default, hidden files, which are those starting with a
+      <code>.</code>, are not served by this buildpack.
+    </td>
+  </tr>
+  <tr>
+    <td id="strict-security">
+      <code>http_strict_transport_security: true</code>
+    </td>
+    <td><strong>HTTP Strict Transport Security (HSTS)</strong>: Causes NGINX to respond to all
+      requests with the header <code>Strict-Transport-Security: max-age=31536000</code>. This
+      forces receiving browsers to make all subsequent requests over HTTPS. This setting defaults
+      to a <code>max-age</code> of one year.
+      <p class="note"><strong>Note</strong>: Because this setting persists in browsers for a long
+      time, only enable this setting after you ensure that you have completed your app
+      configuration.</p>
+    </td>
+  </tr>
+  <tr>
+    <td id="strict-security-with-subdomains">
+      <code>http_strict_transport_security_include_subdomains: true</code>
+    </td>
+    <td><strong>HSTS includes subdomains</strong>: Causes NGINX to respond to all requests with the
+      following header:
+      <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code><br>
+      This forces browsers to make all subsequent requests over HTTPS including subdomains. This
+      setting defaults to a <code>max-age</code> of one year.
+      <p class="note"><strong>Note</strong>: Setting this property to <code>true</code> also makes
+      <code>http_strict_transport_security</code> default to true.</p>
+    </td>
+  </tr>
+  <tr>
+    <td id="strict-security-with-preload">
+      <code>http_strict_transport_security_preload: true</code>
+    </td>
+    <td><strong>HSTS preload</strong>: Causes NGINX to respond to all requests with the following
+      header:
+      <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code><br>
+      This forces browsers to make all subsequent requests over HTTPS including subdomains and
+      requests inclusion in browser-managed HSTS preload lists. For more information, see
+		<a href="https://hstspreload.org">https://hstspreload.org</a>. This setting defaults to a
+      <code>max-age</code> of one year. This setting defaults to a <code>max-age</code> of one
+      year.
+      <p class="note"><strong>Note</strong>: Setting this property to <code>true</code> also makes
+      <code>http_strict_transport_security</code> and
+      <code>http_strict_transport_security_include_subdomains</code> default to true.</p>
+    </td>
+  </tr>
 </table>
 
-## <a id='push_app'></a> Pushing an App
+### <a id='staticfile'></a>Other Configuration
+
+Follow the instructions below to make other configuration changes.
+
+<hr>
+
+####<a name="basic-authentication"></a>Basic Authentication
+
+Allows you to enable basic authentication for your app or website. A sample basic authentication
+dialog box is shown below:
+
+<img src="../images/basicauth.png">
+
+You can create a hashed username and password pair for each user by using a site like
+<a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a>.
+
+**Configuration**
+
+Add a new <code>Staticfile.auth</code> file to the root or alternative root directory. In the new
+file, add one or more username and password entries using the following format:
+<code>USERNAME:HASHED_PASSWORD</code>
+
+Example:
+
+<code>pat:$example1$DuUQEQp8$ZccZCHQElNSjrgerwSFC0<br>
+stevie:$example1$22derfaecZSJJRw4rKE$KKEWKSK</code>
+<hr>
+
+####<a name="custom-location"></a>Custom Location
+
+Allows you to specify custom location definitions with additional directives. For information about
+NGINX directives, see [Creating NGINX Plus and NGINX Configuration Files](https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files)
+and [Alphabetical index of directives](https://nginx.org/en/docs/dirindex.html) in the
+_NGINX documentation_.
+
+**Configuration**
+
+To customize the `location` block of the NGINX configuration file, follow the steps below.
+
+1. Set an alternative `root` directory. The `location_include` property only works in conjunction
+with an alternative `root`.
+
+1. Create a file with location-scoped NGINX directives. See the following example, which causes
+visitors of your site to receive the `X-MySiteName` HTTP header:
+    * **File**:
+      `nginx/conf/includes/custom_header.conf`
+    * **Content**:
+      `add_header X-MySiteName BestSiteEver;`
+
+1. Set the `location_include` variable in your **Staticfile** to the path of the file from the
+previous step. This path is relative to `nginx/conf`.
+
+	 Example:
+
+	 ```
+    ...
+    root: public
+    location_include: includes/*.conf
+    ...
+    ```
+
+<hr>
+
+####<a name="basic-authentication"></a>Additional MIME Type Support
+
+Allows you to configure additional MIME types on your NGINX server.
+
+**Configuration**
+
+To add MIME types, add a `mime.types` file to your root folder, or to the alternate root folder if
+you specified one.
+
+For more information about the `mime.types` file, see [mime.types](https://www.nginx.com/resources/wiki/start/topics/examples/full/#mime-types") in the
+_NGINX documentation_.
+
+Example MIME types file:
+
+```
+types {
+    text/html     html htm shtml;
+    text/css      css;
+    text/xml      xml rss;
+    image/gif     gif;
+    ...
+    }
+```
+
+<hr>
+
+## <a id='push_app'></a> Push an App
 
 To push your app, you can use either the system Staticfile buildpack or specify a Staticfile buildpack.
 
