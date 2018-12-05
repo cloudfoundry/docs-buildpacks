@@ -17,10 +17,10 @@ This topic explains how to write extension buildpacks for .NET apps.
 [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/packager/buildpack-packager)
 provides boilerplate code that you can use to start writing your buildpack.
 
-    <pre class='terminal'>
-    $ go get github.com/cloudfoundry/libbuildpack/
-    $ go install github.com/cloudfoundry/libbuildpack/packager
-    </pre>
+    ```
+    go get github.com/cloudfoundry/libbuildpack/
+    go install github.com/cloudfoundry/libbuildpack/packager
+    ```
 
 1. To create your buildpack, run the following command:
 
@@ -39,10 +39,10 @@ provides boilerplate code that you can use to start writing your buildpack.
 
 1. To activate direnv in your buildpack directory, run the following commands:
 
-    <pre class='terminal'>
-    $ cd my-example-buildpack
-    $ direnv allow
-    </pre>
+    ```
+    cd my-example-buildpack
+    direnv allow
+    ```
 
 ## <a id='create'></a>Create an Extension Buildpack to Supply Additional DLLs to a .NET Framework App
 
@@ -123,9 +123,9 @@ the container's `PATH` as follows:
 
 1. To build a cached buildpack artifact, run the following command:
 
-    <pre class='terminal'>
-    $ buildpack-packager build -cached -stack windows2016
-    </pre>
+    ```
+    buildpack-packager build -cached -stack windows2016
+    ```
     <p class='note'><strong>Note:</strong> If the buildpack code contains a mistake,
     <code>buildpack-packager</code> throws an error. Once all local errors are corrected, you must
     push your app to with the new extension buildpack to determine whether the new buildpack
