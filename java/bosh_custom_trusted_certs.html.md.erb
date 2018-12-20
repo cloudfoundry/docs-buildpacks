@@ -12,7 +12,7 @@ Versions 3.7 and later of the Java buildpack support BOSH-configured custom trus
 Run the following command to configure support for this feature: 
 
 <pre class="terminal">
-$ cf set-env APP-NAME JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: true}'`
+$ cf set-env APP-NAME JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: true}'
 </pre>
 
 Alternatively, you can modify the buildpack by setting the [<code>enabled</code>](https://github.com/cloudfoundry/java-buildpack/blob/master/config/container_certificate_trust_store.yml#L18) property to true in `config/container_certificate_trust_store.yml`. 
