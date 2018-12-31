@@ -78,7 +78,7 @@ $ cd YOUR-APP-DIR
 $ mkdir -p vendor
 
 # vendors all the pip *.tar.gz into vendor/
-$ pip install --download vendor -r requirements.txt --no-binary :all:
+$ pip download -r requirements.txt --no-binary=:all: -d vendor
 </pre>
 
 `cf push` uploads your vendored dependencies. The buildpack installs them directly from the `vendor/` directory.
