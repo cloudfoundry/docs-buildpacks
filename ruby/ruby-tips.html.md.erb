@@ -72,9 +72,7 @@ the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.h
 
 ### <a id='migrate-ruby-db'></a>Example: Invoking a Rake database migration task at app startup ###
 
-The following is an example of the "migrate frequently" method described in the
-[Migrating a Database in Cloud Foundry]
-(../../devguide/services/migrate-db.html#frequent-migration) topic.
+The following is an example of migrating a database schema using a Rake task. For more information about migrating database schemas, see [Services Overview](../../devguide/services/index.html#migrating).
 
 1. If a Rakefile does not exist, create one and add it to your app directory.
 1. In your Rakefile, add a Rake task to limit an idempotent command to the first instance of a deployed app:
