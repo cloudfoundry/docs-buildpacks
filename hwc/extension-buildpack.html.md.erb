@@ -27,10 +27,10 @@ provides boilerplate code that you can use to start writing your buildpack.
 1. To create your buildpack, run the following command:
 
     ```
-    buildpack-packager init --name MY-BUILDPACK-NAME --path=BUILDPACK-DIRECTORY
+    buildpack-packager init --name BUILDPACK-NAME --path=BUILDPACK-DIRECTORY
     ```
 	 Where:
-    * `MY-BUILDPACK-NAME` is the name of the buildpack you are creating.
+    * `BUILDPACK-NAME` is the name of the buildpack you are creating.
     * `BUILDPACK-DIRECTORY` is the directory created by the command. This directory contains the
       boilerplate code.
 
@@ -42,7 +42,7 @@ provides boilerplate code that you can use to start writing your buildpack.
 1. To activate direnv in your buildpack directory, run the following commands:
 
     ```
-    cd my-example-buildpack
+    cd BUILDPACK-FOLDER
     direnv allow
     ```
 
@@ -87,21 +87,26 @@ as follows:
 
     ```
     dependencies:
-    - name: my-binary 
-      uri: http://s3.amazon.com/my-bucket/DLL-ZIP-FILE 
+    - name: BINARY-NAME 
+      uri: http://s3.amazon.com/BUCKET-NAME/DLL-ZIP-FILE 
       version: 0.0.1
       sha256: GENERATED-SHA-256
       cf_stacks: 
       - windows2016 
     ```
     Where:
+    * `BINARY-NAME` is the name of your binary application.
+    * `BUCKET-NAME` is your S3 bucket name.
     * `DLL-ZIP-FILE` is the name of your DLL zip file.
     * `GENERATED-SHA-256` is the generated SHA.
 
 1. Ensure the `include_files` section of the manifest contains `bin/supply.exe`.
 
-1. Edit the supply script, `my-example-buildpack/src/my-example/supply.go`, to add dependencies to
-the container's `PATH` as follows:
+1. Use Windows Explorer, or your text editor File Open, to navigate to the folder BUILDPACK-DIRECTORY/src/BUILDPACK-NAME/
+
+1. Edit the supply.go script.  
+
+1. Add dependencies to the container's `PATH` as follows:
 
     1. Add a `stager.InstallDependency` for the `dependency` and `version` you have in your
     manifest.yml file.
@@ -151,9 +156,10 @@ You can also use an S3 bucket or Azure Storage.
 1. To deploy your app with the extension buildpack, run the following command:
 
     ```
-    cf push my-app -s STEMCELL-NAME -b BUILDPACK-URL -b hwc_buildpack
+    cf push APP-NAME -s STEMCELL-NAME -b BUILDPACK-URL -b hwc_buildpack
     ```
     Where:
+    * `APP-NAME` is your app's name. 
     * `STEMCELL-NAME` is the name of your stemcell.
     * `BUILDPACK-URL` is the URL where you uploaded the buildpack.  
 
