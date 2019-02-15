@@ -71,17 +71,17 @@ Follow the steps below to push your application.
 
 1. Build your HWC app in Visual Studio.
 
-1. On the command line, navigate to the directory that contains the app files.
+1. On the command line, navigate to the directory containing the app files.
 
 1. To push your HWC app, run the following `cf push` command:
 
     ```
-    cf push APP-NAME -s STEMCELL-NAME -b hwc_buildpack
+    cf push APP-NAME -s STACK-NAME -b hwc_buildpack
     ```
 
     Where:  
       * `APP-NAME` is the name you want to give your app.  
-      * `STEMCELL-NAME` if the name of your stemcell.  
+      * `STACK-NAME` is the pre-built operating system that can run apps.  
   
     
     For example:
@@ -121,29 +121,41 @@ To define a context path route, such as `app1.example.com/app2`, run the followi
 1. To push the primary app, run the following command:
 
     ```
-    cf push APP-NAME -s STEMCELL-NAME -b hwc_buildpack
+    cf push APP-NAME -s STACK-NAME -b hwc_buildpack
     ```
+
+    Where:  
+      * `APP-NAME` is your primary app's name.   
+      * `STACK-NAME` is the pre-built operating system that can run apps.   
+
 1. To push the secondary app and disable the app's starting and default routing, run the following command:
 
     ```
-    cf push SECONDARY-APP --no-start --no-route -s STEMCELL-NAME -b hwc_buildpack
+    cf push SECONDARY-APP --no-start --no-route -s STACK-NAME -b hwc_buildpack
     ```
+
+    Where:   
+      * `SECONDARY-APP` is your secondary app's name.  
+      * `STACK-NAME` is the pre-built operating system that can run apps. 
+
 1. To map routes between the primary and secondary apps, run the following command:
 
     ```
     cf map-route SECONDARY-APP DOMAIN --hostname APP-NAME --path SECONDARY-APP
     ```
+
+    Where:  
+      * `APP-NAME` is your primary app's name.  
+      * `SECONDARY-APP` is your secondary app's name.  
+      * `DOMAIN` is your site's public domain name.   
+
 1. To start the secondary app, run the following command:
 
     ```
     cf start SECONDARY-APP
     ```
 
-    Where:  
-      * `APP-NAME` is your primary app's name.  
-      * `SECONDARY-APP` is your secondary app's name.  
-      * `DOMAIN` is your site's public domain name. 
-      * `STEMCELL-NAME` if the name of your stemcell.  
+    Where: `SECONDARY-APP` is your secondary app's name.  
 
 For example, the following commands define context path routing for `app2` to be accessible under `app1`'s URL as `app1.example.com/app2`:
 
