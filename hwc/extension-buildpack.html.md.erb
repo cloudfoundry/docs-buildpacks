@@ -8,7 +8,7 @@ This topic explains how to write extension buildpacks for .NET apps.
 ## <a id='prerequisites'></a>Prerequisites
 
 * Linux or MacOS development machine or VM
-* [Golang](https://golang.org/) v1.10 or later programming language
+* [golang](https://golang.org/) v1.10 or later programming language
 * [direnv](https://direnv.net/) environment variable manager for your shell
 
 ## <a id='initialize'></a>Initialize an Extension Buildpack
@@ -42,9 +42,12 @@ provides boilerplate code that you can use to start writing your buildpack.
 1. To activate direnv in your buildpack directory, run the following commands:
 
     ```
-    cd BUILDPACK-FOLDER
+    cd BUILDPACK-DIRECTORY
     direnv allow
     ```
+
+    Where: `BUILDPACK-DIRECTORY` is the directory created by the buildpack-packager command. This directory contains the
+      boilerplate code.  
 
 ## <a id='create'></a>Create an Extension Buildpack to Supply Additional DLLs to a .NET Framework App
 
@@ -69,12 +72,13 @@ To create an extension buildpack containing additional DLLs, follow the steps be
 
 1. On the command line, browse to the directory containing the new ZIP file.
 
-1. To generate a SHA for your ZIP file, run the following command:
-```
-shasum -a256 DLL-ZIP-FILE
-```
+1. To generate a SHA for your ZIP file, run the following command:  
 
-Where `DLL-ZIP-FILE` is the name of your DLL ZIP file. 
+    ```
+    shasum -a256 DLL-ZIP-FILE
+    ```
+
+    Where `DLL-ZIP-FILE` is the name of your DLL ZIP file. 
 
 1. Upload the ZIP file containing your dependencies to a private web server that is accessible by
 Cloud Foundry. You can also use an S3 bucket or Azure Storage.
@@ -102,7 +106,7 @@ as follows:
 
 1. Ensure the `include_files` section of the manifest contains `bin/supply.exe`.
 
-1. Use Windows Explorer, or your text editor File Open, to navigate to the directory BUILDPACK-DIRECTORY/src/BUILDPACK-NAME/
+1. To navigate to the BUILDPACK-DIRECTORY/src/BUILDPACK-NAME/ directory, use either Windows Explorer, or your text editor's 'File - Open' option.
 
 1. Edit the supply.go script.  
 
@@ -127,7 +131,7 @@ as follows:
         * `APP-BINARY` is the name of the application.  
         * `APP-BINARY-DLL` is the filename of the application's DLL.
 
-1. Edit `scripts/build.sh` to cross-compile as follows:
+1. To configure the build.sh script to cross-compile, edit `scripts/build.sh` to include the following:
 
     ```
     GOOS=windows go build -ldflags="-s -w" -o bin/supply.exe mysql/supply/cli
@@ -138,11 +142,11 @@ as follows:
 1. To build a cached buildpack artifact, run the following command:
 
     ```
-    buildpack-packager build -cached -stack STEMCELL-NAME
+    buildpack-packager build -cached -stack STACK-NAME
     ```
 
     Where:  
-    * `STEMCELL-NAME` is the name of your stemcell, typically 'windows2016'.  
+    * `STACK-NAME` is the pre-built operating system that can run apps.  
 
     <p class='note'><strong>Note:</strong> If the buildpack code contains a mistake,
     <code>buildpack-packager</code> throws an error. Once all local errors are corrected, you must
@@ -156,12 +160,12 @@ You can also use an S3 bucket or Azure Storage.
 1. To deploy your app with the extension buildpack, run the following command:
 
     ```
-    cf push APP-NAME -s STEMCELL-NAME -b BUILDPACK-URL -b hwc_buildpack
+    cf push APP-NAME -s STACK-NAME -b BUILDPACK-URL -b hwc_buildpack
     ```
     Where:
     * `APP-NAME` is your app's name. 
-    * `STEMCELL-NAME` is the name of your stemcell.
-    * `BUILDPACK-URL` is the URL where you uploaded the buildpack.  
+    * `STACK-NAME` is the pre-built operating system that can run apps. 
+    * `BUILDPACK-URL` is the URL of the uploaded buildpack zip file.  
 
     For example:
     <pre class='terminal'>
