@@ -7,7 +7,7 @@ This topic explains how to write extension buildpacks for .NET apps.
 
 ## <a id='prerequisites'></a>Prerequisites
 
-* Linux or MacOS development machine or virtual machine
+* Linux or MacOS development machine or VM
 * [Golang](https://golang.org/) v1.10 or later programming language
 * [direnv](https://direnv.net/) environment variable manager for your shell
 
@@ -65,24 +65,24 @@ To create an extension buildpack containing additional DLLs, follow the steps be
 
 1. Create a list of the dependencies that your published app requires.
 
-1. Copy the DLLs for the dependencies into a zip file.
+1. Copy the DLLs for the dependencies into a ZIP file.
 
-1. On the command line, browse to the directory containing the new zip file.
+1. On the command line, browse to the directory containing the new ZIP file.
 
-1. To generate a SHA for your zip file, run the following command:
+1. To generate a SHA for your ZIP file, run the following command:
 ```
 shasum -a256 DLL-ZIP-FILE
 ```
 
-Where `DLL-ZIP-FILE` is the name of your DLL zip file. 
+Where `DLL-ZIP-FILE` is the name of your DLL ZIP file. 
 
-1. Upload the zip file containing your dependencies to a private web server that is accessible by
+1. Upload the ZIP file containing your dependencies to a private web server that is accessible by
 Cloud Foundry. You can also use an S3 bucket or Azure Storage.
 
 1. On the command line, browse to the directory created by the `buildpack-packager init` command
 above.
 
-1. Edit the `manifest.yml` file by adding a `dependency` section that references the DLL zip file
+1. Edit the `manifest.yml` file by adding a `dependency` section that references the DLL ZIP file
 as follows:
 
     ```
@@ -97,12 +97,12 @@ as follows:
     Where:
     * `BINARY-NAME` is the name of your binary application.
     * `BUCKET-NAME` is your S3 bucket name.
-    * `DLL-ZIP-FILE` is the name of your DLL zip file.
+    * `DLL-ZIP-FILE` is the name of your DLL ZIP file.
     * `GENERATED-SHA-256` is the generated SHA.
 
 1. Ensure the `include_files` section of the manifest contains `bin/supply.exe`.
 
-1. Use Windows Explorer, or your text editor File Open, to navigate to the folder BUILDPACK-DIRECTORY/src/BUILDPACK-NAME/
+1. Use Windows Explorer, or your text editor File Open, to navigate to the directory BUILDPACK-DIRECTORY/src/BUILDPACK-NAME/
 
 1. Edit the supply.go script.  
 
