@@ -115,21 +115,19 @@ as follows:
     1. Add a `stager.InstallDependency` for the `dependency` and `version` you have in your
     manifest.yml file.
 
-    1. Add a `stager.AddBinDependency` for every DLL file you want your app to be able to access.
-    For example:
+    1. Add a `stager.AddBinDependency` for every DLL file you want your app to be able to access.  
 
-        ```
-        dep := libbuildpack.Dependency{Name: "APP-BINARY", Version: "0.0.1"}
-        if err := s.Installer.InstallDependency(dep, s.Stager.DepDir()); err != nil {
-          return err
-        }
-        if err := s.Stager.AddBinDependencyLink(filepath.Join(s.Stager.DepDir(), "APP-BINARY-DLL"), "APP-BINARY-DLL"); err != nil {
-          return err
-        }
-        ```
-        Where:  
-        * `APP-BINARY` is the name of the application.  
-        * `APP-BINARY-DLL` is the filename of the application's DLL.
+    For example:
+    
+    <pre class="terminal">
+    dep := libbuildpack.Dependency{Name: "my-binary", Version: "0.0.1"}
+    if err := s.Installer.InstallDependency(dep, s.Stager.DepDir()); err != nil {
+      return err
+    }
+    if err := s.Stager.AddBinDependencyLink(filepath.Join(s.Stager.DepDir(), "MyBinary.dll"), "MyBinary.dll"); err != nil {
+      return err
+    }
+    </pre>
 
 1. To configure the build.sh script to cross-compile, edit `scripts/build.sh` to include the following:
 
