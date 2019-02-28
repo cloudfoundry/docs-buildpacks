@@ -76,18 +76,15 @@ Follow the steps below to push your application.
 1. To push your HWC app, run the following `cf push` command:
 
     ```
-    cf push APP-NAME -s STACK-NAME -b hwc_buildpack
+    cf push APP-NAME -s windows -b hwc_buildpack
     ```
 
-    Where:  
-      * `APP-NAME` is the name you want to give your app.  
-      * `STACK-NAME` is the pre-built operating system that can run apps.  
-  
-    
+    Where `APP-NAME` is the name you want to give your app.  
+<br>
     For example:
 
     <pre class='terminal'>
-    $ cf push my-app -s windows2016 -b hwc_buildpack
+    $ cf push my-app -s windows -b hwc_buildpack
     Creating app my-app in org sample-org / space sample-space as username@example.com...
     OK
     ...
@@ -112,56 +109,54 @@ The following features can be used with HWC buildpack:
 
 ### <a id='context-path'></a> Context Path Routing
 
-Context path routing enables multiple applications to share the same route hostname, 
+Context path routing enables multiple apps to share the same route hostname, 
 such as `app1.example.com/app2`. The context path routing feature is analogous to IIS virtual directories.
 
-Making an application accessible under another app's URL requires a series of commands. 
+Making an application accessible under another app's URL requires pushing both apps and applying a map-route between them. 
 To define a context path route, such as `app1.example.com/app2`, run the following commands:
 
 1. To push the primary app, run the following command:
 
     ```
-    cf push APP-NAME -s STACK-NAME -b hwc_buildpack
+    cf push TOP-LEVEL-APP-NAME -s windows -b hwc_buildpack
     ```
 
     Where:  
-      * `APP-NAME` is your primary app's name.   
-      * `STACK-NAME` is the pre-built operating system that can run apps.   
+      * `TOP-LEVEL-APP-NAME` is your top-level app's name.       
 
 1. To push the secondary app and disable the app's starting and default routing, run the following command:
 
     ```
-    cf push SECONDARY-APP --no-start --no-route -s STACK-NAME -b hwc_buildpack
+    cf push LOWER-LEVEL-APP-NAME --no-start --no-route -s windows -b hwc_buildpack
     ```
 
     Where:   
-      * `SECONDARY-APP` is your secondary app's name.  
-      * `STACK-NAME` is the pre-built operating system that can run apps. 
+      * `LOWER-LEVEL-APP-NAME` is your lower-level app's name.  
 
 1. To map routes between the primary and secondary apps, run the following command:
 
     ```
-    cf map-route SECONDARY-APP DOMAIN --hostname APP-NAME --path SECONDARY-APP
+    cf map-route LOWER-LEVEL-APP-NAME APP-DOMAIN --hostname TOP-LEVEL-APP-NAME --path LOWER-LEVEL-APP-NAME
     ```
 
     Where:  
-      * `APP-NAME` is your primary app's name.  
-      * `SECONDARY-APP` is your secondary app's name.  
-      * `DOMAIN` is your site's public domain name.   
+      * `TOP-LEVEL-APP-NAME` is your top-level app's name.  
+      * `LOWER-LEVEL-APP-NAME` is your lower-level app's name. 
+      * `APP-DOMAIN` is your site's public domain name.   
 
 1. To start the secondary app, run the following command:
 
     ```
-    cf start SECONDARY-APP
+    cf start LOWER-LEVEL-APP-NAME
     ```
 
-    Where: `SECONDARY-APP` is your secondary app's name.  
+    Where: `LOWER-LEVEL-APP-NAME` is your lower-level app's name.  
 
-For example, the following commands define context path routing for `app2` to be accessible under `app1`'s URL as `app1.example.com/app2`:
+For example, the following commands define context path routing for two HWC apps, `app1` and `app2`, where `app2` is made accessible under `app1` as `app1.example.com/app2`:
 
 <pre class='terminal'>
-$ cf push app1 -s windows2016 -b hwc_buildpack     #find the URL for your app1
-$ cf push app2 --no-start --no-route -s windows2016 -b hwc_buildpack
+$ cf push app1 -s windows -b hwc_buildpack
+$ cf push app2 --no-start --no-route -s windows -b hwc_buildpack
 $ cf map-route app2 example.com --hostname app1 --path app2
 $ cf start app2
 </pre>
