@@ -7,12 +7,6 @@ owner: Buildpacks
 
 This topic describes how to configure your .NET Framework apps for use with the HWC buildpack and how to push your .NET Framework apps to <%= vars.product_windows_full %>.
 
-The HWC buildpack provides a runtime server that uses the Hosted Web Core API for running .NET Framework applications in Windows Server containers. For more information, see [Hosted Web Core API Reference](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx) in the Microsoft documentation.
-
-The HWC buildpack provides access to .NET Framework 4.5.1 and later, made available by the Windows root file system (rootfs).
-
-Before you push your first app using the HWC buildpack, see the [Getting Started](https://dotnet-cookbook.cfapps.io/intro/getting_started/) guide in the <em>.NET Cookbook</em>.
-
 ## <a id='prerequisites'></a>Prerequisites
 
 Using the HWC buildpack requires deploying Windows cells with <%= vars.product_windows %>. 
@@ -44,6 +38,14 @@ For information about deploying different types of .NET apps, follow the links i
     <td><a href="../binary/index.html">Binary</a></td>
   </tr>
 </table>
+
+## <a id='overview'></a> Overview
+
+The HWC buildpack provides a runtime server that uses the Hosted Web Core API for running .NET Framework applications in Windows Server containers. For more information, see [Hosted Web Core API Reference](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx) in the Microsoft documentation.
+
+The HWC buildpack provides access to .NET Framework 4.5.1 and later, made available by the Windows root file system (rootfs).
+
+Before you push your first app using the HWC buildpack, see the [Getting Started](https://dotnet-cookbook.cfapps.io/intro/getting_started/) guide in the <em>.NET Cookbook</em>.
 
 ## <a id='hwc'></a> Step 1. Configure HWC
 
