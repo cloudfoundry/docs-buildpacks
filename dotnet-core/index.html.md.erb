@@ -5,9 +5,11 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
+This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions 
+in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
-<%= vars.product_windows_full %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
+## <a id='overview'></a> Overview
+Buildpacks provide needed dependencies to <%= vars.product_windows_full %> apps. <%= vars.product_windows %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
 - The pushed app contains one or more `*.csproj` or `*.fsproj` files.
 - The app is pushed from the output directory of the `dotnet publish` command.
@@ -46,7 +48,23 @@ For information about deploying different types of .NET apps, follow the links i
 
 Follow the steps below to push your app.
 
-1. Run `cf push APP-NAME` command to push your app, where `APP-NAME` is the name you want to give your app. For example:
+1. To push you app, run the following command:
+
+    ```
+    cf push APP-NAME
+    ```
+    Where `APP-NAME` is the name you want to give your app.  
+<br>
+    If your <%= vars.product_windows %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, 
+    run the push command with the `-b` option to specify buildpack:
+
+    ```
+    cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
+    ```
+
+    Where `APP-NAME` is the name you want to give your app.  
+<br>
+    For example:
 
     <pre class='terminal'>
     $ cf push my-app
@@ -58,13 +76,9 @@ Follow the steps below to push your app.
     usage: 1GB x 1 instances
     urls: my-app.example.com
     </pre>
-    If your <%= vars.product_windows %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
 
-    <pre>cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git</pre>
-
-    Where `APP-NAME` is the name of your app.
-
-1. Find the URL of your app in the output from the push command and navigate to it to see your app running.  In the example above, `my-app.example.com` is the URL of your app.
+1. Find the URL of your app in the push command output. In the example above, `my-app.example.com` is the URL of the app. 
+Open a browser and navigate to the URL to see your app running.  
 
 For a basic example app, see [ASP.NET Core getting started app](https://github.com/IBM-Bluemix/aspnet-core-helloworld) in GitHub.
 
@@ -82,31 +96,34 @@ For additional information about using source-based, non-published deployments, 
 
 ### <a id='multiple-projects'></a>Deploy Apps with Multiple Projects
 
-If you want to deploy an app that contains multiple projects, you must specify your main project for the buildpack to run.
+If you want to deploy an app that contains multiple projects, you must specify your main project for the buildpack to run.  
 
-To specify your main project, create a `.deployment` file in the root folder of the app
-that sets the path to the main project in the following format:
+The buildpack automatically compiles the projects listed as dependencies in the main project's `*.csproj` or `*.fsproj` file.
 
-```text
-[config]
-project = PATH-TO-YOUR-MAIN-PROJECT
-```
+1. To specify your main project, create a `.deployment` file in your app's root folder
+1. Modify the file to set the path to the main project using the following format:
 
-Where `PATH-TO-YOUR-MAIN-PROJECT` is the location of your main project.
-Set `project` to the `*.csproj` or `*.fsproj` file of your main project.
+    ```
+    text
+    [config]
+    project = PATH-TO-YOUR-MAIN-PROJECT
+    ```
 
-For example, if an app contains three projects in the `src` folder,
-the main project `MyApp.Web` as well as `MyApp.DAL` and `MyApp.Services`,
-format the `.deployment` file as follows:
+    Where `PATH-TO-YOUR-MAIN-PROJECT` is the location of your main project's `*.csproj` or `*.fsproj` file.  
+<br>
+    For example: 
 
-```text
-[config]
-project = src/MyApp.Web/MyApp.Web.csproj
-```
+    <pre class="terminal">text
+    [config]
+    project = src/MyApp.Web/MyApp.Web.csproj
+    </pre>
 
-In this example, the buildpack automatically compiles the `MyApp.DAL` and `MyApp.Services` projects
-if the `MyApp.Web.csproj` file of the main project lists them as dependencies.
-The buildpack attempts to execute the main project using the `dotnet run -p src/MyApp.Web/MyApp.Web.csproj` command.
+    In this example, the `.deployment` file is configured to assign `MyApp.Web` as the main project by pointing to that project's `*.csproj` file.
+
+1. When deployed, the buildpack attempts to execute the main project using the `dotnet run` command, `dotnet run -p PATH-TO-YOUR-MAIN-PROJECT`.  
+<br>
+    For example: If the last example's app `src` folder contains the `MyApp.Web` folder as well as two other project folders, `MyApp.DAL` and `MyApp.Services`, 
+    and the `MyApp.Web.csproj` file lists the additional projects as dependencies, the `MyApp.DAL` and `MyApp.Services` projects will be compiled by the buildpack.
 
 ### <a id='non-default-package-sources'></a>Use Non-Default Package Sources
 
@@ -128,25 +145,28 @@ You may need to remove the packages you changed from the cache to avoid conflict
 Disabling NuGet caching clears any existing NuGet dependencies from the staging cache
 and prevents the buildpack from adding NuGet dependencies to the staging cache.
 
+NuGet package caching is disabled by default. If the variable is not explicitly set to true, no change is required.
+
 To disable NuGet package caching, set the `CACHE_NUGET_PACKAGES` environment variable to `false`.
-If the variable is not set, no change is required.
 
-To set `CACHE_NUGET_PACKAGES` to `false`, do one of the following:
+1. Confirm `CACHE_NUGET_PACKAGES` is not set to `true` in your app manifest by locating the `manifest.yml` and confirming `CACHE_NUGET_PACKAGES` is not set to true.
+1. If needed, set `CACHE_NUGET_PACKAGES` to `false` in the `manifest.yml` by locating your app manifest, `manifest.yml`, and setting the `CACHE_NUGET_PACKAGES` environment variable to `false`.  
+<br>
+    For example:
 
-* Locate your app manifest, `manifest.yml`, and set the `CACHE_NUGET_PACKAGES` environment variable to `false`:
-
-    ```
-    ---
+    <pre class="terminal">---
     applications:
-    - name: sample-aspnetcore-app
+    &#8209; name: sample&#8209;aspnetcore&#8209;app
       memory: 512M
       env:
-        CACHE_NUGET_PACKAGES: false
+        CACHE&#95;NUGET&#95;PACKAGES: false
+    </pre>
+
+1. To configure the setting to false in the environment variables settings run the following on the command line:
+
     ```
-
-* Use `cf set-env` to set the `CACHE_NUGET_PACKAGES` environment variable on the command line:
-
-    <pre>cf set-env APP-NAME CACHE_NUGET_PACKAGES false</pre>
+    cf set-env APP-NAME CACHE_NUGET_PACKAGES false
+    ```
 
     Where `APP-NAME` is the name of your app.
 
