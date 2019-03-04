@@ -7,7 +7,7 @@ This topic describes the stack association feature for <%= vars.first_product_na
 
 <p class="note"><strong>Note</strong>: This functionality is supported as of CAPI <a href="https://github.com/cloudfoundry/capi-release/releases/tag/1.58.0">v1.58.0</a> and cf CLI  <a href="https://github.com/cloudfoundry/cli/releases/tag/v6.39.0">v6.39.0</a>.</p>
 
-<p class="note warning"><strong>WARNING</strong>: To avoid security exposure, ensure that you migrate your apps and custom buildpacks to use the <code>cflinuxfs3</code> stack based on Ubuntu 18.04 (Bionic Beaver). <code>cflinuxfs2</code> is based on Ubuntu 14.04 (Trusty Tahr), which reaches end of general support (EOGS) in April 2019. </p>
+<p class="note warning"><strong>Warning</strong>: To avoid security exposure, ensure that you migrate your apps and custom buildpacks to use the <code>cflinuxfs3</code> stack based on Ubuntu 18.04 (Bionic Beaver). <code>cflinuxfs2</code> is based on Ubuntu 14.04 (Trusty Tahr), which reaches end of general support (EOGS) in April 2019. </p>
 
 ## <a id='overview'></a> Overview ##
 
@@ -18,9 +18,9 @@ $ cf buildpacks
 Getting buildpacks...
 
 buildpack                position   enabled   locked   filename                                             stack
-staticfile_buildpack     1          true      false    staticfile_buildpack-cached-cflinuxfs2-v1.4.29.zip   cflinuxfs2
-java_buildpack_offline   2          true      false    java-buildpack-offline-cflinuxfs2-v4.12.1.zip        cflinuxfs2
-ruby_buildpack           3          true      false    ruby_buildpack-cached-cflinuxfs2-v1.7.21.zip         cflinuxfs2
+staticfile_buildpack     1          true      false    staticfile_buildpack-cached-cflinuxfs3-v1.4.29.zip   cflinuxfs3
+java_buildpack_offline   2          true      false    java-buildpack-offline-cflinuxfs3-v4.12.1.zip        cflinuxfs3
+ruby_buildpack           3          true      false    ruby_buildpack-cached-cflinuxfs3-v1.7.21.zip         cflinuxfs3
 . . . 
 </pre>
 
@@ -38,7 +38,7 @@ Buildpacks with a missing stack record will continue to work, but are more manag
 
 Consider the following behavior when pushing apps to a deployment that has buildpacks with a missing stack record:
 
-* If you push an app and specify a stack with `cf push app-name -s stack`, <%= vars.product_name %> uses that stack. Otherwise, it uses the system default, `cflinuxfs2`. 
+* If you push an app and specify a stack with `cf push app-name -s stack`, <%= vars.product_name %> uses that stack. Otherwise, it uses the system default, `cflinuxfs3`. 
 * You may see additional logging in the buildpack detection output of the `cf push` command when <%= vars.product_name %> detects buildpacks without a stack record. 
 
 ## <a id='stack-cli'></a> Managing Stack Association with the cf CLI ##
