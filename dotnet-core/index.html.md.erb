@@ -50,7 +50,7 @@ Follow the steps below to push your app.
 
 1. To push your app, run the following command:
 
-    ```
+    ```shell
     cf push APP-NAME
     ```
     Where `APP-NAME` is the name you want to give your app.  
@@ -71,7 +71,7 @@ Follow the steps below to push your app.
     If your <%= vars.product_windows %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, 
     run the push command with the `-b` option to specify buildpack:
 
-    ```
+    ```shell
     cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
     ```
 
@@ -169,7 +169,7 @@ To disable NuGet package caching, do the following:
 
 1. To alternatively configure the setting to false in the environment variables settings, run the following on the command line:
 
-    ```
+    ```shell
     cf set-env APP-NAME CACHE_NUGET_PACKAGES false
     ```
 
