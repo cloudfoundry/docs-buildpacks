@@ -41,14 +41,14 @@ provides boilerplate code that you can use to start writing your buildpack.
 
 1. To install the `buildpack-packager` CLI tool, run the commands below. 
 
-    ```
+    ```go
     go get github.com/cloudfoundry/libbuildpack/
     go install github.com/cloudfoundry/libbuildpack/tree/master/packager
     ```
 
 1. To create your buildpack boilerplate, run the following command:
 
-    ```
+    ```shell
     buildpack-packager init --name BUILDPACK-NAME --path=BUILDPACK-DIRECTORY
     ```
 	 Where:
@@ -63,7 +63,7 @@ provides boilerplate code that you can use to start writing your buildpack.
 
 1. To activate direnv in your buildpack directory, run the following commands:
 
-    ```
+    ```shell
     cd BUILDPACK-DIRECTORY
     direnv allow
     ```
@@ -86,7 +86,7 @@ To create an extension buildpack containing additional DLLs, follow the steps be
 
 1. To generate a SHA for your ZIP file, run the following command:  
 
-    ```
+    ```shell
     shasum -a256 DLL-ZIP-FILE
     ```
 
@@ -101,7 +101,7 @@ above.
 1. Edit the `manifest.yml` file by adding a `dependency` section that references the DLL ZIP file
 as follows:
 
-    ```
+    ```yaml
     dependencies:
     - name: BINARY-NAME 
       uri: http://s3.amazon.com/BUCKET-NAME/DLL-ZIP-FILE 
@@ -131,7 +131,7 @@ as follows:
 
     For example:
     
-    <pre class="terminal">
+    ```c#
     dep := libbuildpack.Dependency{Name: "my-binary", Version: "0.0.1"}
     if err := s.Installer.InstallDependency(dep, s.Stager.DepDir()); err != nil {
       return err
@@ -139,11 +139,11 @@ as follows:
     if err := s.Stager.AddBinDependencyLink(filepath.Join(s.Stager.DepDir(), "MyBinary.dll"), "MyBinary.dll"); err != nil {
       return err
     }
-    </pre>
+    ```
 
 1. To configure the build.sh script to cross-compile, edit `scripts/build.sh` to include the following:
 
-    ```
+    ```shell
     GOOS=windows go build -ldflags="-s -w" -o bin/supply.exe mysql/supply/cli
     ```
 
@@ -152,7 +152,7 @@ The following steps build a cached extension buildpack artifact.
 
 1. To build a cached buildpack artifact, run the following command:
 
-    ```
+    ```shell
     buildpack-packager build -cached -stack STACK-NAME
     ```
 
@@ -172,7 +172,7 @@ You can also use an S3 bucket or Azure Storage.
 
 1. To deploy your app with the extension buildpack and determine whether the new buildpack functions as intended, run the following command:
 
-    ```
+    ```shell
     cf push APP-NAME -s windows -b EXT-BUILDPACK-URL -b hwc_buildpack
     ```
     Where:
