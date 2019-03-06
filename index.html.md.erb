@@ -40,6 +40,11 @@ This table lists the system buildpacks.
     <td><a href="https://github.com/cloudfoundry/go-buildpack">Go source</a></td>
   </tr>
   <tr>
+    <td><a href="./hwc/index.html" class="subnav">HWC</a></td>
+    <td><p>HWC</p></td>
+    <td><a href="https://github.com/cloudfoundry-incubator/hwc">HWC source</a></td>
+  </tr>
+  <tr>
     <td><a href="./java/index.html" class="subnav">Java</a></td>
     <td><p>Grails, Play, Spring, or any other JVM-based language or framework</p></td>
     <td><a href="https://github.com/cloudfoundry/java-buildpack">Java source</a></td>
@@ -50,13 +55,18 @@ This table lists the system buildpacks.
     <td><a href="https://github.com/cloudfoundry/dotnet-core-buildpack/">.NET Core source</a></td>
   </tr>
   <tr>
+    <td><a href="./nginx/index.html" class="subnav">NGINX <%= vars.footnote_asterisk %> </a></td>
+    <td><p>NGINX</p></td>
+    <td><a href="https://github.com/cloudfoundry/nginx-buildpack">NGINX source</a></td>
+  </tr>
+  <tr>
     <td><a href="./node/index.html" class="subnav">Node.js</a></td>
     <td><p>Node or JavaScript</p></td>
     <td><a href="https://github.com/cloudfoundry/nodejs-buildpack">Node.js source</a></td>
   </tr>
   <tr>
     <td><a href="./php/index.html" class="subnav">PHP</a></td>
-    <td><p>Cake, Symfony, Zend, Nginx, or HTTPD</p></td>
+    <td><p>Cake, Symfony, Zend, NGINX, or HTTPD</p></td>
     <td><a href="https://github.com/cloudfoundry/php-buildpack">PHP source</a></td>
   </tr>
   <tr>
@@ -64,7 +74,10 @@ This table lists the system buildpacks.
     <td><p>Django or Flask</p></td>
     <td><a href="https://github.com/cloudfoundry/python-buildpack">Python source</a></td>
   </tr>
-  <%= vars.r_buildpack %>
+  <tr><td><a href="./r/index.html" class="subnav">R</a> <%= vars.footnote_asterisk %> </td>
+    <td><p>R</p></td>
+    <td><a href="https://github.com/cloudfoundry/r-buildpack">R source</a></td>
+  </tr>
   <tr>
     <td><a href="./ruby/index.html" class="subnav">Ruby</a></td>
     <td><p>Ruby, JRuby, Rack, Rails, or Sinatra</p></td>
@@ -75,17 +88,9 @@ This table lists the system buildpacks.
     <td><p>HTML, CSS, JavaScript, or NGINX</p></td>
     <td><a href="https://github.com/cloudfoundry/staticfile-buildpack">Staticfile source</a></td>
   </tr>
-  <tr>
-    <td><a href="./nginx/index.html" class="subnav">NGINX</a></td>
-    <td><p>NGINX</p></td>
-    <td><a href="https://github.com/cloudfoundry/nginx-buildpack">NGINX source</a></td>
-  </tr>
-  <tr>
-    <td><a href="./hwc/index.html" class="subnav">HWC</a></td>
-    <td><p>HWC</p></td>
-    <td><a href="https://github.com/cloudfoundry-incubator/hwc">HWC source</a></td>
-  </tr>
 </table>
+
+<%= vars.footnote_asterisk %> <%= vars.buildpack_distribution_footnote %>
 
 ##<a id='community-buildpacks'></a>Community Buildpacks
 
