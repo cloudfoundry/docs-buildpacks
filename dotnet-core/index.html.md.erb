@@ -104,8 +104,7 @@ To specify the main project in a multi-project deployment perform the following 
 1. Create a `.deployment` file in your app's root folder and open the new file in a text editor.
 1. Designate the main project's path by configuring the file, using the following format:
 
-    ```
-    text
+    ```text
     [config]
     project = PATH-TO-YOUR-MAIN-PROJECT
     ```
@@ -114,10 +113,10 @@ To specify the main project in a multi-project deployment perform the following 
 <br>
     For example: 
 
-    <pre class="terminal">text
+    ```text
     [config]
     project = src/MyApp.Web/MyApp.Web.csproj
-    </pre>
+    ```
 
     In this example, by pointing to the `MyApp.Web` `*.csproj` file, `MyApp.Web` is configured as the main project.
 
@@ -126,7 +125,7 @@ To specify the main project in a multi-project deployment perform the following 
 When deployed, the buildpack attempts to execute the main project using the `dotnet run` command, `dotnet run -p PATH-TO-YOUR-MAIN-PROJECT`, 
 and automatically compiles all projects listed as dependencies in the main project's `*.csproj` or `*.fsproj` file.  
 <br>
-For example: Suppose your `.deployment` file is configured as above and you you have an app `src` folder containing three projects: 
+For example: Suppose your `.deployment` file is configured as above and you have an app `src` folder containing three projects: 
 `MyApp.Web`, `MyApp.DAL` and `MyApp.Services`. If your `MyApp.Web.csproj` file lists the `MyApp.DAL` and `MyApp.Services` projects as dependencies, 
 the two additional projects will be compiled by the buildpack.
 
@@ -159,13 +158,14 @@ To disable NuGet package caching, do the following:
 <br>
     For example:
 
-    <pre class="terminal">---
+    ```yml
+    ---
     applications:
-    &#8209; name: sample&#8209;aspnetcore&#8209;app
+    - name: sample-aspnetcore-app
       memory: 512M
       env:
-        CACHE&#95;NUGET&#95;PACKAGES: false
-    </pre>
+        CACHE_NUGET_PACKAGES: false
+    ```
 
 1. To alternatively configure the setting to false in the environment variables settings, run the following on the command line:
 
@@ -226,17 +226,17 @@ When using the SCD workflow for deploying your app, you must do the following:
 To pin the .NET Core SDK to a specific version or version line, create a `buildpack.yml` file at the app root
 and add your SDK version in one of the following formats:
 
-```
+```yml
 dotnet-core:
   sdk: 2.1.201
 ```
 
-```
+```yml
 dotnet-core:
   sdk: 2.1.x
 ```
 
-```
+```yml
 dotnet-core:
   sdk: 2.x
 ```
@@ -261,12 +261,12 @@ If you want to lock the .NET Runtime version, configure your `.csproj` or `.fspr
 
 For example, the following configuration locks the runtime to 2.1:
 
-<pre class="terminal">
-&lt;PropertyGroup&gt;
-  &lt;TargetFramework>netcoreapp2.1&lt;/TargetFramework&gt;
-  &lt;RuntimeFrameworkVersion>2.1.*&lt;/RuntimeFrameworkVersion&gt;
-&lt;/PropertyGroup&gt;
-</pre>
+```xml
+<PropertyGroup>
+  <TargetFramework>netcoreapp2.1</TargetFramework>
+  <RuntimeFrameworkVersion>2.1.*</RuntimeFrameworkVersion>
+</PropertyGroup>
+```
 
 <p class="note"><strong>Note:</strong> For source-based apps, specify a minor version of the .NET Runtime.
 Do not specify a patch version because
@@ -281,7 +281,7 @@ to include the `applyPatches` property and set the property to `false`.
 
 For example:
 
-<pre class="terminal">
+```json
 {
   "runtimeOptions": {
     "tfm": "netcoreapp2.0",
@@ -292,7 +292,7 @@ For example:
     "applyPatches": false
   }
 }
-</pre>
+```
 
 <p class="note"><strong>Note:</strong> Set <code>applyPatches: false</code> in  <code>*.runtimeconfig.json</code> only if you want
 to pin your .NET Framework to a specific version. This prevents your app
@@ -312,7 +312,7 @@ For maintaining ASP.NET Core assemblies, it is recommended you do one of the fol
 
 * Configure your app as a fully vendored app requiring fewer buildpack updates. Modify your `.csproj` file with the following:
 
-    ```
+    ```xml
     <PropertyGroup>
       <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     </PropertyGroup>
@@ -320,11 +320,11 @@ For maintaining ASP.NET Core assemblies, it is recommended you do one of the fol
 
 * Keep your SDK up to date, by setting `buildpack.yml` to the .NET SDK line you want to use.  For example:
 
-    <pre class="terminal">
+    ```yml
     ---
     dotnet-core:
     	sdk: 2.0.x
-    </pre>
+    ```
 
 <p class="note"><strong>Note:</strong> <code>2.0.x</code> ASP.NET Core assemblies are released
 in the <code>2.1.200</code>-<code>2.1.299</code> SDK versions,
@@ -362,7 +362,7 @@ to the app when running the initial startup command:
 
     The `Main` method should now resemble the following example:
 
-    <pre class="terminal">
+    ```c#
     public static void Main(string[] args)
     {
         var config = new ConfigurationBuilder()
@@ -376,13 +376,13 @@ to the app when running the initial startup command:
             .Build();
         host.Run();
     }
-    </prep>
+    ```
 
 1. Save your changes.
 
 1. Add `Microsoft.Extensions.Configuration.CommandLine` as a dependency in `*.csproj`:
 
-    ```
+    ```xml
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine">
       <Version>VERSION</Version>
     </PackageReference>
