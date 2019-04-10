@@ -11,7 +11,7 @@ Cloud Foundry provides extensive support for connecting a Spring application to 
 
 If your Spring application requires services such as a relational database or messaging system, you might be able to deploy your application to Cloud Foundry without changing any code. In this case, Cloud Foundry automatically re-configures the relevant bean definitions to bind them to cloud services.
 
-For information about connecting to services from a Spring application, see 
+For information about connecting to services from a Spring application, see
 [Spring Cloud Spring Service Connector](http://cloud.spring.io/spring-cloud-connectors/spring-cloud-spring-service-connector.html).
 
 Cloud Foundry auto-reconfigures applications only if the following items are true for your application:
@@ -182,8 +182,7 @@ public class Configuration {
         public DataSource dataSource() {
             CloudFactory cloudFactory = new CloudFactory();
             Cloud cloud = cloudFactory.getCloud();
-            String serviceID = cloud.getServiceID();
-            return cloud.getServiceConnector(serviceID, DataSource.class, null);
+            return cloud.getSingletonServiceConnector(DataSource.class, null);
         }
     }
 
@@ -291,8 +290,7 @@ public class DataSourceConfig {
     public DataSource dataSource() {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
-        String serviceID = cloud.getServiceID();
-        return cloud.getServiceConnector(serviceID, DataSource.class, null);
+        return cloud.getSingletonServiceConnector(DataSource.class, null);
     }
 }
 ```
@@ -328,9 +326,7 @@ public class MongoConfig {
     public MongoDbFactory mongoDbFactory() {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
-        MongoServiceInfo serviceInfo = (MongoServiceInfo) cloud.getServiceInfo("my-mongodb");
-        String serviceID = serviceInfo.getID();
-        return cloud.getServiceConnector(serviceID, MongoDbFactory.class, null);
+        return cloud.getSingletonServiceConnector(MongoDbFactory.class, null);
     }
 
     @Bean
@@ -366,9 +362,7 @@ public class RedisConfig {
     public RedisConnectionFactory redisConnectionFactory() {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
-        RedisServiceInfo serviceInfo = (RedisServiceInfo) cloud.getServiceInfo("my-redis");
-        String serviceID = serviceInfo.getID();
-        return cloud.getServiceConnector(serviceID, RedisConnectionFactory.class, null);
+        return cloud.getSingletonServiceConnector(RedisConnectionFactory.class, null);
     }
 
     @Bean
@@ -409,9 +403,7 @@ public class RabbitConfig {
     public ConnectionFactory rabbitConnectionFactory() {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
-        AmqpServiceInfo serviceInfo = (AmqpServiceInfo) cloud.getServiceInfo("my-rabbit");
-    String serviceID = serviceInfo.getID();
-    return cloud.getServiceConnector(serviceID, ConnectionFactory.class, null);
+        return cloud.getSingletonServiceConnector(ConnectionFactory.class, null);
     }
 
     @Bean
