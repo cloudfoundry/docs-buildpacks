@@ -94,9 +94,23 @@ For more information, see [Configuring Trusted System Certificates for Applicati
 
 ## <a id='dotnet-console'></a>.NET Apps
 
-If you are pushing a .NET Console app using the binary buildpack, see [Console Applications](https://dotnet-cookbook.cfapps.io/headless/console_app/) in the <em>.NET Cookbook</em> for more information.
+You can use the Binary buildpack to push .NET Core apps, .NET Console apps, and self-hosted apps to the Windows stack. Self-hosted apps are apps that include their own web server.
 
-You can deploy .NET Core apps to a Windows stack using the binary buildpack. Build it as a self-contained app and push it with the binary buildpack, specifying the `windows2016` stack with a custom start command.
+To push a .NET Console app using the binary buildpack, see [Console Applications](https://dotnet-cookbook.cfapps.io/headless/console_app/) in the <em>.NET Cookbook</em> for more information.
+
+To deploy .NET Core apps to Windows using the binary buildpack, build it as a self-hosted app and push it with the binary buildpack. Note that you will need to specify the `windows` stack and use a custom start command in your manifest file. Here is an example manifest: 
+
+```
+---
+applications:
+- name: mydemoapp
+  random-route: true
+  stack: windows
+  health-check-type: none
+  command: cmd /c .\CloudFoundry --server.urls http://*:%PORT%
+  env:
+    ASPNETCORE_ENVIRONMENT: production
+```
 
 For information about deploying different types of .NET apps, follow the links in the table below.
 
