@@ -5,8 +5,10 @@ owner: Buildpacks
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions 
+This topic describes how to push Cloud Foundry apps to Linux cells using the .NET Core buildpack. You can find supported ASP.NET Core versions 
 in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
+
+<p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux cells. To deploy .NET Core apps to Windows cells, use the [Binary buildpack] (https://docs.pivotal.io/pivotalcf/2-4/buildpacks/binary/index.html).</p>
 
 ## <a id='overview'></a> Overview
 Buildpacks provide needed dependencies to <%= vars.product_windows_full %> apps. <%= vars.product_windows %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
@@ -44,7 +46,7 @@ For information about deploying different types of .NET apps, follow the links i
   </tr>
 </table>
 
-## <a id='pushing-apps'></a> Push an App ##
+## <a id='pushing-apps'></a> Push a .NET Core App to Linux ##
 
 Follow the steps below to push your app.
 
