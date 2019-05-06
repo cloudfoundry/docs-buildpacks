@@ -3,10 +3,12 @@ title: .NET Core Buildpack
 owner: Buildpacks
 ---
 
+<strong><%= modified_date %></strong>
 
-
-This topic describes how to push Cloud Foundry apps using the .NET Core buildpack. You can find supported ASP.NET Core versions 
+This topic describes how to push Cloud Foundry apps to Linux cells using the .NET Core buildpack. You can find supported ASP.NET Core versions 
 in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
+
+<p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux cells. To deploy .NET Core apps to Windows cells, use the [Binary buildpack] (https://docs.pivotal.io/pivotalcf/2-4/buildpacks/binary/index.html).</p>
 
 ## <a id='overview'></a> Overview
 Buildpacks provide needed dependencies to <%= vars.product_windows_full %> apps. <%= vars.product_windows %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
@@ -44,7 +46,7 @@ For information about deploying different types of .NET apps, follow the links i
   </tr>
 </table>
 
-## <a id='pushing-apps'></a> Push an App ##
+## <a id='pushing-apps'></a> Push a .NET Core App to Linux ##
 
 Follow the steps below to push your app.
 
@@ -404,7 +406,3 @@ If your app requires external shared libraries that are not provided by the root
 <p class="note"><strong>Note</strong>: You must keep these libraries up to date. They do not update automatically.</p>
 
 The .NET Core buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
-
-## <a id='server-side-rendering'></a>Install Node for Server Side Rendering
-
-If your app requires `node` to be installed at runtime for server side rendering, you must set the `INSTALL_NODE` environment variable to `true` before pushing or restaging your app.
