@@ -181,7 +181,7 @@ You can also use an S3 bucket or Azure Storage.
 
     For example:
     <pre class='terminal'>
-    $ cf push my-app -s windows2016 -b http<span>:</span>//s3.amazon.com/my-bucket/my-example-buildpack.zip -b hwc_buildpack
+    $ cf push my-app -s windows -b http<span>:</span>//s3.amazon.com/my-bucket/my-example-buildpack.zip -b hwc_buildpack
     </pre>
 
 If your extension buildpack does not include the correct dependencies, you will receive an error
