@@ -97,8 +97,7 @@ Staging failed: Buildpack compilation step failed
 
 By default, the Node.js buildpack assumes you are using NPM. If you want to use 
 [Yarn](https://yarnpkg.com/) instead, you must provide a `yarn.lock` in your top-level app 
-directory. For more information, see [yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock/) in 
-the Yarn documentation.
+directory. For more information on the Yarn lock file, see [yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock/) in the Yarn documentation.
 
 ## <a id='vendoring'></a>Vendoring App Dependencies ##
 
@@ -118,11 +117,10 @@ The `cf push` command uploads the vendored dependencies with the app.
 ### <a id='offline_environments'></a>Usage in Offline Environments ###
 
 When vendoring apps for usage in offline environments, you must supply a lock file. For information 
-about npm lockfiles, see [npm-package-locks](https://docs.npmjs.com/files/package-locks) in the NPM 
-documentation. For information about the NPM lock file, see 
+on npm lockfiles, see [npm-package-locks](https://docs.npmjs.com/files/package-locks) in the NPM 
+documentation. For information on `npm-package-lock.json` files, see 
 [package-lock.json](https://docs.npmjs.com/files/package-lock.json) in the NPM 
-documentation. For information about the Yarn lock file, see 
-[yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock/) in the Yarn documentation.
+documentation. 
 
 This lock file informs the package manager of the exact versions of dependencies and transitive dependencies to look for when running `npm install` or `yarn install`. For this reason, you must keep `package.json`, the vendored `node_modules` directory, and your lock file synchronized to avoid network calls.
 
