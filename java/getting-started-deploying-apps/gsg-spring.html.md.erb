@@ -127,7 +127,7 @@ Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space
 
 From the root directory of your application, run `cf push APP-NAME -p PATH-TO-FILE.jar` to deploy your application.
 
-<p class="note"><strong>Note</strong>: Most Spring apps include an artifact, such as a <code>.jar</code>, <code>.war</code>, or <code>.zip</code> file. You must include the path to this file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. The example shows how to specify a path to the <code>.war</code> file for a Spring app. Refer to the <a href="../java-tips.html">Tips for Java Developers</a> topic for CLI examples for specific build tools, frameworks, and languages that create an app with an artifact.</p>
+<p class="note"><strong>Note</strong>: Most Spring apps include an artifact, such as a <code>.jar</code>, <code>.war</code>, or <code>.zip</code> file. You must include the path to this file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. The example shows how to specify a path to the <code>.jar</code> file for a Spring app. Refer to the <a href="../java-tips.html">Tips for Java Developers</a> topic for CLI examples for specific build tools, frameworks, and languages that create an app with an artifact.</p>
 
 `cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
