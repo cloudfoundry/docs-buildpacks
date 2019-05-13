@@ -1,31 +1,49 @@
 ---
-title: Using a Proxy
+title: Using a Proxy Server
 owner: Buildpacks
 ---
 
-
-
-This topic describes how developers can use a proxy with the buildpacks for their application.
+This topic describes how developers can use a proxy server with the buildpacks for their application.
 
 ##<a id='proxy-usage'></a> Use a Proxy
 
-Buildpacks can use proxies using the `http_proxy` and `https_proxy` environment variables. You should set these to the proxy hostname or port.
+You can assign proxy servers to environment variables. Proxy servers can be used to monitor your application's traffic or to fetch your application's dependencies. 
 
-All of the buildpacks automatically use these proxy environment variables correctly. If any buildpacks contacts the Internet during staging, it does so through the proxy host.
-The binary buildpack does not use a proxy because it does not use the Internet during staging.
+If any buildpack contacts the internet during staging, it does so through the proxy server host.
 
-To set a proxy for buildpacks to use during staging, perform one of the following procedures:
+<p class="note"><strong>Note:</strong> The binary buildpack does not use a proxy server because it does not access the internet during staging.
+</p>
 
-* Set the environment variables by adding the following section to the `env` block of the application manifest:
+##<a id='env-variable'></a> Setting environment variables
+
+<p class="note"><strong>Note</strong>: While many apps can use the <code>http_proxy</code> and <code>https_proxy</code> environment variables at runtime, some do not. Buildpacks do not add the functionality to make proxies work at runtime.</p>
+
+1. Add the following section to the `env` block of your application manifest YAML file:
 	<pre><code>---
 	  env:
-	    http_proxy: http<span>://</span>YOUR-HTTP-PROXY:PORT
-	    https_proxy: https<span>://</span>YOUR-HTTPS-PROXY:PORT
+	    http\_proxy: http<span>://</span>YOUR-HTTP-PROXY:PORT
+	    https\_proxy: https<span>://</span>YOUR-HTTPS-PROXY:PORT
 	</code></pre>
-* Set the environment variables with the Cloud Foundry Command Line Interface (cf CLI) using the `cf set-env` command:
-	<pre class="terminal">
-	$ cf set-env YOUR-APP http_proxy "http<span>://</span>YOUR-HTTP-PROXY:PORT"
-	$ cf set-env YOUR-APP https_proxy "https<span>://</span>YOUR-HTTPs-PROXY:PORT"
-	</pre>
+	Where:
+	</br>
+	</br>
+	<ul>
+	<li> `YOUR-HTTP-PROXY` is the address of your proxy server for HTTP requests.</li>
+	<li> `YOUR-HTTPS-PROXY` is the address of your proxy server for HTTPS requests.</li>
+	<li> `PORT` is the port number you are using for your proxy server.</li>
+	</ul>
 
-<p class="note"><strong>Note</strong>: While many apps use the <code>http_proxy</code> and <code>https_proxy</code> environment variables at runtime, some do not. The buildpack does not add extra functionality to make proxies work at runtime.</p>
+1. Set the environment variables with the Cloud Foundry Command Line Interface's (cf CLI) `cf set-env` command:
+	<pre class="terminal">
+	$ cf set-env YOUR-APP http\_proxy "http<span>://</span>YOUR-HTTP-PROXY:PORT"
+	$ cf set-env YOUR-APP https\_proxy "https<span>://</span>YOUR-HTTPs-PROXY:PORT"
+	</pre>
+	Where:
+	</br>
+	</br>
+	<ul>
+	<li> `YOUR-APP` is the name of your application.</li>
+	<li> `YOUR-HTTP-PROXY` is the address of your proxy server for HTTP requests.</li>
+	<li> `YOUR-HTTPS-PROXY` is the address of your proxy server for HTTPS requests.</li>
+	<li> `PORT` is the port number you are using for your proxy server.</li>
+	</ul>
