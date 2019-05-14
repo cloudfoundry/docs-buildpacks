@@ -30,7 +30,7 @@ The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/maste
 
 ## <a id='no-stack-record'></a> Buildpacks without a Stack Record ##
 
-Some buildpacks may have a missing stack record. For example, if you uploaded a custom buildpack before <%= vars.product_name %> introduced stack assocation. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record. 
+Some buildpacks may have a missing stack record. For example, if you uploaded a custom buildpack before <%= vars.product_name %> introduced stack association. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record. 
 
 In this case, you must manually assign a stack to the buildpack. To do this, run `cf update-buildpack BUILDPACK-NAME --assign-stack stack`.
 
@@ -43,7 +43,7 @@ Consider the following behavior when pushing apps to a deployment that has build
 
 ## <a id='stack-cli'></a> Managing Stack Association with the cf CLI ##
 
-The cf CLI commands for managing buildpacks include functionality to support assocation between buildpacks and stacks. The `update-buildpack`, `rename-buildpack`, and `delete-buildpack` commands all include a `-s` flag for specifying a stack. 
+The cf CLI commands for managing buildpacks include functionality to support association between buildpacks and stacks. The `update-buildpack`, `rename-buildpack`, and `delete-buildpack` commands all include a `-s` flag for specifying a stack. 
 
 When operating on buildpacks with the cf CLI, consider the following:
 
