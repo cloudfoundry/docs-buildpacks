@@ -9,14 +9,14 @@ This topic describes how developers can use a proxy server with the buildpacks f
 
 You can assign proxy servers to environment variables. Proxy servers can be used to monitor your application's traffic or to fetch your application's dependencies. 
 
-If any buildpack contacts the internet during staging, it does so through the proxy server.
+A buildpack uses a proxy server if that buildpack contacts the internet during staging.
 
 <p class="note"><strong>Note:</strong> The binary buildpack does not use a proxy server because it does not access the internet during staging.
 </p>
 
 ##<a id='env-variable'></a> Setting environment variables
 
-<p class="note"><strong>Note</strong>: If you are using the Java buildpack, the <code>http_proxy</code> and <code>https_proxy</code> environment variables are not supportedat runtime. The Java buildpack does not add the functionality to make proxies work at runtime.</p>
+<p class="note"><strong>Note</strong>: If you are using the Java buildpack, the <code>http_proxy</code> and <code>https_proxy</code> environment variables are not supported at runtime. The Java buildpack does not add the functionality to make proxies work at runtime.</p>
 
 1. Add the following section to the `env` block of your application manifest YAML file:
 	<pre><code>---
@@ -25,7 +25,6 @@ If any buildpack contacts the internet during staging, it does so through the pr
 	    https\_proxy: https<span>://</span>YOUR-HTTPS-PROXY:PORT
 	</code></pre>
 	Where:
-	</br>
 	</br>
 	<ul>
 	<li> `YOUR-HTTP-PROXY` is the address of your proxy server for HTTP requests.</li>
@@ -39,7 +38,6 @@ If any buildpack contacts the internet during staging, it does so through the pr
 	$ cf set-env YOUR-APP https\_proxy "https<span>://</span>YOUR-HTTPs-PROXY:PORT"
 	</pre>
 	Where:
-	</br>
 	</br>
 	<ul>
 	<li> `YOUR-APP` is the name of your application.</li>
