@@ -46,43 +46,42 @@ For information about deploying different types of .NET apps, follow the links i
   </tr>
 </table>
 
-## <a id='pushing-apps'></a> Push a .NET Core App to Linux ##
+## <a id='pushing-apps'></a> Push a .NET Core App
 
-Follow the steps below to push your app.
+To push a .NET Core app to a Linux cell, do the following:
 
-1. To push your app, run the following command:
+1. Run the `cf push` command:
 
-    ```shell
+    ```
     cf push APP-NAME
     ```
-    Where `APP-NAME` is the name you want to give your app.  
-<br>
-    For example:
+    Where `APP-NAME` is the name you want to give your app. For example:
 
     <pre class='terminal'>
     $ cf push my-app
-    Creating app my-app in org sample-org / space sample-space as username@example.com...
-    OK
+    Pushing app my-app to org my-org / space my-space as username@example.com...
     ...
-    requested state: started
-    instances: 1/1
-    usage: 1GB x 1 instances
-    urls: my-app.example.com
+    name:              my-app
+    requested state:   started
+    routes:            my-app.example.com
+    last uploaded:     Mon 13 May 15:48:00 PDT 2020
+    stack:             cflinuxfs3
+    buildpacks:        dotnet-core
     </pre>
-<br>
-    If your <%= vars.product_windows %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, 
-    run the push command with the `-b` option to specify buildpack:
 
-    ```shell
+    If your <%= vars.product_windows %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, 
+    run the push command with the `-b` option to specify the buildpack:
+
+    ```
     cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
     ```
 
     Where `APP-NAME` is the name you want to give your app.  
 
-1. Find the URL of your app in the push command output. In the example above, `my-app.example.com` is the URL of the app. 
-1. Open a browser and navigate to the URL to see your app running.  
+1. Find the URL of your app in the output of the `push` command. In the example above, `my-app.example.com` is the URL of the app.
+1. Open a browser and navigate to the URL to see your app running.
 
-For a basic example app, see [ASP.NET Core getting started app](https://github.com/IBM-Bluemix/aspnet-core-helloworld) in GitHub.
+For a basic sample app, see [ASP.NET Core Getting Started App](https://github.com/IBM-Bluemix/aspnet-core-helloworld) in GitHub.
 
 ## <a id='source-based'></a>Source-Based, Non-Published Deployments
 
