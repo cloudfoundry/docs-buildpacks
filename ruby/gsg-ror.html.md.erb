@@ -101,7 +101,7 @@ buildpack: ruby
 
 ##<a id='bind'></a>Step 5: Bind the Service Instance ##
 
-1. Run the command below to bind the service instance to the sample app. Once bound, environment variables are stored that allow the app to connect to the service after 
+1. Run the command below to bind the service instance to the sample app. Once bound, environment variables are stored that allow the app to connect to the service after
 a `cf push`, `cf restage`, or `cf restart` command.
   <pre class="terminal">
   $ cf bind-service cf-sample-app-rails rails-postgres
@@ -119,7 +119,7 @@ a `cf push`, `cf restage`, or `cf restart` command.
   <pre class="terminal">
   $ cf services
   Getting services in org my-org / space dev
-  OK   
+  OK
   name             service       plan      bound apps            last operation
   rails-postgres   elephantsql   turtle    cf-sample-app-rails   create succeeded
   </pre>
@@ -129,7 +129,7 @@ a `cf push`, `cf restage`, or `cf restart` command.
 
 Verify that the app is running by browsing to the URL generated in the output of the previous step. In this example, navigating to `cf-sample-app-rails.<%=vars.app_domain%>` verifies that the app is running.
 
-You've now pushed an app to <%=vars.product_short%>! For more information about this topic, see the [Deploying an Application](../../devguide/deploy-apps/deploy-app.html) topic.
+You've now pushed an app to <%=vars.product_short%>! For more information about this topic, see the [Pushing an App](../../devguide/deploy-apps/deploy-app.html) topic.
 
 ##<a id="next"></a>What to Do Next
 

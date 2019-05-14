@@ -9,14 +9,14 @@ This topic describes how to configure your .NET Framework apps for use with the 
 
 ## <a id='prerequisites'></a>Prerequisites
 
-Using the HWC buildpack requires deploying Windows cells with <%= vars.product_windows %>. 
+Using the HWC buildpack requires deploying Windows cells with <%= vars.product_windows %>.
 
 The HWC buildpack supports the following common app types by default:
 
-  * ASP.NET MVC  
-  * ASP.NET Web Forms  
-  * ASP.NET WebAPI Apps  
-  * Windows Communication Foundation (WCF)  
+  * ASP.NET MVC
+  * ASP.NET Web Forms
+  * ASP.NET WebAPI Apps
+  * Windows Communication Foundation (WCF)
 
 For information about deploying different types of .NET apps, follow the links in the table below.
 
@@ -81,7 +81,7 @@ Follow the steps below to push your application.
     cf push APP-NAME -s windows -b hwc_buildpack
     ```
 
-    Where `APP-NAME` is the name you want to give your app.  
+    Where `APP-NAME` is the name you want to give your app.
 <br>
     For example:
 
@@ -111,10 +111,10 @@ The following features can be used with HWC buildpack:
 
 ### <a id='context-path'></a> Context Path Routing
 
-Context path routing enables multiple apps to share the same route hostname, 
+Context path routing enables multiple apps to share the same route hostname,
 such as `app1.example.com/app2`. The context path routing feature is analogous to IIS virtual directories.
 
-Making an application accessible under another app's URL requires pushing both apps and applying a map-route between them. 
+Making an application accessible under another app's URL requires pushing both apps and applying a map-route between them.
 To define a context path route, such as `app1.example.com/app2`, run the following commands:
 
 1. To push the primary app, run the following command:
@@ -123,8 +123,8 @@ To define a context path route, such as `app1.example.com/app2`, run the followi
     cf push TOP-LEVEL-APP-NAME -s windows -b hwc_buildpack
     ```
 
-    Where:  
-      * `TOP-LEVEL-APP-NAME` is your top-level app's name.       
+    Where:
+      * `TOP-LEVEL-APP-NAME` is your top-level app's name.
 
 1. To push the secondary app and disable the app's starting and default routing, run the following command:
 
@@ -132,8 +132,8 @@ To define a context path route, such as `app1.example.com/app2`, run the followi
     cf push LOWER-LEVEL-APP-NAME --no-start --no-route -s windows -b hwc_buildpack
     ```
 
-    Where:   
-      * `LOWER-LEVEL-APP-NAME` is your lower-level app's name.  
+    Where:
+      * `LOWER-LEVEL-APP-NAME` is your lower-level app's name.
 
 1. To map routes between the primary and secondary apps, run the following command:
 
@@ -141,10 +141,10 @@ To define a context path route, such as `app1.example.com/app2`, run the followi
     cf map-route LOWER-LEVEL-APP-NAME APP-DOMAIN --hostname TOP-LEVEL-APP-NAME --path LOWER-LEVEL-APP-NAME
     ```
 
-    Where:  
-      * `TOP-LEVEL-APP-NAME` is your top-level app's name.  
-      * `LOWER-LEVEL-APP-NAME` is your lower-level app's name. 
-      * `APP-DOMAIN` is your site's public domain name.   
+    Where:
+      * `TOP-LEVEL-APP-NAME` is your top-level app's name.
+      * `LOWER-LEVEL-APP-NAME` is your lower-level app's name.
+      * `APP-DOMAIN` is your site's public domain name.
 
 1. To start the secondary app, run the following command:
 
@@ -152,7 +152,7 @@ To define a context path route, such as `app1.example.com/app2`, run the followi
     cf start LOWER-LEVEL-APP-NAME
     ```
 
-    Where: `LOWER-LEVEL-APP-NAME` is your lower-level app's name.  
+    Where: `LOWER-LEVEL-APP-NAME` is your lower-level app's name.
 
 For example, the following commands define context path routing for two HWC apps, `app1` and `app2`, where `app2` is made accessible under `app1` as `app1.example.com/app2`:
 
@@ -192,7 +192,7 @@ It is preinstalled in the Windows file system.
 The HWC buildpack allows developers to provide `.profile.bat` scripts with their applications.
 You can use a `.profile.bat` script to perform app-specific initialization tasks, such as setting custom environment variables.
 
-For information about configuring `.profile.bat` scripts, see the [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) section of <em>Deploying an Application</em>.
+For information about configuring `.profile.bat` scripts, see the [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) section of <em>Pushing an App</em>.
 
 ## <a id='help'></a>Buildpack Support
 
