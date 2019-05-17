@@ -55,12 +55,13 @@ As of v0.0.5, the following packages are provided by the buildpack:
 - forecast
 - shiny
 
-To specify additional packages needed by your app, provide the CRAN mirror and names of the packages inside your `r.yml` file. For example:
+To specify additional packages needed by your app, provide the CRAN mirror and names of the packages inside your `r.yml` file. You can also specify the number of threads to use for parallel installation. For example:
 
 ```
 ---
 packages:
   - cran_mirror: https://cran.r-project.org
+    num_threads: 2
     packages:
       - name: stringr
       - name: jsonlite
