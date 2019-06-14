@@ -76,7 +76,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_grails', at: 'gsg-grails-s5' %>
 
-### Step 4: (Optional) Configure a Procfile 
+### Step 4: (Optional) Configure a Procfile
 
 Use a Procfile to declare required runtime processes for your web app and to specify your web server. For more information, see the [Configuring a Production Server](../../prod-server.html) topic.
 
@@ -97,17 +97,17 @@ For more information about creating and using service instances, refer to the [S
 
 Run the cf CLI `cf marketplace` command to view managed and user-provided services and plans available to you.
 
-The example shows two of the available managed database-as-a-service providers and their offered plans: `cleardb` database-as-a-service for MySQL-powered apps and `elephantsql` PostgreSQL as a Service.
+The example shows two of the available managed database-as-a-service providers and their offered plans: `cleardb` database-as-a-service for MySQL-powered apps and `postgresql-10-odb` PostgreSQL as a Service.
 
 <pre class="terminal">
 $ cf marketplace
 Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
 OK
 
-service       plans                     description
+service             plans                                     description
 
-cleardb       spark, boost, amp         Highly available MySQL for your apps
-elephantsql   turtle, panda, elephant   PostgreSQL as a Service
+cleardb             spark, boost, amp                         Highly available MySQL for your apps
+postgresql-10-odb   standalone, standalone-replica, general   PostgreSQL as a Service
 
 </pre>
 
@@ -320,6 +320,3 @@ Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run 
 
 * `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
-
-
-
