@@ -52,7 +52,7 @@ Run `cf marketplace` to view managed and user-provided services and plans
 that are available to you.
 
 The example shows three of the available managed database-as-a-service providers
-and the plans that they offer: `cleardb` MySQL and `elephantsql` PostgreSQL as a
+and the plans that they offer: `cleardb` MySQL and `postgresql-10-odb` PostgreSQL as a
 Service.
 
 <pre class="terminal">
@@ -60,11 +60,11 @@ $  cf marketplace
 Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
 OK
 
-service          plans     description
+service             plans                                     description
 ...
-cleardb          spark, boost, amp, shock      Highly available MySQL for your Apps
+cleardb             spark, boost, amp, shock                  Highly available MySQL for your Apps
 ...
-elephantsql      turtle, panda, hippo, elephant   PostgreSQL as a Service
+postgresql-10-odb   standalone, standalone-replica, general   PostgreSQL as a Service
 ...
 </pre>
 

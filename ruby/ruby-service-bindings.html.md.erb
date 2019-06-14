@@ -25,12 +25,12 @@ Example VCAP_SERVICES:
 
     VCAP_SERVICES =
     {
-      "elephantsql": [
+      "postgresql-10-odb": [
         {
-          "name": "elephantsql-c6c60",
-          "label": "elephantsql",
+          "name": "postgresql-10-odb-c6c60",
+          "label": "postgresql-10-odb",
           "credentials": {
-            "uri": "postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb"
+            "uri": "postgres://exampleuser:examplepass@babar.postgresql-10-odb.com:5432/exampledb"
           }
         }
       ]
@@ -39,7 +39,7 @@ Example VCAP_SERVICES:
 Based on this `VCAP_SERVICES`, Cloud Foundry creates the following
 `DATABASE_URL` environment variable:
 
-    DATABASE_URL = postgres://exampleuser:examplepass@babar.elephantsql.com:5432/exampledb
+    DATABASE_URL = postgres://exampleuser:examplepass@babar.postgresql-10-odb.com:5432/exampledb
 
 Cloud Foundry uses the structure of the `VCAP_SERVICES` environment
 variable to populate `DATABASE_URL`.

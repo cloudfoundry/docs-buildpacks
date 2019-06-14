@@ -92,18 +92,18 @@ For more information about creating and using service instances, refer to the [S
 
 Run `cf marketplace` to view managed and user-provided services and plans available to you.
 
-The example shows two of the available managed database-as-a-service providers and their offered plans: `elephantsql` PostgreSQL as a Service and `rediscloud` Enterprise-Class Redis for Developers.
+The example shows two of the available managed database-as-a-service providers and their offered plans: `postgresql-10-odb` PostgreSQL as a Service and `rediscloud` Enterprise-Class Redis for Developers.
 
 <pre class="terminal">
 $ cf marketplace
 Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
 OK
 
-service       plans                          description
+service            plans                                      description
 
-elephantsql   turtle, panda, elephant        PostgreSQL as a Service
+postgresql-10-odb  standalone, standalone-replica, general    PostgreSQL as a Service
 
-rediscloud    30mb, 100mb, 1gb, 10gb, 50gb   Enterprise-Class Redis for Developers
+rediscloud         30mb, 100mb, 1gb, 10gb, 50gb               Enterprise-Class Redis for Developers
 
 </pre>
 
