@@ -69,11 +69,16 @@ To stage with the Python buildpack and start an application, do one of the follo
 
 ## Running the webserver
 
-This buildpack expects the Python application to listen to port 9099.  For example, using Flask, you would do
+This buildpack expects the Python application to listen to port 8080, but it is best to use the exposed `PORT` variable.  
+For example, using Flask, you would use the following to start your server on the PORT suggested by Cloud Foundry, and on 
+all network interfaces:
 ```
 if __name__ == "__main__":
-  app.run(host='0.0.0.0', port=9099)
+  port = int(os.getenv("PORT", 8080))
+  app.run(host='0.0.0.0', port=port)
 ```
+
+Note that the `PORT` variable is not visible in the GUI or the `cf env APPNAME` command, but it still exists. 
 
 ## <a id='vendoring'></a> Vendor App Dependencies
 
