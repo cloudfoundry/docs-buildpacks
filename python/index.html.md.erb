@@ -67,6 +67,14 @@ To stage with the Python buildpack and start an application, do one of the follo
 - Specify a start command in the application manifest by setting the `command` attribute. For more information, see the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#start-commands) topic.
 
 
+## Running the webserver
+
+This buildpack expects the Python application to listen to port 9099.  For example, using Flask, you would do
+```
+if __name__ == "__main__":
+  app.run(host='0.0.0.0', port=9099)
+```
+
 ## <a id='vendoring'></a> Vendor App Dependencies
 
 If you are deploying in an environment that is disconnected from the Internet, your application [must vendor its dependencies](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md).
