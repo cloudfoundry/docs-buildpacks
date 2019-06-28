@@ -67,18 +67,21 @@ To stage with the Python buildpack and start an application, do one of the follo
 - Specify a start command in the application manifest by setting the `command` attribute. For more information, see the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#start-commands) topic.
 
 
-## Running the webserver
+## <a id='run-web-server'></a>Run the Web Server
 
-This buildpack expects the Python application to listen to port 8080, but it is best to use the exposed `PORT` variable.  
-For example, using Flask, you would use the following to start your server on the PORT suggested by Cloud Foundry, and on 
-all network interfaces:
-```
+The Python buildpack expects the Python app to listen to port 8080. You can use
+the exposed `PORT` variable to start the web server on the port that Cloud
+Foundry expects on all network interfaces.
+
+For example, you can do the following using Flask:
+
+```python
 if __name__ == "__main__":
   port = int(os.getenv("PORT", 8080))
   app.run(host='0.0.0.0', port=port)
 ```
 
-Note that the `PORT` variable is not visible in the GUI or the `cf env APPNAME` command, but it still exists. 
+<p class="note"><strong>Note</strong>: The <code>PORT</code> variable is not visible in the GUI or the <code>cf env MY-APP</code> command.</p>
 
 ## <a id='vendoring'></a> Vendor App Dependencies
 
