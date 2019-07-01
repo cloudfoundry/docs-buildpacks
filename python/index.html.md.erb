@@ -85,7 +85,8 @@ if __name__ == "__main__":
 
 ## <a id='vendoring'></a> Vendor App Dependencies
 
-If you are deploying in an environment that is disconnected from the Internet, your application [must vendor its dependencies](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md).
+If you are deploying in an environment that is disconnected from the Internet, your application must vendor its dependencies.
+For more information, see [Disconnected environments](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md) in the `cloudfoundry/buildpack-packager` GitHub repository.
 
 For the Python buildpack, use `pip`:
 
@@ -127,7 +128,7 @@ There was a problem confirming the ssl certificate:
 [SSL: CERTIFICATE\_VERIFY\_FAILED] certificate verify failed (\_ssl.c:777) - skipping
 </pre>
 
-This error occurs because `pip` does not use system cerificates by default.
+This error occurs because `pip` does not use system certificates by default.
 To resolve this issue, set the `PIP_CERT` environment variable in the `manifest.yml` file to point to the system certificate store.
 
 For example:
