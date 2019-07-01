@@ -45,7 +45,7 @@ Consider the following behavior when pushing apps to a deployment that has build
 
 The cf CLI commands for managing buildpacks include functionality to support association between buildpacks and stacks. The `update-buildpack`, `rename-buildpack`, and `delete-buildpack` commands all include a `-s` flag for specifying a stack. 
 
-<p class="note"><strong></strong>: In cf CLI v7, the <code>rename-buildpack</code> command is removed in favor of <code>cf update-buildpack --rename</code>.</p>
+<p class="note"><strong>Note</strong>: cf CLI v7 removes the <code>cf rename-buildpack</code> command in favor of a <code>--rename</code> option for <code>cf update-buildpack</code>.</p>
 
 When operating on buildpacks with the cf CLI, consider the following:
 
