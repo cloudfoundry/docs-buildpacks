@@ -8,3 +8,5 @@ compiled into a larger document with [Bookbinder](http://github.com/cloudfoundry
 
 See the [docs-book-cloudfoundry](http://github.com/cloudfoundry/docs-book-cloudfoundry)
 repository for the complete list of open source documentation repositories, as well as information about the publishing process.
+
+`docs-buildpacks` only uses the `master` branch to publish the Buildpacks documenation. The Buildpack documentation is not version specfic. If you need to add version specfic content, add a template variable in the book repo for that version.
