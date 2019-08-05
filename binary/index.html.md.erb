@@ -9,13 +9,13 @@ Use the binary buildpack for running arbitrary binary web servers.
 ## <a id='pushing_apps'></a> Push an App ##
 
 Specify the binary buildpack to stage an app as a binary file.
-On a command line, use `cf push APP-NAME` with the `-b` option to specify the
+On a command line, use `cf push MY-AWESOME-APP` with the `-b` option to specify the
 buildpack.
 
 For example:
 
 <pre class="terminal">
-$ cf push my_app -b https://github.com/cloudfoundry/binary-buildpack.git
+$ cf push MY-AWESOME-APP -b https://github.com/cloudfoundry/binary-buildpack.git
 </pre>
 
 You can provide Cloud Foundry with the shell command to execute your binary in
@@ -27,10 +27,10 @@ specifies a `web` task:
     ```yaml
     web: ./app
     ```
-* **Command line**: Use `cf push APP-NAME` with the `-c` option:
+* **Command line**: Use `cf push MY-AWESOME-APP` with the `-c` option:
 
     <pre class="terminal">
-    $ cf push my_app -c './app' -b binary_buildpack
+    $ cf push MY-AWESOME-APP -c './app' -b binary_buildpack
     </pre>
 
 ## <a id='compiling'></a> Compile your Binary ##
@@ -82,7 +82,7 @@ To compile the above Go application on the rootfs, golang must be installed. `ap
 When deploying your binary to Cloud Foundry, use `cf push` with the `-s` option to specify the root filesystem it should run against.
 
 <pre class="terminal">
-$ cf push my_app -s (cflinuxfs3|lucid64)
+$ cf push MY-AWESOME-APP -s (cflinuxfs3|lucid64)
 </pre>
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
@@ -93,24 +93,42 @@ The custom trusted certificates are added to the `/etc/ssl/certs` directory and 
 For more information, see [Configuring Trusted System Certificates for Applications](https://docs.cloudfoundry.org/running/trusted-system-certificates.html).
 
 ## <a id='dotnet-console'></a>.NET Apps
+**.NET Core on Windows**
+To run .NET Core apps on the Windows stack, you must use the Binary buildpack. Follow these steps to set up your CF manifest appropriately. 
 
-You can use the Binary buildpack to push .NET Core apps, .NET Console apps, and self-hosted apps to the Windows stack. Self-hosted apps are apps that include their own web server.
-
-To push a .NET Console app using the binary buildpack, see [Console Applications](https://dotnet-cookbook.cfapps.io/headless/console_app/) in the <em>.NET Cookbook</em> for more information.
-
-To deploy .NET Core apps to Windows using the binary buildpack, build it as a self-hosted app and push it with the binary buildpack. Note that you will need to specify the `windows` stack and use a custom start command in your manifest file. Here is an example manifest: 
-
+1.In your app’s manifest file, specify the windows stack and a custom start command. This file should be in the same folder as your .csproj file and be marked “copy always.”  
 ```
 ---
 applications:
-- name: mydemoapp
-  random-route: true
+- name: MY-AWESOME-APP
   stack: windows
-  health-check-type: none
-  command: cmd /c .\CloudFoundry --server.urls http://*:%PORT%
-  env:
-    ASPNETCORE_ENVIRONMENT: production
+  command: cmd /c .\MY-AWESOME-APP --server.urls=http://0.0.0.0:%PORT%
 ```
+
+
+1.Publish the project using the dotnet CLI or Visual Studio.
+<pre class="terminal">
+$ dotnet publish -o ./publish -r win10-x64 -f netcoreapp2.1
+</pre>
+
+1.There should now be a “publish” folder. `cd` into that folder, verify the manifest.yml file is there, and then `cf push`:
+<pre class="terminal">
+$ cd publish
+$ cf push MY-AWESOME-APP
+</pre>
+
+**.NET Framework**
+To run a self hosted application using OWIN or another kind of .NET Framework app that needs a TCP port, compile the app to myapp.exe and use the Binary buildpack. Here is a sample CF manifest for that: 
+
+```
+applications:
+- name: MY-AWESOME-APP
+  stack: windows
+  command: cmd /c .\MY-AWESOME-APP --server.urls=http://0.0.0.0:%PORT%
+```
+
+**Console Apps**
+Console apps are not recommended to run on Cloud Foundry because they will normally run as a single instance and therefore will not be highly available. If you need to run a console app on Cloud Foundry, you can find more information on how to do so [here](https://dotnet-cookbook.cfapps.io/headless/console_app/).
 
 For information about deploying different types of .NET apps, follow the links in the table below.
 
