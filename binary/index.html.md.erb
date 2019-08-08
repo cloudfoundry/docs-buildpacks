@@ -93,32 +93,40 @@ The custom trusted certificates are added to the `/etc/ssl/certs` directory and 
 For more information, see [Configuring Trusted System Certificates for Applications](https://docs.cloudfoundry.org/running/trusted-system-certificates.html).
 
 ## <a id='dotnet-console'></a>.NET Apps
+
 **.NET Core on Windows**
-To run .NET Core apps on the Windows stack, you must use the Binary buildpack. Follow these steps to set up your CF manifest appropriately. 
 
-1.In your app’s manifest file, specify the windows stack and a custom start command. This file should be in the same folder as your .csproj file and be marked “copy always.”  
-```
----
-applications:
-- name: MY-AWESOME-APP
-  stack: windows
-  command: cmd /c .\MY-AWESOME-APP --server.urls=http://0.0.0.0:%PORT%
-```
+To run .NET Core apps on the Windows stack, you must use the Binary buildpack. Follow the steps below to configure your
+Cloud Foundry manifest appropriately.
 
+1. In the app manifest file, specify the `windows` stack and a custom start command. 
+This file should be in the same folder as your `.csproj` file and be marked **copy always**.  
 
-1.Publish the project using the dotnet CLI or Visual Studio.
-<pre class="terminal">
-$ dotnet publish -o ./publish -r win10-x64 -f netcoreapp2.1
-</pre>
+    ```
+    ---
+    applications:
+    - name: MY-AWESOME-APP
+      stack: windows
+      command: cmd /c .\MY-AWESOME-APP --server.urls=http://0.0.0.0:%PORT%
+    ```
 
-1.There should now be a “publish” folder. `cd` into that folder, verify the manifest.yml file is there, and then `cf push`:
-<pre class="terminal">
-$ cd publish
-$ cf push MY-AWESOME-APP
-</pre>
+1. Publish the project using the dotnet CLI or Visual Studio.
+
+    <pre class="terminal">
+    $ dotnet publish -o ./publish -r win10-x64 -f netcoreapp2.1
+    </pre>
+
+1. A `publish` folder should now exist. Navigate to this `publish` folder and verify the `manifest.yml` file exists. Run `cf push to deploy your app.
+
+    <pre class="terminal">
+    $ cd publish
+    $ cf push MY-AWESOME-APP
+    </pre>
 
 **.NET Framework**
-To run a self hosted application using OWIN or another kind of .NET Framework app that needs a TCP port, compile the app to myapp.exe and use the Binary buildpack. Here is a sample CF manifest for that: 
+
+To run a self hosted application using OWIN or another kind of .NET Framework app that requires a TCP port, compile the app
+to `myapp.exe` and use the Binary buildpack. For an example, see the following manifest: 
 
 ```
 applications:
@@ -128,7 +136,8 @@ applications:
 ```
 
 **Console Apps**
-Console apps are not recommended to run on Cloud Foundry because they will normally run as a single instance and therefore will not be highly available. If you need to run a console app on Cloud Foundry, you can find more information on how to do so [here](https://dotnet-cookbook.cfapps.io/headless/console_app/).
+
+Console apps are not recommended to run on Cloud Foundry because they do not normally run as a single instance and are not highly available. If you need to run a console app on Cloud Foundry, see [Console Applications](https://dotnet-cookbook.cfapps.io/headless/console_app/) in the Pivotal .NET Cookbook.
 
 For information about deploying different types of .NET apps, follow the links in the table below.
 
