@@ -39,7 +39,7 @@ Specify specific versions of the Ruby runtime in the `Gemfile` for your app as d
 
 For MRI, specify the version of Ruby in your `Gemfile` as follows: 
 
-``` ruby
+```ruby
 ruby '~> 2.2.3'
 ```
 
@@ -57,16 +57,19 @@ For JRuby, specify the version of Ruby in your `Gemfile` based on the version of
 JRuby version `1.7.x` supports either `1.9` mode or `2.0` mode. 
 
 - For `1.9` mode, use the following: 
-``` ruby
-ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.25'
-```
+
+    ```ruby
+    ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.25'
+    ```
 - For `2.0` mode, use the following: 
-``` ruby
-ruby '2.0.0', :engine => 'jruby', :engine_version => '1.7.25'
-```
+
+    ```ruby
+    ruby '2.0.0', :engine => 'jruby', :engine_version => '1.7.25'
+    ```
 
 For Jruby version `>= 9.0`, use the following:
-``` ruby
+
+```ruby
 ruby '2.2.3', :engine => 'jruby', :engine_version => '9.0.5.0'
 ```
 
