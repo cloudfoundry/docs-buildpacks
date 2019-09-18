@@ -11,7 +11,7 @@ in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotne
 <p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux cells. To deploy .NET Core apps to Windows cells, use the <a href="../binary/index.html">Binary buildpack</a>.</p>
 
 ## <a id='overview'></a> Overview
-Buildpacks provide needed dependencies to <%= vars.product_windows_full %> apps. <%= vars.product_windows %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
+Buildpacks provide needed dependencies to <%= vars.windows_runtime_full %> apps. <%= vars.windows_runtime %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
 - The pushed app contains one or more `*.csproj` or `*.fsproj` files.
 - The app is pushed from the output directory of the `dotnet publish` command.
@@ -69,7 +69,7 @@ To push a .NET Core app to a Linux cell, do the following:
     buildpacks:        dotnet-core
     </pre>
 
-    If your <%= vars.product_windows %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, 
+    If your <%= vars.windows_runtime %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, 
     run the push command with the `-b` option to specify the buildpack:
 
     ```
@@ -333,8 +333,8 @@ and <code>2.1.x</code> assemblies are released in the <code>2.1.300</code> and a
 
 ## <a id='port'></a>Configure the Listen Port ##
 
-<%= vars.product_windows %> sets the `$PORT` environment variable automatically. 
-For your .NET Core app to work on <%= vars.product_windows %>,
+<%= vars.windows_runtime %> sets the `$PORT` environment variable automatically. 
+For your .NET Core app to work on <%= vars.windows_runtime %>,
 you must configure the app to listen on the environment's specified port.  
 
 For C# apps, the following modifications allow the buildpack to pass the correct port from `$PORT` environment variable 
