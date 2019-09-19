@@ -5,7 +5,7 @@ owner: Buildpacks
 
 
 
-This topic describes how to create custom buildpacks for <%= vars.app_runtime_first %>.
+This topic describes how to create custom buildpacks for <%= vars.app_runtime_full %>.
 
 For more information about how buildpacks work, see the [How Buildpacks Work in Cloud Foundry](understand-buildpacks.html) topic.
 
@@ -18,7 +18,7 @@ The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/maste
 
 1. Ensure that you have installed the [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager).
 1. Create a manifest.yml in your buildpack.
-1. Run the packager in cached mode: 
+1. Run the packager in cached mode:
   <pre class="terminal">$ buildpack-packager build -cached -any-stack</pre>
 
 The packager will add (almost) everything in your buildpack directory into a zip file. It will exclude anything marked for exclusion in your manifest.
@@ -53,8 +53,8 @@ default_versions:
 To specify a default version:
 
 1. Add the `default_version` object to your manifest, following the [rules](#rules) below.
-For a complete example, see 
-[manifest.yml](https://github.com/cloudfoundry/go-buildpack/blob/master/manifest.yml) in the 
+For a complete example, see
+[manifest.yml](https://github.com/cloudfoundry/go-buildpack/blob/master/manifest.yml) in the
 go-buildpack repository in GitHub.
 
 1. Run the `default_version_for` script from the [compile-extensions](https://github.com/cloudfoundry/compile-extensions) repository, passing the path of your `manifest.yml` and the dependency name as arguments. The following command uses the example manifest from step 1:
@@ -77,7 +77,7 @@ The `buildpack-packager` script validates this object according to the following
       version: 1.7.5
     ```
 
-* If you specify a `default_version` for a dependency, you must also list that dependency and version under the `dependencies` section of the manifest. The following example causes `buildpack-packager` to fail with an error because the manifest specifies `version: 1.9.2` for the `go` dependency, but lists `version: 1.7.5` under `dependencies`. 
+* If you specify a `default_version` for a dependency, you must also list that dependency and version under the `dependencies` section of the manifest. The following example causes `buildpack-packager` to fail with an error because the manifest specifies `version: 1.9.2` for the `go` dependency, but lists `version: 1.7.5` under `dependencies`.
 
     ```yml
     # Incorrect; will fail to package
@@ -103,7 +103,7 @@ Buildpack developers must ensure their custom buildpacks follow the contract.
 This section uses the following placeholders:
 
 * `IDX` is the zero-padded index matching the position of the buildpack in the priority list.
-* `MD5` is the MD5 checksum of the buildpack's URL. 
+* `MD5` is the MD5 checksum of the buildpack's URL.
 
 For all buildpacks that supply dependencies via `/bin/supply`:
 
@@ -124,7 +124,7 @@ For all buildpacks that supply dependencies via `/bin/supply`:
 
 For the last buildpack:
 
-* To make use of dependencies provided by the previously applied buildpacks, the last buildpack must scan `/tmp/deps/` for index-named directories containing `config.yml.` 
+* To make use of dependencies provided by the previously applied buildpacks, the last buildpack must scan `/tmp/deps/` for index-named directories containing `config.yml.`
 * To make use of dependencies provided by previous buildpacks, the last buildpack:
 	* May use `/bin` during staging, or make it available in $PATH during launch
 	* May use `/lib` during staging, or make it available in $LD\_LIBRARY\_PATH during launch
@@ -168,6 +168,3 @@ The app will then be deployed to <%= vars.app_runtime %>, and the buildpack will
 <%= vars.disable_custom %>
 
  <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that GitHub recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
-
-
-
