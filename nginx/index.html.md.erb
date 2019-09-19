@@ -87,7 +87,9 @@ the top of your `nginx.conf` file. You do not need to provide an `ngx_stream_mod
 <p class="note"><strong>Note</strong>: To name your modules directory something other than <code>modules</code>, use the NGINX <code>load_module</code> directive, providing a path to the module relative to the location of your <code>nginx.conf</code> file. For example:
 <code>load_module some_module_dir/my_module.so</code></p>
 
-<p class="note"><strong>Note</strong>:To use unescaped environment variables please add an array of env var names to the <code>buildpack.yml<code></p>
+```{{module "unescaped environment variables"}}```
+
+To use unescaped environment variables please add an array of env var names to the <code>buildpack.yml<code>
   Ex:
   <code>
 ---
