@@ -130,7 +130,7 @@ the `http_proxy` and/or `https_proxy` environment variables. For more informatio
 
 Ruby uses certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to add the custom certificates into the app container. 
 
-<% if vars.product_name == "CF" %>
+<% if vars.platform_code == 'CF' %>
   <%= partial "../link-configure-trusted-certificates" %>
 <% end %>
 
