@@ -43,11 +43,12 @@ To create a Web Config Transform Extension Buildpack, complete the following pro
 1. [Identify Environment Dependent Configurations and Externalize](#tokenize)
 1. [Create a Cloud Foundry App Manifest](#create-manifest)
 1. [Modify Your Cloud Foundry App Manifest](#modify-manifest)
-1. Add web config transformations
-1. Move config settings to Spring Cloud Config Server
-1. Create service for Spring Cloud Config Server
-1. Bind config service to app using manifest
-1. Push app by parameterized environment name
+1. [Validation Test the App](#test-push)
+1. [Move Config Settings to Spring Cloud Config Server](#move-to-spring-cloud) 
+1. [Create Service for Spring Cloud Config Server](#create-spring-cloud-service)
+1. [Bind the Config Service to Your App Using Your Manifest](#create-spring-cloud-service)
+1. [Parameterize the Manifest Environment Name](#parameterize)
+1. [Push the App](push-app)
 
 For additional information about extension buildpack configuration and creation commands see: [Creating a Custom Buildpack](http://engineering.pivotal.io/post/creating-a-custom-buildpack/) in the _Pivotal Engineering Journal_.
 
@@ -55,12 +56,15 @@ For additional information about extension buildpack configuration and creation 
 
 To externalize your workload's environment dependent configurations settings, complete the following steps:  
 
-1. Review your workload's `Web.config` and `Web.Release.config` files.
-1. Identify configuration items in the files that are environment dependent that need to be externalized.
-
-    For example the `connectionString` properties below are environment dependent and must be externalized:
-
+1. Backup your workload's `Web.config` and `Web.Release.config` files.  
+1. Review your workload's `Web.config` and `Web.Release.config` files.  
+1. Identify configuration items in the files that are environment dependent that need to be externalized.  
+<br>
+    For example, the `connectionString` properties in the sample `Web.config` and `Web.Release.config` files below 
+    are environment-specific and must be externalized:  
+<br>
     **Web.Config**
+
     ```xml
     <connectionStrings>
         <add name="MyDB" 
@@ -69,6 +73,7 @@ To externalize your workload's environment dependent configurations settings, co
     ```
 
     **Web.Release.config**
+
     ```xml
     <connectionStrings>
         <add name="MyDB" 
@@ -78,11 +83,12 @@ To externalize your workload's environment dependent configurations settings, co
     </connectionStrings>
     ```
 
-1. Modify your transform file (ex: `Web.Release.config`) to  use tokenized configuration items in the following format `#{configPath:key}`. 
-
-    For example the `connectionString` properties below have been tokenized:
-
+1. Modify your transform file (ex: `Web.Release.config`) to  use tokenized configuration items in the following format `#{configPath:key}`.  
+<br>
+    For example the `connectionString` properties below have been tokenized:  
+<br>
     **Web.Config**
+
     ```xml
     <connectionStrings>
         <add name="MyDB" 
@@ -91,6 +97,7 @@ To externalize your workload's environment dependent configurations settings, co
     ```
 
     **Web.Release.config**
+
     ```xml
     <?xml version="1.0" encoding="utf-8"?>
     <!-- For Cloud Foundry -->
@@ -122,7 +129,9 @@ To externalize your workload's environment dependent configurations settings, co
 
     <p class='note'><strong>Note:</strong> Transform xml attributes and tokens are case-sensitive.</p>
 
-## <a id='create-manifest'></a> Create a Cloud Foundry App Manifest  
+## <a id='create-manifest'></a> Create a Parameterized Cloud Foundry App Manifest 
+
+### <a id='create-manifest'></a> Create a Cloud Foundry App Manifest  
 
 To create a Cloud Foundry app manifest for your workload, complete the following steps:  
 
@@ -135,7 +144,7 @@ If it does not and your application is in Cloud Foundry, create the manifest by 
 
     Where `APP-NAME` is your app's name.
 
-## <a id='modify-manifest'></a> Modify Your Cloud Foundry App Manifest  
+### <a id='modify-manifest'></a> Modify Your Cloud Foundry App Manifest  
 
 To modify your workload's Cloud Foundry app manifest to perform token 
 replacements during `cf push`, complete the following steps:  
@@ -154,7 +163,7 @@ Below is a sample added referring to the connection string.
 
     ```yaml
     applications:
-    - name: sampleapp
+    - name: APP-NAME
       stack: windows
       buildpacks:
       - https://github.com/cloudfoundry-community/web-config-transform-buildpack/releases/download/VERSION/web-config-transform-buildpack-VERSION.zip
@@ -164,9 +173,8 @@ Below is a sample added referring to the connection string.
     ```
 
     Where:  
-    * `VERSION` is the buildpack version.  
-    * `ACCOUNT-ID` is the is the service account name.  
-    * `PASSWORD` is the service account password.  
+    * `APP-NAME` is your app's name.  
+    * `VERSION` is the buildpack version.   
     * `SETTING-NAME` is the name of a configuration setting used by your app. Create as many NAME : "VALUE" pair lines as are needed by your app.  
     * `SETTING-VALUE` is the development value of the setting. Create as many NAME : "VALUE" pair lines as are needed by your app.  
 
@@ -177,20 +185,20 @@ Below is a sample added referring to the connection string.
     - name: sampleapp
       stack: windows
       buildpacks:
-      - https://github.com/cloudfoundry-community/web-config-transform-buildpack/releases/download/VERSION/web-config-transform-buildpack-VERSION.zip
+      - https://github.com/cloudfoundry-community/web-config-transform-buildpack/releases/download/v1.1.5/web-config-transform-buildpack-v1.1.5.zip
       - hwc_buildpack
       env:
-        "connectionStrings:MyDB": "Data Source=ReleaseSQLServer;Initial Catalog=MyReleaseDB;User ID=ACCOUNT-ID;Password=PASSWORD"
+        "connectionStrings:MyDB": "Data Source=ReleaseSQLServer;Initial Catalog=MyReleaseDB;User ID=serviceacc3;Password=PaKsAsEwWoOrOdT3"
     ```
 
     <p class='note'><strong>Note:</strong> Adding token replacements with Environment variables is only for experimental activities. 
-    Only put configuration item keys and values in the manifest for testing purposes.	
+    Only put configuration item keys and values in the manifest for testing purposes. 
     Config settings should be externalized using git repositories and Spring Cloud Config Server. 
     Spring Cloud Config Server should be used for externalizing configuration settings. 
     For more information about externalizing configuration settings in Spring Cloud Config Server, see <a href="#move-to-spring-cloud">Move Config Settings to Spring Cloud Config Server</a>, below.
     </p>
 
-## <a id='add-transforms'></a> Push the App
+## <a id='test-push'></a> Validation Test the App
 
 1. Build and push the app to Cloud Foundry to verify that your config settings are properly transformed by running the following command:   
 
@@ -204,28 +212,31 @@ A multi-environment, production-ready configuration can be achieved using share 
 
 1. Determine your manifest file's `ASPNETCORE_ENVIRONMENT` environment variable value.  
 1. Create a network accessible git repository for each application.  
-1. Create `YOUR-APPLICATION`.yaml file to have common settings across all environments.  
-1. Create `YOUR-APPLICATION`-`APP-ENVIRONMENT`.yaml for each unique environment, 
+1. Create a `YOUR-APPLICATION`.yaml file to have common settings across all environments.  
+1. Create a `YOUR-APPLICATION`-`APP-ENVIRONMENT`.yaml for each unique environment, 
 where `APP-ENVIRONMENT` is the `ASPNETCORE_ENVIRONMENT` environment variable value.  
 
 ##### Sample Config Server yml files
 
-sampleapp.yaml
+**sampleapp.yaml**  
+
 ```yaml
 appSettings:
   Setting1: "Common setting1"
 ```
 
-sampleapp-Development.yaml
+**sampleapp-Development.yaml**  
+
 ```yaml
  connectionStrings:
-   MyDB: "Data Source=devserver;Initial Catalog=mydb;User ID=xxxx;Password=xxxx"
+   MyDB: "Data Source=devserver;Initial Catalog=mydb;User ID=serviceacc3;Password=PaKsAsEwWoOrOdT3"
 ```
 
-sampleapp-Production.yaml
+**sampleapp-Production.yaml**  
+
 ```yaml
  connectionStrings:
-   MyDB: "Data Source=prodserver;Initial Catalog=mydb;User ID=xxxx;Password=xxxx"
+   MyDB: "Data Source=prodserver;Initial Catalog=mydb;User ID=serviceacc3;Password=PaKsAsEwWoOrOdT3"
 ```
 
 ## <a id='create-spring-cloud-service'></a> Create Service for Spring Cloud Config Server
@@ -237,7 +248,7 @@ in your CF Marketplace by running the following command:
     cf marketplace
     ```
 
-1. Create a JSON file, for example `config-server.json`, for config server setup using the following format:  
+1. Create a text file for config server setup using the following format:  
 
     ```json
     {
@@ -254,6 +265,8 @@ in your CF Marketplace by running the following command:
 
 **Question: `CONFIG-REPO` is XXXXXX. **  
 
+1. Save the text file as a JSON file, for example `config-server.json`.  
+
    <p class='note'><strong>Note:</strong> Ensure file is not BOM-encoded.</p>
     
 1. Create config server using above configuration file using the following command:  
@@ -267,7 +280,7 @@ in your CF Marketplace by running the following command:
     * `SERVER-NAME` is the name for your config server.  
     * `CONFIG-FILE` is the filename of your server config json file.  
 
-## <a id='create-spring-cloud-service'></a> Bind Config Service to App Using Manifest
+## <a id='create-spring-cloud-service'></a> Bind the Config Service to Your App Using Your Manifest
 
 The newly created config server must be bound to your app to be used by the app.
 
@@ -275,23 +288,23 @@ The newly created config server must be bound to your app to be used by the app.
 
     ```yaml
     applications:
-    - name: sampleapp
+    - name: APP-NAME
       stack: windows
       buildpacks:
       - https://github.com/cloudfoundry-community/web-config-transform-buildpack/releases/download/VERSION/web-config-transform-buildpack-VERSION.zip
       - hwc_buildpack
       env:
-        "connectionStrings:MyDB": "Data Source=ReleaseSQLServer;Initial Catalog=MyReleaseDB;User ID=ACCOUNT-ID;Password=PASSWORD"
+        "SETTING-NAME": "SETTING-VALUE"
 
       services:
       - SERVER-NAME     
     ```
 
     Where:  
+    * `APP-NAME` is your app's name.  
     * `VERSION` is the buildpack version.  
-    * `ACCOUNT-ID` is the is the service account name.  
-    * `PASSWORD` is the service account password. 
-    * `SERVER-NAME` is the name for your config server. 
+    * `SETTING-NAME` is the name of a configuration setting used by your app. Create as many NAME : "VALUE" pair lines as are needed by your app.  
+    * `SETTING-VALUE` is the development value of the setting. Create as many NAME : "VALUE" pair lines as are needed by your app.   
     
     For example:
 
@@ -317,8 +330,8 @@ depending on your current deployment stage along your CD pipeline.
 
 To parameterize your manifest:
 
-1. [Create Parameter Value Files]
-1. [Parameterize the Manifest File]
+1. [Create Parameter Value Files](#parameter-value-files)
+1. [Parameterize the Manifest File](#parameterize)
 
 ### <a id='parameter-value-files'></a> Create Parameter Value Files
 
