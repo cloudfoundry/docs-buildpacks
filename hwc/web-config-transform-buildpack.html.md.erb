@@ -71,11 +71,12 @@ identifying the environment-specific configuration settings.
     <p class='note'><strong>Note:</strong> Web and WCF apps are created with <strong>Debug</strong> and <strong>Release</strong> configurations 
     of the <code>Web.Debug.config</code>, and <code>Web.Release.config</code> web config transformation files. 
     When debugging on a developer machine, transform the <code>Debug</code> <code>Web.Debug.config</code> file and use the <code>Debug</code> configuration profile.
-    </p>
+    </p> 
 
-1. The environment-specific properties must be externalized by tokenizing each configuration setting 
-using the format `#{configPath:key}`. The following are examples of tokenized  
-`Web.config` and `Web.Release.config` files:  
+1. To externalize your `Web.config` and `Web.Release.config` files, tokenize each of the files' 
+environment-specific properties using the format `#{configPath:key}`.  
+<br>
+    For example:  
 <br>
     **Web.Config**
 
@@ -195,7 +196,8 @@ property.
 
 ### <a id='test-push'></a> Validation Test the App
 
-1. Build and push the app to Cloud Foundry to verify that your config settings are properly transformed by running the following command:   
+1. To verify your config settings are properly transformed by 
+building and pushing your app to Cloud Foundry, run the following command:   
 
     ```script
     cf push
@@ -235,16 +237,19 @@ appSettings:
    MyDB: "Data Source=prodserver;Initial Catalog=mydb;User ID=serviceacc3;Password=PaKsAsEwWoOrOdT3"
 ```
 
-## <a id='create-spring-cloud-service'></a> Create a Config Service for Spring Cloud Config Server
+## <a id='create-spring-cloud-service'></a> Create a Configuration Service for Spring Cloud Config Server
 
-1. Confirm you have either `p.config-server` or `p-config-server` config servers available 
-in your CF Marketplace by running the following command:  
+The Web Config Transform Extension Buildpack requires a configuration file pointing to your GitHub repository. 
+To provide this, create a JSON file pointing to your GitHub repository and start a config server service.
+
+1. To confirm you have either `p.config-server` or `p-config-server` config servers available 
+in your CF Marketplace, run the following command:  
 
     ```
     cf marketplace
     ```
 
-1. Create a text file for config server setup using the following format:  
+1. Create a text file for configuration server setup using the following format:  
 
     ```json
     {
@@ -263,7 +268,7 @@ in your CF Marketplace by running the following command:
 
    <p class='note'><strong>Note:</strong> Ensure file is not BOM-encoded.</p>
     
-1. Create config server using above configuration file using the following command:  
+1. To create a config server using your configuration file, run the following command:  
 
     ```script
     cf create-service CONFIG-SERVER-MARKET standard SERVER-NAME  -c .\CONFIG-FILE
