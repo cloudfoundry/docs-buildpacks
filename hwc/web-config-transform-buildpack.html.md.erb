@@ -3,10 +3,7 @@ title: Creating an Extension Buildpack for ASP.NET Apps
 owner: Buildpacks
 ---
 
-This topic explains how to write Web Config Transform extension buildpacks for ASP.NET apps.  
-This buildpack can inject appSettings and connectionStrings values based on environment 
-specific YAML config files even if replacement tokens are not present in Web.Release.Config file.  
-
+This topic explains how to write a Web Config Transform Extension Buildpack for ASP.NET apps.  
 
 ## <a id='prerequisites'></a>Prerequisites
 
@@ -16,52 +13,40 @@ specific YAML config files even if replacement tokens are not present in Web.Rel
 
 
 ## <a id='overview'></a> Overview
-Most .NET Framework apps are pushed with the [Hosted Web Core (HWC) buildpack](../hwc/index.html).  
 
-The HWC buildpack contains the commonly required .NET dependencies used by .NET apps. This set of 
-HWC buildpack dependencies is a subset entire gamut of possible .NET dependencies and does not contain all the
-DLLs that every app could need.  
+To run legacy ASP.Net applications configuration settings are typically injected through Web.config files. 
+As per cloud-native principles, an app's build artifacts should not include configuration settings.  
 
-You cannot add modules or extensions directly to the HWC buildpack. If the HWC buildpack 
-lacks dependencies your app requires, Cloud Foundry recommends that you create
-an extension buildpack containing the missing dependencies required by your app.
-
-<p class='note'><strong>Note:</strong> The HWC buildpack 
-contains a number of built-in HWC features, for example, the URL Rewrite and HTTP compression modules.
-Extensions should only provide additional functionality to your app. For more information about
-existing HWC features, see <a href="../hwc/index.html#features">Features</a> in
-<em>HWC Buildpack</em>.</p>
-
-In legacy ASP.Net applications, configuration settings are injected through Web.config files. 
-As per cloud-native principles, configuration should stay out of build artifacts. 
-An extension buildpack supplies a custom set of .NET dependencies to an app's container. 
-The steps below create and use a custom Web Config Transform Extension Buildpack which provides a solution for deploying legacy ASP.Net applications by using token replacement 
-during cf push staging.
+The Web Config Transform Extension Buildpack injects environment-specific appSettings and connectionString values 
+into legacy ASP.Net app containers by performing token replacements during `cf push` staging.
 
 To create a Web Config Transform Extension Buildpack, complete the following procedures:  
 
 1. [Identify Environment Dependent Configurations and Externalize](#tokenize)
-1. [Create a Cloud Foundry App Manifest](#create-manifest)
-1. [Modify Your Cloud Foundry App Manifest](#modify-manifest)
-1. [Validation Test the App](#test-push)
+1. [Create a Parameterized Cloud Foundry App Manifest](#create-manifest)
 1. [Move Config Settings to Spring Cloud Config Server](#move-to-spring-cloud) 
-1. [Create Service for Spring Cloud Config Server](#create-spring-cloud-service)
-1. [Bind the Config Service to Your App Using Your Manifest](#create-spring-cloud-service)
+1. [Create a Config Service for Spring Cloud Config Server](#create-spring-cloud-service)
+1. [Bind the Config Service to Your App Using Your Manifest](#bind-service)
 1. [Parameterize the Manifest Environment Name](#parameterize)
-1. [Push the App](push-app)
+1. [Push the App](#push-app)
 
-For additional information about extension buildpack configuration and creation commands see: [Creating a Custom Buildpack](http://engineering.pivotal.io/post/creating-a-custom-buildpack/) in the _Pivotal Engineering Journal_.
+For additional information about extension buildpack configuration and creation commands see: 
+[Creating a Custom Buildpack](http://engineering.pivotal.io/post/creating-a-custom-buildpack/) 
+in the _Pivotal Engineering Journal_.
+
+<p class='note'><strong>Note:</strong> The Web Config Transform Extension Buildpack can inject settings 
+regardless of whether the replacement tokens are present in Web.Release.Config file.
+</p>
 
 ## <a id='tokenize'></a> Identify Environment Dependent Configurations and Externalize
 
 To externalize your workload's environment dependent configurations settings, complete the following steps:  
 
 1. Backup your workload's `Web.config` and `Web.Release.config` files.  
-1. Review your workload's `Web.config` and `Web.Release.config` files.  
-1. Identify configuration items in the files that are environment dependent that need to be externalized.  
+1. Review the `Web.config` and `Web.Release.config` files, 
+identifying the environment-specific configuration settings.  
 <br>
-    For example, the `connectionString` properties in the sample `Web.config` and `Web.Release.config` files below 
-    are environment-specific and must be externalized:  
+    For example, the `connectionString` properties in the sample files below are environment-specific:  
 <br>
     **Web.Config**
 
@@ -83,9 +68,14 @@ To externalize your workload's environment dependent configurations settings, co
     </connectionStrings>
     ```
 
-1. Modify your transform file (ex: `Web.Release.config`) to  use tokenized configuration items in the following format `#{configPath:key}`.  
-<br>
-    For example the `connectionString` properties below have been tokenized:  
+    <p class='note'><strong>Note:</strong> Web and WCF apps are created with <strong>Debug</strong> and <strong>Release</strong> configurations 
+    of the <code>Web.Debug.config</code>, and <code>Web.Release.config</code> web config transformation files. 
+    When debugging on a developer machine, transform the <code>Debug</code> <code>Web.Debug.config</code> file and use the <code>Debug</code> configuration profile.
+    </p>
+
+1. The environment-specific properties must be externalized by tokenizing each configuration setting 
+using the format `#{configPath:key}`. The following are examples of tokenized  
+`Web.config` and `Web.Release.config` files:  
 <br>
     **Web.Config**
 
@@ -122,21 +112,21 @@ To externalize your workload's environment dependent configurations settings, co
     </configuration>
     ```
 
-    <p class='note'><strong>Note:</strong> Web and WCF apps are created with <strong>Debug</strong> and <strong>Release</strong> configurations 
-    of the <code>Web.Debug.config</code>, and <code>Web.Release.config</code> web config transformation files. 
-    When debugging on a developer machine, transform the <code>Debug</code> <code>Web.Debug.config</code> file and use the <code>Debug</code> configuration profile.
-    </p>
-
     <p class='note'><strong>Note:</strong> Transform xml attributes and tokens are case-sensitive.</p>
 
 ## <a id='create-manifest'></a> Create a Parameterized Cloud Foundry App Manifest 
+
+A Cloud Foundry app manifest is required for the extension buildpack to perform token replacements during `cf push`.  
 
 ### <a id='create-manifest'></a> Create a Cloud Foundry App Manifest  
 
 To create a Cloud Foundry app manifest for your workload, complete the following steps:  
 
 1. Ensure your application has a Cloud Foundry manifest file. 
-If it does not and your application is in Cloud Foundry, create the manifest by running the following command:  
+If the manifest file does not exist create it.  
+<br>
+    If your application is in Cloud Foundry, you can create the manifest file 
+    by running the following command:  
 
     ```
     cf create-app-manifest APP-NAME
@@ -155,11 +145,16 @@ replacements during `cf push`, complete the following steps:
 1. Open the manifest file in a text editor.
 
 1. Add a reference for your chosen Web Config Transform Buildpack buildpack version to the manifest file's `buildpacks` 
-property. Ensure the new entry precedes the existing hwc_buildpack buildpack entry. that will perform the token 
-replacement on cf push action.  
+property. 
 
-1. Add an environment variable to the manifest for each config item requiring replacement with tokenized values. 
-Below is a sample added referring to the connection string.  
+    <p class='note'><strong>Note:</strong> Ensure the new entry precedes the existing 
+      <code>hwc_buildpack</code> buildpacks entry. The <code>hwc_buildpack</code> entry is the step
+      performing token replacement on <code>cf push</code> action.
+    </p>
+
+  
+
+1. Add an environment variable to the manifest for each config item requiring replacement with tokenized values.  
 
     ```yaml
     applications:
@@ -192,13 +187,13 @@ Below is a sample added referring to the connection string.
     ```
 
     <p class='note'><strong>Note:</strong> Adding token replacements with Environment variables is only for experimental activities. 
-    Only put configuration item keys and values in the manifest for testing purposes. 
-    Config settings should be externalized using git repositories and Spring Cloud Config Server. 
-    Spring Cloud Config Server should be used for externalizing configuration settings. 
-    For more information about externalizing configuration settings in Spring Cloud Config Server, see <a href="#move-to-spring-cloud">Move Config Settings to Spring Cloud Config Server</a>, below.
+    The manifest should contain configuration item keys and values for testing purposes only. 
+    Configuration settings should be externalized using git repositories and Spring Cloud Config Server.  
+    For more information about externalizing configuration settings in Spring Cloud Config Server, 
+    see <a href="#move-to-spring-cloud">Move Configuration Settings to Spring Cloud Config Server</a>, below.
     </p>
 
-## <a id='test-push'></a> Validation Test the App
+### <a id='test-push'></a> Validation Test the App
 
 1. Build and push the app to Cloud Foundry to verify that your config settings are properly transformed by running the following command:   
 
@@ -206,9 +201,10 @@ Below is a sample added referring to the connection string.
     cf push
     ```
 
-## <a id='move-to-spring-cloud'></a> Move Config Settings to Spring Cloud Config Server 
+## <a id='move-to-spring-cloud'></a> Move Configuration Settings to Spring Cloud Config Server 
 
-A multi-environment, production-ready configuration can be achieved using share and environment specific transforms and using Spring Cloud Config Server - backed by a git repository data source.
+A multi-environment, production-ready configuration can be achieved using Spring Cloud Config Server 
+backed by environment-specific transforms anda git repository data source.
 
 1. Determine your manifest file's `ASPNETCORE_ENVIRONMENT` environment variable value.  
 1. Create a network accessible git repository for each application.  
@@ -239,7 +235,7 @@ appSettings:
    MyDB: "Data Source=prodserver;Initial Catalog=mydb;User ID=serviceacc3;Password=PaKsAsEwWoOrOdT3"
 ```
 
-## <a id='create-spring-cloud-service'></a> Create Service for Spring Cloud Config Server
+## <a id='create-spring-cloud-service'></a> Create a Config Service for Spring Cloud Config Server
 
 1. Confirm you have either `p.config-server` or `p-config-server` config servers available 
 in your CF Marketplace by running the following command:  
@@ -261,9 +257,7 @@ in your CF Marketplace by running the following command:
 
     Where:  
     * `ACCOUNT-ID` is the is the github account ID.  
-    * `CONFIG-REPO` is github configuration repository.  
-
-**Question: `CONFIG-REPO` is XXXXXX. **  
+    * `CONFIG-REPO` is your github configuration repository.   
 
 1. Save the text file as a JSON file, for example `config-server.json`.  
 
@@ -280,7 +274,7 @@ in your CF Marketplace by running the following command:
     * `SERVER-NAME` is the name for your config server.  
     * `CONFIG-FILE` is the filename of your server config json file.  
 
-## <a id='create-spring-cloud-service'></a> Bind the Config Service to Your App Using Your Manifest
+## <a id='bind-service'></a> Bind the Config Service to Your App Using Your Manifest
 
 The newly created config server must be bound to your app to be used by the app.
 
@@ -325,62 +319,72 @@ The newly created config server must be bound to your app to be used by the app.
 
 ## <a id='parameterize'></a> Parameterize the Manifest Environment Name
 
-Parameterizing your application environment gives ability to provide different values 
-depending on your current deployment stage along your CD pipeline.  
+Parameterizing your application environment settings gives you the ability to provide 
+different environment configuration values for each deployment stage along your CD pipeline.   
+
+The Web Config Transform Extension Buildpack injects externalized Web.config  
+appSettings and connectionString values into your container.  
 
 To parameterize your manifest:
 
 1. [Create Parameter Value Files](#parameter-value-files)
-1. [Parameterize the Manifest File](#parameterize)
+1. [Parameterize the Manifest File](#parameterize-manifest)
 
-### <a id='parameter-value-files'></a> Create Parameter Value Files
+### <a id='parameter-value-files'></a> Create Parameter Value Files  
 
-You can externalize your Web.config file's appSettings and connectionString values 
-in files stored in your gitHub repository. 
+Your externalized Web.config files are stored in your gitHub repository as YAML files.  
 
-1. To externalize development appSettings and connectionString values include the values, create a new file
- YAML config file named `YOUR-APP-NAME.development.yml` containing the following content:  
+<p class='note'><strong>Note:</strong> Name your externalized Web.config YAML files to reflect their purpose, 
+  such as <code>YOUR-APP-NAME.Development.yml</code>, <code>YOUR-APP-NAME.QA.yml</code>, 
+  <code>YOUR-APP-NAME.UAT.yml</code>, or <code>YOUR-APP-NAME.Production.yml</code>.  
+</p>
 
-    ```yaml
-    appSettings:
-      SETTING-NAME: "SETTING-VALUE"
-      SETTING-NAME: "SETTING-VALUE"
-     connectionStrings:
-       MyDB: "Data Source=SERVER-NAME;Initial Catalog=DB-NAME;User ID=ACCOUNT-ID;Password=PASSWORD"
-    ```
+* To externalize development appSettings and connectionString values, complete the following steps:  
+    1. Create a new YAML config file named `YOUR-APP-NAME.Development.yml`.
+    1. Modify the file with the following content:  
 
-    Where:  
-    * `SETTING-NAME` is the name of a setting used by your app. Create as many NAME : "VALUE" pair lines as are needed by your app.  
-    * `SETTING-VALUE` is the development value of the setting. Create as many NAME : "VALUE" pair lines as are needed by your app.  
-    * `SERVER-NAME` is the name for your development database server.  
-    * `DB-NAME` is the name for your development database.  
-    * `ACCOUNT-ID` is the is the development service account name.  
-    * `PASSWORD` is the development service account password.  
+        ```yaml
+        appSettings:
+          SETTING-NAME: "SETTING-VALUE"
+          SETTING-NAME: "SETTING-VALUE"
+         connectionStrings:
+           MyDB: "Data Source=SERVER-NAME;Initial Catalog=DB-NAME;User ID=ACCOUNT-ID;Password=PASSWORD"
+        ```
+
+        Where:  
+        * `SETTING-NAME` is the name of a setting used by your app. Create as many NAME : "VALUE" pair lines as are needed by your app.  
+        * `SETTING-VALUE` is the development value of the setting. Create as many NAME : "VALUE" pair lines as are needed by your app.  
+        * `SERVER-NAME` is the name for your development database server.  
+        * `DB-NAME` is the name for your development database.  
+        * `ACCOUNT-ID` is the is the development service account name.  
+        * `PASSWORD` is the development service account password.  
+    1. Copy the `YOUR-APP-NAME.Development.yml` externalized configuration file to your GitHub repository.  
+
     
-1. To externalize production appSettings and connectionString values include the values, create a new file
- YAML config file named `YOUR-APP-NAME.production.yml` containing the following content:  
+* To externalize production appSettings and connectionString values, complete the following steps:  
+    1. Create a new YAML config file named `YOUR-APP-NAME.Production.yml`.
+    1. Modify the file with the following content:  
 
-    ```yaml
-    appSettings:
-      SETTING-NAME: "SETTING-VALUE"
-      SETTING-NAME: "SETTING-VALUE"
-     connectionStrings:
-       MyDB: "Data Source=SERVER-NAME;Initial Catalog=DB-NAME;User ID=ACCOUNT-ID;Password=PASSWORD"
-    ```
+        ```yaml
+        appSettings:
+          SETTING-NAME: "SETTING-VALUE"
+          SETTING-NAME: "SETTING-VALUE"
+         connectionStrings:
+           MyDB: "Data Source=SERVER-NAME;Initial Catalog=DB-NAME;User ID=ACCOUNT-ID;Password=PASSWORD"
+        ```
 
-    Where:  
-    * `SETTING-NAME` is the name of a setting used by your app. Create as many NAME : "VALUE" pair lines as are needed by your app.  
-    * `SETTING-VALUE` is the production value of the setting. Create as many NAME : "VALUE" pair lines as are needed by your app.  
-    * `SERVER-NAME` is the name for your production database server.  
-    * `DB-NAME` is the name for your production database.  
-    * `ACCOUNT-ID` is the is the production service account name.  
-    * `PASSWORD` is the production service account password.  
+        Where:  
+        * `SETTING-NAME` is the name of a setting used by your app. Create as many NAME : "VALUE" pair lines as are needed by your app.  
+        * `SETTING-VALUE` is the production value of the setting. Create as many NAME : "VALUE" pair lines as are needed by your app.  
+        * `SERVER-NAME` is the name for your production database server.  
+        * `DB-NAME` is the name for your production database.  
+        * `ACCOUNT-ID` is the is the production service account name.  
+        * `PASSWORD` is the production service account password.  
+    1. Copy the `YOUR-APP-NAME.Production.yml` externalized configuration file to your GitHub repository.  
 
-1. Copy the `YOUR-APP-NAME.development.yml` and `YOUR-APP-NAME.production.yml` externalized configuration files to your GitHub repository.  
+### <a id='parameterize-manifest'></a> Parameterize the Manifest File
 
-### <a id='parameterize'></a> Parameterize the Manifest File
-
-e.g: Development/QA/UAT/Production.
+Your manifest file must be modified to read values from your externalized gitHub repository values.
 
 1. To parameterize your environment string, replace your manifest's hardcoded `env` value with `ASPNETCORE_ENVIRONMENT: ((env))` as follows:  
     
@@ -400,8 +404,6 @@ e.g: Development/QA/UAT/Production.
 
     Where:  
     * `VERSION` is the buildpack version.  
-    * `ACCOUNT-ID` is the is the service account name.  
-    * `PASSWORD` is the service account password. 
     * `SERVER-NAME` is the name for your config server. 
     
     For example:
@@ -421,18 +423,26 @@ e.g: Development/QA/UAT/Production.
       - my_configserver
     ```
 
-
 ## <a id='push-app'></a> Push the App
 
-You can now push your app using parameterized configuration.
+You can now push your app using your parameterized configuration.
 
 1. To push your app, run the following command:  
+
+    ```script
+    cf push --var env=CD-STEP
+    ```
+<br>
+    Where `CD-STEP` is the suffix used on your Web.config external settings YAML file's filename, such as `Development`, `QA`, `UAT`, or `Production`.  
+<br>
+    For example:  
 
     ```script
     cf push --var env=Production
     ```
 
-1. Confirm the app is running using your environment value configuration by reviewing your logs for `WebConfig Transform Buildpack execution`:   
+1. To confirm your app runs using your WebConfig Transform, 
+review your logs for `WebConfig Transform Buildpack execution`:   
 
     ```
     ================================================================================
