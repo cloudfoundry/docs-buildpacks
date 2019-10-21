@@ -1,15 +1,14 @@
 ---
-title: Creating an Extension Buildpack for ASP.NET Apps
+title: Externalizing Configurations for .NET Framework Apps
 owner: Buildpacks
 ---
 
-This topic explains how to write a Web Config Transform Extension Buildpack for ASP.NET apps.  
+This topic explains how to use the Web Config Transform Extension Buildpack for ASP.NET apps.  
 
 ## <a id='prerequisites'></a>Prerequisites
 
-* Linux or MacOS development machine or VM
-* [golang](https://golang.org/) v1.10 or later programming language
-* [direnv](https://direnv.net/) environment variable manager for your shell
+* Linux, Windows or MacOS development machine or VM.
+* A foundation with Windows cells available to push to.
 
 
 ## <a id='overview'></a> Overview
@@ -20,7 +19,7 @@ As per cloud-native principles, an app's build artifacts should not include conf
 The Web Config Transform Extension Buildpack injects environment-specific appSettings and connectionString values 
 into legacy ASP.Net app containers by performing token replacements during `cf push` staging.
 
-To create a Web Config Transform Extension Buildpack, complete the following procedures:  
+To leverage the Web Config Transform Extension Buildpack, complete the following procedures:  
 
 1. [Identify Environment Dependent Configurations and Externalize](#tokenize)
 1. [Create a Parameterized Cloud Foundry App Manifest](#create-manifest)
@@ -30,20 +29,20 @@ To create a Web Config Transform Extension Buildpack, complete the following pro
 1. [Parameterize the Manifest Environment Name](#parameterize)
 1. [Push the App](#push-app)
 
-For additional information about extension buildpack configuration and creation commands see: 
-[Creating a Custom Buildpack](http://engineering.pivotal.io/post/creating-a-custom-buildpack/) 
-in the _Pivotal Engineering Journal_.
-
-<p class='note'><strong>Note:</strong> The Web Config Transform Extension Buildpack can inject settings 
+<p class='note'><strong>Note:</strong> The Web Config Transform Extension Buildpack can inject appSettings and connectionStrings 
 regardless of whether the replacement tokens are present in Web.Release.Config file.
 </p>
 
-## <a id='tokenize'></a> Identify Environment Dependent Configurations and Externalize
+## <a id='tokenize'></a> Identify Environment-Dependent Configurations and Externalize
 
 To externalize your workload's environment dependent configurations settings, complete the following steps:  
 
 1. Backup your workload's `Web.config` and `Web.Release.config` files.  
-1. Review the `Web.config` and `Web.Release.config` files, 
+    <p class='note'><strong>Note:</strong> Web and WCF apps are created with "<i>debug</i>" and "<i>release</i>" versions of the web config transformation file 
+        named <code>Web.Debug.config</code> and <code>Web.Release.config</code>. 
+    When debugging on a developer machine, transform the <i>debug</i> file <code>Web.Debug.config</code> and use the <code>Debug</code> configuration profile.
+    </p> 
+1. Review your `Web.config` and any transform files, such as `Web.Release.config`, 
 identifying the environment-specific configuration settings.  
 <br>
     For example, the `connectionString` properties in the sample files below are environment-specific:  
@@ -68,10 +67,7 @@ identifying the environment-specific configuration settings.
     </connectionStrings>
     ```
 
-    <p class='note'><strong>Note:</strong> Web and WCF apps are created with <strong>Debug</strong> and <strong>Release</strong> configurations 
-    of the <code>Web.Debug.config</code>, and <code>Web.Release.config</code> web config transformation files. 
-    When debugging on a developer machine, transform the <code>Debug</code> <code>Web.Debug.config</code> file and use the <code>Debug</code> configuration profile.
-    </p> 
+
 
 1. To externalize your `Web.config` and `Web.Release.config` files, tokenize each of the files' 
 environment-specific properties using the format `#{configPath:key}`.  
