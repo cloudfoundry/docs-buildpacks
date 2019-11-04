@@ -372,7 +372,7 @@ to the app when running the initial startup command:
             .UseKestrel()
             .UseConfiguration(config)
             .UseContentRoot(Directory.GetCurrentDirectory())
-            .UseStartup&lt;Startup&gt;()
+            .UseStartup<Startup>()
             .Build();
         host.Run();
     }
