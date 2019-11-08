@@ -15,9 +15,10 @@ This topic explains how to use the .NET Framework Web Config Transform Extension
 
 Cloud Native Applications derive their configurations and settings from external sources, 
 for example from config servers or by reading environment variables, etc. 
-
 Configuration settings are injected through Web.config files for applications that run on IIS, such as ASP.NET applications.  
-As per cloud native principles, configuration should not include build artifacts. 
+
+As per cloud native principles, configuration should not include build artifacts.  
+
 The .NET Framework Web Config Transform Extension Buildpack buildpack provides a solution to this problem by using token 
 replacement during ‘cf push’ staging. 
 
