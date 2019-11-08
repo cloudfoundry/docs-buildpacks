@@ -3,65 +3,74 @@ title: Externalizing Configurations for .NET Framework Apps
 owner: Buildpacks
 ---
 
-This topic explains how to use the .NET Framework Web Config Transform Extension Buildpack
+This topic explains how to use the .NET Framework Web Config Transform Extension Buildpack.
 
 ## <a id='prerequisites'></a>Prerequisites
 
 * Linux, Windows or MacOS development machine or VM.
 * A foundation with Windows cells available to push to.
-* A foundation with the .NET Framework Web Config Transform Extension Buildpack installed. This will be installed by an admin.
+* A foundation with the .NET Framework Web Config Transform Extension Buildpack installed. 
 
 ## <a id='overview'></a> Overview
 
-Cloud Native Applications are expected to bring in configurations from external sources like environment variables, config servers, etc. 
+Cloud Native Applications derive their configurations and settings from external sources, 
+for example from config servers or by reading environment variables, etc. 
 
-In applications that run on IIS (e.g. ASP.NET applications), configuration settings are injected through Web.config files.  As per cloud native principles, configuration should stay out of build artifacts. The .NET Framework Web Config Transform Extension Buildpack buildpack provides a solution to this problem by using token replacement during ‘cf push’ staging. 
+Configuration settings are injected through Web.config files for applications that run on IIS, such as ASP.NET applications.  
+As per cloud native principles, configuration should not include build artifacts. 
+The .NET Framework Web Config Transform Extension Buildpack buildpack provides a solution to this problem by using token 
+replacement during ‘cf push’ staging. 
 
 To leverage the .NET Framework Web Config Transform Extension Buildpack, complete the following procedures:  
 
 1. [Identify Environment Dependent Configurations and Externalize](#tokenize)
 1. [Create a Cloud Foundry App Manifest](#create-manifest)
 1. [Add Web Config Transformations](#transformations)
-1. [Move Config to Git Repoistory](#move-to-git-repo)
-1. [Create Spring Cloud Service](#create-spring-cloud-service)
-1. [Bind Config Service to App](#bind-service-to-app)
-1. [Add ASPNETCORE_ENV Variable to Manifest](#add-aspnetcore-env)
-1. [Push App By Parameterized Environment Name](#push-app)
+1. [Move Config Settings to a Git Repoistory](#move-to-git-repo)
+1. [Create a Configuration Service for Spring Cloud Config Server](#create-spring-cloud-service)
+1. [Bind Config Service to App Using Manifest](#bind-service-to-app)
+1. [Add ASPNETCORE_ENV Variable to App Manifest](#add-aspnetcore-env)
+1. [Push the App by Parameterized Environment Name](#push-app)
 
 <p class='note'><strong>Note:</strong> This buildpack can inject appSettings and 
-    connectionStrings regardless of whether the replacement tokens are present in the <code>Web.Release.Config</code> file. For more information please see the Special Behaviors section at the end.
+    connectionStrings regardless of whether the replacement tokens are present in the <code>Web.Release.Config</code> file. 
+    For more information please see <a href="#special-behavior">Special Behavior for appSettings and connectionStrings</a> 
+    section below.
 </p>
 
 ## <a id='tokenize'></a> Identify Environment-Dependent Configurations and Externalize
 
-Your `Web.config` environment-specific settings will be replaced with placeholder tokens and their values externalized 
-outside of your application.  
+To use the .NET Framework Web Config Transform Extension Buildpack you will replace your `Web.config` files' environment-specific settings 
+with placeholder tokens, and externalize their values outside of your application.  
 
-To externalize your workload's environment-specific configuration settings, complete the following steps:  
+To tokenize your workload's environment-specific configuration settings, complete the following steps:  
 
-1. Backup your application's `Web.config` file, and its transform files (e.g. `Web.Debug.Config`,`Web.Release.Config`)  
+1. Backup your application's `Web.config` file, and its transform files, 
+for example `Web.config`, `Web.Debug.Config`, and `Web.Release.Config`.  
 
-1. Identify configuration items (in `Web.config` files) that are environment-dependent that need to be externalized.
+1. Identify configuration items in the `Web.config` transform files that are environment-dependent. These items need to be externalized.
 
-1. Modify your transform files (e.g. `Web.Release.Config`) to use tokenized configuration items by replacing hard-coded values 
-with tokens of following the format `#{configPath:key}`.  
+1. Modify your transform files to use tokenized configuration items 
+by replacing hard-coded values with tokens following the format `#{configPath:key}`.  
 <br>
-    For example please refer to sample files before and after tokenizing: 
+    For example, refer to the before and after tokenizing sample files, below: 
 <br>
 
     <p class='note'><strong>Note:</strong> Transform xml attributes and tokens are case-sensitive.</p>
 
     **Before tokenizing**
-    
+<br><br> 
     Web.Config
+
     ```xml
     <connectionStrings>
         <add name="MyDB" 
              connectionString="Data Source=LocalSQLServer;Initial Catalog=MyReleaseDB;User ID=xxxx;Password=xxxx" />
     </connectionStrings>
     ```
-
+<br>
     Web.Release.Config
+
     ```xml
     <connectionStrings>
         <add name="MyDB" 
@@ -70,12 +79,13 @@ with tokens of following the format `#{configPath:key}`.
              xdt:Locator="Match(name)"/>
     </connectionStrings>
     ```
-
+<br>
     **After tokenizing** 
-
-    Web.Config (no change)
-
+<br><br>
+    Web.Config (no change)  
+<br>
     Web.Release.Config
+
     ```xml
     <connectionStrings>
         <add name="MyDB" 
@@ -88,9 +98,15 @@ with tokens of following the format `#{configPath:key}`.
 ## <a id='create-manifest'></a> Create a Cloud Foundry App Manifest 
 
 Perform the following steps to test your tokenizations by using environment variables in the Cloud Foundry app manifest
-to perform the token replacements. In following steps, we will externalize these configurations using a git repository and Spring Cloud Config Server.
+to perform the token replacements. 
 
-### <a id='create-manifest'></a> Create a Cloud Foundry App Manifest  
+<p class="note"><strong>Note:</strong> Token replacements with environment variables is solely for testing purposes
+    to ensure your tokens are correctly replaced. 
+    After validating using environment variables you will externalize your configuration settings 
+    using git repositories and Spring Cloud Config Server in later steps below.
+</p>
+
+### <a id='create-manifest-app'></a> Create a Cloud Foundry App Manifest for Your App  
 
 To create a Cloud Foundry app manifest for your workload, complete the following step:  
 
@@ -107,34 +123,36 @@ To create a Cloud Foundry app manifest for your workload, complete the following
 
 To configure your workload's Cloud Foundry app manifest for token replacement, complete the following steps:  
 
-*Note*: You should prepare your Cloud Foundry app manifest for token replacement with debug/development environment connection values.  
+<p class='note'><strong>Note:</strong> You should prepare your Cloud Foundry app manifest for token replacement with debug/development 
+environment connection values. 
+</p>
 
 1. Backup your app manifest file.  
 
 1. Open the app manifest file in a text editor.
 
 1. Add a reference for the .NET Framework Web Config Transform Extension Buildpack to the manifest file's `buildpacks` 
-property.  
+property.
 
     ```yaml
     buildpacks:
     - WEB-CONFIG-TRANSFORM-BUILDPACK
     - hwc_buildpack
-    ```    
-    Where:  
-    * `WEB-CONFIG-TRANSFORM-BUILDPACK` is name of the .NET Framework Web Config Transform Extension buildpack in your foundation. Check `cf buildpacks` to see all the buildpacks in your foundation.
+    ```
 
-    <p class='note'><strong>Note:</strong> Ensure the new entry precedes the existing 
+    Where `WEB-CONFIG-TRANSFORM-BUILDPACK` is name of the .NET Framework Web Config Transform Extension buildpack 
+    in your foundation. Confirm the buildpacks in your foundation by using `cf buildpacks`.
+
+    <p class="note"><strong>Note:</strong> Ensure the new entry precedes the existing 
       <code>hwc_buildpack</code> buildpacks entry.
     </p>
 
   
-1. Add `key:value` pairs to the manifest for each the Web Config file's tokenized settings. 
+1. Add `key:value` pairs to the manifest for each the Web Config file's tokenized settings.  
 <br>
-    ***Reminder***: token replacements with environment variables is solely for testing purposes, to ensure the tokens are being replaced correctly. Config settings will eventually be externalized using git repositories and Spring Cloud Config Server, which we will complete in steps below. 
-<br>
+    For example, the following provides connection string values for a Web Config 
+    file's`#{connectionStrings:MyDB}` placeholder:
 
-    Below is a sample added referring to the connection string 
     ```yaml
     applications:
     - name: sampleapp
@@ -151,18 +169,14 @@ property.
         environment's connection values.
     </p>
 
-## <a id='tokenize'></a> Add Web Config Transformations
+## <a id='transformations'></a> Add Web Config Transformations
 
-By default, all web apps and WCF apps are created with **Debug** and **Release** configurations and corresponding web config transformation files (`Web.Debug.Config`, `Web.Release.Config`).
+By default, all web apps and WCF apps are created with **Debug** and **Release** configurations and 
+corresponding web config transformation files (`Web.Debug.Config`, `Web.Release.Config`).
 
-1. Add required transformations to `Web.Release.Config` 
-
-    <p class='note'><strong>Note:</strong>  For developer machine debugging, use `Debug` configuration profile and `Web.Debug.config` for transformation.
-    </p>
-
+1. Add required transformations to your `Web.Release.Config` file.  
 <br>
-   Sample `Web.Release.Config` with transformations
-<br>
+   For example, the following `Web.Release.Config` has been edited with transformations:  
 
     ```xml
     <?xml version="1.0" encoding="utf-8"?>
@@ -188,20 +202,24 @@ By default, all web apps and WCF apps are created with **Debug** and **Release**
     </configuration>
     ```
 
+    <p class='note'><strong>Note:</strong>  For developer machine debugging, use the <code>Debug</code> configuration profile 
+        and your <code>Web.Debug.config</code> for transformation.
+    </p>
+
 1.  Build and push the application to Cloud Foundry to verify that your config settings are properly transformed:  
 
     ```script
     cf push
     ```
 
-## <a id='move-to-git'></a> Move Config Settings to Git Repository  
+## <a id='move-to-git-repo'></a> Move Config Settings to a Git Repository  
 
 A multi-environment, production-ready deployment configuration can be achieved by using Spring Cloud Config Server 
 backed by a git repository data source.
 
 To move your configuration settings to a Git repository, complete the following steps:  
 
-1. Create a network-accessible Git repository for specifically storing this application's transform configuration files.  
+1. Create a network-accessible Git repository specifically for storing this application's transform configuration files.  
 
 1. Create a YAML file in your repository to hold your common settings across all environments. 
 Name the file `YOUR-APPLICATION`.yaml.  
@@ -217,37 +235,37 @@ Name the file `YOUR-APPLICATION`.yaml.
       Setting1: "Common setting1"  
       ```
 
-1. Create separate YAML files for each unique environment (e.g. "Development", "Debug", "Production", etc.)  to hold your environment-specific settings. 
-Name the files `YOUR-APPLICATION`-`APP-ENVIRONMENT`.yaml.  
+1. Create a separate YAML file for each of your unique app environments, for example your "Development", "Debug",
+and "Production" environments, to hold your environment-specific settings. Name the files `YOUR-APPLICATION`-`APP-ENVIRONMENT`.yaml.  
 <br>
     Where:  
     * `YOUR-APPLICATION` is the identifier name for your application.  
-    * `APP-ENVIRONMENT` is the identifier name for a unique environment.  
-<br> 
-
-    <p class='note'><strong>Note:</strong> You will later use these environment names ("Development", "Debug", "Production") as values for the
-    <code>ASPNETCORE_ENVIRONMENT</code> environment variable  to target different environments
+    * `APP-ENVIRONMENT` is the identifier name for a unique environment, such as "Development", "Debug" or "Production".  
+    <p class='note'><strong>Note:</strong> You will later use these app environment names as values for the
+    <code>ASPNETCORE_ENVIRONMENT</code> environment variable to target different environments.
     </p>
-
-<br>
   For example:  
 <br> 
+    **sampleapp-Development.yaml**
 
-    **sampleapp-Development.yaml**  
+        ```yaml
+         connectionStrings:
+           MyDB: "Data Source=devserver;Initial Catalog=mydb;User ID=serviceacc3;Password=PaKsAsEwWoOrOdT3"
+        ```
+<br>
+    **sampleapp-Production.yaml**
 
-    ```yaml
-     connectionStrings:
-       MyDB: "Data Source=devserver;Initial Catalog=mydb;User ID=serviceacc3;Password=PaKsAsEwWoOrOdT3"
-    ```
-
-    **sampleapp-Production.yaml**  
-
-    ```yaml
-     connectionStrings:
-       MyDB: "Data Source=prodserver;Initial Catalog=mydb;User ID=serviceacc4;Password=PaKsAsEwWoOrOdT3"
-    ```    
-
-Now that your values are in a Git repository, you can remove the key:value pairs from the `env` section of your `manifest.yml`. We will later add one variable into this section, but it should be empty for now. 
+        ```yaml
+         connectionStrings:
+           MyDB: "Data Source=prodserver;Initial Catalog=mydb;User ID=serviceacc4;Password=PaKsAsEwWoOrOdT3"
+        ```    
+<br>
+    Your configuration values are now present in your Git repository. They are also present in your `manifest.yml` file.
+<br>
+1. Remove your configuration key:value pairs from the `env` section of your `manifest.yml`.  
+    <p class='note'><strong>Note:</strong> The <code>manifest.yml</code> <code>env</code> section should not include 
+        any configuration key:value pairs during the next step.
+    </p> 
 
 ## <a id='create-spring-cloud-service'></a> Create a Configuration Service for Spring Cloud Config Server
 
@@ -262,10 +280,11 @@ Git repository.
 
     Review the return and determine whether you have either `p.config-server` or `p-config-server`.  
 
-1. Create a JSON text file for configuration server settings. This should include your configuration Git repository. 
+1. Create a JSON text file for configuration server settings. 
+Add a single entry to the JSON file for the uri to your configuration Git repository.  
 <br>
-  For example:  
-<br> 
+    For example:
+
     ```json
     {
         "git" : { 
@@ -281,14 +300,15 @@ Git repository.
 
 1. Save the text file as a JSON file, for example `config-server.json`.  
    <p class='note'><strong>Note:</strong> Ensure file is not BOM-encoded.</p>
-1. Create a config server using your configuration file and the `cf create service` command:  
+1. To create a config server using `cf create service`, and your configuration file, run the following command:  
 
     ```script
     cf create-service CONFIG-SERVER-MARKET standard SERVER-NAME  -c .\CONFIG-FILE
     ```
 
     Where:  
-    * `CONFIG-SERVER-MARKET` is the name of the config server available in your CF Marketplace (`p.config-server` or `p-config-server`)
+    * `CONFIG-SERVER-MARKET` is the name of the config server, either `p.config-server` or `p-config-server`, 
+    available in your CF Marketplace.  
     * `SERVER-NAME` is the name for your config server.  
     * `CONFIG-FILE` is the filename of your server config json file.  
 
@@ -307,13 +327,14 @@ Your app manifest file must be modified so it accepts configuration values from 
 
 1. To bind your config server to your app, add a new `services` section to your app manifest file with the following format:
 
-<br> 
+    ```yaml
+    services:
+    - SERVER-NAME     
+    ```
+
     Where `SERVER-NAME` is the name for your config server.  
 <br>
-
-<br>
-    For example: 
-<br>
+    For example:  
 
     ```yaml
     ---
@@ -328,7 +349,11 @@ Your app manifest file must be modified so it accepts configuration values from 
     ```
 
 ## <a id='add-aspnetcore-env'></a> Add ASPNETCORE_ENVIRONMENT Variable to App Manifest 
-In order for your config server to target the right configuration, add the `ASPNETCORE_ENVIRONMENT` variable to the `env` section of your app manifest with the value of `((env))`
+
+1. To configure your config server so that it can target the correct configuration in your Git repository, 
+add the `ASPNETCORE_ENVIRONMENT` variable to the `env` section of your app manifest with the value of `((env))`.  
+<br>
+    For example:  
 
     ```yaml
     ---
@@ -345,7 +370,7 @@ In order for your config server to target the right configuration, add the `ASPN
       - my_configserver
     ```
 
-## <a id='push-app'></a> Push the App By Parameterized Environment Name 
+## <a id='push-app'></a> Push the App by Parameterized Environment Name 
 
 You can now push your app using your parameterized configuration.
 
@@ -355,7 +380,8 @@ You can now push your app using your parameterized configuration.
     cf push --var env=ENVIRONMENT
     ```
 <br>
-    Where `ENVIRONMENT` is the environment you wish to target such as `Development`, `Production`, `QA`, `UAT`, etc. These will be the environments specified in your configuration repository.
+    Where `ENVIRONMENT` is the environment you wish to target, for example `Development`, `Production`, `QA`, or `UAT`. 
+    The specified environment should be present in your Git configuration repository.
 <br>
     For example:  
 
@@ -374,16 +400,20 @@ review your logs for `WebConfig Transform Buildpack execution`:
     -----> Config server binding found...
     ```
 
-## <a id='special-behavior'></a> Special Behavior for `appSettings` and `connectionStrings`
+## <a id='special-behavior'></a> Special Behavior for appSettings and connectionStrings
 
-This buildpack makes it possible to externalize appSettings and connectionString values in your Web.config without using tokenized values. 
+This buildpack makes it possible to externalize appSettings and connectionString values in your Web.config 
+without using tokenized values. 
 
-In this case simply include the values in your yaml config files on your Git repository ({YOUR-APP}.production.yml, YOUR-APP}.development.yml, etc.)
+To externalize Web.config values without tokenizing, perform the following steps:  
+
+1. Copy the contents of the `YOUR-APPLICATION`.yaml file in your Git configuration repository.  
+1. Add the copied content to all of the Git configuration repository's environment-specific 
+`YOUR-APPLICATION`-`APP-ENVIRONMENT`.yaml config files.  
 <br>
     For example:
-<br>
-
-    sampleapp-Development.yaml
+<br>    
+    **sampleapp-Development.yaml**
 
     ```yaml
     appSettings:
@@ -392,7 +422,7 @@ In this case simply include the values in your yaml config files on your Git rep
        MyDB: "Data Source=devserver;Initial Catalog=mydb;User ID=xxxx;Password=xxxx"
     ```
 
-    sampleapp-Production.yaml
+    **sampleapp-Production.yaml**
 
     ```yaml
     appSettings:
@@ -400,8 +430,8 @@ In this case simply include the values in your yaml config files on your Git rep
      connectionStrings:
        MyDB: "Data Source=prodserver;Initial Catalog=mydb;User ID=xxxx;Password=xxxx"
     ```  
-
-This buildpack can inject appSettings and connectionStrings values based on environment-specific yaml config files even if replacement tokens are not present in Web.Release.Config file. 
+1. Follow the instructions in [Push the App by Parameterized Environment Name](push-app) 
+above to deploy your application using the .NET Framework Web Config Transform Extension Buildpack.
 
 ## <a id='trouble'></a> Troubleshooting
 
