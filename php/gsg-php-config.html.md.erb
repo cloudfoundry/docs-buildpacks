@@ -36,21 +36,13 @@ Below is an explanation of the common options you might need to change.
 
 For details about supported versions, see the [release notes](https://github.com/cloudfoundry/php-buildpack/releases) for your buildpack version.
 
-### <a id="engine-configurations"></a> HTTPD, Nginx, and PHP configuration
+## <a id="engine-configurations"></a> HTTPD, Nginx, and PHP configuration
 
 The buildpack automatically configures HTTPD, Nginx, and PHP for your application.  This section explains how to modify the configuration.
 
 The `.bp-config` directory in your application can contain configuration overrides for these components. Name the directories `httpd`, `nginx`, and `php`. We recommend that you use [php.ini.d](#php_ini_d) or [fpm.d](#fpm_d).
 
 <p class='note'><strong>NOTE</strong>: If you override the <code>php.ini</code> or <code>php-fpm.conf</code> files, many other forms of configuration will not work.</p>
-
-For example:
-```
-.bp-config
-  httpd
-  nginx
-  php
-```
 
 Each directory can contain configuration files that the component understands.
 
@@ -88,7 +80,7 @@ Include conf/extra/httpd-my-special-config.conf # This line includes your additi
 ```
 
 
-#### <a id="php_ini_d"></a> .bp-config/php/php.ini.d/
+### <a id="php_ini_d"></a> .bp-config/php/php.ini.d/
 
 The buildpack adds any `.bp-config/php/php.ini.d/FILE-NAME.ini` files it finds in the application to the PHP configuration. You can use this to change any value acceptable to `php.ini`. See [http://php.net/manual/en/ini.list.php](http://php.net/manual/en/ini.list.php) for a list of directives.
 
