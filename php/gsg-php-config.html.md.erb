@@ -36,6 +36,17 @@ Below is an explanation of the common options you might need to change.
 
 For details about supported versions, see the [release notes](https://github.com/cloudfoundry/php-buildpack/releases) for your buildpack version.
 
+### <a id="php-modules"></a> PHP Modules
+
+You can include the following modules by adding them to the `PHP_MODULES` list:
+
+  - `cli`, installs `php` and `phar`
+  - `fpm`, installs `PHP-FPM`
+  - `cgi`, installs `php-cgi`
+  - `pear`, installs Pear
+
+By default, the buildpack installs the `cli` module when you push a standalone app, and installs the `fpm` module when you push a web app. You must specify `cgi` and `pear` if you want them installed.
+
 ## <a id="engine-configurations"></a> HTTPD, Nginx, and PHP configuration
 
 The buildpack automatically configures HTTPD, Nginx, and PHP for your application.  This section explains how to modify the configuration.
@@ -91,7 +102,7 @@ default_charset="UTF-8"
 default_mimetype="text/xhtml"
 ```
 
-##### Precedence
+#### Precedence
 
 In order of highest precedence, php configuration values come from the following sources:
 
@@ -99,7 +110,7 @@ In order of highest precedence, php configuration values come from the following
 * user.ini files for local values
 * .bp-config/php/php.ini.d to override master value, but not local values from user.ini files
 
-#### <a id="fpm_d"></a> .bp-config/php/fpm.d/
+### <a id="fpm_d"></a> .bp-config/php/fpm.d/
 
 The buildpack adds any files it finds in the application under `.bp-config/php/fpm.d` that end with `.conf` (i.e `my-config.conf`) to the PHP-FPM configuration.  You can use this to change any value acceptable to `php-fpm.conf`. See [http://php.net/manual/en/install.fpm.configuration.php](http://php.net/manual/en/install.fpm.configuration.php) for a list of directives.
 
@@ -113,7 +124,7 @@ For example:
 catch_workers_output = yes
 ```
 
-### <a id="php-extensions"></a> PHP Extensions
+## <a id="php-extensions"></a> PHP Extensions
 
 The buildpack adds any `.bp-config/php/php.ini.d/FILE-NAME.ini` files it finds in the application to the PHP configuration. You can use this to enable PHP or ZEND extensions. For example:
 
@@ -126,7 +137,7 @@ zend_extension=opcache.so
 
 If an extension is already present and enabled in the compiled php, for example `intl`, you do not need to explicitly enable it to use that extension.
 
-#### PHP\_EXTENSIONS vs. ZEND\_EXTENSIONS
+### PHP\_EXTENSIONS vs. ZEND\_EXTENSIONS
 
 PHP has two kinds of extensions, _PHP extensions_ and _Zend extensions_. These hook into the PHP executable in different ways. See [https://wiki.php.net/internals/extensions](https://wiki.php.net/internals/extensions) for more information about the way extensions work internally in the engine.
 
@@ -145,17 +156,6 @@ If you see the following error, move the `example` extension from `zend_extensio
 ```
 NOTICE: PHP message: PHP Warning: example MUST be loaded as a Zend extension in Unknown on line 0
 ```
-
-### <a id="php-modules"></a> PHP Modules
-
-You can include the following modules by adding them to the `PHP_MODULES` list:
-
-  - `cli`, installs `php` and `phar`
-  - `fpm`, installs `PHP-FPM`
-  - `cgi`, installs `php-cgi`
-  - `pear`, installs Pear
-
-By default, the buildpack installs the `cli` module when you push a standalone app, and installs the `fpm` module when you push a web app. You must specify `cgi` and `pear` if you want them installed.
 
 ## <a id="buildpack-extensions"></a>Buildpack Extensions
 
