@@ -1,0 +1,249 @@
+---
+title: Node.js CNB
+owner: Buildpacks
+---
+
+##<a id="specifying-node-engine-version"></a> Specifying a Node Engine Version
+The Node Engine CNB allows application developers to specify a version of
+Node.js to use during deployment.  This version can be specified in a number of
+ways, including via `.nvmrc`, `buildpack.yml`, or `package.json` files.  When
+specifying a version of the Node.js engine, application developers must make
+sure to choose a version that is available within the buildpack.
+
+When specifying a version, keep in mind that the buildpack prioritizes the
+versions specified in each of the possible configuration locations with the
+following precedence.
+
+**(highest)** `buildpack.yml` > `package.json` > `.nvmrc` **(lowest)**
+
+**Using buildpack.yml**
+
+Including the follow snippet in your `buildpack.yml` file will configure the
+buildpack to use `v12.12.0` of Node.js when building and launching your
+application.
+
+```
+---
+nodejs:
+  version: 12.12.0
+```
+
+**Using package.json**
+
+Applications using `npm` can specify the version of Node.js used during the
+build and launch phases of their application deployment by configuring the
+`engines` field in the `package.json` file. The following snippet in your
+`package.json` will configure the buildpack to use `v12.12.0` of Node.js when
+building and launching your application.
+
+```
+{
+  "engines": {
+    "node": "12.12.0"
+  }
+}
+```
+
+Further details of the `engines` configuration option in the `package.json`
+file can be found in the [NPM
+documentation](https://docs.npmjs.com/files/package.json#engines).
+
+**Using .nvmrc**
+
+Node Version Manager is a common option for managing the version of Node.js
+used by an application. To specify the version of Node.js used during build and
+launch, include a `.nvmrc` file with the version number. You can find details
+describing the contents of a .nvmrc file in the [Node Version Manager
+documentation](https://github.com/nvm-sh/nvm#nvmrc).
+
+##<a id="environment-variables"></a> Environment Variables
+The Node.js CNB sets a number of environment variables during the `build` and
+`launch` phases of the application lifecycle. Each environment variable is
+described below with details about its impact on your application and how you
+might configure these variable with alternative settings.
+
+### <a id="environment-variable-memory-available"></a> MEMORY_AVAILABLE
+Reports the total amount of memory available to the application. This value is
+calculated from the settings applied in `$VCAP_APPLICATION` or limits specified
+by the operating system in `/sys/fs/cgroup/memory/memory.limit_in_bytes`.
+
+* Set by: `profile.d`
+* Phases: `launch`
+* Value: non-negative integer
+
+### <a id="environment-variable-node-env"></a> NODE_ENV
+* Set by: `node-engine-cnb`
+* Phases: `build`
+* Value: production
+
+### <a id="environment-variable-node-home"></a> NODE_HOME
+* Set by: `node-engine-cnb`
+* Phases: `build`
+* Value: path to the `node` installation
+
+### <a id="environment-variable-node-modules-cache"></a> NODE\_MODULES\_CACHE
+A cache directory that stores module data between builds
+
+* Set by: `node-engine-cnb`
+* Phases: `build`
+* Value: true
+
+### <a id="environment-variable-node-path"></a> NODE_PATH
+
+* Set by: `yarn-cnb`
+* Phases: `build`
+* Value: path to the `node_modules` directory
+
+### <a id="environment-variable-node-verbose"></a> NODE_VERBOSE
+Adjusts the amount of logging output from npm during installs
+
+* Set by: `node-engine-cnb`
+* Phases: `build`
+* Value: false
+
+### <a id="environment-variable-npm-config-loglevel"></a> NPM\_CONFIG\_LOGLEVEL
+Level of logging npm will use
+
+* Set by: `node-engine-cnb`
+* Phases: `build`
+* Value: "error"
+
+### <a id="environment-variable-npm-config-production"></a> NPM\_CONFIG\_PRODUCTION
+Install only production dependencies if NPM install is used
+
+* Set by: `node-engine-cnb`
+* Phases: `build`
+* Value: false
+
+### <a id="environment-variable-path"></a> PATH
+Appends the `node_modules/.bin` directory onto the `$PATH`
+
+* Set by: `yarn-cnb`
+* Phases: `build`
+* Value: path to the `node_modules/.bin` directory
+
+### <a id="environment-variable-web-concurrency"></a> WEB_CONCURRENCY
+
+* Set by: `profile.d`
+* Phases: `launch`
+* Value: non-negative integer
+
+### <a id="environment-variable-web-memory"></a> WEB_MEMORY
+
+* Set by: `node-engine-cnb`
+* Phases: `build`
+* Value: 512
+
+##<a id="heap-memory-optimization"></a> Heap Memory Optimization
+
+Node.js will limit the total size of all objects on the heap. Enabling the
+"optimize-memory" feature will set this value to 3/4 of the total memory
+available in the container. For example, if my app is limited to 1GB when
+pushed, the heap of my Node.js application will be limited to 768MB.
+
+###<a id="enabling-memory-optimization"></a> Enabling Memory Optimization
+**Using buildpack.yml**
+
+Add the following to your `buildpack.yml` file:
+
+```
+---
+nodejs:
+  optimize-memory: true
+```
+
+**Using the OPTIMIZE_MEMORY Environment Variable**
+
+Set the `OPTIMIZE_MEMORY` environment variable to `true`.
+
+##<a id="package-management-with-npm"></a> Package Management with NPM
+
+Many Node.js applications will require a number of third-party libraries to
+perform common tasks and behaviors. NPM is an option for managing these
+third-party dependencies that is fully supported by the Node.js CNB. Including
+a `package.json` file in your application source code will result in the
+invocation of the NPM installation process described below.
+
+###<a id="npm-installation-process"></a> NPM Installation Process
+
+NPM supports several distinct methods for installing your package dependencies.
+Specifically, the Node.js CNB will run a combination of [`npm
+install`](https://docs.npmjs.com/cli/install), [`npm
+rebuild`](https://docs.npmjs.com/cli/rebuild.html), and [`npm
+ci`](https://docs.npmjs.com/cli/ci.html) such that your application is built
+with the right set of dependencies. When making a choice of which installation
+process to execute, the Node.js CNB will consult your application source code,
+looking for the presence of specific files or directories.
+
+**package-lock.json**
+
+The `package-lock.json` file is a machine-generated file created during the
+`npm install` process. Application developers may choose to include this file
+in their source code when building their application. The presence of this file
+will have an impact on the installation process executed by the CNB. More
+details on the `package-lock.json` file can be found in the [NPM
+documentation](https://docs.npmjs.com/files/package-lock.json).
+
+**node_modules**
+
+The `node_modules` directory contains vendored copies of all the packages
+installed during the `npm install` process. Application developers may choose
+to include this directory in their source code when building their application.
+The presence of this directory will have an impact on the installation process
+executed by the CNB. More details on the `node_modules` directory can be found
+in the [NPM
+documentation](https://docs.npmjs.com/files/folders.html#node-modules).
+
+**npm-cache**
+
+The `npm-cache` directory contains a content-addressable cache that stores all
+http request and package-related data. Application developers may choose to
+include this directory in their source code when building their application.
+The presence of this directory will have an impact on the installation process
+executed by the CNB. Additionally, including a cache will ensure that the
+application can be built entirely offline.  A `npm-cache` directory can be
+populated by running the `npm ci --cache npm-cache` command inside of the
+source code directory. More details on the NPM cache can be found in the [NPM
+documentation](https://docs.npmjs.com/cli/cache).
+
+#### What installation process will run?
+
+The table below outlines process used to determine an installation process for
+NPM packages. The presence of the files and directories described above will
+result in the execution of an installation process designed to ensure the
+correct third-party dependencies are installed during the build process.
+
+| package-lock.json | node_modules    | npm-cache       | command                   |
+|:-----------------:|:---------------:|:---------------:|:-------------------------:|
+| **not** present   | **not** present | **not** present | npm install               |
+| **not** present   | **not** present | present         | npm install               |
+| **not** present   | present         | **not** present | npm rebuild + npm install |
+| **not** present   | present         | present         | npm rebuild + npm install |
+| present           | **not** present | **not** present | npm ci                    |
+| present           | **not** present | present         | npm ci                    |
+| present           | present         | **not** present | npm rebuild + npm install |
+| present           | present         | present         | npm ci                    |
+
+##<a id="package-management-with-yarn"></a> Package Management with Yarn
+
+Many Node.js applications will require a number of third-party libraries to
+perform common tasks and behaviors. Yarn is an alternative option to NPM for
+managing these third-party dependencies that is fully supported by the Node.js
+CNB. Including `package.json` and `yarn.lock` files in your application source
+code will result in the invocation of the Yarn installation process described
+below.
+
+###<a id="yarn-installation-process"></a> Yarn Installation Process
+
+The Node.js CNB runs `yarn install` followed by `yarn check` to ensure
+third-party dependencies are properly installed. Including a `yarn.lock` file
+in your application source code will indicate to the Node.js CNB that you wish
+to use the Yarn installation process.
+
+**yarn.lock**
+
+The `yarn.lock` file contains a fully resolved set of package dependencies
+managed by Yarn.  Application developers may include this file in their source
+code in order to invoke the Yarn installation process. More details on the
+`yarn.lock` file can be found in the [Yarn
+documentation](https://yarnpkg.com/lang/en/docs/yarn-lock/).
