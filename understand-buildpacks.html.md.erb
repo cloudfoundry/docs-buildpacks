@@ -7,7 +7,8 @@ owner: Buildpacks
 
 This topic describes how buildpacks are structured and detected in <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
 
-## <a id='buildpack-scripts'></a>Buildpack Scripts ##
+
+## <a id='buildpack-scripts'></a> Buildpack Scripts ##
 
 A buildpack repository may contain the following five scripts in the `bin` directory:
 
@@ -17,27 +18,25 @@ A buildpack repository may contain the following five scripts in the `bin` direc
 * `bin/release` provides feedback metadata to <%= vars.app_runtime_abbr %> indicating how the app should be executed.
 * `bin/compile` is a deprecated alternative to `bin/supply` and `bin/finalize`.
 
-The `bin/supply` and `bin/finalize` scripts replace the deprecated `bin/compile` script.
-Older buildpacks may still use `bin/compile` with the latest version of <%= vars.app_runtime_abbr %>. In this case, applying multiple buildpacks to a single app is not supported.
-Similarly, newer buildpacks may still provide `bin/compile` for compatibility with Heroku and older versions of <%= vars.app_runtime_abbr %>.
+The `bin/supply` and `bin/finalize` scripts replace the deprecated `bin/compile` script. Older buildpacks may still use `bin/compile` with the latest version of <%= vars.app_runtime_abbr %>. In this case, applying multiple buildpacks to a single app is not supported. Similarly, newer buildpacks may still provide `bin/compile` for compatibility with Heroku and older versions of <%= vars.app_runtime_abbr %>.
 
 The `bin/supply` script is required for non-final buildpacks. The `bin/finalize` (or `bin/compile`) script is required for final buildpacks.
 
-<p class="note"><strong>Note</strong>: In this document, the terms <em>non-final buildpack</em> and <em>final buildpack</em>, or <em>last buildpack</em>, are used to describe the process of applying multiple buildpacks to an app. See the following example: <code>cf push APP-NAME -b FIRST-BUILDPACK -b SECOND-BUILDPACK -b FINAL-BUILDPACK</code>.</p>
+<p class="note"><strong>Note:</strong> In this topic, the terms <em>non-final buildpack</em> and <em>final buildpack</em>, or <em>last buildpack</em>, are used to describe the process of applying multiple buildpacks to an app. For example: <code>cf push APP-NAME -b FIRST-BUILDPACK -b SECOND-BUILDPACK -b FINAL-BUILDPACK</code>.</p>
 
-<p class="note"><strong>Note</strong>: If you use only one buildpack for your app, this buildpack behaves as a final, or last, buildpack.</p>
+<p class="note"><strong>Note:</strong> If you use only one buildpack for your app, this buildpack behaves as a final, or last, buildpack.</p>
 
-<p class="note"><strong>Note</strong>: When using multi-buildpack support, the last buildpack in order is the final buildpack, and is able to make changes to the app and determine a start command. All other specified buildpacks are non-final and only supply dependencies.</p>
+<p class="note"><strong>Note:</strong> When using multi-buildpack support, the last buildpack in order is the final buildpack, and is able to make changes to the app and determine a start command. All other specified buildpacks are non-final and only supply dependencies.</p>
 
-### <a id='detect-script'></a>bin/detect ###
+### <a id='detect-script'></a> bin/detect
 
-The `detect` script determines whether or not to apply the buildpack to an app. The script is called with one argument, the `build` directory for the app. The `build` directory contains the app files uploaded when a user performs a `cf push`. 
+The `detect` script determines whether or not to apply the buildpack to an app. The script is called with one argument, the `build` directory for the app. The `build` directory contains the app files uploaded when you run `cf push`. 
 
 The `detect` script returns an exit code of `0` if the buildpack is compatible with the app. In the case of system buildpacks, the script also prints the buildpack name, version, and other information to `STDOUT`.
 
 The following is an example `detect` script that checks for a Ruby app based on the existence of a `Gemfile`:
 
-~~~ruby
+~~~
 #!/usr/bin/env ruby
 
 gemfile_path = File.join ARGV[0], "Gemfile"
@@ -54,15 +53,15 @@ Optionally, the buildpack `detect` script can output additional details provided
 
 The following is an example of the detailed information returned by the Java buildpack:
 
-~~~
+```
 java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
-~~~
+```
 
-<p class="note"><strong>Note</strong>: <%= vars.app_runtime_abbr %> detects only one buildpack by default. When multiple buildpacks are desired, you must explicitly specify them.</p>
+<p class="note"><strong>Note:</strong> <%= vars.app_runtime_abbr %> detects only one buildpack by default. When multiple buildpacks are desired, you must explicitly specify them.</p>
 
-For more information, see the [Buildpack Detection](#buildpack-detection) section below.
+For more information, see [Buildpack Detection](#buildpack-detection).
 
-### <a id='supply-script'></a>bin/supply ###
+### <a id='supply-script'></a> bin/supply
 
 The `supply` script provides dependencies for the app and runs for all buildpacks. All output sent to `STDOUT` is relayed to the user through the Cloud Foundry Command Line Interface (cf CLI).
 
@@ -83,7 +82,7 @@ The `cache` directories provided to the `supply` scripts of non-final buildpacks
 
 The following is an example of a simple `supply` script:
 
-~~~ruby
+~~~
 #!/usr/bin/env ruby
 
 #sync output
@@ -108,7 +107,7 @@ def install_ruby
 end
 ~~~
 
-### <a id='finalize-script'></a>bin/finalize ###
+### <a id='finalize-script'></a> bin/finalize
 
 The `finalize` script prepares the app for launch and runs only for the last buildpack. All output sent to `STDOUT` is relayed to the user through the cf CLI.
 
@@ -125,7 +124,7 @@ The `cache` directory provided to the `finalize` script is preserved even when t
 
 The following is an example of a simple `finalize` script:
 
-~~~ruby
+~~~
 #!/usr/bin/env ruby
 
 #sync output
@@ -149,7 +148,7 @@ def setup_ruby
 end
 ~~~
 
-### <a id='compile-script'></a>bin/compile (Deprecated) ###
+### <a id='compile-script'></a> bin/compile (Deprecated)
 
 The `compile` script is deprecated. It encompasses the behavior of the `supply` and `finalize` scripts for single buildpack apps by using the `build` directory to store dependencies.
 
@@ -160,32 +159,32 @@ The script is run with two arguments:
 
 During the execution of the `compile` script, all output sent to `STDOUT` is relayed to the user through the cf CLI.
 
-### <a id='release-script'></a>bin/release ###
+### <a id='release-script'></a> bin/release
 
 The `release` script provides feedback metadata to <%= vars.app_runtime_abbr %> indicating how the app should be executed. The script is run with one argument, the `build` directory. The script must generate a YAML file in the following format:
 
-~~~yaml
+```
 default_process_types:
   web: start_command.filetype
-~~~
+```
 
-`default_process_types` indicates the type of app being run and the command used to start it. 
-This start command is used if a start command is not specified in the `cf push` or in a Procfile.
+`default_process_types` indicates the type of app being run and the command used to start it. This start command is used if a start command is not specified in the `cf push` or in a Procfile.
 
 At this time, only the `web` type of apps is supported.
 
-<p class="note"><strong>Note</strong>: To define environment variables for your buildpack, add a Bash script to the <code>.profile.d</code> directory in the root folder of your app.</p>
+<p class="note"><strong>Note:</strong> To define environment variables for your buildpack, add a Bash script to the <code>.profile.d</code> directory in the root folder of your app.</p>
 
 The following example shows what a `release` script for a Rack app might return:
 
-~~~ruby
+~~~
 default_process_types:
   web: bundle exec rackup config.ru -p $PORT
 ~~~
 
-<p class="note"><strong>Note</strong>: The <code>web</code> command runs as <code>bash -c COMMAND</code> when <%= vars.app_runtime_abbr %> starts your app. Refer to <a href="../devguide/deploy-apps/manifest.html#start-commands">the command attribute</a> section for more information about custom start commands. </p>
+<p class="note"><strong>Note:</strong> The <code>web</code> command runs as <code>bash -c COMMAND</code> when <%= vars.app_runtime_abbr %> starts your app.</p>
 
-## <a id='droplet-filesystem'></a> Droplet Filesystem ##
+
+## <a id='droplet-filesystem'></a> Droplet Filesystem
 
 The buildpack staging process extracts the droplet into the `/home/vcap` directory inside the instance container and creates the following filesystem tree:
 
@@ -196,12 +195,13 @@ logs/
 tmp/
 staging_info.yml
 ```
+
 The `app` directory includes the contents of the `build` directory, and `staging_info.yml` contains the staging metadata saved in the droplet.
 
-##<a id='buildpack-detection'></a> Buildpack Detection
 
-When you push an app, <%= vars.app_runtime_abbr %> uses a detection process to determine a single buildpack to use. 
-For general information about this process, see [How Apps Are Staged](../concepts/how-applications-are-staged.html#stage-buildpack). 
+## <a id='buildpack-detection'></a> Buildpack Detection
+
+When you push an app, <%= vars.app_runtime_abbr %> uses a detection process to determine a single buildpack to use. For general information about this process, see the [How Diego Stages Buildpack Apps](../concepts/how-applications-are-staged.html#stage-buildpack) section of the _How Apps Are Staged_ topic.
 
 During staging, each buildpack has a position in a priority list. You can retrieve this position by running `cf buildpacks`.
 
@@ -218,59 +218,65 @@ FAILED
 NoAppDetectedError
 </pre>
 
-For a more detailed account of how <%= vars.app_runtime_abbr %> interacts with the buildpack, see the [Sequence of Interactions](#interactions) section below.
+For a more detailed account of how <%= vars.app_runtime_abbr %> interacts with the buildpack, see [Sequence of Interactions](#interactions).
 
-##<a id='interactions'></a> Sequence of Interactions 
 
-This section describes the sequence of interactions between the <%= vars.app_runtime_abbr %> platform and the buildpack. The sequence of interactions differs depending on whether the platform [skips](#no-detection) or [performs](#detection) buildpack detection.
+## <a id='interactions'></a> Sequence of Interactions 
 
-###<a id='no-detection'></a> No Buildpack Detection
+This section describes the sequence of interactions between the <%= vars.app_runtime_abbr %> platform and the buildpack. The sequence of interactions differs depending on whether the platform skips or performs buildpack detection.
+
+### <a id='no-detection'></a> No Buildpack Detection
 
 <%= vars.app_runtime_abbr %> skips buildpack detection if the developer specifies one or more buildpacks in the app manifest or in the `cf push APP-NAME -b BUILDPACK-NAME` cf CLI command.
 
 If you explicitly specify buildpacks, <%= vars.app_runtime_abbr %> performs the following interactions:
 
-1. For each buildpack except the last buildpack, the platform does the following:
-	1. Creates the `deps`/`index` directory
-	1. Runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`
-	1. Accepts any modification of the `deps`/`index` directory
-	1. Accepts any modification of the `cache` directory
-	1. May disallow modification of any other directories
-1. For the last buildpack, the platform does the following:
+1. For each buildpack except the last buildpack, the platform:
+	1. Creates the `deps`/`index` directory.
+	1. Runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
+	1. Accepts any modification of the `deps`/`index` directory.
+	1. Accepts any modification of the `cache` directory.
+	1. May disallow modification of any other directories.
+
+1. For the last buildpack, the platform:
 	1. If `/bin/finalize` is present:
-		1. Creates the `deps`/`index` directory if it does not exist
-		1. If `/bin/supply` is present, runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`
-		1. Accepts any modification of the `deps`/`index` directory
-		1. May disallow modification of the `build` directory
-		1. Runs `/bin/finalize` with the `build`, `cache`, and `deps` directories and the buildpack `index`
-		1. Accepts any modification of the `build` directory
+		1. Creates the `deps`/`index` directory if it does not exist.
+		1. If `/bin/supply` is present, runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
+		1. Accepts any modification of the `deps`/`index` directory.
+		1. May disallow modification of the `build` directory.
+		1. Runs `/bin/finalize` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
+		1. Accepts any modification of the `build` directory.
 	1. If `/bin/finalize` is not present:
-		1. Runs `/bin/compile` with the `build` and `cache` directories
-		1. Accepts any modification of the `build` directory
-	1. Runs `/bin/release` to determine staging information
+		1. Runs `/bin/compile` with the `build` and `cache` directories.
+		1. Accepts any modification of the `build` directory.
+	1. Runs `/bin/release` to determine staging information.
 
 At the end of this process, the `deps` directory is included at the root of the droplet, adjacent to the `app` directory.
 
-###<a id='detection'></a> Buildpack Detection
+### <a id='detection'></a> Buildpack Detection
 
 <%= vars.app_runtime_abbr %> performs buildpack detection if the developer does not specify one or more buildpacks in the app manifest or in the `cf push APP-NAME -b BUILDPACK-NAME` cf CLI command.
 
-<p class="note"><strong>Note</strong>: <%= vars.app_runtime_abbr %> detects only one buildpack to use with the app.</p>
+<p class="note"><strong>Note:</strong> <%= vars.app_runtime_abbr %> detects only one buildpack to use with the app.</p>
 
-If the platform performs detection, it does the following:
+If the platform performs detection, it:
 
-1. Runs `/bin/detect` for each buildpack
-1. Selects the first buildpack with a `/bin/detect` script that returns a zero exit status
+1. Runs `/bin/detect` for each buildpack.
+
+1. Selects the first buildpack with a `/bin/detect` script that returns a zero exit status.
+
 1. If `/bin/finalize` is present:
-	1. Creates the `deps`/`index` directory if it does not exist
-	1. If `/bin/supply` is present, runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`
-	1. Accepts any modification of the `deps`/`index` directory
-	1. May disallow modification of the `build` directory
-	1. Runs `/bin/finalize` on the `build`, `cache`, and `deps` directories
-	1. Accepts any modification of the `build` directory
+	1. Creates the `deps`/`index` directory if it does not exist.
+	1. If `/bin/supply` is present, runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
+	1. Accepts any modification of the `deps`/`index` directory.
+	1. May disallow modification of the `build` directory.
+	1. Runs `/bin/finalize` on the `build`, `cache`, and `deps` directories.
+	1. Accepts any modification of the `build` directory.
+
 1. If `/bin/finalize` is not present:
-	1. Runs `/bin/compile` on the `build` and `cache` directories
-	1. Accepts any modification of the `build` directory
-1. Runs `/bin/release` to determine staging information
+	1. Runs `/bin/compile` on the `build` and `cache` directories.
+	1. Accepts any modification of the `build` directory.
+
+1. Runs `/bin/release` to determine staging information.
 
 At the end of this process, the `deps` directory is included at the root of the droplet, adjacent to the `app` directory.
