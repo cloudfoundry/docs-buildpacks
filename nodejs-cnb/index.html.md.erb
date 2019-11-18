@@ -247,3 +247,12 @@ managed by Yarn.  Application developers may include this file in their source
 code in order to invoke the Yarn installation process. More details on the
 `yarn.lock` file can be found in the [Yarn
 documentation](https://yarnpkg.com/lang/en/docs/yarn-lock/).
+
+##<a id="start-command"></a> Start Command
+
+As part of the build process, the Node.js CNB will choose a start command for
+your application.  The start command differs depending upon which package
+management tooling is used.  If the `npm-cnb` is invoked to install packages
+using `npm`, then the start command will be `npm start`.  If the `yarn-cnb` is
+used to install packages using `yarn`, then the start command will be `yarn
+start`.
