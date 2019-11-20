@@ -1,0 +1,111 @@
+---
+title: SideCar Buildpacks
+Buildpacks owner: Buildpacks
+---
+
+### Sidecar processes
+Sidecar processes are additional dependent processes that are run in the same
+container as the main app process.  For more info on these please see 
+<a
+href="https://www.cloudfoundry.org/blog/how-to-push-an-app-to-cloud-foundry-with-sidecars/">Sidecars </a>
+
+Q: What versions support this????
+
+A buildpack can specify sidecar processes simply by writing a `launch.yml` at
+the root of its deps directory during the `supply` phase.  This deps dir is a
+combination of the `DEPS_DIR` and the `DEP_IDX`. For more info about how these
+two values are passed to the buildpack interface see <a
+href="buildpacks/understand-buildpacks.html">understanding buildpacks</a>.
+
+Example `launch.yml`:
+
+``` 
+---
+processes:
+- type: "process_name"
+  command: "some-command-to-run"
+  limits:
+    memory: 10
+  platforms:
+    cloudfoundry:
+      sidecar_for: [ "web", "other process", "blerb"]
+
+```
+
+The `launch.yml` document can be interpreted as follows:
+
+* **type**: this a key that is mapped to a individual command. The `web` command will automatically be run to
+start an app after it has been built. 
+  * Note that it is
+possible for mutiple buildpacks to write their own `launch.yml` files. If there
+are `type` keys in common between two of these files, the `launch.yml` writen
+**last** will overwrite the previous commands of the same `type`.
+
+* **command**: the command that will be envolked in the container, note that
+container health is tied to the longevity of this command, if this comman ends
+so too will the container.
+
+* **limits**: resource limits to be placed on the sidecar process
+  * Memory: memory limit in MB
+
+* **platforms**: platform specific key, cloudfoundry with only read data under
+the `cloudfoundry` key
+
+* **sidecar_for**: this is a list of `types` that this specific command is a
+sidecar process for. (remember this makes the health checks co-dependent)
+
+
+###Example Buildpack
+
+This buildpack functions as a supply buildpack, or the non-final buildpack in a
+multi-buildpack build. It's only purpose is to write the `process.yml` file to
+the buildpacks `DEPS_DIR/DEPS_IDX`
+
+for a repo containing the full sidecar buildpack described below see
+<a
+href="https://github.com/cloudfoundry/example-sidecar-buildpack/">example repo</a>.
+
+has the following directory structure:
+
+```
+bin/
+bin/supply
+manifest.yml # just used to specify id & stack
+VERSION
+```
+
+Because this is a supply buildpack, the only interesting script here is
+`supply`.  Its purpose is to write a `launch.yml` file to a specific location.
+`bin/supply`
+
+```
+#!/bin/bash
+
+set -euo pipefail
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEPS_DIR=$3
+DEPS_IDX=$4
+
+LAUNCH_CONTENTS='---
+processes:
+- type: "sidecar_process"
+  command: "while true; do echo hello from a sidecar process; sleep 10; done"
+  platforms:
+    cloudfoundry:
+      sidecar_for: [ "web"]
+'
+
+echo "-----> Running sidecar supply"
+
+export BUILDPACK_DIR=`dirname $(readlink -f ${BASH_SOURCE%/*})`
+
+pushd "$BUILDPACK_DIR"
+  # notice where we are writing the launch.yml below
+  echo "$LAUNCH_CONTENTS" > "$DEPS_DIR"/"$DEPS_IDX"/launch.yml
+popd
+
+```
+
+
