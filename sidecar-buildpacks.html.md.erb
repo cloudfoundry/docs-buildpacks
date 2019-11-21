@@ -13,11 +13,11 @@ A buildpack can specify sidecar processes simply by writing a `launch.yml` at
 the root of its deps directory during the `supply` phase.  This deps dir is a
 combination of the `DEPS_DIR` and the `DEP_IDX`. For more info about how these
 two values are passed to the buildpack interface see <a
-href="buildpacks/understand-buildpacks.html">understanding buildpacks</a>.
+href="understand-buildpacks.html">understanding buildpacks</a>.
 
 Example `launch.yml`:
 
-``` 
+```
 ---
 processes:
 - type: "process_name"
