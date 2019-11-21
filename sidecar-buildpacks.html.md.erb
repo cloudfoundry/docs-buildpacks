@@ -9,8 +9,6 @@ container as the main app process.  For more info on these please see
 <a
 href="https://www.cloudfoundry.org/blog/how-to-push-an-app-to-cloud-foundry-with-sidecars/">Sidecars </a>
 
-Q: What versions support this????
-
 A buildpack can specify sidecar processes simply by writing a `launch.yml` at
 the root of its deps directory during the `supply` phase.  This deps dir is a
 combination of the `DEPS_DIR` and the `DEP_IDX`. For more info about how these
