@@ -7,28 +7,28 @@ This topic explains how to use the .NET Framework Web Config Transform Extension
 
 ## <a id='prerequisites'></a>Prerequisites
 
-* Linux, Windows or MacOS development machine or VM.
+* A Linux, Windows or MacOS development machine or VM.
 * A foundation with Windows cells available to push to.
-* A foundation with the .NET Framework Web Config Transform Extension Buildpack installed.  
-* Spring Cloud Services Tile  
+* A foundation with the .NET Framework Web Config Transform Extension Buildpack installed.
+* The Spring Cloud Services Tile
 
 ## <a id='overview'></a> Overview
 
 Cloud Native Applications derive their configurations and settings from external sources, 
-for example from config servers or by reading environment variables, etc. 
-Configuration settings are injected through Web.config files for applications that run on IIS, such as ASP.NET applications.  
+for example from config servers or by reading environment variables, etc.
+Configuration settings are injected through Web.config files for applications that run on IIS, such as ASP.NET applications.
 
-As per cloud native principles, configuration should not be included in build artifacts.  
+As per cloud native principles, configuration should not be included in build artifacts.
 
-The .NET Framework Web Config Transform Extension Buildpack buildpack provides a solution to this problem by using token 
-replacement during ‘cf push’ staging. 
+The .NET Framework Web Config Transform Extension Buildpack provides a solution to this problem by
+using token replacement during ‘cf push’ staging.
 
 To leverage the .NET Framework Web Config Transform Extension Buildpack, complete the following procedures:  
 
 1. [Identify Environment Dependent Configurations and Externalize](#tokenize)
 1. [Create a Cloud Foundry App Manifest](#create-manifest)
 1. [Add Web Config Transformations](#transformations)
-1. [Move Config Settings to a Git Repoistory](#move-to-git-repo)
+1. [Move Config Settings to a Git Repository](#move-to-git-repo)
 1. [Create a Configuration Service for Spring Cloud Config Server](#create-spring-cloud-service)
 1. [Bind Config Service to App Using Manifest](#bind-service-to-app)
 1. [Add ASPNETCORE_ENV Variable to App Manifest](#add-aspnetcore-env)
