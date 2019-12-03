@@ -81,13 +81,6 @@ by the operating system in `/sys/fs/cgroup/memory/memory.limit_in_bytes`.
 * Phases: `build`
 * Value: path to the `node` installation
 
-### <a id="environment-variable-node-modules-cache"></a> NODE\_MODULES\_CACHE
-A cache directory that stores module data between builds
-
-* Set by: `node-engine-cnb`
-* Phases: `build`
-* Value: true
-
 ### <a id="environment-variable-node-path"></a> NODE_PATH
 
 * Set by: `yarn-cnb`
@@ -121,18 +114,6 @@ Appends the `node_modules/.bin` directory onto the `$PATH`
 * Set by: `yarn-cnb`
 * Phases: `build`
 * Value: path to the `node_modules/.bin` directory
-
-### <a id="environment-variable-web-concurrency"></a> WEB_CONCURRENCY
-
-* Set by: `profile.d`
-* Phases: `launch`
-* Value: non-negative integer
-
-### <a id="environment-variable-web-memory"></a> WEB_MEMORY
-
-* Set by: `node-engine-cnb`
-* Phases: `build`
-* Value: 512
 
 ##<a id="heap-memory-optimization"></a> Heap Memory Optimization
 
