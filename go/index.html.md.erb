@@ -66,11 +66,9 @@ require (
 )
 ```
 
-#### <a id='gomod_subdirectory_main_package'></a>Push an app with a main package somewhere besides the project root ####
+#### <a id='gomod_subdirectory_main_package'></a> When Your Main Package is Not in the Project Root ####
 
-A common project pattern is to place main packages in a subdirectory called `cmd`.
-
-For example,
+A common project pattern is to place main packages in a subdirectory called `cmd` like in the example below:
 
 ```bash
 $ tree app-package-name
@@ -90,10 +88,10 @@ app-package-name
 When you configure your project like this, set the environment variable `GO_INSTALL_PACKAGE_SPEC` 
 to `$MODULE_NAME/$MAIN_PACKAGE_PATH`.
 
-So if the module name for the above `app-package-name` app is `example.com/user/app-package-name`,
-the value of `GO_INSTALL_PACKAGE_SPEC` should be `example.com/user/app-package-name/cmd/server`.
+If the module name for the above `app-package-name` app is `example.com/user/app-package-name`,
+the value of `GO_INSTALL_PACKAGE_SPEC` must be `example.com/user/app-package-name/cmd/server`.
 
-If you want to put this in your `manifest.yml`, it would look something like this:
+If you want to put this in your `manifest.yml`, see the following example:
 
 ```yaml
 ---
