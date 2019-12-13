@@ -3,9 +3,9 @@ title: How Buildpacks Work in Cloud Foundry
 owner: Buildpacks
 ---
 
-<% current_page.data.title = "How Buildpacks Work in " + vars.app_runtime_abbr %>
+<% current_page.data.title = "How Buildpacks Work in " + vars.product_short %>
 
-This topic describes how buildpacks are structured and detected in <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>).
+This topic describes how buildpacks are structured and detected in <%= vars.product_runtime %> (<%= vars.product_short %>).
 
 
 ## <a id='buildpack-scripts'></a> Buildpack Scripts
@@ -15,10 +15,10 @@ A buildpack repository may contain the following five scripts in the `bin` direc
 * `bin/detect` determines whether or not to apply the buildpack to an app.
 * `bin/supply` provides dependencies for an app.
 * `bin/finalize` prepares the app for launch.
-* `bin/release` provides feedback metadata to <%= vars.app_runtime_abbr %> indicating how the app should be executed.
+* `bin/release` provides feedback metadata to <%= vars.product_short %> indicating how the app should be executed.
 * `bin/compile` is a deprecated alternative to `bin/supply` and `bin/finalize`.
 
-The `bin/supply` and `bin/finalize` scripts replace the deprecated `bin/compile` script. Older buildpacks may still use `bin/compile` with the latest version of <%= vars.app_runtime_abbr %>. In this case, applying multiple buildpacks to a single app is not supported. Similarly, newer buildpacks may still provide `bin/compile` for compatibility with Heroku and older versions of <%= vars.app_runtime_abbr %>.
+The `bin/supply` and `bin/finalize` scripts replace the deprecated `bin/compile` script. Older buildpacks may still use `bin/compile` with the latest version of <%= vars.product_short %>. In this case, applying multiple buildpacks to a single app is not supported. Similarly, newer buildpacks may still provide `bin/compile` for compatibility with Heroku and older versions of <%= vars.product_short %>.
 
 The `bin/supply` script is required for non-final buildpacks. The `bin/finalize` (or `bin/compile`) script is required for final buildpacks.
 
@@ -57,7 +57,7 @@ The following is an example of the detailed information returned by the Java bui
 java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
 ```
 
-<p class="note"><strong>Note:</strong> <%= vars.app_runtime_abbr %> detects only one buildpack by default. When multiple buildpacks are desired, you must explicitly specify them.</p>
+<p class="note"><strong>Note:</strong> <%= vars.product_short %> detects only one buildpack by default. When multiple buildpacks are desired, you must explicitly specify them.</p>
 
 For more information, see [Buildpack Detection](#buildpack-detection).
 
@@ -161,7 +161,7 @@ During the execution of the `compile` script, all output sent to `STDOUT` is rel
 
 ### <a id='release-script'></a> bin/release
 
-The `release` script provides feedback metadata to <%= vars.app_runtime_abbr %> indicating how the app should be executed. The script is run with one argument, the `build` directory. The script must generate a YAML file in the following format:
+The `release` script provides feedback metadata to <%= vars.product_short %> indicating how the app should be executed. The script is run with one argument, the `build` directory. The script must generate a YAML file in the following format:
 
 ```
 default_process_types:
@@ -181,7 +181,7 @@ default_process_types:
   web: bundle exec rackup config.ru -p $PORT
 ~~~
 
-<p class="note"><strong>Note:</strong> The <code>web</code> command runs as <code>bash -c COMMAND</code> when <%= vars.app_runtime_abbr %> starts your app.</p>
+<p class="note"><strong>Note:</strong> The <code>web</code> command runs as <code>bash -c COMMAND</code> when <%= vars.product_short %> starts your app.</p>
 
 
 ## <a id='droplet-filesystem'></a> Droplet Filesystem
@@ -201,11 +201,11 @@ The `app` directory includes the contents of the `build` directory, and `staging
 
 ## <a id='buildpack-detection'></a> Buildpack Detection
 
-When you push an app, <%= vars.app_runtime_abbr %> uses a detection process to determine a single buildpack to use. For general information about this process, see the [How Diego Stages Buildpack Apps](../concepts/how-applications-are-staged.html#stage-buildpack) section of the _How Apps Are Staged_ topic.
+When you push an app, <%= vars.product_short %> uses a detection process to determine a single buildpack to use. For general information about this process, see the [How Diego Stages Buildpack Apps](../concepts/how-applications-are-staged.html#stage-buildpack) section of the _How Apps Are Staged_ topic.
 
 During staging, each buildpack has a position in a priority list. You can retrieve this position by running `cf buildpacks`.
 
-<%= vars.app_runtime_abbr %> checks if the buildpack in position 1 is a compatible buildpack. If the position 1 buildpack is not compatible, <%= vars.app_runtime_abbr %> moves on to the buildpack in position 2. <%= vars.app_runtime_abbr %> continues this process until the correct buildpack is found. 
+<%= vars.product_short %> checks if the buildpack in position 1 is a compatible buildpack. If the position 1 buildpack is not compatible, <%= vars.product_short %> moves on to the buildpack in position 2. <%= vars.product_short %> continues this process until the correct buildpack is found. 
 
 If no buildpack is compatible, the `cf push` command fails with the following error:
 
@@ -218,18 +218,18 @@ FAILED
 NoAppDetectedError
 </pre>
 
-For a more detailed account of how <%= vars.app_runtime_abbr %> interacts with the buildpack, see [Sequence of Interactions](#interactions).
+For a more detailed account of how <%= vars.product_short %> interacts with the buildpack, see [Sequence of Interactions](#interactions).
 
 
 ## <a id='interactions'></a> Sequence of Interactions 
 
-This section describes the sequence of interactions between the <%= vars.app_runtime_abbr %> platform and the buildpack. The sequence of interactions differs depending on whether the platform skips or performs buildpack detection.
+This section describes the sequence of interactions between the <%= vars.product_short %> platform and the buildpack. The sequence of interactions differs depending on whether the platform skips or performs buildpack detection.
 
 ### <a id='no-detection'></a> No Buildpack Detection
 
-<%= vars.app_runtime_abbr %> skips buildpack detection if the developer specifies one or more buildpacks in the app manifest or in the `cf push APP-NAME -b BUILDPACK-NAME` cf CLI command.
+<%= vars.product_short %> skips buildpack detection if the developer specifies one or more buildpacks in the app manifest or in the `cf push APP-NAME -b BUILDPACK-NAME` cf CLI command.
 
-If you explicitly specify buildpacks, <%= vars.app_runtime_abbr %> performs the following interactions:
+If you explicitly specify buildpacks, <%= vars.product_short %> performs the following interactions:
 
 1. For each buildpack except the last buildpack, the platform:
 	1. Creates the `deps`/`index` directory.
@@ -255,9 +255,9 @@ At the end of this process, the `deps` directory is included at the root of the 
 
 ### <a id='detection'></a> Buildpack Detection
 
-<%= vars.app_runtime_abbr %> performs buildpack detection if the developer does not specify one or more buildpacks in the app manifest or in the `cf push APP-NAME -b BUILDPACK-NAME` cf CLI command.
+<%= vars.product_short %> performs buildpack detection if the developer does not specify one or more buildpacks in the app manifest or in the `cf push APP-NAME -b BUILDPACK-NAME` cf CLI command.
 
-<p class="note"><strong>Note:</strong> <%= vars.app_runtime_abbr %> detects only one buildpack to use with the app.</p>
+<p class="note"><strong>Note:</strong> <%= vars.product_short %> detects only one buildpack to use with the app.</p>
 
 If the platform performs detection, it:
 
