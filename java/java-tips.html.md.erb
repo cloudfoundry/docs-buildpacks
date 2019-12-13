@@ -3,27 +3,20 @@ title: Tips for Java Developers
 owner: Java
 ---
 
+<%= vars.app_runtime %> (<%= vars.app_runtime_abbr %>) can deploy a number of different JVM-based artifact types. For a more detailed explanation of what it supports, see the [Java Buildpack documentation][d].
 
 
-Cloud Foundry can deploy a number of different JVM-based artifact types.
-For a more detailed explanation of what it supports, see the [Java Buildpack documentation][d].
+## <a id='buildpack'></a> Java Buildpack
 
-## <a id='buildpack'></a>Java Buildpack ##
+For detailed information about using, configuring, and extending the Cloud Foundry Java buildpack, see [Java Buildpack documentation](https://github.com/cloudfoundry/java-buildpack).
 
-For detailed information about using, configuring, and extending the Cloud
-Foundry Java buildpack, see [Java Buildpack documentation](https://github.com/cloudfoundry/java-buildpack).
 
-## <a id='design'></a>Design ##
-The Java Buildpack is designed to convert artifacts that run on the JVM into
-executable applications.
-It does this by identifying one of the supported artifact types (Grails, Groovy,
-Java, Play Framework, Spring Boot, and Servlet) and downloading all additional
-dependencies needed to run.
-The collection of services bound to the application is also analyzed and any
-dependencies related to those services are also downloaded.
+## <a id='design'></a> Design
 
-As an example, pushing a WAR file that is bound to a PostgreSQL database and New
-Relic for performance monitoring would result in the following:
+The Java Buildpack is designed to convert artifacts that run on the JVM into executable applications. It does this by identifying one of the supported artifact types (Grails, Groovy, Java, Play Framework, Spring Boot, and Servlet) and downloading all additional
+dependencies needed to run. The collection of services bound to the application is also analyzed and any dependencies related to those services are also downloaded.
+
+As an example, pushing a WAR file that is bound to a PostgreSQL database and New Relic for performance monitoring would result in the following:
 
 <pre class="terminal">
 Initialized empty Git repository in /tmp/buildpacks/java-buildpack/.git/
@@ -46,118 +39,121 @@ Initialized empty Git repository in /tmp/buildpacks/java-buildpack/.git/
 --> Uploading droplet (57M)
 </pre>
 
-## <a id='configuration'></a>Configuration ##
-In most cases, the buildpack should work without any configuration.
-If you are new to Cloud Foundry, we recommend that you make your first attempts
-without modifying the buildpack configuration.
-If the buildpack requires some configuration, use [a fork of the buildpack][f].
 
-## Java Client Library  ##
+## <a id='configuration'></a> Configuration
 
-The Cloud Foundry Client Library provides a Java API for interacting with a
-Cloud Foundry instance.
-This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven
-plugin, the Cloud Foundry Gradle plugin, and other Java-based tools.
+In most cases, the buildpack should work without any configuration. If you are new to Cloud Foundry, we recommend that you make your first attempts without modifying the buildpack configuration. If the buildpack requires some configuration, use [a fork of the buildpack][f].
+
+
+## <a id='java-client-library'></a> Java Client Library
+
+The Cloud Foundry Client Library provides a Java API for interacting with a Cloud Foundry instance. This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven plugin, the Cloud Foundry Gradle plugin, and other Java-based tools.
 
 For information about using this library, see the [Java Cloud Foundry Library](./java-client.html) page.
 
-## <a id='grails'></a>Grails ##
-Grails packages applications into WAR files for deployment into a Servlet
-container.
-To build the WAR file and deploy it, run the following:
+
+## <a id='grails'></a> Grails
+
+Grails packages applications into WAR files for deployment into a Servlet container. To build the WAR file and deploy it, run the following:
 
 <pre class="terminal">
 $ grails prod war
 $ cf push my-application -p target/my-application-version.war
 </pre>
 
-## <a id='groovy'></a>Groovy ##
-Groovy applications based on both [Ratpack][r] and a simple collection of files
-are supported.
 
-### <a id='ratpack'></a>Ratpack ###
-Ratpack packages applications into two different styles; Cloud Foundry supports
-the `distZip` style. To build the ZIP and deploy it, run the following:
+## <a id='groovy'></a> Groovy
+
+Groovy applications based on both [Ratpack][r] and a simple collection of files are supported.
+
+### <a id='ratpack'></a> Ratpack
+
+Ratpack packages applications into two different styles; Cloud Foundry supports the `distZip` style. To build the ZIP and deploy it, run the following:
 
 <pre class="terminal">
 $ gradle distZip
 $ cf push my-application -p build/distributions/my-application.zip
 </pre>
 
-### <a id='raw-groovy'></a>Raw Groovy ###
-Groovy applications that are made up of a [single entry point][g] plus any
-supporting files can be run without any other work.
-To deploy them, run the following:
+### <a id='raw-groovy'></a> Raw Groovy
+
+Groovy applications that are made up of a [single entry point][g] plus any supporting files can be run without any other work. To deploy them, run the following:
 
 <pre class="terminal">
 $ cf push my-application
 </pre>
 
-## <a id='java-main'></a>Java Main ##
-Java applications with a `main()` method can be run provided that they are
-packaged as [self-executable JARs][j].
+
+## <a id='java-main'></a> Java Main
+
+Java applications with a `main()` method can be run provided that they are packaged as [self-executable JARs][j].
 
 <p class="note"><strong>Note</strong>: If your application is not web-enabled, you must suppress route creation to avoid a "failed to start accepting connections" error. To suppress route creation, add <code>no-route: true</code> to the application manifest or use the <code>--no-route</code> flag with the <code>cf push</code> command. <br><br>For more information about the <code>no-route</code> attribute, see the <a href="../../devguide/deploy-apps/manifest.html#no-route">Deploying with Application Manifests</a> topic.</p>
 
-### <a id='java-main-maven'></a>Maven ###
-A Maven build can create a self-executable JAR.
-To build and deploy the JAR, run the following:
+### <a id='java-main-maven'></a> Maven
+
+A Maven build can create a self-executable JAR. To build and deploy the JAR, run the following:
 
 <pre class="terminal">
 $ mvn package
 $ cf push my-application -p target/my-application-version.jar
 </pre>
 
-### <a id='java-main-gradle'></a>Gradle ###
-A Gradle build can create a self-executable JAR.
-To build and deploy the JAR, run the following:
+### <a id='java-main-gradle'></a> Gradle
+
+A Gradle build can create a self-executable JAR. To build and deploy the JAR, run the following:
 
 <pre class="terminal">
 $ gradle build
 $ cf push my-application -p build/libs/my-application-version.jar
 </pre>
 
-## <a id='play-framework'></a>Play Framework ##
-The [Play Framework][p] packages applications into two different styles.
-Cloud Foundry supports both the `staged` and `dist` styles. To build the `dist`
-style and deploy it, run the following:
+
+## <a id='play-framework'></a> Play Framework
+
+The [Play Framework][p] packages applications into two different styles. Cloud Foundry supports both the `staged` and `dist` styles. To build the `dist` style and deploy it, run the following:
 
 <pre class="terminal">
 $ play dist
 $ cf push my-application -p target/universal/my-application-version.zip
 </pre>
 
-## <a id='spring-boot-cli'></a>Spring Boot CLI ##
-[Spring Boot][s] can run applications [comprised entirely of POGOs][b].
-To deploy then, run the following:
+
+## <a id='spring-boot-cli'></a> Spring Boot CLI
+
+[Spring Boot][s] can run applications [comprised entirely of POGOs][b]. To deploy then, run the following:
 
 <pre class="terminal">
 $ spring grab *.groovy
 $ cf push my-application
 </pre>
 
-## <a id='servlet'></a>Servlet ##
+
+## <a id='servlet'></a> Servlet
+
 Java applications can be packaged as Servlet applications.
 
-### <a id='servlet-maven'></a>Maven ###
-A Maven build can create a Servlet WAR.
-To build and deploy the WAR, run the following:
+### <a id='servlet-maven'></a> Maven
+
+A Maven build can create a Servlet WAR. To build and deploy the WAR, run the following:
 
 <pre class="terminal">
 $ mvn package
 $ cf push my-application -p target/my-application-version.war
 </pre>
 
-### <a id='servlet-gradle'></a>Gradle ###
-A Gradle build can create a Servlet WAR.
-To build and deploy the JAR, run the following:
+### <a id='servlet-gradle'></a> Gradle
+
+A Gradle build can create a Servlet WAR. To build and deploy the JAR, run the following:
 
 <pre class="terminal">
 $ gradle build
 $ cf push my-application -p build/libs/my-application-version.war
 </pre>
 
-## <a id='services'></a>Binding to Services ##
+
+## <a id='services'></a> Binding to Services
+
 Information about binding apps to services can be found on the following pages:
 
 * [Service Bindings for Grails Applications](./configuring-service-connections/grails-service-bindings.html)
@@ -172,19 +168,16 @@ Information about binding apps to services can be found on the following pages:
 [r]: http://www.ratpack.io
 [s]: http://projects.spring.io/spring-boot/
 
-## <a id='java-apps'></a>Java and Grails Best Practices ##
 
-### <a id='jdbc'></a>Provide JDBC driver ###
+## <a id='java-apps'></a> Java and Grails Best Practices
 
-The Java buildpack does not bundle a JDBC driver with your application.
-If your application will access a SQL RDBMS, include the appropriate driver in
-your application.
+### <a id='jdbc'></a> Provide JDBC driver
 
-### <a id='memory'></a>Allocate Sufficient Memory ###
+The Java buildpack does not bundle a JDBC driver with your application. If your application will access a SQL RDBMS, include the appropriate driver in your application.
 
-If you do not allocate sufficient memory to a Java application when you deploy
-it, it may fail to start, or <%=vars.product_short%> may terminate it.
-You must allocate enough memory to allow for the following:
+### <a id='memory'></a> Allocate Sufficient Memory
+
+If you do not allocate sufficient memory to a Java application when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for the following:
 
 * Java heap
 * Metaspace, if using Java 8
@@ -192,23 +185,13 @@ You must allocate enough memory to allow for the following:
 * Stack size per Thread
 * JVM overhead
 
-The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default
-memory size and weighting settings for the JRE.
-See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and
-how the Java buildpack calculates and allocates memory to the JRE for your app.
+The `config/open_jdk_jre.yml` file of the [Cloud Foundry Java buildpack](https://github.com/cloudfoundry/java-buildpack) contains default memory size and weighting settings for the JRE. See the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) on GitHub for an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app.
 
-To configure memory-related JRE options for your app, you either create a custom buildpack and specify this buildpack in your deployment manifest 
-or you override the default memory settings of your buildpack as described 
-in the [https://github.com/cloudfoundry/java-buildpack#configuration-and-extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension)
-with the properties listed  in the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md).
-For more information about configuring custom buildpacks and manifests, refer to
-the [Custom Buildpacks](../custom.html) and [Deploying with
-Application Manifests](../../devguide/deploy-apps/manifest.html) topics.
+To configure memory-related JRE options for your app, you either create a custom buildpack and specify this buildpack in your deployment manifest or you override the default memory settings of your buildpack as described in the [https://github.com/cloudfoundry/java-buildpack#configuration-and-extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension)with the properties listed in the [Open JDK JRE README](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md). For more information about configuring custom buildpacks and manifests, refer to the [Custom Buildpacks](../custom.html) and [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topics.
 
-When your app is running, you can use the `cf app APP-NAME` command to see
-memory utilization.
+When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
-### <a id='memory-troubleshoot'></a>Troubleshoot Out Of Memory ###
+### <a id='memory-troubleshoot'></a> Troubleshoot Out of Memory
 
 A Java app may crash because of insufficient memory on the Garden container or the JVM on which it runs. See the following sections for help diagnosing and resolving such issues.
 
@@ -219,7 +202,9 @@ A Java app may crash because of insufficient memory on the Garden container or t
     $ cf logs APP-NAME --recent
     2016-06-20T09:18:51.00+0100 [APP/0] OUT java.lang.OutOfMemoryError: Metaspace   
     </pre>
+
 * **Cause**: If the JVM cannot garbage-collect enough space to ensure the allocation of a data-structure, it fails with [java.lang.OutOfMemoryError](https://docs.oracle.com/javase/8/docs/api/java/lang/OutOfMemoryError.html). In the example above, JVM has an under-sized `metaspace`. You may see failures in other memory pools, such as `heap`.
+
 * **Solution**: Configure the JVM correctly for your app. See [Allocate Sufficient Memory](#memory).
 
 #### Garden Container
@@ -272,63 +257,46 @@ You can then configure the Java buildpack using the `native` [setting](https://g
     The correct settings for `stack` and `stack_threads` depend on your app code, including the libraries it uses. Your app may technically have no upper limit, such as in the case of [cavalier usage](http://dev.bizo.com/2014/06/cached-thread-pool-considered-harmlful.html) of `CachedThreadPool` [executors](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--).
     However, you still must calculate the depth of the thread stacks and the amount of space the JVM should reserve for each of them.
 
-### <a id='upload'></a>Troubleshoot Failed Upload ###
+### <a id='upload'></a> Troubleshoot Failed Upload
 
-If your application fails to upload when you push it to Cloud Foundry, it may be
-for one of the following reasons:
+If your application fails to upload when you push it to Cloud Foundry, it may be for one of the following reasons:
 
-* **WAR is too large**: An upload may fail due to the size of the WAR file.
-Cloud Foundry testing indicates WAR files as large as 250 MB upload
-successfully.
-If a WAR file larger than that fails to upload, it may be a result of the file
-size.
+* **WAR is too large**: An upload may fail due to the size of the WAR file. Cloud Foundry testing indicates WAR files as large as 250 MB upload successfully. If a WAR file larger than that fails to upload, it may be a result of the file size.
 
-* **Connection issues**: Application uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target Cloud Foundry instance.
-If an application upload takes a long time, your authorization token can expire
-before the upload completes.
-A workaround is to copy the WAR to a server that is closer to the Cloud Foundry
-instance, and push it from there.
+* **Connection issues**: Application uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target Cloud Foundry instance. If an application upload takes a long time, your authorization token can expire before the upload completes. A workaround is to copy the WAR to a server that is closer to the Cloud Foundry instance, and push it from there.
 
-* **Out-of-date cf CLI client**: Upload of a large WAR is faster and hence less
-likely to fail if you are using a recent version of the cf CLI.
-If you are using an older version of the cf CLI client to upload a large WAR, and having
-problems, try updating to the latest version of the cf CLI.
+* **Out-of-date cf CLI client**: Upload of a large WAR is faster and hence less likely to fail if you are using a recent version of the cf CLI. If you are using an older version of the cf CLI client to upload a large WAR, and having problems, try updating to the latest version of the cf CLI.
 
-* **Incorrect WAR targeting**: By default, `cf push` uploads everything in the
-current directory.
-For a Java application, `cf push` with no option flags uploads source code and other unnecessary files, in addition to the WAR.
-When you push a Java application, specify the path to the WAR:
+* **Incorrect WAR targeting**: By default, `cf push` uploads everything in the current directory. For a Java application, `cf push` with no option flags uploads source code and other unnecessary files, in addition to the WAR. When you push a Java application, specify the path to the WAR:
 
     <pre class="terminal">
     $ cf push MY-APP -p PATH/TO/WAR-FILE
     </pre>
 
-    You can determine whether or not the path was specified for a previously
-    pushed application by examining the application deployment manifest,
-    `manifest.yml`.
-    If the `path` attribute specifies the current directory, the manifest
-    includes a line like the following:
+    You can determine whether or not the path was specified for a previously pushed application by examining the application deployment manifest, `manifest.yml`. If the `path` attribute specifies the current directory, the manifest includes a line like the following:
 
     ```
     path: .
     ```
     To re-push just the WAR, do one of the following:
 
-    * Delete `manifest.yml` and run `cf push` again, specifying the location of 
-    the WAR using the `-p` flag.
-    * Edit the `path` argument in `manifest.yml` to point to the WAR, and
-    re-push the application.
+    * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag.
+    * Edit the `path` argument in `manifest.yml` to point to the WAR, and re-push the application.
 
-### <a id='debugging'></a>Debug Java Apps on Cloud Foundry ###
+### <a id='debugging'></a> Debug Java Apps on Cloud Foundry
 
 Because of the way that Cloud Foundry deploys your applications and isolates them, it is not possible to connect to your application with the remote Java debugger. Instead, instruct the application to connect to the Java debugger on your local machine.
 
 Here are the instructions for setting up remote debugging when using BOSH Lite or a Cloud Foundry installation.
 
 1. Open your project in Eclipse.
+
 1. Right-click on your project, go to **Debug as** and pick **Debug Configurations**.
+
 1. Create a new **Remote Java Application**.
+
 1. Make sure your project is selected, pick **Standard (Socket Listen)** from the **Connection Type** drop down and set a port. Make sure this port is open if you are running a firewall.
+
 1. Click **Debug**.
 
 The debugger should now be running. If you switch to the Debug perspective, you should see your application listed in the Debug panel and it should say `Waiting for vm to connect at port`.
@@ -336,29 +304,26 @@ The debugger should now be running. If you switch to the Debug perspective, you 
 Next, push your application to Cloud Foundry and instruct Cloud Foundry to connect to the debugger running on your local machine using the following instructions:
 
 1. Edit your `manifest.yml` file. Set the instances count to 1. If you set this greater than one, multiple applications try to connect to your debugger.
+
 1. Also in `manifest.yml`, add an `env` block and create a variable named `JAVA_OPTS`. For more information about the `env` block, see [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) in _Deploying with Application Manifests_.
+
 1. Add the remote debugger configuration to the `JAVA_OPTS` variable: `-agentlib:jdwp=transport=dt_socket,address=YOUR-IP-ADDRESS:YOUR-PORT`.
+
 1. Save the `manifest.yml` file.
+
 1. Run `cf push`.
 
 Upon completion, you should see that your application has started and is now connected to the debugger running in your IDE. You can now add breakpoints and interrogate the application just as you would if it were running locally.
 
-### <a id='slow-start'></a>Slow Starting Java or Grails Apps ###
+### <a id='slow-start'></a> Slow Starting Java or Grails Apps
 
-Some Java and Grails applications do not start quickly, and the health check
-for an application can fail if an application starts too slowly.
+Some Java and Grails applications do not start quickly, and the health check for an application can fail if an application starts too slowly.
 
-The current Java buildpack implementation sets the Tomcat `bindOnInit` property
-to `false`. This prevents Tomcat from listening for HTTP requests until an
-application has fully deployed.
+The current Java buildpack implementation sets the Tomcat `bindOnInit` property to `false`. This prevents Tomcat from listening for HTTP requests until an application has fully deployed.
 
-If your application does not start quickly, the health check may fail
-because it checks the health of the application before the application can
-accept requests.
-By default, the health check fails after a timeout threshold of 60 seconds.
+If your application does not start quickly, the health check may fail because it checks the health of the application before the application can accept requests. By default, the health check fails after a timeout threshold of 60 seconds.
 
-To resolve this issue, use `cf push APP-NAME` with the `-t TIMEOUT-THRESHOLD`
-option to increase the timeout threshold. Specify `TIMEOUT-THRESHOLD` in seconds.
+To resolve this issue, use `cf push APP-NAME` with the `-t TIMEOUT-THRESHOLD` option to increase the timeout threshold. Specify `TIMEOUT-THRESHOLD` in seconds.
 
 <pre class="terminal">
 $ cf push my-app -t 180
@@ -366,12 +331,10 @@ $ cf push my-app -t 180
 
 <p class="note"><strong>Note</strong>: The timeout threshold cannot exceed 180 seconds. Specifying a timeout threshold greater than 180 seconds results in the following error: <code>Server error, status code: 400, error code: 100001, message: The app is invalid: health_check_timeout maximum_exceeded</code></p>
 
-## <a id='extension'></a>Extension ##
-The Java Buildpack is also designed to be easily extended.
-It creates abstractions for [three types of components][a] (containers,
-frameworks, and JREs) in order to allow users to easily add functionality.
-In addition to these abstractions, there are a number of [utility classes][e]
-for simplifying typical buildpack behaviors.
+
+## <a id='extension'></a> Extension
+
+The Java Buildpack is also designed to be easily extended. It creates abstractions for [three types of components][a] (containers, frameworks, and JREs) in order to allow users to easily add functionality. In addition to these abstractions, there are a number of [utility classes][e] for simplifying typical buildpack behaviors.
 
 As an example, the New Relic framework looks like the following:
 
@@ -427,7 +390,7 @@ end
 [f]: https://github.com/cloudfoundry/java-buildpack#configuration-and-extension
 
 
-## <a id='env-var'></a>Environment Variables ##
+## <a id='env-var'></a> Environment Variables
 
 You can access environments variable programmatically.
 

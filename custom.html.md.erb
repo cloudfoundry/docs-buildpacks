@@ -3,21 +3,21 @@ title: Creating Custom Buildpacks
 owner: Buildpacks
 ---
 
-
-
 This topic describes how to create custom buildpacks for <%= vars.app_runtime_full %>.
 
 For more information about how buildpacks work, see the [How Buildpacks Work in Cloud Foundry](understand-buildpacks.html) topic.
 
-## <a id='packaging-custom-buildpacks'></a> Package Custom Buildpacks ##
 
-<%= vars.app_runtime %> buildpacks can work with limited or no Internet connectivity.
-The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
+## <a id='packaging-custom-buildpacks'></a> Package Custom Buildpacks
+
+<%= vars.app_runtime %> buildpacks can work with limited or no Internet connectivity. The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments.
 
 ### <a id='use-buildpack-packager'></a> Use the Buildpack Packager
 
 1. Ensure that you have installed the [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager).
+
 1. Create a manifest.yml in your buildpack.
+
 1. Run the packager in cached mode:
   <pre class="terminal">$ buildpack-packager build -cached -any-stack</pre>
 
@@ -37,10 +37,9 @@ After you have packaged your buildpack using `buildpack-packager` you can use th
 
 <%=vars.link_adminguide_buildpack%>
 
-### <a id='specifying-default-versions'></a> Specify a Default Version ###
+### <a id='specifying-default-versions'></a> Specify a Default Version
 
-As of `buildpack-packager` [version 2.3.0](https://github.com/cloudfoundry/buildpack-packager/releases/tag/v2.3.0), you can specify the default version for a dependency by adding a `default_versions` object to the `manifest.yml` file.
-The `default_versions` object has two properties, `name` and `version`. For example:
+As of `buildpack-packager` [version 2.3.0](https://github.com/cloudfoundry/buildpack-packager/releases/tag/v2.3.0), you can specify the default version for a dependency by adding a `default_versions` object to the `manifest.yml` file. The `default_versions` object has two properties, `name` and `version`. For example:
 
 ```yml
 default_versions:
@@ -52,10 +51,7 @@ default_versions:
 
 To specify a default version:
 
-1. Add the `default_version` object to your manifest, following the [rules](#rules) below.
-For a complete example, see
-[manifest.yml](https://github.com/cloudfoundry/go-buildpack/blob/master/manifest.yml) in the
-go-buildpack repository in GitHub.
+1. Add the `default_version` object to your manifest, following the [rules](#rules) below. For a complete example, see [manifest.yml](https://github.com/cloudfoundry/go-buildpack/blob/master/manifest.yml) in the go-buildpack repository in GitHub.
 
 1. Run the `default_version_for` script from the [compile-extensions](https://github.com/cloudfoundry/compile-extensions) repository, passing the path of your `manifest.yml` and the dependency name as arguments. The following command uses the example manifest from step 1:
   <pre class="terminal">
@@ -94,7 +90,8 @@ The `buildpack-packager` script validates this object according to the following
       - cflinuxfs3
      ```
 
-##<a id='contract'></a> Core Buildpack Communication Contract
+
+## <a id='contract'></a> Core Buildpack Communication Contract
 
 This section describes the communication contract followed by the <%= vars.app_runtime %> core buildpacks. This contract enables buildpacks to interact with one another, so that developers can use multiple buildpacks with their applications.
 
@@ -108,11 +105,13 @@ This section uses the following placeholders:
 For all buildpacks that supply dependencies via `/bin/supply`:
 
 * The buildpack must create `/tmp/deps/IDX/config.yml` to provide a name to subsequent buildpacks. This file may also contain miscellaneous configuration for subsequent buildpacks.
+
 * The `config.yml` file should be formatted as follows, replacing `BUILDPACK` with the name of the buildpack providing dependencies and `YAML-OBJECT` with the YAML object that contains buildpack-specific configuration:
 	```
 	name: BUILDPACK
 	config: YAML-OBJECT
 	```
+
 * The following directories may be created inside of /tmp/deps/IDX/ to provide dependencies to subsequent buildpacks:
 	* `/bin`: Contains binaries intended for $PATH during staging and launch
 	* `/lib`: Contains libraries intended for $LD_LIBRARY_PATH during staging and launch
@@ -120,11 +119,13 @@ For all buildpacks that supply dependencies via `/bin/supply`:
 	* `/pkgconfig`: Contains `pkgconfig` files intended for compilation during staging
 	* `/env`: Contains environment vars intended for staging, loaded as `FILENAME=FILECONTENTS`
 	* `/profile.d`: Contains scripts intended for `/app/.profile.d`, sourced before launch
+
 * The buildpack may make use of previous non-final buildpacks by scanning `/tmp/deps/` for index-named directories containing `config.yml`.
 
 For the last buildpack:
 
 * To make use of dependencies provided by the previously applied buildpacks, the last buildpack must scan `/tmp/deps/` for index-named directories containing `config.yml.`
+
 * To make use of dependencies provided by previous buildpacks, the last buildpack:
 	* May use `/bin` during staging, or make it available in $PATH during launch
 	* May use `/lib` during staging, or make it available in $LD\_LIBRARY\_PATH during launch
@@ -132,7 +133,8 @@ For the last buildpack:
 	* May copy files from `/profile.d` to `/tmp/app/.profile.d` during staging
 	* May use the supplied config object in `config.yml` during the staging process
 
-## <a id='deploying-with-custom-buildpacks'></a>Deploy Apps with a Custom Buildpack ##
+
+## <a id='deploying-with-custom-buildpacks'></a> Deploy Apps with a Custom Buildpack
 
 Once a custom buildpack has been created and pushed to a public git repository, the git URL can be passed via the cf CLI when pushing an app.
 
@@ -167,4 +169,4 @@ The app will then be deployed to <%= vars.app_runtime %>, and the buildpack will
 
 <%= vars.disable_custom %>
 
- <p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that GitHub recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>
+<p class="note"><strong>Note</strong>: A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, use the approach that GitHub recommends for <a href="https://help.github.com/articles/syncing-a-fork">syncing a fork</a>.</p>

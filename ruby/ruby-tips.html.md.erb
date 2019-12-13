@@ -3,18 +3,15 @@ title: Tips for Ruby Developers
 owner: Buildpacks
 ---
 
+This page has information specific to deploying Rack, Rails, or Sinatra apps.
 
 
-This page has information specific to deploying Rack, Rails, or Sinatra
-apps.
+## <a id='bundler'></a> App Bundling
 
-## <a id='bundler'></a>App Bundling ##
+You must run <a href="http://gembundler.com/">Bundler</a> to create a `Gemfile` and a `Gemfile.lock`. These files must be in your app before you push to Cloud Foundry.
 
-You must run <a href="http://gembundler.com/">Bundler</a> to create a `Gemfile`
-and a `Gemfile.lock`.
-These files must be in your app before you push to Cloud Foundry.
 
-## <a id='config'></a>Rack Config File ##
+## <a id='config'></a> Rack Config File
 
 For Rack and Sinatra, you must have a `config.ru` file. For example:
 
@@ -23,12 +20,10 @@ require './hello_world'
 run HelloWorld.new
 ~~~
 
-## <a id='precompile'></a>Asset Precompilation ##
 
-Cloud Foundry supports the Rails asset pipeline.
-If you do not precompile assets before deploying your app, Cloud Foundry
-precompiles them when staging the app.
-Precompiling before deploying reduces the time it takes to stage an app.
+## <a id='precompile'></a> Asset Precompilation
+
+Cloud Foundry supports the Rails asset pipeline. If you do not precompile assets before deploying your app, Cloud Foundry precompiles them when staging the app. Precompiling before deploying reduces the time it takes to stage an app.
 
 Use the following command to precompile assets before deployment:
 
@@ -36,45 +31,33 @@ Use the following command to precompile assets before deployment:
 $ rake assets:precompile
 </pre>
 
-Note that the Rake precompile task reinitializes the Rails app.
-This could pose a problem if initialization requires service connections or
-environment checks that are unavailable during staging.
-To prevent reinitialization during precompilation, add the following line to
-`application.rb`:
+Note that the Rake precompile task reinitializes the Rails app. This could pose a problem if initialization requires service connections or environment checks that are unavailable during staging. To prevent reinitialization during precompilation, add the following line to `application.rb`:
 
 ~~~ruby
 config.assets.initialize_on_precompile = false
 ~~~
 
-If the `assets:precompile` task fails, Cloud Foundry uses live compilation mode,
-the alternative to asset precompilation.
-In this mode, assets are compiled when they are loaded for the first time.
-You can force live compilation by adding the following line to `application.rb`.
+If the `assets:precompile` task fails, Cloud Foundry uses live compilation mode, the alternative to asset precompilation. In this mode, assets are compiled when they are loaded for the first time. You can force live compilation by adding the following line to `application.rb`.
 
 ~~~ruby
 Rails.application.config.assets.compile = true
 ~~~
 
-## <a id='rake'></a>Running Rake Tasks ##
 
-Cloud Foundry does not provide a mechanism for running a Rake task on a deployed
-app.
-If you need to run a Rake task that must be performed in the Cloud Foundry
-environment, rather than locally before deploying or redeploying, you can
-configure the command that Cloud Foundry uses to start the app to invoke
-the Rake task.
+## <a id='rake'></a> Running Rake Tasks
 
-An app start command is configured in the app manifest file,
-`manifest.yml`, using the `command` attribute.
+Cloud Foundry does not provide a mechanism for running a Rake task on a deployed app. If you need to run a Rake task that must be performed in the Cloud Foundry environment, rather than locally before deploying or redeploying, you can configure the command that Cloud Foundry uses to start the app to invoke the Rake task.
 
-For more information about app manifests and supported attributes, see
-the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic.
+An app start command is configured in the app manifest file, `manifest.yml`, using the `command` attribute.
 
-### <a id='migrate-ruby-db'></a>Example: Invoking a Rake database migration task at app startup ###
+For more information about app manifests and supported attributes, see the [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html) topic.
+
+### <a id='migrate-ruby-db'></a> Example: Invoking a Rake database migration task at app startup
 
 The following is an example of migrating a database schema using a Rake task. For more information about migrating database schemas, see [Services Overview](../../devguide/services/index.html#migrating).
 
 1. If a Rakefile does not exist, create one and add it to your app directory.
+
 1. In your Rakefile, add a Rake task to limit an idempotent command to the first instance of a deployed app:
 
     ~~~
@@ -98,20 +81,18 @@ The following is an example of migrating a database schema using a Rake task. Fo
 
 3. Update the app using `cf push`.
 
-## <a id='workers'></a>Rails 3 Worker Tasks ##
 
-This section shows you how to create and deploy an example Rails app
-that uses a worker library to defer a task that a separate app executes.
+## <a id='workers'></a> Rails 3 Worker Tasks
 
-The guide also describes how to scale the resources available to the worker
-app.
+This section shows you how to create and deploy an example Rails app that uses a worker library to defer a task that a separate app executes.
+
+The guide also describes how to scale the resources available to the worker app.
 
 <p class="note"><strong>Note</strong>: Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the app manifest, to suppress route creation.</p>
 
-### <a id='worker-libs'></a>Choose a Worker Task Library ###
+### <a id='worker-libs'></a> Choose a Worker Task Library
 
-You must choose a worker task library.
-The table below summarizes the three main libraries available for Ruby / Rails:
+You must choose a worker task library. The table below summarizes the three main libraries available for Ruby / Rails:
 
 <table border="1" class="nice">
   <tr>
@@ -132,10 +113,9 @@ The table below summarizes the three main libraries available for Ruby / Rails:
   </tr>
 </table>
 
-For other alternatives, see
-[https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs).
+For other alternatives, see [https://www.ruby-toolbox.com/categories/Background_Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs).
 
-### <a id='example-app'></a>Create an Example App ###
+### <a id='example-app'></a> Create an Example App
 
 For the purposes of the example app, we use Sidekiq.
 
@@ -232,13 +212,9 @@ $ touch app/views/things/index.html.erb
 <%= @things.inspect %>
 ```
 
+#### <a id='deploy'></a> Deploy the App
 
-#### <a id='deploy'></a>Deploy the App ####
-
-This app needs to be deployed twice for it to work, once as a Rails web
-app and once as a standalone Ruby app.
-One way to do this is to keep separate Cloud Foundry manifests for each
-app type:
+This app needs to be deployed twice for it to work, once as a Rails web app and once as a standalone Ruby app. One way to do this is to keep separate Cloud Foundry manifests for each app type:
 
 Web Manifest: Save this as `web-manifest.yml`:
 
@@ -272,9 +248,7 @@ applications:
   - sidekiq-mysql:
 ~~~
 
-Since the url "sidekiq.cloudfoundry.com" is probably already taken, change it
-in `web-manifest.yml` first, then push the app with both manifest
-files:
+Since the url "sidekiq.cloudfoundry.com" is probably already taken, change it in `web-manifest.yml` first, then push the app with both manifest files:
 
 <pre class="terminal">
 $ cf push -f web-manifest.yml
@@ -285,16 +259,11 @@ If the cf CLI asks for a URL for the worker app, select **none**.
 
 ### <a id='test'></a>Test the App ###
 
-Test the app by visiting the new action on the "Thing" controller at
-the assigned url.
-In this example, the URL would be `http://sidekiq.cloudfoundry.com/thing/new`.
+Test the app by visiting the new action on the "Thing" controller at the assigned url. In this example, the URL would be `http://sidekiq.cloudfoundry.com/thing/new`.
 
-This creates a new Sidekiq job which is queued in Redis, then picked
-up by the worker app.
-The browser is then redirected to `/thing` which shows the collection of
-"Things".
+This creates a new Sidekiq job which is queued in Redis, then picked up by the worker app. The browser is then redirected to `/thing` which shows the collection of "Things".
 
-### <a id='scale'></a>Scale Workers ###
+### <a id='scale'></a> Scale Workers
 
 Use the `cf scale` command to change the number of Sidekiq workers.
 
@@ -304,20 +273,13 @@ Example:
 $ cf scale sidekiq-worker -i 2
 </pre>
 
-## <a id='rails-4'></a>Use rails\_serve\_static\_assets on Rails 4 ##
 
-By default Rails 4 returns a 404 if an asset is not handled via an external
-proxy such as Nginx.
-The <a href="https://rubygems.org/gems/rails_serve_static_assets">`rails_serve_static_assets`</a>
-gem enables your Rails server to deliver
-static assets directly, instead of returning a 404.
-You can use this capability to populate an edge cache CDN or serve files
-directly from your web app.
-The gem enables this behavior by setting the
-`config.serve_static_assets` option to `true`, so you do not need to
-configure it manually.
+## <a id='rails-4'></a> Use rails\_serve\_static\_assets on Rails 4
 
-## <a id='custom-libraries'></a>Add Custom Libraries ##
+By default Rails 4 returns a 404 if an asset is not handled via an external proxy such as Nginx. The <a href="https://rubygems.org/gems/rails_serve_static_assets">`rails_serve_static_assets`</a> gem enables your Rails server to deliver static assets directly, instead of returning a 404. You can use this capability to populate an edge cache CDN or serve files directly from your web app. The gem enables this behavior by setting the `config.serve_static_assets` option to `true`, so you do not need to configure it manually.
+
+
+## <a id='custom-libraries'></a> Add Custom Libraries
 
 If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in an `ld_library_path` directory at the app root.
 
@@ -325,10 +287,10 @@ If your app requires external shared libraries that are not provided by the root
 
 The Ruby buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
 
-## <a id='env-var'></a>Environment Variables ##
 
-You can access environments variable programmatically. For example, you can
-obtain `VCAP_SERVICES` as follows:
+## <a id='env-var'></a> Environment Variables
+
+You can access environments variable programmatically. For example, you can obtain `VCAP_SERVICES` as follows:
 
 ```
 ENV['VCAP_SERVICES']
@@ -336,67 +298,63 @@ ENV['VCAP_SERVICES']
 
 Environment variables available to you include both those defined by the system and those defined by the Ruby buildpack, as described below. For more information about system environment variables, see the [Application-Specific System Variables](../../devguide/deploy-apps/environment-variable.html#app-system-env) section of the _Cloud Foundry Environment Variables_ topic.
 
-### <a id='BUNDLE-BIN-PATH'></a>BUNDLE\_BIN\_PATH ###
+### <a id='BUNDLE-BIN-PATH'></a> BUNDLE\_BIN\_PATH
 
 Location where Bundler installs binaries.
 
 Example: `BUNDLE_BIN_PATH:/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/bin/bundle`
 
-### <a id='BUNDLE-GEMFILE'></a>BUNDLE_GEMFILE ###
+### <a id='BUNDLE-GEMFILE'></a> BUNDLE_GEMFILE
 
 Path to app Gemfile.
 
 Example: `BUNDLE_GEMFILE:/home/vcap/app/Gemfile`
 
-### <a id='BUNDLE-WITHOUT'></a>BUNDLE_WITHOUT ###
+### <a id='BUNDLE-WITHOUT'></a> BUNDLE_WITHOUT
 
-The `BUNDLE_WITHOUT` environment variable instructs Cloud Foundry to skip
-gem installation in excluded groups.
+The `BUNDLE_WITHOUT` environment variable instructs Cloud Foundry to skip gem installation in excluded groups.
 
 Use this with Rails applications, where "assets" and "development" gem groups typically contain gems that are not needed when the app runs in production. 
 
 Example: `BUNDLE_WITHOUT=assets`
 
-### <a id='DATABASE-URL'></a>DATABASE_URL ###
+### <a id='DATABASE-URL'></a> DATABASE_URL
 
-Cloud Foundry examines the `database_uri` for bound services to see if they
-match known database types.
-If known relational database services are bound to the app, the `DATABASE_URL` environment variable is set using the first match in the list.
+Cloud Foundry examines the `database_uri` for bound services to see if they match known database types. If known relational database services are bound to the app, the `DATABASE_URL` environment variable is set using the first match in the list.
 
-If your app depends on `DATABASE_URL` to be set to the connection string
-for your service and Cloud Foundry does not set it, use the `cf set-env` command to can set this variable manually.
+If your app depends on `DATABASE_URL` to be set to the connection string for your service and Cloud Foundry does not set it, use the `cf set-env` command to can set this variable manually.
 
 Example: 
 <pre class="terminal">
 $ cf set-env my-app-name DATABASE\_URL mysql://example-database-connection-string
 </pre>
 
-### <a id='GEM-HOME'></a>GEM_HOME ###
+### <a id='GEM-HOME'></a> GEM_HOME
 
 Location where gems are installed.
 
 Example: `GEM_HOME:/home/vcap/app/vendor/bundle/ruby/1.9.1`
 
-### <a id='GEM-PATH'></a>GEM_PATH ###
+### <a id='GEM-PATH'></a> GEM_PATH
 
 Location where gems can be found.
 
 Example: `GEM_PATH=/home/vcap/app/vendor/bundle/ruby/1.9.1:`
 
-### <a id='RACK-ENV'></a>RACK_ENV ###
-This variable specifies the Rack deployment environment. Valid value are <code> development</code>, <code>deployment</code>, and <code>none</code>.
-This governs which  middleware is loaded to run the app.
+### <a id='RACK-ENV'></a> RACK_ENV
+
+This variable specifies the Rack deployment environment. Valid value are <code> development</code>, <code>deployment</code>, and <code>none</code>. This governs which  middleware is loaded to run the app.
 
 Example: `RACK_ENV=development`
 
-### <a id='RAILS-ENV'></a>RAILS_ENV ###
-This variable specifies the Rails deployment environment. Valid value are <code>development</code>, <code>test</code>, and <code>production</code>. This controls which of the environment-specific configuration files governs
-how the app is executed.
+### <a id='RAILS-ENV'></a> RAILS_ENV
+
+This variable specifies the Rails deployment environment. Valid value are <code>development</code>, <code>test</code>, and <code>production</code>. This controls which of the environment-specific configuration files governs how the app is executed.
 
 Example: `RAILS_ENV=production`
 
-### <a id='RUBYOPT'></a>RUBYOPT ###
-This Ruby environment variable defines command-line options passed to Ruby
-interpreter.
+### <a id='RUBYOPT'></a> RUBYOPT
+
+This Ruby environment variable defines command-line options passed to Ruby interpreter.
 
 Example: `RUBYOPT: -I/home/vcap/app/vendor/bundle/ruby/1.9.1/gems/bundler-1.3.2/lib -rbundler/setup`
