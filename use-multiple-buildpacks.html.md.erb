@@ -1,34 +1,45 @@
 ---
-title: Pushing an Application with Multiple Buildpacks
+title: Pushing an App with Multiple Buildpacks
 owner: Buildpacks
 ---
 
-This topic describes how developers can push an application with multiple buildpacks.
+This topic describes how developers can push an app with multiple buildpacks using the Cloud Foundry Command Line Interface (cf CLI).
 
-<p class="note"><strong>Note</strong>: As an alternative to the cf CLI procedure below, you can specify multiple buildpacks in your <a href="../devguide/deploy-apps/manifest.html#buildpack">application manifest</a>. This is not compatible with <a href="..//devguide/deploy-apps/manifest.html#deprecated">Deprecated App Manifest Features</a>.</p>
+<p class="note"><strong>Note:</strong> As an alternative to the cf CLI procedure below, you can specify multiple buildpacks in your app manifest. This is not compatible with deprecated app manifest features. For more information, see <a href="../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.</p>
 
-For more information about pushing applications to <%= vars.app_runtime_full %>, see the [Pushing an App](../devguide/deploy-apps/deploy-app.html) topic.
+For more information about pushing apps to <%= vars.product_runtime %> (<%= vars.product_short %>), see [Pushing an App](../devguide/deploy-apps/deploy-app.html).
 
 
 ## <a id='cfcli'></a> Specifying Buildpacks with the cf CLI
 
-To push an application with multiple buildpacks using the Cloud Foundry Command Line Interface (cf CLI), perform the following procedure:
+To push an app with multiple buildpacks using the cf CLI:
 
-<p class="note"><strong>Note</strong>: You must use cf CLI v6.38 or later.</p>
+<p class="note"><strong>Note:</strong> You must use cf CLI v6.38 or later.</p>
 
-1. Run the following command to ensure that you are using the cf CLI v6.38 or later:
-  <pre class="terminal">$ cf version
-  </pre>
-  For more information about upgrading the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html).
+1. Ensure that you are using the cf CLI v6.38 or later by running:
 
-1. To push your app with multiple buildpacks, specify each buildpack with a `-b` flag:
-  <pre class="terminal">
-  $ cf push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2 ... -b FINAL-BUILDPACK-NAME
-  </pre>
-  The last buildpack you specify is the **final buildpack**, which can modify the launch environment and set the start command.
-  <br><br>
-  To see a list of available buildpacks, run `cf buildpacks`.
+	```
+	cf version
+	```
+  	For more information about upgrading the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html).
 
-For more information on multi-buildpack order, see the [How Buildpacks Work in Cloud Foundry](understand-buildpacks.html) topic.
+1. To push your app with multiple buildpacks, specify each buildpack with a `-b` flag. Run:
 
-For more information about using the cf CLI, see the [Cloud Foundry Command Line Interface](../cf-cli/index.html) topic.
+	```
+  	cf push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2 ... -b BUILDPACK-NAME-3
+  	```
+  	Where:
+  	* `YOUR-APP` is the name of your app.
+  	* `BUILDPACK-NAME-1`, `BUILDPACK-NAME-2`, and `BUILDPACK-NAME-3` are the names of the buildpacks you want to push with your app.
+  	<br><br>
+  	The last buildpack you specify is the **final buildpack**, which can modify the launch environment and set the start command.
+  	<br><br>
+  	To see a list of available buildpacks, run:
+
+  	```
+  	cf buildpacks
+  	```
+
+For more information on multi-buildpack order, see [How Buildpacks Work in <%= vars.product_short %>](understand-buildpacks.html).
+
+For more information about using the cf CLI, see [Using the Cloud Foundry Command Line Interface (cf CLI)](../cf-cli/index.html).

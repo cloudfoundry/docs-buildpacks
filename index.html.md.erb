@@ -5,42 +5,47 @@ owner: Buildpacks
 
 Buildpacks provide framework and runtime support for apps. Buildpacks typically examine your apps to determine what dependencies to download and how to configure the apps to communicate with bound services.
 
-When you push an app, Cloud Foundry automatically detects an appropriate buildpack for it. This buildpack is used to compile or prepare your app for launch.
+When you push an app, <%= vars.product_runtime %> (<%= vars.product_short %>) automatically detects an appropriate buildpack for it. This buildpack is used to compile or prepare your app for launch.
 
-<p class="note"><strong>Note</strong>: Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a <a href="https://github.com/cloudfoundry/buildpack-packager"> Buildpack Packager</a> app.</p>
+<p class="note"><strong>Note:</strong> <%= vars.product_short %> deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, <%= vars.product_short %> provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.</p>
 
 
 ## <a id='using-buildpacks'></a> Using Buildpacks
 
-The following topics discuss different usage scenarios for buildpacks in Cloud Foundry:
+The following topics discuss different usage scenarios for buildpacks in <%= vars.product_short %>:
 
-+ <a href="understand-buildpacks.html">How Buildpacks Work in Cloud Foundry</a>
-+ <a href="stack-association.html">Stack Association</a>
-+ <a href="use-multiple-buildpacks.html">Pushing an Application with Multiple Buildpacks</a>
-+ <a href="proxy-usage.html">Using a Proxy</a>
-+ <a href="supported-binary-dependencies.html">Supported Binary Dependencies</a>
-+ <a href="prod-server.html">Production Server Configuration</a>
+* [How Buildpacks Work in <%= vars.product_short %>](understand-buildpacks.html)
+
+* [Stack Association](stack-association.html)
+
+* [Pushing an App with Multiple Buildpacks](use-multiple-buildpacks.html)
+
+* [Using a Proxy](proxy-usage.html)
+
+* [Supported Binary Dependencies](supported-binary-dependencies.html)
+
+* [Production Server Configuration](prod-server.html)
 
 
 ## <a id='system-buildpacks'></a> System Buildpacks
 
-For information about the existing buildpacks that Cloud Foundry supports, see <a href="system-buildpacks.html">System Buildpacks</a>.
+For information about the existing buildpacks that <%= vars.product_short %> supports, see [System Buildpacks](system-buildpacks.html.
 
 
 ## <a id='community-buildpacks'></a> Sidecar Buildpacks
 
-For information about rolling a Sidecar Buildpack please see <a href="sidecar-buildpacks.html">Sidecar Buildpacks</a>.
+For information about deploying a sidecar buildpack, see [Sidecar Buildpack](sidecar-buildpacks.html).
 
 
 ## <a id='community-buildpacks'></a> Community Buildpacks
 
-You can find a list of unsupported, community-created buildpacks here: <a href="https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks#community-created">cf-docs-contrib</a>.
+For a list of unsupported, community-created buildpacks, see the [Community created](https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks#community-created) section of the _Buildpack information for Cloud Foundry v2_ page in the cf-docs-contrib repository on GitHub.
 
 
 ## <a id='developing-buildpacks'></a> Customizing and Developing Buildpacks
 
-For information about customizing existing buildpacks and developing new buildpacks, see <a href="./developing-buildpacks.html" class="subnav">Customizing and Developing Buildpacks</a>.
+For information about customizing existing buildpacks and developing new buildpacks, see [Customizing and Developing Buildpacks](./developing-buildpacks.html).
 
 ### <a id='buildpack-ci'></a> Using Continuous Integration for Buildpacks
 
-For information about updating and releasing a new version of a Cloud Foundry buildpack through the Cloud Foundry Buildpacks Team Concourse pipeline, see <a href="./buildpack-ci-index.html">Using CI for Buildpacks</a>. You can use this as a model when working with Concourse to build and release new versions of your own buildpacks.
+For information about updating and releasing a new version of a <%= vars.product_short %> buildpack through the <%= vars.product_short %> Buildpacks Team Concourse pipeline, see [Using CI for Buildpacks](./buildpack-ci-index.html). You can use this as a model when working with Concourse to build and release new versions of your own buildpacks.

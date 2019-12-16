@@ -3,30 +3,17 @@ title: Environment Variables Defined by the Node Buildpack
 owner: Buildpacks
 ---
 
-<%=vars.app_runtime_full%> provides configuration information to applications through environment variables. This topic describes the additional environment variables provided by the Node buildpack. 
+<%= vars.product_runtime %> (<%= vars.product_short %>) provides configuration information to apps through environment variables. This topic describes the additional environment variables provided by the Node buildpack. 
 
-For more information about the standard environment variables provided by <%=vars.app_runtime_full%>, see the [Cloud Foundry Environment Variables](../../devguide/deploy-apps/environment-variable.html) topic.
+For more information about the standard environment variables provided by <%= vars.product_short %>, see [<%= vars.product_short %> Environment Variables](../../devguide/deploy-apps/environment-variable.html).
 
 
 ## Node Buildpack Environment Variables
 
 The following table describes the environment variables provided by the Node buildpack.
 
-<table border="1" class="nice" >
-  <tr>
-    <th>Environment Variable</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>BUILD_DIR</code></td>
-    <td>The directory where Node.js is copied each time a Node.js application runs.</td>
-  </tr>
-  <tr>
-    <td><code>CACHE_DIR</code></td>
-    <td>The directory Node.js uses for caching.</td>
-  </tr>
-  <tr>
-    <td><code>PATH</code></td>
-    <td>The system path used by Node.js: <code>PATH=/home/vcap/app/bin:/home/vcap/app/node_modules/.bin:/bin:/usr/bin</code></td>
-  </tr>
-</table>
+| Environment Variable | Description |
+| -------------------- | ----------- |
+| `BUILD_DIR` | The directory where Node.js is copied each time a Node.js app runs. |
+| `CACHE_DIR` | The directory Node.js uses for caching. |
+| `PATH` | The system path used by Node.js:`PATH=/home/vcap/app/bin:/home/vcap/app/node_modules/.bin:/bin:/usr/bin` |
