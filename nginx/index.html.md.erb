@@ -80,22 +80,41 @@ Ensure that you properly quote such variables to appear as strings in the ` ngin
 
 ### <a id='loading-modules'></a> Loading Dynamic Modules  ###
 
-To load an NGINX module, use the following syntax in your app's `nginx.conf` file:
+NGINX can dynamically load modules at runtime. These modules are shared-object
+files that can be dynamically loaded using the `load_module` directive. In addition to loading modules dynamically,
+the version of NGINX provided by the buildpack has statically compiled the following modules into the NGINX binary:
+
+* `ngx_http_ssl_module`
+* `ngx_http_realip_module`
+* `ngx_http_gunzip_module`
+* `ngx_http_gzip_static_module`
+* `ngx_http_auth_request_module`
+* `ngx_http_random_index_module`
+* `ngx_http_secure_link_module`
+* `ngx_http_stub_status_module`
+* `ngx_http_sub_module`
+
+These statically compiled modules do not need to be loaded at runtime and are already available for use.
+
+To load a dynamic NGINX module, use the following syntax in your app's `nginx.conf` file:
 
 ```{{module "MODULE-NAME"}}```
 
 If you have provided a module in a `modules` directory located at the root of your app, the buildpack instructs NGINX to load that module.
-If you have not provided a module, the buildpack instructs NGINX to search for a matching built-in module.
+If you have not provided a module, the buildpack instructs NGINX to search for a matching built-in dynamic module.
 
-As of v0.0.5 of the buildpack, the `ngx_stream_module` is available as a built-in module.
+As of v0.0.5 of the buildpack, the `ngx_stream_module` is available as a
+dynamic module that is built into the buildpack.
 
-For example, to load a custom module named `ngx_hello_module`, provide a 
-`modules/ngx_hello_module.so` file in your app directory and add the following to the top of your `nginx.conf` file:
+For example, to load a custom module named `ngx_hello_module`, provide a
+`modules/ngx_hello_module.so` file in your app directory and add the following
+to the top of your `nginx.conf` file:
 
 ```{{module "ngx_hello_module"}}```
 
-To load a built-in module like `ngx_stream_module`, add the following to 
-the top of your `nginx.conf` file. You do not need to provide an `ngx_stream_module.so` file:
+To load a built-in module like `ngx_stream_module`, add the following to the
+top of your `nginx.conf` file. You do not need to provide an
+`ngx_stream_module.so` file:
 
 ```{{module "ngx_stream_module"}}```
 
