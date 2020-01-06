@@ -15,21 +15,7 @@ Sidecar processes are additional dependent processes that are run in the same co
 
 A buildpack can specify sidecar processes by writing a `launch.yml` at the root of its `deps` directory during the `supply` phase.  This `deps` directory is a combination of the `DEPS_DIR` and `DEP_IDX` values. For more information about how these two values are passed to the buildpack interface, see [How Buildpacks Work in <%= vars.app_runtime_abbr %>](understand-buildpacks.html).
 
-See the example `launch.yml` below:
-
-```
----
-processes:
-- type: "PROCESS-NAME"
-  command: "COMMAND"
-  limits:
-    memory: 10
-  platforms:
-    PLATFORM-KEY:
-      sidecar_for: [ "TYPE", "TYPE", "TYPE"]
-```
-
-Where:
+The following defines the relevant fields of the `launch.yml` in more detail:
 
 * `type`: A key that is mapped to a individual command.
   <p class='note'><strong>Note:</strong> It is possible for multiple buildpacks to write their own <code>launch.yml</code> files. If two of these files have the same <code>type</code> keys, the <code>launch.yml</code> written last overwrites the previous commands of the same <code>type</code>.</p>
@@ -43,6 +29,29 @@ Where:
 * `platforms`: A key specifying the data that should be read by a platform. For example, Cloud Foundry only reads data under the `cloudfoundry` key.
 
 * `sidecar_for`: A list of `types` that the `command` is a sidecar process for.
+  <p class='note'><strong>Note:</strong> Each <code>type</code> requires a health check, the <code>command</code> cannot run until each health check is passed. The more <code>type</code>s that are listed, the more health checks are required. If any health check fails, the <code>command</code> does not run.</p>
+
+See the example `launch.yml` below:
+
+```
+---
+processes:
+- type: "PROCESS-NAME"
+  command: "COMMAND"
+  limits:
+    memory: 10
+  platforms:
+    cloudfoundry:
+      sidecar_for: [ "TYPE-1", "TYPE-2", "TYPE-3"]
+```
+
+Where:
+
+* `PROCESS-NAME` is the command that is mapped to the `type` field.
+
+* `COMMAND` is the command that is mapped to the `command` field.
+
+* `TYPE-1`, `TYPE-2` and `TYPE-3` are the `type`s that the `command` is a sidecar process for.
 
 ### <a id='example'></a> Example Buildpack
 
