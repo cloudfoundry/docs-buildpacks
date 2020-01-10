@@ -1,14 +1,14 @@
 ---
-title: Cloud-Native Buildpacks for Node.js
+title: Deploying Apps with the Node.js Cloud-Native Buildpack
 owner: Buildpacks
 ---
 
-This topic describes creating and configuring cloud-native buildpacks (CNBs) for Node.js.
+This topic describes using the Node.js cloud-native buildpack (CNB) to deploy your apps.
 
 
 ## <a id="specifying-node-engine-version"></a> Specifying a Node Engine Version
 
-The Node Engine CNB allows app developers to specify a version of Node.js to use during deployment. This version can be specified in a number of ways, including through `.nvmrc`, `buildpack.yml`, or `package.json` files. When specifying a version of the Node.js engine, you must choose a version that is available within the buildpack.
+The Node Engine CNB allows you to specify a version of Node.js to use during deployment. This version can be specified in a number of ways, including through `.nvmrc`, `buildpack.yml`, or `package.json` files. When specifying a version of the Node.js engine, you must choose a version that is available within the buildpack.
 
 When you specify a version, the buildpack prioritizes the versions specified in each possible configuration location with the following precedence.
 
