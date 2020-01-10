@@ -1,26 +1,22 @@
 ---
-title: Node.js CNB
+title: Cloud-Native Buildpacks for Node.js
 owner: Buildpacks
 ---
 
-##<a id="specifying-node-engine-version"></a> Specifying a Node Engine Version
-The Node Engine CNB allows application developers to specify a version of
-Node.js to use during deployment.  This version can be specified in a number of
-ways, including via `.nvmrc`, `buildpack.yml`, or `package.json` files.  When
-specifying a version of the Node.js engine, application developers must make
-sure to choose a version that is available within the buildpack.
+This topic describes creating and configuring cloud-native buildpacks (CNBs) for Node.js.
 
-When specifying a version, keep in mind that the buildpack prioritizes the
-versions specified in each of the possible configuration locations with the
-following precedence.
+
+## <a id="specifying-node-engine-version"></a> Specifying a Node Engine Version
+
+The Node Engine CNB allows app developers to specify a version of Node.js to use during deployment. This version can be specified in a number of ways, including through `.nvmrc`, `buildpack.yml`, or `package.json` files. When specifying a version of the Node.js engine, you must choose a version that is available within the buildpack.
+
+When you specify a version, the buildpack prioritizes the versions specified in each possible configuration location with the following precedence.
 
 **(highest)** `buildpack.yml` > `package.json` > `.nvmrc` **(lowest)**
 
-**Using buildpack.yml**
+### <a id='buildpack-yml'></a> Using buildpack.yml
 
-Including the follow snippet in your `buildpack.yml` file will configure the
-buildpack to use `v12.12.0` of Node.js when building and launching your
-application.
+To configure the buildpack to use Node.js v12.12.0 when deploying your app, include the values below in your `buildpack.yml` file:
 
 ```
 ---
@@ -28,13 +24,9 @@ nodejs:
   version: 12.12.0
 ```
 
-**Using package.json**
+### <a id='package-json'></a> Using package.json
 
-Applications using `npm` can specify the version of Node.js used during the
-build and launch phases of their application deployment by configuring the
-`engines` field in the `package.json` file. The following snippet in your
-`package.json` will configure the buildpack to use `v12.12.0` of Node.js when
-building and launching your application.
+If your apps use `npm`, you can specify the Node.js version your apps use during deployment by configuring the `engines` field in the `package.json` file. To configure the buildpack to use Node.js v12.12.0 when deploying your app, include the values below in your `package.json` file:
 
 ```
 {
@@ -44,39 +36,33 @@ building and launching your application.
 }
 ```
 
-Further details of the `engines` configuration option in the `package.json`
-file can be found in the [NPM
-documentation](https://docs.npmjs.com/files/package.json#engines).
+For more information about the `engines` configuration option in the `package.json` file, see the [engines](https://docs.npmjs.com/files/package.json#engines) section of the _npm-package.json_ topic in the NPM documentation.
 
-**Using .nvmrc**
+### <a id='nvmrc'></a> Using .nvmrc
 
-Node Version Manager is a common option for managing the version of Node.js
-used by an application. To specify the version of Node.js used during build and
-launch, include a `.nvmrc` file with the version number. You can find details
-describing the contents of a .nvmrc file in the [Node Version Manager
-documentation](https://github.com/nvm-sh/nvm#nvmrc).
+Node Version Manager is a common option for managing the Node.js version an app uses. To specify the Node.js version your apps use during deployment, include a `.nvmrc` file with the version number. For more information about the contents of a `.nvmrc` file, see [.nvmrc](https://github.com/nvm-sh/nvm#nvmrc) in the Node Version Manager repository on GitHub.
 
-##<a id="environment-variables"></a> Environment Variables
-The Node.js CNB sets a number of environment variables during the `build` and
-`launch` phases of the application lifecycle. Each environment variable is
-described below with details about its impact on your application and how you
-might configure these variable with alternative settings.
+
+## <a id="environment-variables"></a> Environment Variables
+
+The Node.js CNB sets a number of environment variables during the `build` and `launch` phases of the app lifecycle. The sectios below describe each environment variable, its impact on your app, and how to configure these variable with alternative settings.
 
 ### <a id="environment-variable-memory-available"></a> MEMORY_AVAILABLE
-Reports the total amount of memory available to the application. This value is
-calculated from the settings applied in `$VCAP_APPLICATION` or limits specified
-by the operating system in `/sys/fs/cgroup/memory/memory.limit_in_bytes`.
+
+The `MEMORY_AVAILABLE` environment variable reports the total amount of memory available to the app. The Node.js CNB calculates this value from the `$VCAP_APPLICATION` settings or the limits specified by the operating system in `/sys/fs/cgroup/memory/memory.limit_in_bytes`.
 
 * Set by: `profile.d`
 * Phases: `launch`
 * Value: non-negative integer
 
 ### <a id="environment-variable-node-env"></a> NODE_ENV
+
 * Set by: `node-engine-cnb`
 * Phases: `build`
 * Value: production
 
 ### <a id="environment-variable-node-home"></a> NODE_HOME
+
 * Set by: `node-engine-cnb`
 * Phases: `build`
 * Value: path to the `node` installation
@@ -88,44 +74,47 @@ by the operating system in `/sys/fs/cgroup/memory/memory.limit_in_bytes`.
 * Value: path to the `node_modules` directory
 
 ### <a id="environment-variable-node-verbose"></a> NODE_VERBOSE
-Adjusts the amount of logging output from npm during installs
+
+Adjusts the amount of logging output from NPM during installs.
 
 * Set by: `node-engine-cnb`
 * Phases: `build`
 * Value: false
 
-### <a id="environment-variable-npm-config-loglevel"></a> NPM\_CONFIG\_LOGLEVEL
-Level of logging npm will use
+### <a id="environment-variable-npm-config-loglevel"></a> NPM_CONFIG_LOGLEVEL
+
+Level of logging NPM uses.
 
 * Set by: `node-engine-cnb`
 * Phases: `build`
 * Value: "error"
 
-### <a id="environment-variable-npm-config-production"></a> NPM\_CONFIG\_PRODUCTION
-Install only production dependencies if NPM install is used
+### <a id="environment-variable-npm-config-production"></a> NPM_CONFIG_PRODUCTION
+
+Installs only production dependencies if NPM install is used.
 
 * Set by: `node-engine-cnb`
 * Phases: `build`
 * Value: false
 
 ### <a id="environment-variable-path"></a> PATH
-Appends the `node_modules/.bin` directory onto the `$PATH`
+
+Appends the `node_modules/.bin` directory onto the `$PATH`.
 
 * Set by: `yarn-cnb`
 * Phases: `build`
 * Value: path to the `node_modules/.bin` directory
 
-##<a id="heap-memory-optimization"></a> Heap Memory Optimization
 
-Node.js will limit the total size of all objects on the heap. Enabling the
-"optimize-memory" feature will set this value to 3/4 of the total memory
-available in the container. For example, if my app is limited to 1GB when
-pushed, the heap of my Node.js application will be limited to 768MB.
+## <a id="heap-memory-optimization"></a> Heap Memory Optimization
 
-###<a id="enabling-memory-optimization"></a> Enabling Memory Optimization
-**Using buildpack.yml**
+Node.js limits the total size of all objects on the heap. Enabling the "optimize-memory" feature sets this value to three-quarters of the total memory available in the container. For example, if your app is limited to 1&nbsp;GB when pushed, the heap of your Node.js app is limited to 768&nbsp;MB.
 
-Add the following to your `buildpack.yml` file:
+### <a id="enabling-memory-optimization"></a> Enabling Memory Optimization
+
+### <a id="buildpack-yml-memory"></a> Using buildpack.yml
+
+To enable memory optimization through your `buildpack.yml` file, add the values below to your `buildpack.yml` file:
 
 ```
 ---
@@ -133,107 +122,72 @@ nodejs:
   optimize-memory: true
 ```
 
-**Using the OPTIMIZE_MEMORY Environment Variable**
+### <a id="optimize-memory-env-var"></a> Using the OPTIMIZE_MEMORY Environment Variable
 
-Set the `OPTIMIZE_MEMORY` environment variable to `true`.
+To enable memory optimization through the `OPTIMIZE_MEMORY` environment variable, set it to `true`.
 
-##<a id="package-management-with-npm"></a> Package Management with NPM
 
-Many Node.js applications will require a number of third-party libraries to
-perform common tasks and behaviors. NPM is an option for managing these
-third-party dependencies that is fully supported by the Node.js CNB. Including
-a `package.json` file in your application source code will result in the
-invocation of the NPM installation process described below.
+## <a id="package-management-with-npm"></a> Package Management with NPM
 
-###<a id="npm-installation-process"></a> NPM Installation Process
+Many Node.js apps require a number of third-party libraries to perform common tasks and behaviors. NPM is an option for managing these third-party dependencies that the Node.js CNB fully supports. Including a `package.json` file in your app source code begins the NPM installation process. The sections below describe the NPM installation process.
 
-NPM supports several distinct methods for installing your package dependencies.
-Specifically, the Node.js CNB will run a combination of [`npm
-install`](https://docs.npmjs.com/cli/install), [`npm
-rebuild`](https://docs.npmjs.com/cli/rebuild.html), and [`npm
-ci`](https://docs.npmjs.com/cli/ci.html) such that your application is built
-with the right set of dependencies. When making a choice of which installation
-process to execute, the Node.js CNB will consult your application source code,
-looking for the presence of specific files or directories.
+### <a id="npm-installation-process"></a> NPM Installation Process
 
-**package-lock.json**
+NPM supports several distinct methods for installing your package dependencies. Specifically, the Node.js CNB runs a combination of the `npm install`, `npm rebuild`, and `npm ci` commands to build your app with the right set of dependencies. When deciding which installation process to use, the Node.js CNB consults your app source code, looking for the presence of specific files or directories. For more information about the `npm install` command, see [npm-install](https://docs.npmjs.com/cli-commands/install) in the NPM documentation. For more information about the `npm rebuild` command, see [npm-rebuild](https://docs.npmjs.com/cli-commands/rebuild.html) in the NPM documentation. For more information about the `npm ci` command, see [npm-ci](https://docs.npmjs.com/cli-commands/ci.html) in the NPM documentation.
 
-The `package-lock.json` file is a machine-generated file created during the
-`npm install` process. Application developers may choose to include this file
-in their source code when building their application. The presence of this file
-will have an impact on the installation process executed by the CNB. More
-details on the `package-lock.json` file can be found in the [NPM
-documentation](https://docs.npmjs.com/files/package-lock.json).
+These sections describe the files and directories you can include in your source code, and which installation process the Node.js CNB uses when these files and directories are present.
 
-**node_modules**
+#### <a id="package-lock-json"></a> package-lock.json
 
-The `node_modules` directory contains vendored copies of all the packages
-installed during the `npm install` process. Application developers may choose
-to include this directory in their source code when building their application.
-The presence of this directory will have an impact on the installation process
-executed by the CNB. More details on the `node_modules` directory can be found
-in the [NPM
-documentation](https://docs.npmjs.com/files/folders.html#node-modules).
+The `package-lock.json` file is machine-generated file the Node.js CNB creates during the `npm install` process. For more information, see [npm-package-lock.json](https://docs.npmjs.com/files/package-lock.json) in the NPM documentation.
 
-**npm-cache**
+#### <a id="node-modules"></a> node_modules
 
-The `npm-cache` directory contains a content-addressable cache that stores all
-http request and package-related data. Application developers may choose to
-include this directory in their source code when building their application.
-The presence of this directory will have an impact on the installation process
-executed by the CNB. Additionally, including a cache will ensure that the
-application can be built entirely offline.  A `npm-cache` directory can be
-populated by running the `npm ci --cache npm-cache` command inside of the
-source code directory. More details on the NPM cache can be found in the [NPM
-documentation](https://docs.npmjs.com/cli/cache).
+The `node_modules` directory contains vendored copies of all the packages the Node.js CNB installs during the `npm install` process. For more information, see the [Node Modules](https://docs.npmjs.com/files/folders.html#node-modules) section of the _npm-folders_ topic in the NPM documentation.
 
-#### What installation process will run?
+#### <a id="npm-cache"></a> npm-cache
 
-The table below outlines process used to determine an installation process for
-NPM packages. The presence of the files and directories described above will
-result in the execution of an installation process designed to ensure the
-correct third-party dependencies are installed during the build process.
+he `npm-cache` directory contains a content-addressable cache that stores all HTTP request and package-related data. Additionally, including a cache ensures that the app can be built entirely offline.
 
-| package-lock.json | node_modules    | npm-cache       | command                   |
-|:-----------------:|:---------------:|:---------------:|:-------------------------:|
-| **not** present   | **not** present | **not** present | npm install               |
-| **not** present   | **not** present | present         | npm install               |
-| **not** present   | present         | **not** present | npm rebuild + npm install |
-| **not** present   | present         | present         | npm rebuild + npm install |
-| present           | **not** present | **not** present | npm ci                    |
-| present           | **not** present | present         | npm ci                    |
-| present           | present         | **not** present | npm rebuild + npm install |
-| present           | present         | present         | npm ci                    |
+To populate a `npm-cache` directory:
 
-##<a id="package-management-with-yarn"></a> Package Management with Yarn
+1. Navigate to your source code directory.
 
-Many Node.js applications will require a number of third-party libraries to
-perform common tasks and behaviors. Yarn is an alternative option to NPM for
-managing these third-party dependencies that is fully supported by the Node.js
-CNB. Including `package.json` and `yarn.lock` files in your application source
-code will result in the invocation of the Yarn installation process described
-below.
+1. Run:
 
-###<a id="yarn-installation-process"></a> Yarn Installation Process
+    ```
+    npm ci --cache npm-cache
+    ```
 
-The Node.js CNB runs `yarn install` followed by `yarn check` to ensure
-third-party dependencies are properly installed. Including a `yarn.lock` file
-in your application source code will indicate to the Node.js CNB that you wish
-to use the Yarn installation process.
+For more information about the NPM cache, see [npm-cache](https://docs.npmjs.com/cli/cache) in the NPM documentation.
 
-**yarn.lock**
+#### <a id="installation-process"></a> Determining an Installation Process
 
-The `yarn.lock` file contains a fully resolved set of package dependencies
-managed by Yarn.  Application developers may include this file in their source
-code in order to invoke the Yarn installation process. More details on the
-`yarn.lock` file can be found in the [Yarn
-documentation](https://yarnpkg.com/lang/en/docs/yarn-lock/).
+The table below shows the process the Node.js CNB uses to determine an installation process for NPM packages. When a combination of the files and directories described in [NPM Installation Process](#npm-installation-process) is present, the Node.js CNB uses an installation process that ensures the correct third-party dependencies are installed during the build process.
 
-##<a id="start-command"></a> Start Command
+| `package-lock.json` | `node_modules` | `npm-cache` | Command |
+| ------------------- | -------------- | ----------- | ------- |
+| X | X | X | `npm install` |
+| X | X | ✓ | `npm install` |
+| X | ✓ | X | `npm rebuild` and `npm install` |
+| X | ✓ | ✓ | `npm rebuild` and `npm install` |
+| ✓ | X | X | `npm ci` |
+| ✓ | X | ✓ | `npm ci` |
+| ✓ | ✓ | X | `npm rebuild` and `npm install` |
+| ✓ | ✓ | ✓ | `npm ci` |
 
-As part of the build process, the Node.js CNB will choose a start command for
-your application.  The start command differs depending upon which package
-management tooling is used.  If the `npm-cnb` is invoked to install packages
-using `npm`, then the start command will be `npm start`.  If the `yarn-cnb` is
-used to install packages using `yarn`, then the start command will be `yarn
-start`.
+
+## <a id="package-management-with-yarn"></a> Package Management with Yarn
+
+Many Node.js apps require a number of third-party libraries to perform common tasks and behaviors. Yarn is an alternative option to NPM for managing these third-party dependencies that the Node.js CNB fully supports. Including `package.json` and `yarn.lock` files in your app source code begins the Yarn installation process.
+
+### <a id="yarn-installation-process"></a> Yarn Installation Process
+
+The Node.js CNB runs `yarn install` and `yarn check` to ensure that third-party dependencies are properly installed. Including a `yarn.lock` file in your app source code causes the Node.js CNB to use the Yarn installation process.
+
+The `yarn.lock` file contains a fully resolved set of package dependencies that Yarn manages. For more information, see [yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock/) in the Yarn documentation.
+
+
+## <a id="start-command"></a> Start Command
+
+As part of the build process, the Node.js CNB determines a start command for your app. The start command differs depending on which package management tooling the Node.js CNB uses. If the Node.js CNB uses `npm-cnb` to install packages with `npm`, the start command is `npm start`. If the Node.js CNB uses `yarn-cnb` to install packages using `yarn`, the start command is `yarn start`.
