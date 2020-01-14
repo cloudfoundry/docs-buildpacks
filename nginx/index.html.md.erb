@@ -3,11 +3,10 @@ title: NGINX Buildpack
 owner: Buildpacks
 ---
 
-
-
 This topic describes how to push your NGINX app to Cloud Foundry and how to configure your NGINX app to use the NGINX buildpack.
 
-## <a id='pushing-apps'></a> Push an App ##
+
+## <a id='pushing-apps'></a> Push an App
 
 If your app contains an `nginx.conf` file, Cloud Foundry automatically uses the NGINX buildpack when you run `cf push` to deploy your app.
 
@@ -19,9 +18,10 @@ For example:
 $ cf push my-app -b https://github.com/cloudfoundry/nginx-buildpack.git
 </pre>
 
-## <a id='nginx'></a> Configure NGINX ##
 
-We recommend that you use the default NGINX directory structure for your NGINX webserver. You can view this directory structure in the [nginx-buildpack](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) repository in GitHub.
+## <a id='nginx'></a> Configure NGINX
+
+<%= vars.recommended_by %> recommends that you use the default NGINX directory structure for your NGINX webserver. You can view this directory structure in the [nginx-buildpack](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) repository in GitHub.
 
 The NGINX webserver setup includes the following:
 

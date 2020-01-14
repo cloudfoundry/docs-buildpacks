@@ -3,9 +3,10 @@ title: Creating an Extension Buildpack for .NET Apps
 owner: Buildpacks
 ---
 
-This topic explains how to write extension buildpacks for .NET apps.
+This topic describes how to write extension buildpacks for .NET apps.
 
-## <a id='prerequisites'></a>Prerequisites
+
+## <a id='prerequisites'></a> Prerequisites
 
 * Linux or MacOS development machine or VM
 * [golang](https://golang.org/) v1.10 or later programming language
@@ -13,70 +14,54 @@ This topic explains how to write extension buildpacks for .NET apps.
 
 
 ## <a id='overview'></a> Overview
+
 Most .NET Framework apps are pushed with the [Hosted Web Core (HWC) buildpack](../hwc/index.html).  
 
-The HWC buildpack contains the commonly required .NET dependencies used by .NET apps. This set of 
-HWC buildpack dependencies is a subset entire gamut of possible .NET dependencies and does not contain all the
-DLLs that every app could need. 
+The HWC buildpack contains the commonly required .NET dependencies used by .NET apps. This set of HWC buildpack dependencies is a subset entire gamut of possible .NET dependencies and does not contain all the DLLs that every app could need. 
 
 An extension buildpack supplies a custom set of .NET dependencies to an app's container.
 
-You cannot add modules or extensions directly to the HWC buildpack. If the HWC buildpack 
-lacks dependencies your app requires, we recommend that you create
-an extension buildpack containing the missing dependencies required by your app.
+You cannot add modules or extensions directly to the HWC buildpack. If the HWC buildpack lacks dependencies your app requires, <%= vars.recommended_by %> recommends that you create an extension buildpack containing the missing dependencies required by your app.
 
-<p class='note'><strong>Note:</strong> The HWC buildpack 
-contains a number of built-in HWC features, for example, the URL Rewrite and HTTP compression modules.
-Extensions should only provide additional functionality to your app. For more information about
-existing HWC features, see <a href="../hwc/index.html#features">Features</a> in
-<em>HWC Buildpack</em>.</p>
+<p class='note'><strong>Note:</strong> The HWC buildpack contains a number of built-in HWC features, for example, the URL Rewrite and HTTP compression modules. Extensions should only provide additional functionality to your app. For more information about existing HWC features, see <a href="../hwc/index.html#features">Features</a> in <em>HWC Buildpack</em>.</p>
 
 For additional extension buildpack configuration and creation commands see: [Creating a Custom Buildpack](http://engineering.pivotal.io/post/creating-a-custom-buildpack/) in the _Pivotal Engineering Journal_.
 
-## <a id='initialize'></a> Step 1. Initialize an Extension Buildpack
 
-The
-[buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager/buildpack-packager)
-provides boilerplate code that you can use to start writing your buildpack.
+## <a id='initialize'></a> Step 1: Initialize an Extension Buildpack
 
-1. To install the `buildpack-packager` CLI tool, run the commands below. 
+The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager/buildpack-packager) provides boilerplate code that you can use to start writing your buildpack.
 
-    ```go
+1. To install the `buildpack-packager` CLI tool, run: 
+
+    ```
     go get github.com/cloudfoundry/libbuildpack/
     go install github.com/cloudfoundry/libbuildpack/tree/master/packager
     ```
 
-1. To create your buildpack boilerplate, run the following command:
+1. To create your buildpack boilerplate, run:
 
-    ```shell
+    ```
     buildpack-packager init --name BUILDPACK-NAME --path=BUILDPACK-DIRECTORY
     ```
 	 Where:
     * `BUILDPACK-NAME` is the name of the buildpack you are creating.
-    * `BUILDPACK-DIRECTORY` is the directory where the boilerplate code will be written. 
-    If the directory does not exist, it is created by the `buildpack-packager init` process.
+    * `BUILDPACK-DIRECTORY` is the directory where the boilerplate code will be written. If the directory does not exist, it is created by the `buildpack-packager init` process.
 
-    For example:
-    <pre class='terminal'>
-    $ buildpack-packager init --name my-example --path=my-example-buildpack
-    </pre>
+1. To activate direnv in your buildpack directory, run:
 
-1. To activate direnv in your buildpack directory, run the following commands:
-
-    ```shell
+    ```
     cd BUILDPACK-DIRECTORY
     direnv allow
     ```
+    Where `BUILDPACK-DIRECTORY` is the directory created by the buildpack-packager command, containing the boilerplate code.  
 
-    Where: `BUILDPACK-DIRECTORY` is the directory created by the buildpack-packager command, containing the
-      boilerplate code.  
 
-## <a id='create'></a> Step 2. Create an Extension Buildpack to Supply Additional DLLs to a .NET Framework App
+## <a id='create'></a> Step 2: Create an Extension Buildpack to Supply Additional DLLs to a .NET Framework App
 
-An extension buildpack provides the dependencies required by your app that are missing in HWC buildpack. 
-The extension buildpack references and supplies needed dependencies to the app's container when you push the app.
+An extension buildpack provides the dependencies required by your app that are missing in HWC buildpack. The extension buildpack references and supplies needed dependencies to the app's container when you push the app.
 
-To create an extension buildpack containing additional DLLs, follow the steps below:
+To create an extension buildpack containing additional DLLs:
 
 1. Create a list of the dependencies that your published app requires.
 
@@ -86,22 +71,18 @@ To create an extension buildpack containing additional DLLs, follow the steps be
 
 1. To generate a SHA for your ZIP file, run the following command:  
 
-    ```shell
+    ```
     shasum -a256 DLL-ZIP-FILE
     ```
-
     Where `DLL-ZIP-FILE` is the name of your DLL ZIP file. 
 
-1. Upload the ZIP file containing your dependencies to a private web server that is accessible by
-Cloud Foundry. You can also use an S3 bucket or Azure Storage.
+1. Upload the ZIP file containing your dependencies to a private web server that is accessible by Cloud Foundry. You can also use an S3 bucket or Azure Storage.
 
-1. On the command line, browse to the directory created by the `buildpack-packager init` command
-above.
+1. On the command line, browse to the directory created by the `buildpack-packager init` command above.
 
-1. Edit the `manifest.yml` file by adding a `dependency` section that references the DLL ZIP file
-as follows:
+1. Edit the `manifest.yml` file by adding a `dependency` section that references the DLL ZIP file as follows:
 
-    ```yaml
+    ```
     dependencies:
     - name: BINARY-NAME 
       uri: http://s3.amazon.com/BUCKET-NAME/DLL-ZIP-FILE 
@@ -123,12 +104,8 @@ as follows:
 1. Edit the `supply.go` script.  
 
 1. Add dependencies to the container's `PATH` as follows:
-
-    1. Add a `stager.InstallDependency` for the `dependency` and `version` you have in your
-    manifest.yml file.
-
+    1. Add a `stager.InstallDependency` for the `dependency` and `version` you have in your manifest.yml file.
     1. Add a `stager.AddBinDependency` for every DLL file you want your app to be able to access.  
-
     For example:
     
     ```c#
@@ -143,57 +120,46 @@ as follows:
 
 1. To configure the build.sh script to cross-compile, edit `scripts/build.sh` to include the following:
 
-    ```shell
+    ```
     GOOS=windows go build -ldflags="-s -w" -o bin/supply.exe mysql/supply/cli
     ```
 
-## <a id='finish'></a> Step 3. Build the Extension Buildpack
-The following steps build a cached extension buildpack artifact.
 
-1. To build a cached buildpack artifact, run the following command:
+## <a id='finish'></a> Step 3: Build the Extension Buildpack
 
-    ```shell
+To build a cached extension buildpack artifact:
+
+1. Run:
+
+    ```
     buildpack-packager build -cached -stack STACK-NAME
     ```
+    Where `STACK-NAME` is the pre-built operating system that can run apps.  
+    <p class='note'><strong>Note:</strong> If the buildpack's <code>supply.go</code> script contains a mistake, <code>buildpack-packager</code> throws an error. You should not push your app with the new extension <code>buildpack</code> until after all local errors have been corrected. You must push your app to determine whether the new extension buildpack functions as intended.</p>
 
-    Where:  
-    * `STACK-NAME` is the pre-built operating system that can run apps.  
 
-    <p class='note'><strong>Note:</strong> If the buildpack's <code>supply.go</code> script contains a mistake,
-    <code>buildpack-packager</code> throws an error. You should not push your app with the new extension <code>buildpack</code> until after all local errors have been corrected. You must
-    push your app to determine whether the new extension buildpack functions as intended.</p>
+## <a id='finish'></a> Step 4: Validate the Extension Buildpack
 
-## <a id='finish'></a> Step 4. Validate the Extension Buildpack
-The following steps push an app with the cached extension buildpack artifact.
+To push an app with the cached extension buildpack artifact:
 
-1. Upload the buildpack to a private web server accessible to Cloud Foundry. 
-You can upload the finished buildpack to the same web server as your dependencies. 
-You can also use an S3 bucket or Azure Storage.  
+1. Upload the buildpack to a private web server accessible to Cloud Foundry. You can upload the finished buildpack to the same web server as your dependencies. You can also use an S3 bucket or Azure Storage.  
 
-1. To deploy your app with the extension buildpack and determine whether the new buildpack functions as intended, run the following command:
+1. To deploy your app with the extension buildpack and determine whether the new buildpack functions as intended, run:
 
-    ```shell
+    ```
     cf push APP-NAME -s windows -b EXT-BUILDPACK-URL -b hwc_buildpack
     ```
     Where:
     * `APP-NAME` is your app's name. 
-    * `EXT-BUILDPACK-URL` is the URL of the uploaded extension buildpack zip file.  
+    * `EXT-BUILDPACK-URL` is the URL of the uploaded extension buildpack ZIP file.
 
-    For example:
-    <pre class='terminal'>
-    $ cf push my-app -s windows -b http<span>:</span>//s3.amazon.com/my-bucket/my-example-buildpack.zip -b hwc_buildpack
-    </pre>
+If your extension buildpack does not include the correct dependencies, you will receive an error message.
 
-If your extension buildpack does not include the correct dependencies, you will receive an error
-message.
 
-## <a id='combine'></a> Step 5. Combine Extension Buildpack with Other Features
+## <a id='combine'></a> Step 5: Combine Extension Buildpack with Other Features
 
-If your extension buildpack has executables or scripts that need to be run, you can reference them
-either in the start command or in profile scripts.
+If your extension buildpack has executables or scripts that need to be run, you can reference them either in the start command or in profile scripts.
 
-* For more information about the start command, see
-[command](../../devguide/deploy-apps/manifest.html#start-commands) in <em>Deploying with Application Manifests</em>.
+* For more information about the start command, see [command](../../devguide/deploy-apps/manifest.html#start-commands) in <em>Deploying with Application Manifests</em>.
 
-* For more information about profile scripts, see
-[Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) in <em>Deploying an Application</em>.
+* For more information about profile scripts, see [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) in <em>Deploying an Application</em>.

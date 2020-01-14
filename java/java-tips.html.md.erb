@@ -13,8 +13,7 @@ For information about using, configuring, and extending the <%= vars.product_sho
 
 ## <a id='design'></a> Design
 
-The Java buildpack is designed to convert artifacts that run on the JVM into executable apps. It does this by identifying one of the supported artifact types (Grails, Groovy, Java, Play Framework, Spring Boot, and Servlet) and downloading all additional
-dependencies needed to run. It also analyzes the collection of services bound to the app and downloads any dependencies related to those services.
+The Java buildpack is designed to convert artifacts that run on the JVM into executable apps. It does this by identifying one of the supported artifact types (Grails, Groovy, Java, Play Framework, Spring Boot, and Servlet) and downloading all additional dependencies needed to run. It also analyzes the collection of services bound to the app and downloads any dependencies related to those services.
 
 As an example, pushing a WAR file that is bound to a PostgreSQL database and New Relic for performance monitoring results in the following:
 

@@ -3,13 +3,13 @@ title: .NET Core Buildpack
 owner: Buildpacks
 ---
 
-
-This topic describes how to push Cloud Foundry apps to Linux cells using the .NET Core buildpack. You can find supported ASP.NET Core versions 
-in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
+This topic describes how to push Cloud Foundry apps to Linux cells using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
 <p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux cells. To deploy .NET Core apps to Windows cells, use the <a href="../binary/index.html">Binary buildpack</a>.</p>
 
+
 ## <a id='overview'></a> Overview
+
 Buildpacks provide needed dependencies to <%= vars.windows_runtime_full %> apps. <%= vars.windows_runtime %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
 - The pushed app contains one or more `*.csproj` or `*.fsproj` files.
@@ -47,47 +47,35 @@ For information about deploying different types of .NET apps, follow the links i
 
 ## <a id='pushing-apps'></a> Push a .NET Core App
 
-To push a .NET Core app to a Linux cell, do the following:
+To push a .NET Core app to a Linux cell:
 
-1. Run the `cf push` command:
+1. Run:
 
     ```
     cf push APP-NAME
     ```
-    Where `APP-NAME` is the name you want to give your app. For example:
-
-    <pre class='terminal'>
-    $ cf push my-app
-    Pushing app my-app to org my-org / space my-space as username@example.com...
-    ...
-    name:              my-app
-    requested state:   started
-    routes:            my-app.example.com
-    last uploaded:     Mon 13 May 15:48:00 PDT 2020
-    stack:             cflinuxfs3
-    buildpacks:        dotnet-core
-    </pre>
-
-    If your <%= vars.windows_runtime %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, 
-    run the push command with the `-b` option to specify the buildpack:
+    Where `APP-NAME` is the name you want to give your app.
+    <br>
+    <br>:
+    If your <%= vars.windows_runtime %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, run the same command with the `-b` option to specify the buildpack:
 
     ```
     cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
     ```
-
     Where `APP-NAME` is the name you want to give your app.  
 
-1. Find the URL of your app in the output of the `push` command. In the example above, `my-app.example.com` is the URL of the app.
+1. Find the URL of your app in the output of the `cf push` command.
+
 1. Open a browser and navigate to the URL to see your app running.
 
 For a basic sample app, see [ASP.NET Core Getting Started App](https://github.com/IBM-Bluemix/aspnet-core-helloworld) in GitHub.
 
-## <a id='source-based'></a>Source-Based, Non-Published Deployments
+
+## <a id='source-based'></a> Source-Based, Non-Published Deployments
 
 For a source-based, non-published deployment, you push your app's source code, not the output directory of the `dotnet publish` command. 
 
-The source-based, non-published workflow ensures the buildpack can keep all your dependencies in sync and up to date.
-For additional information about using source-based, non-published deployments, see the following sections:
+The source-based, non-published workflow ensures the buildpack can keep all your dependencies in sync and up to date. For additional information about using source-based, non-published deployments, see the following sections:
 
 * [Deploy Apps with Multiple Projects](#multiple-projects)
 * [Use Non-Default Package Sources](#non-default-package-sources)
@@ -102,63 +90,55 @@ If you are deploying an app containing multiple projects, you must specify which
 To specify the main project in a multi-project deployment perform the following steps:  
 
 1. Create a `.deployment` file in your app's root folder and open the new file in a text editor.
+
 1. Designate the main project's path by configuring the file, using the following format:
 
-    ```text
+    ```
     [config]
     project = PATH-TO-YOUR-MAIN-PROJECT
     ```
 
     Where `PATH-TO-YOUR-MAIN-PROJECT` is the location of your main project's `*.csproj` or `*.fsproj` file.  
-<br>
+    <br>
     For example: 
 
-    ```text
+    ```
     [config]
     project = src/MyApp.Web/MyApp.Web.csproj
     ```
-
     In this example, by pointing to the `MyApp.Web` `*.csproj` file, `MyApp.Web` is configured as the main project.
 
 1. Save the revised `.deployment` file.
 
-When deployed, the buildpack attempts to execute the main project using the `dotnet run` command, `dotnet run -p PATH-TO-YOUR-MAIN-PROJECT`, 
-and automatically compiles all projects listed as dependencies in the main project's `*.csproj` or `*.fsproj` file.  
-<br>
-For example: Suppose your `.deployment` file is configured as above and you have an app `src` folder containing three projects: 
-`MyApp.Web`, `MyApp.DAL` and `MyApp.Services`. If your `MyApp.Web.csproj` file lists the `MyApp.DAL` and `MyApp.Services` projects as dependencies, 
-the two additional projects will be compiled by the buildpack.
+When deployed, the buildpack attempts to execute the main project using the `dotnet run` command, `dotnet run -p PATH-TO-YOUR-MAIN-PROJECT`, and automatically compiles all projects listed as dependencies in the main project's `*.csproj` or `*.fsproj` file.  
 
-### <a id='non-default-package-sources'></a>Use Non-Default Package Sources
+For example: Suppose your `.deployment` file is configured as above and you have an app `src` folder containing three projects: `MyApp.Web`, `MyApp.DAL` and `MyApp.Services`. If your `MyApp.Web.csproj` file lists the `MyApp.DAL` and `MyApp.Services` projects as dependencies, the two additional projects will be compiled by the buildpack.
 
-If you want to deploy an app that uses non-default package sources,
-you must specify those package sources in the `NuGet.Config` file.
-For information about `NuGet.Config`,
-see [nuget.config reference](https://docs.microsoft.com/en-us/nuget/reference/nuget-config-file)
-in the Microsoft documentation.
+### <a id='non-default-package-sources'></a> Use Non-Default Package Sources
 
-### <a id='disabling-nuget'></a>Disable and Clear Your NuGet Package Cache
+If you want to deploy an app that uses non-default package sources, you must specify those package sources in the `NuGet.Config` file. For information about `NuGet.Config`, see [nuget.config reference](https://docs.microsoft.com/en-us/nuget/reference/nuget-config-file) in the Microsoft documentation.
 
-You may need to disable NuGet package caching or clear NuGet packages cached in the staging environment
-in one of the following scenarios:
+### <a id='disabling-nuget'></a> Disable and Clear Your NuGet Package Cache
+
+You may need to disable NuGet package caching or clear NuGet packages cached in the staging environment in one of the following scenarios:
 
 * Your app fails to stage because it runs out of space, exceeding the maximum allowable disk quota.
-* You have added pre-release packages to test a new feature and then decided to revert back to the main NuGet feed.
-You may need to remove the packages you changed from the cache to avoid conflicts.
 
-Disabling NuGet caching clears any existing NuGet dependencies from the staging cache
-and prevents the buildpack from adding NuGet dependencies to the staging cache.
+* You have added pre-release packages to test a new feature and then decided to revert back to the main NuGet feed. You may need to remove the packages you changed from the cache to avoid conflicts.
+
+Disabling NuGet caching clears any existing NuGet dependencies from the staging cache and prevents the buildpack from adding NuGet dependencies to the staging cache.
 
 NuGet package caching is disabled by default. If the default is not explicitly overridden, no additional NuGet caching configuration is required.
 
-To disable NuGet package caching, do the following:
+To disable NuGet package caching:
 
 1. Confirm the `CACHE_NUGET_PACKAGES` environment variable is not set to `true` in your app manifest by locating the `manifest.yml` file and confirming `CACHE_NUGET_PACKAGES` is not set to true.
+
 1. If needed, set `CACHE_NUGET_PACKAGES` to `false` in the `manifest.yml` file by setting the `CACHE_NUGET_PACKAGES` environment variable to `false`.  
 <br>
     For example:
 
-    ```yml
+    ```
     ---
     applications:
     - name: sample-aspnetcore-app
@@ -169,24 +149,19 @@ To disable NuGet package caching, do the following:
 
 1. To alternatively configure the setting to false in the environment variables settings, run the following on the command line:
 
-    ```shell
+    ```
     cf set-env APP-NAME CACHE_NUGET_PACKAGES false
     ```
-
     Where `APP-NAME` is the name of your app.
 
-For more information, see the [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) section
-of the <em>Deploying with Application Manifests</em> topic.
+For more information, see the [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) section of the <em>Deploying with App Manifests</em> topic.
 
-## <a id='framework-dependent'></a>Framework-Dependent Deployments##
 
-For a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies.
-Cloud Foundry recommends using this workflow if you deploy an app in an offline setting.
-For information about deploying FDDs, see
-[Framework-dependent deployments (FDD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#framework-dependent-deployments-fdd)
-in the Microsoft documentation.
+## <a id='framework-dependent'></a> Framework-Dependent Deployments
 
-To deploy an FDD using the buildpack, do the following:
+For a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies. Cloud Foundry recommends using this workflow if you deploy an app in an offline setting. For information about deploying FDDs, see [Framework-dependent deployments (FDD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#framework-dependent-deployments-fdd) in the Microsoft documentation.
+
+To deploy an FDD using the buildpack:
 
 1. Publish the app by running the `dotnet publish` command:
 
@@ -194,24 +169,20 @@ To deploy an FDD using the buildpack, do the following:
 
     Where `FRAMEWORK-NAME` is your target framework.
 
-1. Prepare to push your app by doing one of the following:
-    * If your app uses a `manifest.yml`, specify a path to the output folder of `dotnet publish`. 
-This allows you to push your app from any directory.
+1. Prepare to push your app with one of these methods:
+    * If your app uses a `manifest.yml`, specify a path to the output folder of `dotnet publish`. This allows you to push your app from any directory.
     * If not, navigate to the `bin/Debug|Release/YOUR-FRAMEWORK/YOUR-RUNTIME/publish` directory.
 
 1. Push your app.
 
-## <a id='self-contained'></a>Self-Contained Deployments##
 
-For a self-contained deployment (SCD), you deploy your app, third-party dependencies,
-and the version of .NET Core that you used to build your app. For information about SCDs,
-see [Self-contained deployments (SCD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/#self-contained-deployments-scd)
-in the Microsoft documentation.
+## <a id='self-contained'></a> Self-Contained Deployments
 
-<p class="note"><strong>Note:</strong> Cloud Foundry does not recommend using the SCD workflow.
-The buildpack is unable to keep dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
+For a self-contained deployment (SCD), you deploy your app, third-party dependencies, and the version of .NET Core that you used to build your app. For information about SCDs, see [Self-contained deployments (SCD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/#self-contained-deployments-scd) in the Microsoft documentation.
 
-When using the SCD workflow for deploying your app, you must do the following:  
+<p class="note"><strong>Note:</strong> Cloud Foundry does not recommend using the SCD workflow. The buildpack is unable to keep dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
+
+When using the SCD workflow for deploying your app, you must:  
 
 * Specify a runtime in the `dotnet publish` command. For example:
 
@@ -221,22 +192,22 @@ When using the SCD workflow for deploying your app, you must do the following:
 
 * Include the specified runtime in the `RuntimeIdentifiers` section of the project file.
 
+
 ## <a id='dotnet-sdk'></a> Specify .NET Core SDKs
 
-To pin the .NET Core SDK to a specific version or version line, create a `buildpack.yml` file at the app root
-and add your SDK version in one of the following formats:
+To pin the .NET Core SDK to a specific version or version line, create a `buildpack.yml` file at the app root and add your SDK version in one of the following formats:
 
-```yml
+```
 dotnet-core:
   sdk: 2.1.201
 ```
 
-```yml
+```
 dotnet-core:
   sdk: 2.1.x
 ```
 
-```yml
+```
 dotnet-core:
   sdk: 2.x
 ```
@@ -247,15 +218,14 @@ The buildpack chooses what SDK to install based on the files present at the app 
 1. `global.json`
 1. `*.fsproj`
 
-<p class="note"><strong>Note</strong>: The app respects the SDK version specified in <code>global.json</code> at runtime.
-If you provide versions in both <code>global.json</code> and <code>buildpack.yml</code> files,
-ensure you specify the same versions in both files.</p>
+<p class="note"><strong>Note:</strong> The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in both <code>global.json</code> and <code>buildpack.yml</code> files, ensure you specify the same versions in both files.</p>
 
-## <a id='dotnet-runtime'></a>Specify .NET Runtime Versions
+
+## <a id='dotnet-runtime'></a> Specify .NET Runtime Versions
 
 This section explains how to specify a .NET Runtime version for source-based and framework-dependent apps.
 
-### <a id='dotnet-runtime-source-based'></a>Source-Based Apps
+### <a id='dotnet-runtime-source-based'></a> Source-Based Apps
 
 If you want to lock the .NET Runtime version, configure your `.csproj` or `.fsproj` file to lock your app to the desired version.  
 
@@ -268,16 +238,13 @@ For example, the following configuration locks the runtime to 2.1:
 </PropertyGroup>
 ```
 
-<p class="note"><strong>Note:</strong> For source-based apps, specify a minor version of the .NET Runtime.
-Do not specify a patch version because
-buildpacks contain only the two most recent patch versions of each minor version.</p>
+<p class="note"><strong>Note:</strong> For source-based apps, specify a minor version of the .NET Runtime. Do not specify a patch version because buildpacks contain only the two most recent patch versions of each minor version.</p>
 
-### <a id='dotnet-runtime-fdd'></a>Framework-Dependent Apps
+### <a id='dotnet-runtime-fdd'></a> Framework-Dependent Apps
 
 Your app is configured to use the latest .NET Runtime patch version by default.  
 
-If you want your app to maintain a specific .NET Runtime version, you must modify your app's `.runtimeconfig.json` file 
-to include the `applyPatches` property and set the property to `false`. 
+If you want your app to maintain a specific .NET Runtime version, you must modify your app's `.runtimeconfig.json` file to include the `applyPatches` property and set the property to `false`. 
 
 For example:
 
@@ -294,21 +261,19 @@ For example:
 }
 ```
 
-<p class="note"><strong>Note:</strong> Set <code>applyPatches: false</code> in  <code>*.runtimeconfig.json</code> only if you want
-to pin your .NET Framework to a specific version. This prevents your app
-from receiving updates to the runtime version and assemblies.</p>
+<p class="note"><strong>Note:</strong> Set <code>applyPatches: false</code> in  <code>*.runtimeconfig.json</code> only if you want to pin your .NET Framework to a specific version. This prevents your app from receiving updates to the runtime version and assemblies.</p>
+
 
 ## <a id='offline'></a> Push an App in a Disconnected Environment
 
-For offline environments, Cloud Foundry recommends using the Framework-Dependent Deployment workflow. 
-This workflow enables the deployed app to use the latest runtime provided by the offline buildpack. 
-For more information, see: [Framework-Dependent Deployments](#framework-dependent).
+For offline environments, Cloud Foundry recommends using the Framework-Dependent Deployment workflow. This workflow enables the deployed app to use the latest runtime provided by the offline buildpack.  For more information, see: [Framework-Dependent Deployments](#framework-dependent).
+
 
 ## <a id='runtime-store'></a>Maintain ASP.NET Core Assemblies
 
 <p class="note"><strong>Note:</strong> This section applies only to source-based and framework-dependent deployments.</p>
 
-For maintaining ASP.NET Core assemblies, it is recommended you do one of the following
+For maintaining ASP.NET Core assemblies, <%= vars.recommended_by %> recommends one of these methods:
 
 * Configure your app as a fully vendored app requiring fewer buildpack updates. Modify your `.csproj` file with the following:
 
@@ -320,24 +285,20 @@ For maintaining ASP.NET Core assemblies, it is recommended you do one of the fol
 
 * Keep your SDK up to date, by setting `buildpack.yml` to the .NET SDK line you want to use.  For example:
 
-    ```yml
+    ```
     ---
     dotnet-core:
     	sdk: 2.0.x
     ```
 
-<p class="note"><strong>Note:</strong> <code>2.0.x</code> ASP.NET Core assemblies are released
-in the <code>2.1.200</code>-<code>2.1.299</code> SDK versions,
-and <code>2.1.x</code> assemblies are released in the <code>2.1.300</code> and above SDK versions.</p>
+<p class="note"><strong>Note:</strong> <code>2.0.x</code> ASP.NET Core assemblies are released in the <code>2.1.200</code>-<code>2.1.299</code> SDK versions, and <code>2.1.x</code> assemblies are released in the <code>2.1.300</code> and above SDK versions.</p>
 
-## <a id='port'></a>Configure the Listen Port ##
 
-<%= vars.windows_runtime %> sets the `$PORT` environment variable automatically. 
-For your .NET Core app to work on <%= vars.windows_runtime %>,
-you must configure the app to listen on the environment's specified port.  
+## <a id='port'></a> Configure the Listen Port
 
-For C# apps, the following modifications allow the buildpack to pass the correct port from `$PORT` environment variable 
-to the app when running the initial startup command:
+<%= vars.windows_runtime %> sets the `$PORT` environment variable automatically. For your .NET Core app to work on <%= vars.windows_runtime %>, you must configure the app to listen on the environment's specified port.  
+
+For C# apps, the following modifications allow the buildpack to pass the correct port from `$PORT` environment variable to the app when running the initial startup command:
 
 1. Open the file that contains your `Main` method.
 
@@ -387,9 +348,7 @@ to the app when running the initial startup command:
       <Version>VERSION</Version>
     </PackageReference>
     ```
-
-    Where `VERSION` is the version of the package to use. 
-    To find a list of valid versions, navigate to https://www.nuget.org.
+    Where `VERSION` is the version of the package to use. For a list of valid versions, navigate to https://www.nuget.org.
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
@@ -397,10 +356,11 @@ to the app when running the initial startup command:
 
 With these changes, the `dotnet run` command copies your app `Views` to the build output where the .NET CLI can find them.
 
+
 ## <a id='custom-libraries'></a>Add Custom Libraries
 
 If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in an `ld_library_path` directory at the app root.
 
-<p class="note"><strong>Note</strong>: You must keep these libraries up to date. They do not update automatically.</p>
+<p class="note"><strong>Note:</strong> You must keep these libraries up to date. They do not update automatically.</p>
 
 The .NET Core buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
