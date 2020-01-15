@@ -10,9 +10,7 @@ This topic describes using the Node.js cloud-native buildpack (CNB) to deploy yo
 
 The Node Engine CNB allows you to specify a version of Node.js to use during deployment. This version can be specified in a number of ways, including through `.nvmrc`, `buildpack.yml`, or `package.json` files. When specifying a version of the Node.js engine, you must choose a version that is available within the buildpack.
 
-When you specify a version, the buildpack prioritizes the versions specified in each possible configuration location with the following precedence.
-
-**(highest)** `buildpack.yml` > `package.json` > `.nvmrc` **(lowest)**
+When you specify a version, the buildpack prioritizes the versions specified in each possible configuration location with the following precedence, from highest to lowest: `buildpack.yml`, `package.json`, `.nvmrc`.
 
 ### <a id='buildpack-yml'></a> Using buildpack.yml
 
@@ -45,7 +43,7 @@ Node Version Manager is a common option for managing the Node.js version an app 
 
 ## <a id="environment-variables"></a> Environment Variables
 
-The Node.js CNB sets a number of environment variables during the `build` and `launch` phases of the app lifecycle. The sectios below describe each environment variable, its impact on your app, and how to configure these variable with alternative settings.
+The Node.js CNB sets a number of environment variables during the `build` and `launch` phases of the app lifecycle. The sections below describe each environment variable, its impact on your app, and how to configure these variable with alternative settings.
 
 ### <a id="environment-variable-memory-available"></a> MEMORY_AVAILABLE
 
@@ -75,7 +73,7 @@ The `MEMORY_AVAILABLE` environment variable reports the total amount of memory a
 
 ### <a id="environment-variable-node-verbose"></a> NODE_VERBOSE
 
-Adjusts the amount of logging output from NPM during installs.
+The `NODE_VERBOSE` environment variable adjusts the amount of logging output from NPM during installs.
 
 * Set by: `node-engine-cnb`
 * Phases: `build`
@@ -83,7 +81,7 @@ Adjusts the amount of logging output from NPM during installs.
 
 ### <a id="environment-variable-npm-config-loglevel"></a> NPM_CONFIG_LOGLEVEL
 
-Level of logging NPM uses.
+The `NPM_CONFIG_LOGLEVEL` environment variable sets the level of logging NPM uses.
 
 * Set by: `node-engine-cnb`
 * Phases: `build`
@@ -91,7 +89,7 @@ Level of logging NPM uses.
 
 ### <a id="environment-variable-npm-config-production"></a> NPM_CONFIG_PRODUCTION
 
-Installs only production dependencies if NPM install is used.
+The `NPM_CONFIG_LOGLEVEL` environment variable installs only production dependencies if NPM install is used.
 
 * Set by: `node-engine-cnb`
 * Phases: `build`
@@ -99,7 +97,7 @@ Installs only production dependencies if NPM install is used.
 
 ### <a id="environment-variable-path"></a> PATH
 
-Appends the `node_modules/.bin` directory onto the `$PATH`.
+The `PATH` environment variable appends the `node_modules/.bin` directory onto the `$PATH`.
 
 * Set by: `yarn-cnb`
 * Phases: `build`
@@ -108,11 +106,13 @@ Appends the `node_modules/.bin` directory onto the `$PATH`.
 
 ## <a id="heap-memory-optimization"></a> Heap Memory Optimization
 
-Node.js limits the total size of all objects on the heap. Enabling the "optimize-memory" feature sets this value to three-quarters of the total memory available in the container. For example, if your app is limited to 1&nbsp;GB when pushed, the heap of your Node.js app is limited to 768&nbsp;MB.
+Node.js limits the total size of all objects on the heap. Enabling the `optimize-memory` feature sets this value to three-quarters of the total memory available in the container. For example, if your app is limited to 1&nbsp;GB when pushed, the heap of your Node.js app is limited to 768&nbsp;MB.
 
-### <a id="enabling-memory-optimization"></a> Enabling Memory Optimization
+### <a id="enabling-memory-optimization"></a> Enable Memory Optimization
 
-### <a id="buildpack-yml-memory"></a> Using buildpack.yml
+There are two ways to enable memory optimization: through your `buildpack.yml` file, and by using the `OPTIMIZE_MEMORY` environment variable.
+
+#### <a id="buildpack-yml-memory"></a> Use the buildpack.yml
 
 To enable memory optimization through your `buildpack.yml` file, add the values below to your `buildpack.yml` file:
 
@@ -122,7 +122,7 @@ nodejs:
   optimize-memory: true
 ```
 
-### <a id="optimize-memory-env-var"></a> Using the OPTIMIZE_MEMORY Environment Variable
+#### <a id="optimize-memory-env-var"></a> Use the OPTIMIZE_MEMORY Environment Variable
 
 To enable memory optimization through the `OPTIMIZE_MEMORY` environment variable, set it to `true`.
 
@@ -133,13 +133,15 @@ Many Node.js apps require a number of third-party libraries to perform common ta
 
 ### <a id="npm-installation-process"></a> NPM Installation Process
 
-NPM supports several distinct methods for installing your package dependencies. Specifically, the Node.js CNB runs a combination of the `npm install`, `npm rebuild`, and `npm ci` commands to build your app with the right set of dependencies. When deciding which installation process to use, the Node.js CNB consults your app source code, looking for the presence of specific files or directories. For more information about the `npm install` command, see [npm-install](https://docs.npmjs.com/cli-commands/install) in the NPM documentation. For more information about the `npm rebuild` command, see [npm-rebuild](https://docs.npmjs.com/cli-commands/rebuild.html) in the NPM documentation. For more information about the `npm ci` command, see [npm-ci](https://docs.npmjs.com/cli-commands/ci.html) in the NPM documentation.
+NPM supports several distinct methods for installing your package dependencies. Specifically, the Node.js CNB runs a combination of the `npm install`, `npm rebuild`, and `npm ci` commands to build your app with the right set of dependencies. When deciding which installation process to use, the Node.js CNB consults your app source code, looking for the presence of specific files or directories.
+
+For more information about the `npm install` command, see [npm-install](https://docs.npmjs.com/cli-commands/install) in the NPM documentation. For more information about the `npm rebuild` command, see [npm-rebuild](https://docs.npmjs.com/cli-commands/rebuild.html) in the NPM documentation. For more information about the `npm ci` command, see [npm-ci](https://docs.npmjs.com/cli-commands/ci.html) in the NPM documentation.
 
 These sections describe the files and directories you can include in your source code, and which installation process the Node.js CNB uses when these files and directories are present.
 
 #### <a id="package-lock-json"></a> package-lock.json
 
-The `package-lock.json` file is machine-generated file the Node.js CNB creates during the `npm install` process. For more information, see [npm-package-lock.json](https://docs.npmjs.com/files/package-lock.json) in the NPM documentation.
+The `package-lock.json` file is a machine-generated file the Node.js CNB creates during the `npm install` process. For more information, see [npm-package-lock.json](https://docs.npmjs.com/files/package-lock.json) in the NPM documentation.
 
 #### <a id="node-modules"></a> node_modules
 
