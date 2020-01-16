@@ -3,7 +3,7 @@ title: .NET Core Buildpack
 owner: Buildpacks
 ---
 
-This topic describes how to push Cloud Foundry apps to Linux cells using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
+This topic describes how to push <%= vars.platform_name %> apps to Linux cells using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
 <p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux cells. To deploy .NET Core apps to Windows cells, use the <a href="../binary/index.html">Binary buildpack</a>.</p>
 
@@ -81,13 +81,13 @@ The source-based, non-published workflow ensures the buildpack can keep all your
 * [Use Non-Default Package Sources](#non-default-package-sources)
 * [Disable and Clear Your NuGet Package Cache](#disabling-nuget)
 
-<p class='note'><strong>Note:</strong> The source-based deployment workflow also uses the <code>cf push</code> command to push source-based apps to Cloud Foundry.</p>
+<p class='note'><strong>Note:</strong> The source-based deployment workflow also uses the <code>cf push</code> command to push source-based apps to <%= vars.platform_name %>.</p>
 
-### <a id='multiple-projects'></a>Deploy Apps with Multiple Projects
+### <a id='multiple-projects'></a> Deploy Apps with Multiple Projects
 
 If you are deploying an app containing multiple projects, you must specify which of the app's projects is the main project. 
 
-To specify the main project in a multi-project deployment perform the following steps:  
+To specify the main project in a multi-project deployment:  
 
 1. Create a `.deployment` file in your app's root folder and open the new file in a text editor.
 
@@ -159,14 +159,15 @@ For more information, see the [Environment Variables](../../devguide/deploy-apps
 
 ## <a id='framework-dependent'></a> Framework-Dependent Deployments
 
-For a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies. Cloud Foundry recommends using this workflow if you deploy an app in an offline setting. For information about deploying FDDs, see [Framework-dependent deployments (FDD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#framework-dependent-deployments-fdd) in the Microsoft documentation.
+For a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies. <%= vars.recommended_by %> recommends using this workflow if you deploy an app in an offline setting. For information about deploying FDDs, see [Framework-dependent deployments (FDD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#framework-dependent-deployments-fdd) in the Microsoft documentation.
 
 To deploy an FDD using the buildpack:
 
-1. Publish the app by running the `dotnet publish` command:
+1. Publish the app by running:
 
-    <pre>dotnet publish [-f FRAMEWORK-NAME] [-c Release]</pre>
-
+    ```
+    dotnet publish [-f FRAMEWORK-NAME] [-c Release]
+    ```
     Where `FRAMEWORK-NAME` is your target framework.
 
 1. Prepare to push your app with one of these methods:
@@ -180,7 +181,7 @@ To deploy an FDD using the buildpack:
 
 For a self-contained deployment (SCD), you deploy your app, third-party dependencies, and the version of .NET Core that you used to build your app. For information about SCDs, see [Self-contained deployments (SCD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/#self-contained-deployments-scd) in the Microsoft documentation.
 
-<p class="note"><strong>Note:</strong> Cloud Foundry does not recommend using the SCD workflow. The buildpack is unable to keep dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
+<p class="note"><strong>Note:</strong> <%= vars.recommended_by %> does not recommend using the SCD workflow. The buildpack is unable to keep dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
 
 When using the SCD workflow for deploying your app, you must:  
 
@@ -266,7 +267,7 @@ For example:
 
 ## <a id='offline'></a> Push an App in a Disconnected Environment
 
-For offline environments, Cloud Foundry recommends using the Framework-Dependent Deployment workflow. This workflow enables the deployed app to use the latest runtime provided by the offline buildpack.  For more information, see: [Framework-Dependent Deployments](#framework-dependent).
+For offline environments, <%= vars.recommended_by %> recommends using the Framework-Dependent Deployment workflow. This workflow enables the deployed app to use the latest runtime provided by the offline buildpack.  For more information, see: [Framework-Dependent Deployments](#framework-dependent).
 
 
 ## <a id='runtime-store'></a>Maintain ASP.NET Core Assemblies
