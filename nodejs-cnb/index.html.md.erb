@@ -55,17 +55,23 @@ The `MEMORY_AVAILABLE` environment variable reports the total amount of memory a
 
 ### <a id="environment-variable-node-env"></a> NODE_ENV
 
+The `NODE_ENV` environment variable specifies the environment in which the app runs.
+
 * Set by: `node-engine-cnb`
 * Phases: `build`
 * Value: production
 
 ### <a id="environment-variable-node-home"></a> NODE_HOME
 
+The `NODE_HOME` environment variable sets the path to the `node` installation.
+
 * Set by: `node-engine-cnb`
 * Phases: `build`
 * Value: path to the `node` installation
 
 ### <a id="environment-variable-node-path"></a> NODE_PATH
+
+The `NODE_PATH` environment variable sets a search path for node modules.
 
 * Set by: `yarn-cnb`
 * Phases: `build`
@@ -81,7 +87,7 @@ The `NODE_VERBOSE` environment variable adjusts the amount of logging output fro
 
 ### <a id="environment-variable-npm-config-loglevel"></a> NPM_CONFIG_LOGLEVEL
 
-The `NPM_CONFIG_LOGLEVEL` environment variable sets the level of logging NPM uses.
+The `NPM_CONFIG_LOGLEVEL` environment variable adjusts the level of logging NPM uses.
 
 * Set by: `node-engine-cnb`
 * Phases: `build`
@@ -89,7 +95,7 @@ The `NPM_CONFIG_LOGLEVEL` environment variable sets the level of logging NPM use
 
 ### <a id="environment-variable-npm-config-production"></a> NPM_CONFIG_PRODUCTION
 
-The `NPM_CONFIG_LOGLEVEL` environment variable installs only production dependencies if NPM install is used.
+The `NPM_CONFIG_PRODUCTION` environment variable installs only production dependencies if NPM install is used.
 
 * Set by: `node-engine-cnb`
 * Phases: `build`
@@ -97,7 +103,7 @@ The `NPM_CONFIG_LOGLEVEL` environment variable installs only production dependen
 
 ### <a id="environment-variable-path"></a> PATH
 
-The `PATH` environment variable appends the `node_modules/.bin` directory onto the `$PATH`.
+The `PATH` environment variable appends the `node_modules/.bin` directory onto the `node` installation path.
 
 * Set by: `yarn-cnb`
 * Phases: `build`
@@ -171,12 +177,22 @@ The table below shows the process the Node.js CNB uses to determine an installat
 | ------------------- | -------------- | ----------- | ------- |
 | X | X | X | `npm install` |
 | X | X | ✓ | `npm install` |
-| X | ✓ | X | `npm rebuild` and `npm install` |
-| X | ✓ | ✓ | `npm rebuild` and `npm install` |
+| X | ✓ | X | `npm rebuild` |
+| X | ✓ | ✓ | `npm rebuild` |
 | ✓ | X | X | `npm ci` |
 | ✓ | X | ✓ | `npm ci` |
-| ✓ | ✓ | X | `npm rebuild` and `npm install` |
+| ✓ | ✓ | X | `npm rebuild` |
 | ✓ | ✓ | ✓ | `npm ci` |
+
+#### <a id="layer-reuse-strategy"></a> Determining Layer Reuse
+
+To improve build times for apps, the NPM CNB has a method for reusing the build results from previous builds. When the CNB determines that a portion of the build process can be reused from a previous build, the CNB uses the previous result. Each installation process uses a different method for determining whether the CNB can reuse a previous build result.
+
+For `npm install`, the CNB never reuses previous build results.
+
+For `npm rebuild`, the CNB reuses previous build results if the `node_modules` directory included in the app source code has not changed since the prior build.
+
+For `npm ci`, the CNB reuses previous build results if the `package-lock.json` file included in the app source code has not changed since the prior build.
 
 
 ## <a id="package-management-with-yarn"></a> Package Management with Yarn
