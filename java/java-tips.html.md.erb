@@ -3,7 +3,7 @@ title: Tips for Java Developers
 owner: Java
 ---
 
-<%= vars.product_runtime %> (<%= vars.product_short %>) can deploy a number of different JVM-based artifact types. For a more detailed explanation of what it supports, see [Additional Documentation][https://github.com/cloudfoundry/java-buildpack#additional-documentation] in the Cloud Foundry Java Buildpack repository on GitHub.
+<%= vars.product_runtime %> (<%= vars.product_short %>) can deploy a number of different JVM-based artifact types. For a more detailed explanation of what it supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='buildpack'></a> Java Buildpack
@@ -331,7 +331,6 @@ If your app fails to upload when you push it to <%= vars.product_short %>, it ma
     path: .
     ```
     To re-push just the WAR, either:
-
     * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag.
     * Edit the `path` argument in `manifest.yml` to point to the WAR, and re-push the app.
 
@@ -383,7 +382,7 @@ To resolve this issue, run `cf push` with the `-t TIMEOUT-THRESHOLD` option to i
 
 ```
 $ cf push YOUR-APP -t TIMEOUT-THRESHOLD
-</pre>
+```
 
 Where:
 
