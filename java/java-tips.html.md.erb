@@ -321,20 +321,16 @@ If your app fails to upload when you push it to <%= vars.product_short %>, it ma
     ```
 
     Where:
-
     * `YOUR-APP` is the name of your app.
     * `PATH/TO/WAR-FILE` is the path to the WAR.
-
     You can determine whether or not the path was specified for a previously pushed app by examining the app deployment manifest, `manifest.yml`. If the `path` attribute specifies the current directory, the manifest includes a line like:
 
-    ```
-    path: .
-    ```
-
-    To re-push just the WAR, either:
-    
-    * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag.
-    * Edit the `path` argument in `manifest.yml` to point to the WAR, and re-push the app.
+        ```
+        path: .
+        ```
+        To re-push just the WAR, either:  
+        * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag. 
+        * Edit the `path` argument in `manifest.yml` to point to the WAR, and re-push the app.
 
 ### <a id='debugging'></a> Debug Java Apps on <%= vars.product_short %>
 
