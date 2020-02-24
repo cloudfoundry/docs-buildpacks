@@ -32,6 +32,7 @@ as follows:
     - `package-lock.json` (optional)
     - `node_modules` (optional)
     - `npm-cache` (optional)
+    - `yarn.lock` (optional)
 
 As a result we require that apps that contain `node_modules` or `npm-cache` must contain
 all of the dependencies required for a successfull `npm` or `yarn` install.
@@ -90,7 +91,20 @@ If you provide a `package.json` and all modules cannot be installed
 the subsequent `npm list` check will cause the build to fail
 
 ### Yarn Applications
-These should not require any changes and should work with
+
+#### `yarn.lock` must agree with package.json
+
+Yarn applications will have dependencies installed from the `yarn.lock` file.
+This differs from the behavior of the Node.js Buildpack which installs
+dependecies from the `package.json` file. To avoid descrepencies in installed
+packages, please generate an up to date `yarn.lock` file before running a `cf push`
+using:
+
+```
+yarn install <your prefered flags>
+```
+
+
 
 
 
