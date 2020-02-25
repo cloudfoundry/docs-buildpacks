@@ -12,6 +12,7 @@ Here is a list of the known changes between the PHP Cloud Foundry Buildpack and 
 * <a href="#app_files_not_moved">Application files are no longer moved into the `WEBDIR`, when no `WEBDIR` is present</a>
 * <a href="#buildpack_extensions">Python based buildpack extensions are no longer supported</a>
 * A new configuration file is used. Previously `.bp-config/options.json` was used for configuration, we now use `buildpack.yaml` which should be located in the root of the application
+* PHP extensions are no longer restricted to the list of extensions that ships with the buildpack. This will result in no error message from the buildpack if you request an extension that does not exist. It will result in an error from PHP though when your application starts. This change also allows you to supply compiled PHP extensions with your application and enable them using `php.ini` snippets.
 * <a href="#snippets_moved">Configuration snippets for PHP, PHP-FPM, HTTPD, and Nginx are no longer stored under `.bp-config/`</a>. They are moved to dedicated folder under the app root.
 * A handful of things have changed with Composer
   * You can no longer set the version to "latest" to download the absolute latest version from Github. This was useful before Composer had a GA release. It now has regular, stable releases so this funcationality is no longer necessary.
