@@ -23,6 +23,20 @@ The buildpack runs with a set of default values for Composer. You can adjust the
 | composer.json_path           | By default, `composer.json` and `composer.lock` may exist under the applictiaon root or under the application's public web directory. You may set this option to search for these files in a different sub-directory of the application root or public web directory. The pair of files must both exist in the same location.<br/><br/> Ex: if `composer.json_path` is set to `config`, then `app_root/config/composer.json` and `app_root/webdir/composer.json` will be checked. |
 | composer.install_global      | A list of package names to be installed globally. This calls `composer global require` for each package listed here. |
 
+To make it easier to read, dot notation is used in the table, however this should be expanded into YAML format. Here's an example `buildpack.yml`:
+
+```
+---
+php:
+  version: 7.2.14
+  webserver: nginx
+nginx:
+  version: 1.17.5
+composer:
+  install_options: '--no-dev --optimize-autoloader'
+  vendor_directory: 'dependencies'
+```
+
 ## <a id="github-api-limits"></a> GitHub API Request Limits
 
 Composer uses GitHub's API to retrieve zip files for installation into the application folder. If you do not vendor dependencies before pushing an app, Composer will fetch dependencies during staging using the GitHub API.

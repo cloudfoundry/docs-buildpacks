@@ -40,6 +40,19 @@ Below is an explanation of the common options you might need to change.
 | httpd.version                            | Sets the version of Apache HTTPD to use. Currently the build pack supports the latest stable version.  This value will default to the latest release that is supported by the build pack. |
 | nginx.version                            | Sets the version of Nginx to use. By default, the buildpack uses the latest stable version. |
 
+To make it easier to read, dot notation is used in the table, however this should be expanded into YAML format. Here's an example `buildpack.yml`:
+
+```
+---
+php:
+  version: 7.2.14
+  webserver: nginx
+  redis:
+    session_store_service_name: redis-db
+nginx:
+  version: 1.17.5
+```
+
 For details about supported versions, see the release notes for your buildpack version on the [Releases](https://github.com/cloudfoundry/php-buildpack/releases) page of the Cloud Foundry PHP Buildpack repository on GitHub.
 
 ### <a id="engine-configurations"></a> HTTPD, Nginx, and PHP Configuration
@@ -116,7 +129,7 @@ zend_extension=opcache.so
 
 If an extension is already present and enabled in the compiled PHP, such as `date`, you do not need to explicitly enable it to use that extension.
 
-#### PHP_EXTENSIONS vs. ZEND_EXTENSIONS
+#### PHP\_EXTENSIONS vs. ZEND\_EXTENSIONS
 
 PHP has two kinds of extensions, _PHP extensions_ and _Zend extensions_. These hook into the PHP executable in different ways. For more information about the way extensions work internally in the engine, see [https://wiki.php.net/internals/extensions](https://wiki.php.net/internals/extensions).
 

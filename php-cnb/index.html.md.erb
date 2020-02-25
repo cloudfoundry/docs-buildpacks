@@ -57,6 +57,7 @@ Here are some special features of the buildpack.
   - Supports three different HTTP server options: [PHP built-in web server](https://www.php.net/manual/en/features.commandline.webserver.php), [Apache HTTP Server](https://httpd.apache.org/) and [Nginx](https://nginx.org/)
   - Automatic configuration of PHP-FPM, when using external web servers
   - Smart session storage, defaults to file w/sticky sessions but can also use Redis or Memcached for storage.
+  - Automatically updated PHP binaries, compiled with a large set of PHP extensions.
 
 ### <a id='examples'></a> Examples ###
 
@@ -72,6 +73,7 @@ Here are some example applications that can be used with this buildpack.
   - [phalcon]  An example which runs a Phalcon based application.
   - [composer] An example which uses Composer.
 
+There are also a set of [acceptence tests which are run against the PHP CNB](https://github.com/cloudfoundry/buildpack-acceptance-tests/tree/master/php/testdata) that you can review for more examples.
 
 ### <a id='examples'></a> Advanced Topics ###
 See the following topics:
@@ -128,9 +130,10 @@ The Cloud Foundry PHP Cloud-Native Buildpack is released under version 2.0 of th
 [CodeIgniter]:https://github.com/cloudfoundry-samples/cf-ex-code-igniter
 [Stand Alone]:https://github.com/cloudfoundry-samples/cf-ex-stand-alone
 [pgbouncer]:https://github.com/cloudfoundry-samples/cf-ex-pgbouncer
+[phalcon]:https://github.com/cloudfoundry-samples/cf-ex-phalcon
+[composer]:https://github.com/cloudfoundry-samples/cf-ex-composer
 [Apache License]:http://www.apache.org/licenses/LICENSE-2.0
 [vcap-dev]:https://groups.google.com/a/cloudfoundry.org/forum/#!forum/vcap-dev
 [Composer support]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/composer.md
 ["offline" mode]:https://github.com/cloudfoundry/php-buildpack/blob/master/docs/binaries.md#bundling-binaries-with-the-build-pack
-[phalcon]:https://github.com/cloudfoundry-samples/cf-ex-phalcon
-[composer]:https://github.com/cloudfoundry-samples/cf-ex-composer
+

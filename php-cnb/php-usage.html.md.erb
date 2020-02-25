@@ -21,12 +21,13 @@ This topic is intended to guide you through the process of deploying PHP apps to
 <pre class="terminal">
 $ mkdir my-php-app
 $ cd my-php-app
-$ cat << EOF > index.php
+$ mkdir htdocs
+$ cat << EOF > htdocs/index.php
 &lt;?php
   phpinfo();
-?&gt; 
+?&gt;
 EOF
-$ cf push my-php-app -m 128M
+$ cf push -m 128M my-php-app
 </pre>
 
 Change "my-php-app" to a unique name or you may see an error and a failed push.
@@ -42,7 +43,6 @@ application with a memory limit of 128M and upload our test file.
   - On Cloud Foundry...
     - The buildpack detects that your app is a php app
     - The buildpack is executed.
-      - Application files are copied to the `htdocs` folder.
     - Apache HTTPD & PHP are downloaded, configured with the buildpack defaults, and run.
     - Your application is accessible at the default route. Run `cf app my-php-app` to view the url of your new app.
 
@@ -58,116 +58,51 @@ Alternatively, you can [provide your own Apache or Nginx configurations].
 
 ### Prevent Access To PHP Files
 
-The buildpack will put all of your files into a publicly accessible directory.  In some cases, you might want to have PHP files that are not publicly accessible but are on the [include_path]. To do that, create a `lib` directory in your project folder and place your protected files there.
+In some cases, you might want to have PHP files that are not publicly accessible. You can do this by storing the files outside of the web directory (defaults to `htdocs`).
+  
+In addition, if you would like to have PHP files on the [include_path], you can do that also. To do that, create a `lib` directory in your project folder and place your protected files there.
 
 For example:
 
 <pre class="terminal">
 $ ls -lRh
 total 0
--rw-r--r--  1 daniel  staff     0B Feb 27 21:40 images
--rw-r--r--  1 daniel  staff     0B Feb 27 21:39 index.php
+
+drwxr-xr-x  3 daniel  staff   102B Feb 27 21:40 htdocs
 drwxr-xr-x  3 daniel  staff   102B Feb 27 21:40 lib
+
+./htdocs:
+total 0
+-rw-r--r--  1 daniel  staff     0B Feb 27 21:40 index.php   <-- public, http://app.cfapps.io/index.php == 200 OK
 
 ./lib:
 total 0
 -rw-r--r--  1 daniel  staff     0B Feb 27 21:40 my.class.php  <-- not public, http://app.cfapps.io/lib/my.class.php == 404
 </pre>
 
-This comes with a catch. If your project legitimately has a `lib` directory, these files will not be publicly available because the buildpack does not copy a top-level `lib` directory into the `WEBDIR` folder. If your project has a `lib` directory that needs to be publicly available, then you have two options as follows:
-
-#### Option #1
-
-In your project folder, create an `htdocs` folder (or whatever you've set for `WEBDIR`). Then move any files that should be publicly accessible into this directory. In the example below, the `lib/controller.php` file is publicly accessible.
-
-Example:
-
-<pre class="terminal">
-$ ls -lRh
-total 0
-drwxr-xr-x  7 daniel  staff   238B Feb 27 21:48 htdocs
-
-./htdocs:  <--  create the htdocs directory and put your files there
-total 0
--rw-r--r--  1 daniel  staff     0B Feb 27 21:40 images
--rw-r--r--  1 daniel  staff     0B Feb 27 21:39 index.php
-drwxr-xr-x  3 daniel  staff   102B Feb 27 21:48 lib
-
-./htdocs/lib:   <--  anything under htdocs is public, including a lib directory
-total 0
--rw-r--r--  1 daniel  staff     0B Feb 27 21:48 controller.php
-</pre>
-
-Given this setup, it is possible to have both a public `lib` directory and a protected `lib` directory. The following example demonstrates this setup:
-
-Example:
-
-<pre class="terminal">
-$ ls -lRh
-total 0
-drwxr-xr-x  7 daniel  staff   238B Feb 27 21:48 htdocs
-drwxr-xr-x  3 daniel  staff   102B Feb 27 21:51 lib
-
-./htdocs:
-total 0
--rw-r--r--  1 daniel  staff     0B Feb 27 21:40 images
--rw-r--r--  1 daniel  staff     0B Feb 27 21:39 index.php
-drwxr-xr-x  3 daniel  staff   102B Feb 27 21:48 lib
-
-./htdocs/lib:  <-- public lib directory
-total 0
--rw-r--r--  1 daniel  staff     0B Feb 27 21:48 controller.php
-
-./lib: <-- protected lib directory
-total 0
--rw-r--r--  1 daniel  staff     0B Feb 27 21:51 my.class.php
-</pre>
-
-#### Option #2
-
-The second option is to pick a different name for the `LIBDIR`. This is a configuration option that you can set (it defaults to `lib`). Thus if you set it to something else such as `include`, your application's `lib` directory would no longer be treated as a special directory and it would be placed into `WEBDIR` (i.e. become public).
-
-#### Other Folders
-
-Beyond the `WEBDIR` and `LIBDIR` directories, the buildpack also supports a `.bp-config` directory and a `.extensions` directory.
-
-The `.bp-config` directory should exist at the root of your project directory and it is the location of application-specific configuration files.  Application-specific configuration files override the default settings used by the buildpack. This link explains [application configuration files] in depth.
-
-The `.extensions` directory should also exist at the root of your project directory and it is the location of application-specific custom extensions.  Application-specific custom extensions allow you, the developer, to override or enhance the behavior of the buildpack. See the [php-buildpack README](https://github.com/cloudfoundry/php-buildpack/blob/master/README.md) in GitHub for more information about extensions.
+It is possible to pick a different name for the `lib` directory. This is a configuration option in `buildpack.yml` that you can set (it defaults to `lib`). The configuration option is `php.libdirectory`.
 
 ## <a id="troubleshooting"></a>Troubleshooting ##
 
-To troubleshoot problems using the buildpack, you can do one of the following:
+To troubleshoot problems using the buildpack, review the output from the buildpack. The buildpack writes basic information to stdout, for example the files that it downloads. The buildpack also writes information in the form of stack traces when a process fails.
 
-1. Review the output from the buildpack. The buildpack writes basic information to stdout, for example the files that it downloads. The buildpack also writes information in the form of stack traces when a process fails.
-
-1. Review the logs from the buildpack. The buildpack writes logs to disk. Follow the steps below to access these logs: 
-  1. Run `cf ssh APP-NAME` to ssh into the app container, replacing `APP-NAME` with the name of your app.
-  1. Run `cat app/.bp/logs/bp.log` to view the logs.
-  <pre class="terminal">
-  $ cf ssh my-app
-  $ cat app/.bp/logs/bp.log
-  </pre>
-
-By default, log files contain more detail than output to stdout. Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the buildpack to set its log level to `DEBUG`, and to output logs to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
+To get additional information out of the buildpack, you can set the `BP_DEBUG` environment variable to `true`. This instructs the buildpack to set its log level to `DEBUG`, and to output more verbose logs to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
 
 ### Increase Log Output with fpm.d ###
 
-If you use [fpm.d](./gsg-php-config.html#fpm_d), follow the steps below to configure `fpm` to redirect worker stdout and stderr into the logs. 
+If you use [fpm.d](./php-config.html#fpm_d), follow the steps below to configure `fpm` to redirect worker stdout and stderr into the logs. 
 
-1. Create a file in the `.bp-config/php/fpm.d/` directory of your app.
+1. Create a PHP-FPM configuration snippet as described at the link above.
 
 1. Add `catch_workers_output=yes` to the file you created.
 
 1. Push your app.
 
-For more information about allowed configuration settings in the `.bp-config/php/fpm.d` directory, see the [List of global php-fpm.conf directives](http://php.net/manual/en/install.fpm.configuration.php).
-
-You can see an example [fmp fixture and configuration file](https://github.com/cloudfoundry/php-buildpack/blob/633bc6f0c078043186673a90d9727188501a866b/cf_spec/fixtures/php_71_with_fpm_d/.bp-config/php/fpm.d/output.conf) in the php-buildpack GitHub repository.
+For more information about allowed configuration settings in the PHP-FPM configuration snippet, see the [List of global php-fpm.conf directives](http://php.net/manual/en/install.fpm.configuration.php).
 
 
 [Environment Variables documentation]:../../devguide/deploy-apps/manifest.html#env-block
-[application configuration files]:./gsg-php-config.html
+[application configuration files]:./php-config.html
 [include_path]:http://us1.php.net/manual/en/ini.core.php#ini.include-path
-[provide your own Apache or Nginx configurations]:./gsg-php-config.html#engine-configurations
-[configuration option]:./gsg-php-config.html
+[provide your own Apache or Nginx configurations]:./php-config.html#engine-configurations
+[configuration option]:./php-config.html
