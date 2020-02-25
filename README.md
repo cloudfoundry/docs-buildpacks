@@ -15,5 +15,5 @@ repository for the complete list of open source documentation repositories, as w
 
 Use this section to specify spelling of special words for buildpacks:
 
-+ **_CF-Compatible CNB buildpack_:** The original term proposed was "shimmed".
-    Do not capitalize buildpack and do hyphenate CF-Compatible.
++ **_CF-compatible CNB buildpack_:** The original term proposed was "shimmed".
+    Do not capitalize buildpack or compatible and do hyphenate CF-compatible.
