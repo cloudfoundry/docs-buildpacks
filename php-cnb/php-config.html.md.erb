@@ -1,0 +1,141 @@
+---
+title: PHP Buildpack Configuration
+owner: Buildpacks
+---
+
+This topic describes how to modify the configuration file for your PHP buildpack.
+
+
+## <a id="defaults"></a> Defaults
+
+The PHP buildpack stores its default configuration settings at the following locations.
+
+- [PHP (php.ini)](https://github.com/cloudfoundry/php-web-cnb/blob/master/config/php-ini.go)
+- [PHP-FPM](https://github.com/cloudfoundry/php-web-cnb/blob/master/config/php-fpm.go)
+- [HTTPD](https://github.com/cloudfoundry/php-web-cnb/blob/master/config/httpd.go)
+- [Nginx](https://github.com/cloudfoundry/php-web-cnb/blob/master/config/nginx.go)
+
+
+## <a id="options"></a> buildpack.yml
+
+The `buildpack.yml` file is the configuration file for the buildpack itself. It instructs the buildpack what to download, where to download it from, and how to install it. It allows you to configure:
+
+* Package versions, such as PHP, HTTPD, or Nginx versions.
+* The web server to use, such as HTTPD, Nginx, or no server.
+
+The buildpack overrides the default settings with any configuration it finds in the `buildpack.yml` file of your app.
+
+Below is an explanation of the common options you might need to change.
+
+| Variable                                 | Explanation                                                                                                                                                                                                                                                                                                                                          |
+| -------------------                      | -----------------------------------------------------                                                                                                                                                                                                                                                                                                |
+| php.webserver                            | Sets the web server to use. Must be one of `httpd`, `nginx`, or `php-server`. This value defaults to |
+| php.serveradmin                          | The value used in HTTPD's configuration for [ServerAdmin](http://httpd.apache.org/docs/2.4/mod/core.html#serveradmin) |
+| php.version                              | Sets the version of PHP to use. <br> Set to a minor instead of a patch version, <br> such as `7.2.*` or `7.3.*`.  |
+| php.script                               | When the application is not a web app, this is the name of the script to execute. It is used to start your app. If it is not set for a non-web app, then the buildpack searches, in order, for `app.php`, `main.php`, `run.php`, or `start.php`. This option accepts arguments. |
+| php.webdirectory                         | The root directory of the files served by the web server specified in `php.webserver`. Defaults to `htdocs`. Other common settings are `public`, `static`, or `html`. The path is relative to the root of your app.           |
+| php.libdirectory                         | This path is added to PHP's `include\_path`. Defaults to `lib`. The path is relative to the root of your app.           |
+| php.redis.session\_store\_service\_name     | The name of the bound Redis service to use for storing session data. If not set, the buildpack will look for any service with `redis` in the name. If a service is located, the buildpack will configure PHP to store session data in the supplied Redis service. If not found, standard file storage will be used for session data. |
+| php.memcached.session\_store\_service\_name | The name of the bound Memcached service to use for storing session data. If not set, the buildpack will look for any service with `memcached` in the name. If a service is located, the buildpack will configure PHP to store session data in the supplied Memcached service. If not found, standard file storage will be used for session data. | 
+| httpd.version                            | Sets the version of Apache HTTPD to use. Currently the build pack supports the latest stable version.  This value will default to the latest release that is supported by the build pack. |
+| nginx.version                            | Sets the version of Nginx to use. By default, the buildpack uses the latest stable version. |
+
+For details about supported versions, see the release notes for your buildpack version on the [Releases](https://github.com/cloudfoundry/php-buildpack/releases) page of the Cloud Foundry PHP Buildpack repository on GitHub.
+
+### <a id="engine-configurations"></a> HTTPD, Nginx, and PHP Configuration
+
+The buildpack automatically configures HTTPD, Nginx, and PHP for your app. This section explains how to modify the configuration.
+
+#### <a id="httpd_conf_d"></a> .httpd.conf.d/
+
+The buildpack adds any `<application-root>/.httpd.conf.d/*.conf` files it finds in the app to the generated Apache HTTPD configuration. You can use this to add or alter any valid [HTTPD configuration settings](https://httpd.apache.org/docs/2.4/).
+
+For example, adding a file `<application-root>/.httpd.conf.d/status.conf` to your app, with the following contents, will enable `mod_status`.
+
+```
+LoadModule status_module modules/mod_status.so
+
+<Location "/status">
+    SetHandler server-status
+</Location>
+```
+
+#### <a id="nginx_conf_d"></a> .nginx.conf.d/
+
+The buildpack adds any `<application-root>/.nginx.conf.d/*.conf` files it finds in the app to the generated Nginx configuration. You can use this to add or alter any valid [Nginx configuration settings](https://nginx.org/en/docs/).
+
+For example, adding a file `<application-root>/.nginx.conf.d/tokens.conf` to your app, with the following contents, will enable server tokens.
+
+```
+server_tokens on;
+```
+
+#### <a id="php_ini_d"></a> .php.ini.d/
+
+The buildpack adds any `<application-root>/.php.ini.d/FILE-NAME.ini` files it finds in the app to the PHP configuration. You can use this to change any value acceptable to `php.ini`. For a list of directives, see [http://php.net/manual/en/ini.list.php](http://php.net/manual/en/ini.list.php).
+
+For example, adding a file `<application-root>/.php.ini.d/something.ini` to your app, with the following contents, overrides both the default charset and mimetype:
+
+```
+default_charset="UTF-8"
+default_mimetype="text/xhtml"
+```
+
+##### Precedence
+
+In order of highest precedence, PHP configuration values come from the following sources:
+
+* PHP scripts using `ini_set()` to manually override config files
+* `.user.ini` files for local values
+* `<application-root>/.php.ini.d` to override master value, but not local values from `.user.ini` files
+* the default `php.ini` generated by the buildpack
+
+#### <a id="fpm_d"></a> .php-fpm.d/
+
+The buildpack adds any files it finds in the app under `<application-root>/.php-fpm.d` that end with `.conf` (i.e `my-config.conf`) to the PHP-FPM configuration. You can use this to change any value acceptable to `php-fpm.conf`. For a list of directives, see [http://php.net/manual/en/install.fpm.configuration.php](http://php.net/manual/en/install.fpm.configuration.php).
+
+PHP FPM config snippets are included by the buildpack into the global section of the configuration file. If you need to apply configuration settings for a PHP FPM worker, you must indicate this in your configuration file.
+
+For example:
+
+```
+; This option is specific to the `www` pool
+[www]
+catch_workers_output = yes
+```
+
+### <a id="php-extensions"></a> PHP Extensions
+
+The buildpack adds any `<application-root>/.php.ini.d/FILE-NAME.ini` files it finds in the app to the PHP configuration. You can use this to enable PHP or ZEND extensions. For example:
+
+```
+extension=redis.so
+extension=gd.so
+zend_extension=opcache.so
+``` 
+
+If an extension is already present and enabled in the compiled PHP, such as `date`, you do not need to explicitly enable it to use that extension.
+
+#### PHP_EXTENSIONS vs. ZEND_EXTENSIONS
+
+PHP has two kinds of extensions, _PHP extensions_ and _Zend extensions_. These hook into the PHP executable in different ways. For more information about the way extensions work internally in the engine, see [https://wiki.php.net/internals/extensions](https://wiki.php.net/internals/extensions).
+
+Because they hook into the PHP executable in different ways, they are specified differently in ini files. Apps fail if a Zend extension is specified as a PHP extension, or a PHP extension is specified as a Zend extension.
+
+If you see the following error:
+
+```
+php-fpm | [warn-ioncube] The example Loader is a Zend-Engine extension and not a module (pid 40)
+php-fpm | [warn-ioncube] Please specify the Loader using 'zend_extension' in php.ini (pid 40)
+php-fpm | NOTICE: PHP message: PHP Fatal error:  Unable to start example Loader module in Unknown on line 0
+```
+
+Then move the `example` extension from `extension` to `zend_extension` and re-push your app.
+
+If you see the following error:
+
+```
+NOTICE: PHP message: PHP Warning: example MUST be loaded as a Zend extension in Unknown on line 0
+```
+
+Then move the `example` extension from `zend_extension` to `extension` and re-push your app.
