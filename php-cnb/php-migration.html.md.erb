@@ -1,0 +1,99 @@
+---
+title: PHP CNB Migration Guide
+owner: Buildpacks
+---
+
+Great care was taken to reduce breakage between the PHP Cloud Foundry Buildpack and the PHP Cloud-Native Buildpack, however there are some behaviors that are no longer desired and thus no longer supported and may require migration. This topic discusses how to migrate your apps.
+
+## <a id='compat_cnb'></a> What's Changed? ##
+
+Here is a list of the known changes between the PHP Cloud Foundry Buildpack and the PHP Cloud-Native Buildpack.
+
+* <a href="#app_files_not_moved">Application files are no longer moved into the `WEBDIR`, when no `WEBDIR` is present</a>
+* <a href="#buildpack_extensions">Python based buildpack extensions are no longer supported</a>
+* A new configuration file is used. Previously `.bp-config/options.json` was used for configuration, we now use `buildpack.yaml` which should be located in the root of the application
+* PHP extensions are no longer restricted to the list of extensions that ships with the buildpack. This will result in no error message from the buildpack if you request an extension that does not exist. It will result in an error from PHP though when your application starts. This change also allows you to supply compiled PHP extensions with your application and enable them using `php.ini` snippets.
+* <a href="#snippets_moved">Configuration snippets for PHP, PHP-FPM, HTTPD, and Nginx are no longer stored under `.bp-config/`</a>. They are moved to dedicated folder under the app root.
+* A handful of things have changed with Composer
+  * You can no longer set the version to "latest" to download the absolute latest version from Github. This was useful before Composer had a GA release. It now has regular, stable releases so this funcationality is no longer necessary.
+  * <a href="#composer_vendor_dir">Composer's `vendor` directory</a> ...
+      * is no longer added to PHP's `include_path` by default
+      * is no longer moved into the library directory by the buildpack
+      * is now expected under the application root by default, not under the library directory
+  * The files `composer.json`, `composer.lock` and/or `auth.json` are no longer moved. This caused confusion.  If you need them in a specific location, put them there prior to pushing your code. You can also set `composer.json_path` to adjust where the buildpack finds these files. Lastly, if you leave the in a public directory, the buildpack will emit a warning as this isn't safe.
+  * You can no longer set `COMPOSER_BIN_DIR` or `COMPOSER_CACHE_DIR`. They are automatically set by the CNB such that `COMPOSER_BIN_DIR` will be on the `PATH` and such that files will be correctly cached to reduce downloads and speed up builds.
+* The default web server used by the PHP Cloud-Native Buildpack is PHP's built-in web server. This is lighter weight and produces smaller images. When running on Cloud Foundry, this option is not used because of the PHP Compat CNB, see next section for details.
+
+## <a id='compat_cnb'></a> PHP Compat Cloud-Native Buildpack ##
+
+To ease the transition, a PHP Compat CNB was added. The PHP Compat CNB acts as a bridge layer translating old options to new options where it can, helping to make your migrations easier.
+
+The Compat CNB will handle the following for you:
+
+* Automatically convert most configuration from `options.json` to the equivalent configuration setting in `buildpack.yml`. Config that cannot be migrated automatically will generate warnings.
+* Move PHP-FPM and PHP INI configuration under `.bp-config/` to its new location. It cannot move HTTPD or Nginx snippets.
+* Logs helpful warning and error messages if it detects compatibility issues with your application that require manual migration
+* Change the default web server back to Apache HTTPD. For those migrating from the previous buildpack, this will be the expected
+
+<p class="note"><strong>WARNING:</strong> When migrating from `options.json` to `buildpack.yml`, you cannot have both files present. The Compat CNB will still run, showing what still needs to be migrated, but it will error because it cannot merge the two files.</p>
+
+## <a id='migrations'></a> Manual Migrations ##
+
+Depending on your application, you may need to make some manual migrations. The following migrations cannot be done by the Compat CNB, so they require manual configuration.
+
+<p class="note"><strong>Note:</strong> The following sections use a dot notation to reference configuration options from buildpack.yml. This should be expanded into valid YAML syntax. See <a href="php-config.html#options">the buildpack.yml configuration options section for details</a>.</p>
+
+### <a id='buildpack_extensions'></a> Buildpack Extensions ###
+
+The Python based PHP Buildpack extensions are no longer supported. These were bits of Python code that were added under the `.extensions` directory. 
+
+The Compat CNB will detect if your application has an extensions folder and will fail to build if one is present because it is not possible to automatically migrate this behavior.
+
+If you have custom extensions, you will need to review the custom extension code and move it to a different location. There is not a perfect way to handle this migration, but there are a couple options.
+
+1. If the code must execute at build time, you can look at using Composer to execute your code. [Composer has the ability to execute arbitrary scripts](https://getcomposer.org/doc/articles/scripts.md) at different phases of it's execution. 
+
+    If you need to execute code at build time, Composer scripts can be the way to make that happen. You do not need to have Composer install any dependencies for this to work, simply initialize an empty Composer configuration file without any dependencies, but configure a custom script to execute.
+
+2. If the code can be execute at runtime, i.e. before your application, then you can add a `.profile` script and run the code there. The `.profile` script is a Bash script which is sourced prior to your application starting. It can set environment variables and execute any code required to set up your application. The only restriction is that this script must execute and your application must execute within the application's start timeout (usually defaults to 60 seconds, and has a maximum of 180 seconds).
+
+### <a id='app_files_not_moved'></a> Application Files No Longer Moved ###
+
+If you push a PHP application that does not have a defined public web directory (typically `htdocs` or `public` or `www`) it will fail. The PHP cloud-native buildpack will not attempt to guess which of your application files are public and move them into a web directory. This caused much confusion in the past, so this behavior has intentionally not been implemented in the PHP cloud-native buildpack.
+
+If you were depending on this behavior, there are two simple ways to correct this.
+
+1. Create a folder called `htdocs` (if you do not like this name, you can change it by setting `php.web_directory` in `buildpack.yml`) at the root of your project. Move all of your PHP files and public assets into this directory
+
+2. In `buildpack.yml`, set `php.web_directory` to point to an existing directory where you store your public files.
+
+### <a id='composer_vendor_dir'></a> Composer Vendor Directory No Longer Moved ###
+
+There have been a couple changes with respect to Composer's handing of the `vendor` directory.
+
+1. The previous buildpack would put Composer's `vendor` directory on PHP's `include_path` by default. Users reported this as unexpected and adding additional directories to the `include_path` can slow down PHP, so this behavior was changed.<br/><br/>
+
+    If you would like to have the `vendor` directory on the `include_path` then you can set `php.libdirectory` in `buildpack.yml` to the location of your `vendor` directory. The `php.libdirectory` is added to the `include_path` by default, so this will cause your `vendor` directory to be on the `include_path`.<br/><br/>
+
+    Alternatively, you could include a `php.ini` snippet that adjusts the `include_path` directly, but you need to be very careful as this will completely override the default set by the buildpack.
+
+2. Composer's `vendor` directory is no longer moved. Previously, it was moved into the `php.libdirectory`. Moving this folder broke some apps which expected the vendor directory to be in a specific location. As such, we no longer move the `vendor` directory. It will exist where you put it. If you need it in a specific place, just locate it there.
+
+3. Composer now defaults the `vendor` directory to be under the application root instead of the `php.libdirectory`. This change was made because it is inline with the default behavior we see with frameworks like Cake & Symfony, so more applications will "just work" without additional configuration required.<br/><br/>
+
+    If you prefer the old behavior, you can change it back by setting `composer.vendor_directory` in `buildpack.yml` to point to a location under the `php.libdirectory` folder.
+
+### <a id='snippets_moved'></a> Configuration Snippets Moved ###
+
+Previously, you could put configuration snippets for PHP, PHP-FPM, HTTPD and Nginx under sub-directories of the `.bp-config/` directory. These would be picked up and adjust the configuration generated by the buildpack.
+
+Going forward, the new location for these configuration snippets is as follows:
+
+| Service | Location |
+|---------|----------|
+| PHP (php.ini) | `<application-root>/.php.ini.d/*.ini` |
+| PHP-FPM | `<application-root>/.php-fpm.d/*.conf` |
+| HTTPD | `<application-root>/.httpd.conf.d/*.conf` |
+| Nginx | `<application-root>/.nginx.conf.d/*-server.conf` or `<application-root>/.nginx.conf.d/*-http.conf` depending on the section you want to adjust |
+
+In addition, configuration snippets for these files do not completely override the defaults provided by the buildpack. These configuration snippets are included into the default configurations so that you can override only the individual settings you care about.

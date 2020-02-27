@@ -1,0 +1,108 @@
+---
+title: Getting Started Deploying PHP Apps
+owner: Buildpacks
+---
+
+
+
+<%=vars.GSG_intro_sentence%>
+
+This topic is intended to guide you through the process of deploying PHP apps to <%=vars.app_runtime_full%>. If you experience a problem deploying PHP apps, review the  [Troubleshooting](#troubleshooting) section below.
+
+## <a id="getting-started"></a>Getting Started ##
+
+### Prerequisites
+
+* Basic PHP knowledge
+* The [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) installed on your workstation
+
+### A First PHP Application
+
+<pre class="terminal">
+$ mkdir my-php-app
+$ cd my-php-app
+$ mkdir htdocs
+$ cat << EOF > htdocs/index.php
+&lt;?php
+  phpinfo();
+?&gt;
+EOF
+$ cf push -m 128M my-php-app
+</pre>
+
+Change "my-php-app" to a unique name or you may see an error and a failed push.
+
+The example above creates and pushes a test application to Cloud Foundry.
+
+Here is a breakdown of what happens when you run the example above:
+
+  - On your workstation...
+    - It creates a new directory and one PHP file, which calls `phpinfo()`
+    - Run `cf push` to push your application. This will create a new
+application with a memory limit of 128M and upload our test file.
+  - On Cloud Foundry...
+    - The buildpack detects that your app is a php app
+    - The buildpack is executed.
+    - Apache HTTPD & PHP are downloaded, configured with the buildpack defaults, and run.
+    - Your application is accessible at the default route. Run `cf app my-php-app` to view the url of your new app.
+
+## <a id="folder-structure"></a>Folder Structure ##
+
+The easiest way to use the buildpack is to put your assets and PHP files into a directory and push it to <%=vars.product_short%>. This way, the buildpack will take your files and automatically move them into the `WEBDIR` (defaults to `htdocs`) folder, which is the directory where your chosen web server looks for the files.
+
+### URL Rewriting
+
+If you select Apache as your web server, you can include `.htaccess` files with your application.
+
+Alternatively, you can [provide your own Apache or Nginx configurations].
+
+### Prevent Access To PHP Files
+
+In some cases, you might want to have PHP files that are not publicly accessible. You can do this by storing the files outside of the web directory (defaults to `htdocs`).
+  
+In addition, if you would like to have PHP files on the [include_path], you can do that also. To do that, create a `lib` directory in your project folder and place your protected files there.
+
+For example:
+
+<pre class="terminal">
+$ ls -lRh
+total 0
+
+drwxr-xr-x  3 daniel  staff   102B Feb 27 21:40 htdocs
+drwxr-xr-x  3 daniel  staff   102B Feb 27 21:40 lib
+
+./htdocs:
+total 0
+-rw-r--r--  1 daniel  staff     0B Feb 27 21:40 index.php   <-- public, http://app.cfapps.io/index.php == 200 OK
+
+./lib:
+total 0
+-rw-r--r--  1 daniel  staff     0B Feb 27 21:40 my.class.php  <-- not public, http://app.cfapps.io/lib/my.class.php == 404
+</pre>
+
+It is possible to pick a different name for the `lib` directory. This is a configuration option in `buildpack.yml` that you can set (it defaults to `lib`). The configuration option is `php.libdirectory`.
+
+## <a id="troubleshooting"></a>Troubleshooting ##
+
+To troubleshoot problems using the buildpack, review the output from the buildpack. The buildpack writes basic information to stdout, for example the files that it downloads. The buildpack also writes information in the form of stack traces when a process fails.
+
+To get additional information out of the buildpack, you can set the `BP_DEBUG` environment variable to `true`. This instructs the buildpack to set its log level to `DEBUG`, and to output more verbose logs to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
+
+### Increase Log Output with fpm.d ###
+
+If you use [fpm.d](./php-config.html#fpm_d), follow the steps below to configure `fpm` to redirect worker stdout and stderr into the logs. 
+
+1. Create a PHP-FPM configuration snippet as described at the link above.
+
+1. Add `catch_workers_output=yes` to the file you created.
+
+1. Push your app.
+
+For more information about allowed configuration settings in the PHP-FPM configuration snippet, see the [List of global php-fpm.conf directives](http://php.net/manual/en/install.fpm.configuration.php).
+
+
+[Environment Variables documentation]:../../devguide/deploy-apps/manifest.html#env-block
+[application configuration files]:./php-config.html
+[include_path]:http://us1.php.net/manual/en/ini.core.php#ini.include-path
+[provide your own Apache or Nginx configurations]:./php-config.html#engine-configurations
+[configuration option]:./php-config.html
