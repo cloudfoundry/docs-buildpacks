@@ -32,7 +32,19 @@ The following topics discuss different usage scenarios for buildpacks in <%= var
 For information about the existing buildpacks that <%= vars.product_short %> supports, see [System Buildpacks](system-buildpacks.html).
 
 
-## <a id='community-buildpacks'></a> Sidecar Buildpacks
+## <a id='cnb-buildpacks'></a> CF-compatible CNBs
+
+A Cloud Foundry-compatible Cloud Native Buildpack (CF-compatible CNB) is a bundled collection of CNBs.
+
+
+CNBs are modular buildpacks.
+Using CNBs to deploy apps leads to improved performance, informative logging, and easier
+configuration as compared to Cloud Foundry-only buildpacks.
+For general information about CNBs, see [What Are Buildpacks?](https://buildpacks.io/) in Buildpacks.io.
+
+CF-compatible CNBs include a Compatibility Layer that allows the CNBs to run on Cloud Foundry.
+
+## <a id='sidecar-buildpacks'></a> Sidecar Buildpacks
 
 For information about deploying a sidecar buildpack, see [Sidecar Buildpack](sidecar-buildpacks.html).
 
