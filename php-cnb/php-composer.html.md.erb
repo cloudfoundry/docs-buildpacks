@@ -7,7 +7,9 @@ owner: Buildpacks
 
 Composer is activated when you supply a `composer.json` and `composer.lock` file.
 
-You can require dependencies for packages and extensions. Extensions must be prefixed with the standard `ext-`. If you reference an extension that is available to the buildpack, it will automatically be installed and enabled. See the main [release page] for a list of supported extensions.
+You can require dependencies for packages and extensions. Extensions must be prefixed with the standard `ext-`. If you reference an extension that is available to the buildpack, it will automatically be installed and enabled.
+For a list of supported extensions,
+see the Releases page of [php-cnb](https://github.com/cloudfoundry/php-cnb/releases) in GitHub.
 
 The buildpack uses the version of PHP specified in your `composer.json` and `composer.lock` file. Composer settings override the version set in the `options.json` or `buildpack.yml` file.
 
@@ -23,7 +25,9 @@ The buildpack runs with a set of default values for Composer. You can adjust the
 | composer.json_path           | By default, `composer.json` and `composer.lock` may exist under the applictiaon root or under the application's public web directory. You may set this option to search for these files in a different sub-directory of the application root or public web directory. The pair of files must both exist in the same location.<br/><br/> Ex: if `composer.json_path` is set to `config`, then `app_root/config/composer.json` and `app_root/webdir/composer.json` will be checked. |
 | composer.install_global      | A list of package names to be installed globally. This calls `composer global require` for each package listed here. |
 
-To make it easier to read, dot notation is used in the table, however this should be expanded into YAML format. Here's an example `buildpack.yml`:
+To make it easier to read, dot notation is used in the table.
+However, this should be expanded into YAML format.
+Here is an example `buildpack.yml`:
 
 ```
 ---
@@ -52,7 +56,9 @@ There are two ways to avoid the request limit:
 
 To vendor dependencies, you must run `composer install` before you push your application. 
 
-By default, dependencies will need to exist in a `vendor` directory under the root of your application. Optionally, you can set `composer.vendor_directory` in `buildpack.yml` to a different relative path under your application root where your dependencies are stored.
+By default, dependencies need to exist in a `vendor` directory under the root of your application.
+Optionally, you can set `composer.vendor_directory` in `buildpack.yml` to a different relative path
+under your application root where your dependencies are stored.
 
 ### Supply a GitHub Token
 
@@ -79,15 +85,16 @@ $ cf start a_symfony_app
 
 In this example, `a_symfony_app` is supplied with an environment variable, `SYMFONY_ENV`, which is visible to Composer and any scripts started by Composer.
 
-### Non-configurable Environment Variables
+### Non-Configurable Environment Variables
 
-User-assigned environment variables are applied to staging and runtime. The following environment variables cannot be overridden by users.
+User-assigned environment variables are applied to staging and runtime.
+The following environment variables cannot be overridden by users:
 
-* `COMPOSER_HOME` - set to `$COMPOSER_LAYER/.composer`
-* `COMPOSER_CACHE_DIR` - set to `$COMPOSER_CACHE_LAYER/cache`
-* `COMPOSER_NO_INTERACTION` - set to `1`
-* `PHPRC` - set to `$COMPOSER_LAYER/composer-php.ini`
-* `PHP_INI_SCAN_DIR`- set to `$APP_ROOT/.php.ini.d`
+* **`COMPOSER_HOME` :** Set to `$COMPOSER_LAYER/.composer`
+* **`COMPOSER_CACHE_DIR` :** Set to `$COMPOSER_CACHE_LAYER/cache`
+* **`COMPOSER_NO_INTERACTION` :** Set to `1`
+* **`PHPRC` :** Set to `$COMPOSER_LAYER/composer-php.ini`
+* **`PHP_INI_SCAN_DIR` :** Set to `$APP_ROOT/.php.ini.d`
 
 [Composer]:https://getcomposer.org
 [release page]:https://github.com/cloudfoundry/php-cnb/releases
