@@ -8,7 +8,7 @@ This topic describes how to modify the configuration file for your PHP buildpack
 
 ## <a id="defaults"></a> Defaults
 
-The PHP buildpack stores its default configuration settings at the following locations.
+The PHP buildpack stores its default configuration settings at the following locations in GitHub:
 
 - [PHP (php.ini)](https://github.com/cloudfoundry/php-web-cnb/blob/master/config/php-ini.go)
 - [PHP-FPM](https://github.com/cloudfoundry/php-web-cnb/blob/master/config/php-fpm.go)
@@ -30,17 +30,18 @@ Below is an explanation of the common options you might need to change.
 | Variable                                 | Explanation                                                                                                                                                                                                                                                                                                                                          |
 | -------------------                      | -----------------------------------------------------                                                                                                                                                                                                                                                                                                |
 | php.webserver                            | Sets the web server to use. Must be one of `httpd`, `nginx`, or `php-server`. This value defaults to |
-| php.serveradmin                          | The value used in HTTPD's configuration for [ServerAdmin](http://httpd.apache.org/docs/2.4/mod/core.html#serveradmin) |
-| php.version                              | Sets the version of PHP to use. <br> Set to a minor instead of a patch version, <br> such as `7.2.*` or `7.3.*`. Full semantic version syntax is supported for version numbers.  |
-| php.script                               | When the application is not a web app, this is the name of the script to execute. It is used to start your app. If it is not set for a non-web app, then the buildpack searches, in order, for `app.php`, `main.php`, `run.php`, or `start.php`. This option accepts arguments. |
+| php.serveradmin                          | The value used in HTTPD configuration for ServerAdmin. See [Apache HTTP Server](http://httpd.apache.org/docs/2.4/mod/core.html#serveradmin) documentation. |
+| php.version                              | Sets the version of PHP to use. <br> Set to a minor instead of a patch version, <br> such as `7.2.*` or `7.3.*`. The full semantic version syntax is supported for version numbers.  |
+| php.script                               | When the app is not a web app, this is the name of the script to execute. It is used to start your app. If it is not set for a non-web app, then the buildpack searches, in order, for `app.php`, `main.php`, `run.php`, or `start.php`. This option accepts arguments. |
 | php.webdirectory                         | The root directory of the files served by the web server specified in `php.webserver`. Defaults to `htdocs`. Other common settings are `public`, `static`, or `html`. The path is relative to the root of your app.           |
 | php.libdirectory                         | This path is added to PHP's `include\_path`. Defaults to `lib`. The path is relative to the root of your app.           |
-| php.redis.session\_store\_service\_name     | The name of the bound Redis service to use for storing session data. If not set, the buildpack will look for any service with `redis` in the name. If a service is located, the buildpack will configure PHP to store session data in the supplied Redis service. If not found, standard file storage will be used for session data. |
-| php.memcached.session\_store\_service\_name | The name of the bound Memcached service to use for storing session data. If not set, the buildpack will look for any service with `memcached` in the name. If a service is located, the buildpack will configure PHP to store session data in the supplied Memcached service. If not found, standard file storage will be used for session data. | 
-| httpd.version                            | Sets the version of Apache HTTPD to use. Currently the build pack supports the latest stable version.  This value will default to the latest release that is supported by the build pack. |
+| php.redis.session\_store\_service\_name     | The name of the bound Redis service to use for storing session data. If not set, the buildpack looks for any service with `redis` in the name. If a service is located, the buildpack configures PHP to store session data in the supplied Redis service. If not found, standard file storage is used for session data. |
+| php.memcached.session\_store\_service\_name | The name of the bound Memcached service to use for storing session data. If not set, the buildpack looks for any service with `memcached` in the name. If a service is located, the buildpack configures PHP to store session data in the supplied Memcached service. If not found, standard file storage is used for session data. | 
+| httpd.version                            | Sets the version of Apache HTTPD to use. Currently, the build pack supports the latest stable version.  This value defaults to the latest release that is supported by the build pack. |
 | nginx.version                            | Sets the version of Nginx to use. By default, the buildpack uses the latest stable version. |
 
-To make it easier to read, dot notation is used in the table, however this should be expanded into YAML format. Here's an example `buildpack.yml`:
+To make it easier to read, dot notation is used in the table.
+However, this should be expanded into YAML format. Here's an example `buildpack.yml`:
 
 ```
 ---
