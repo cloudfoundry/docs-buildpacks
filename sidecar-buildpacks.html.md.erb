@@ -1,10 +1,9 @@
 ---
-title: Sidecar Buildpacks
+title: Sidecar Buildpacks (Beta)
 Buildpacks owner: Buildpacks
 ---
 
 This topic describes how buildpacks deploy sidecar processes alongside an app.
-
 
 ## <a id='overview'></a> Overview
 
@@ -24,7 +23,7 @@ The following defines the relevant fields of the `launch.yml` in more detail:
 
 * `limits`: Resource limits to be placed on the sidecar process.
 
-* `memory`: The memory limit in MB.
+* `memory`: The memory limit in MB. If you are using the sidecar buildpack with a Java app, you must configure this field to allocate memory to the sidecar. If you do not, the Java buildpack allocates all of the available memory to the app.
 
 * `platforms`: A key specifying the data that should be read by a platform. For example, Cloud Foundry only reads data under the `cloudfoundry` key.
 
@@ -49,7 +48,7 @@ Where:
 
 * `PROCESS-NAME` is the command that is mapped to the `type` field.
 
-* `COMMAND` is the command that is mapped to the `command` field.
+* `COMMAND` is the command that is mapped to the `command` field. For example, `./binary` or `java -jar java-file.jar`.
 
 * `TYPE-1`, `TYPE-2` and `TYPE-3` are the `type`s that the `command` is a sidecar process for.
 
