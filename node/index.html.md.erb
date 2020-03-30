@@ -5,6 +5,8 @@ owner: Buildpacks
 
 This topic describes how to configure and use the Node.js buildpack.
 
+<%= vars.nodejs_buildpack_note %>
+
 ## <a id='overview'></a> Overview
 
 You can use the Node.js buildpack with Node or JavaScript apps. The follow sections describe how to push apps with the Node.js buildpack, along with features of the buildpack. 
@@ -19,7 +21,7 @@ The `-b` option lets you specify a buildpack to use with the `cf push` command. 
 
 For example:
 <pre class='terminal'>
-$ cf push my-nodejs-app -b https://github.com/cloudfoundry/nodejs-buildpack
+$ cf push my-nodejs-app -b https<span>:</span>//github.com/cloudfoundry/nodejs-buildpack
 </pre>
 
 For more detailed information about deploying Node.js apps, see the following topics:
