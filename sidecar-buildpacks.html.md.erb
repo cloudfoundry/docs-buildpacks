@@ -12,7 +12,7 @@ Sidecar processes are additional dependent processes that are run in the same co
 
 ## <a id='specify-sidecars'></a> How Buildpacks Specify Sidecar Processes
 
-A buildpack can specify sidecar processes by writing a `launch.yml` at the root of its `deps` directory during the `supply` phase.  This `deps` directory is a combination of the `DEPS_DIR` and `DEP_IDX` values. For more information about how these two values are passed to the buildpack interface, see [How Buildpacks Work in <%= vars.app_runtime_abbr %>](understand-buildpacks.html).
+A buildpack can specify sidecar processes by writing a `launch.yml` at the root of its `deps` directory during the `supply` phase.  This `deps` directory is a combination of the `DEPS_DIR` and `DEP_IDX` values. For more information about how these two values are passed to the buildpack interface, see [How Buildpacks Work in Cloud Foundry](understand-buildpacks.html).
 
 The following defines the relevant fields of the `launch.yml` in more detail:
 

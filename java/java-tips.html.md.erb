@@ -3,12 +3,12 @@ title: Tips for Java Developers
 owner: Java
 ---
 
-<%= vars.product_runtime %> (<%= vars.product_short %>) can deploy a number of different JVM-based artifact types. For a more detailed explanation of what it supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the Cloud Foundry Java Buildpack repository on GitHub.
+Cloud Foundry can deploy a number of different JVM-based artifact types. For a more detailed explanation of what it supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='buildpack'></a> Java Buildpack
 
-For information about using, configuring, and extending the <%= vars.product_short %> Java buildpack, see the [Cloud Foundry Java Buildpack](https://github.com/cloudfoundry/java-buildpack) repository on GitHub.
+For information about using, configuring, and extending the Cloud Foundry Java buildpack, see the [Cloud Foundry Java Buildpack](https://github.com/cloudfoundry/java-buildpack) repository on GitHub.
 
 
 ## <a id='design'></a> Design
@@ -41,12 +41,12 @@ Initialized empty Git repository in /tmp/buildpacks/java-buildpack/.git/
 
 ## <a id='configuration'></a> Configuration
 
-In most cases, the buildpack should work without any configuration. If you are new to <%= vars.product_short %>, <%= vars.recommended_by %> recommends that you make your first attempts without modifying the buildpack configuration. If the buildpack requires some configuration, use a fork of the buildpack. For more information, see [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
+In most cases, the buildpack should work without any configuration. If you are new to Cloud Foundry, <%= vars.recommended_by %> recommends that you make your first attempts without modifying the buildpack configuration. If the buildpack requires some configuration, use a fork of the buildpack. For more information, see [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='java-client-library'></a> Java Client Library
 
-The Cloud Foundry Client Library provides a Java API for interacting with a <%= vars.product_short %> instance. This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven plugin, the Cloud Foundry Gradle plugin, and other Java-based tools.
+The Cloud Foundry Client Library provides a Java API for interacting with a Cloud Foundry instance. This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven plugin, the Cloud Foundry Gradle plugin, and other Java-based tools.
 
 For information about using this library, see [Java Cloud Foundry Library](./java-client.html).
 
@@ -68,11 +68,11 @@ Where:
 
 ## <a id='groovy'></a> Groovy
 
-<%= vars.product_short %> supports Groovy apps based on both Ratpack and a simple collection of files.
+Cloud Foundry supports Groovy apps based on both Ratpack and a simple collection of files.
 
 ### <a id='ratpack'></a> Ratpack
 
-Ratpack packages apps into two different styles. <%= vars.product_short %> supports the `distZip` style. To build the ZIP file and deploy it, run:
+Ratpack packages apps into two different styles. Cloud Foundry supports the `distZip` style. To build the ZIP file and deploy it, run:
 
 ```
 gradle distZip
@@ -136,7 +136,7 @@ Where:
 
 ## <a id='play-framework'></a> Play Framework
 
-The Play Framework packages apps into two different styles. <%= vars.product_short %> supports both the `staged` and `dist` styles. To build the `dist` style and deploy it, run:
+The Play Framework packages apps into two different styles. Cloud Foundry supports both the `staged` and `dist` styles. To build the `dist` style and deploy it, run:
 
 ```
 play dist
@@ -215,7 +215,7 @@ The Java buildpack does not bundle a JDBC driver with your app. If you want your
 
 ### <a id='memory'></a> Allocate Sufficient Memory
 
-If you do not allocate sufficient memory to a Java app when you deploy it, it may fail to start, or <%=vars.product_short%> may terminate it. You must allocate enough memory to allow for:
+If you do not allocate sufficient memory to a Java app when you deploy it, it may fail to start, or Cloud Foundry may terminate it. You must allocate enough memory to allow for:
 
 * Java heap
 * Metaspace, if using Java 8
@@ -306,11 +306,11 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
 ### <a id='upload'></a> Troubleshoot Failed Upload
 
-If your app fails to upload when you push it to <%= vars.product_short %>, it may be for one of the following reasons:
+If your app fails to upload when you push it to Cloud Foundry, it may be for one of the following reasons:
 
-* **WAR is too large**: An upload may fail due to the size of the WAR file. <%= vars.product_short %> testing indicates WAR files as large as 250&nbsp;MB upload successfully. If a WAR file larger than that fails to upload, it may be a result of the file size.
+* **WAR is too large**: An upload may fail due to the size of the WAR file. Cloud Foundry testing indicates WAR files as large as 250&nbsp;MB upload successfully. If a WAR file larger than that fails to upload, it may be a result of the file size.
 
-* **Connection issues**: App uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target <%= vars.product_short %> instance. If an app upload takes a long time, your authorization token can expire before the upload completes. A workaround is to copy the WAR to a server that is closer to the <%= vars.product_short %> instance, and then push it from there.
+* **Connection issues**: App uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target Cloud Foundry instance. If an app upload takes a long time, your authorization token can expire before the upload completes. A workaround is to copy the WAR to a server that is closer to the Cloud Foundry instance, and then push it from there.
 
 * **Out-of-date Cloud Foundry Command-Line Interface (cf CLI) client**: Upload of a large WAR is faster and hence less likely to fail if you are using a recent version of the cf CLI. If you are using an older version of the cf CLI client to upload a large WAR, and having problems, try updating to the latest version of the cf CLI.
 
@@ -332,11 +332,11 @@ If your app fails to upload when you push it to <%= vars.product_short %>, it ma
         * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag. 
         * Edit the `path` argument in `manifest.yml` to point to the WAR, and re-push the app.
 
-### <a id='debugging'></a> Debug Java Apps on <%= vars.product_short %>
+### <a id='debugging'></a> Debug Java Apps on Cloud Foundry
 
-Because of the way that <%= vars.product_short %> deploys your apps and isolates them, it is not possible to connect to your app with the remote Java debugger. Instead, instruct the app to connect to the Java debugger on your local machine.
+Because of the way that Cloud Foundry deploys your apps and isolates them, it is not possible to connect to your app with the remote Java debugger. Instead, instruct the app to connect to the Java debugger on your local machine.
 
-To set up remote debugging when using BOSH Lite or a <%= vars.product_short %> installation:
+To set up remote debugging when using BOSH Lite or a Cloud Foundry installation:
 
 1. Open your project in Eclipse.
 
@@ -350,7 +350,7 @@ To set up remote debugging when using BOSH Lite or a <%= vars.product_short %> i
 
 The debugger should now be running. If you switch to the Debug perspective, you should see your app listed in the Debug panel, and it should say `Waiting for vm to connect at port`.
 
-Next, to push your app to <%= vars.product_short %> and instruct <%= vars.product_short %> to connect to the debugger running on your local machine:
+Next, to push your app to Cloud Foundry and instruct Cloud Foundry to connect to the debugger running on your local machine:
 
 1. Edit your `manifest.yml` file. Set the instances count to 1. If you set this greater than one, multiple apps try to connect to your debugger.
 

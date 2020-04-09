@@ -3,7 +3,7 @@ title: Cloud Foundry Java Client Library
 owner: Java
 ---
 
-This topic describes how to use the Cloud Foundry Java Client Library to manage an account on a <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) instance.
+This topic describes how to use the Cloud Foundry Java Client Library to manage an account on a Cloud Foundry instance.
 
 Cloud Foundry Java Client Library v1.1.x work with apps using Spring v4.x, and Cloud Foundry Java Client Library v1.0.x work with apps using Spring v3.x. Both versions are available in the [Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub.
 
@@ -102,7 +102,7 @@ repositories {
 
 ## <a id='sample-code'></a> Sample Code
 
-The following is a very simple sample app that connects to a <%= vars.app_runtime_abbr %> instance, logs in, and displays some information about the <%= vars.app_runtime_abbr %> account. When running the program, provide the <%= vars.app_runtime_abbr %> target API endpoint, along with a valid user name and password as command-line parameters.
+The following is a very simple sample app that connects to a Cloud Foundry instance, logs in, and displays some information about the Cloud Foundry account. When running the program, provide the Cloud Foundry target API endpoint, along with a valid user name and password as command-line parameters.
 
 ```
 import org.cloudfoundry.client.lib.CloudCredentials;

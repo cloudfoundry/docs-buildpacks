@@ -5,16 +5,16 @@ owner: Buildpacks
 
 Buildpacks provide framework and runtime support for apps. Buildpacks typically examine your apps to determine what dependencies to download and how to configure the apps to communicate with bound services.
 
-When you push an app, <%= vars.product_runtime %> (<%= vars.product_short %>) automatically detects an appropriate buildpack for it. This buildpack is used to compile or prepare your app for launch.
+When you push an app, Cloud Foundry automatically detects an appropriate buildpack for it. This buildpack is used to compile or prepare your app for launch.
 
-<p class="note"><strong>Note:</strong> <%= vars.product_short %> deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, <%= vars.product_short %> provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.</p>
+<p class="note"><strong>Note:</strong> Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.</p>
 
 
 ## <a id='using-buildpacks'></a> Using Buildpacks
 
-The following topics discuss different usage scenarios for buildpacks in <%= vars.product_short %>:
+The following topics discuss different usage scenarios for buildpacks in Cloud Foundry:
 
-* [How Buildpacks Work in <%= vars.product_short %>](understand-buildpacks.html)
+* [How Buildpacks Work in Cloud Foundry](understand-buildpacks.html)
 
 * [Stack Association](stack-association.html)
 
@@ -29,7 +29,7 @@ The following topics discuss different usage scenarios for buildpacks in <%= var
 
 ## <a id='system-buildpacks'></a> System Buildpacks
 
-For information about the existing buildpacks that <%= vars.product_short %> supports, see [System Buildpacks](system-buildpacks.html).
+For information about the existing buildpacks that Cloud Foundry supports, see [System Buildpacks](system-buildpacks.html).
 
 
 ## <a id='cnb-buildpacks'></a> CF-compatible CNBs
@@ -60,4 +60,4 @@ For information about customizing existing buildpacks and developing new buildpa
 
 ### <a id='buildpack-ci'></a> Using Continuous Integration for Buildpacks
 
-For information about updating and releasing a new version of a <%= vars.product_short %> buildpack through the <%= vars.product_short %> Buildpacks Team Concourse pipeline, see [Using CI for Buildpacks](./buildpack-ci-index.html). You can use this as a model when working with Concourse to build and release new versions of your own buildpacks.
+For information about updating and releasing a new version of a Cloud Foundry buildpack through the Cloud Foundry Buildpacks Team Concourse pipeline, see [Using CI for Buildpacks](./buildpack-ci-index.html). You can use this as a model when working with Concourse to build and release new versions of your own buildpacks.
