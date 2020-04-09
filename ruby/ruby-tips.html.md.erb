@@ -3,12 +3,12 @@ title: Tips for Ruby Developers
 owner: Buildpacks
 ---
 
-This page has information specific to deploying Rack, Rails, or Sinatra apps with <%= vars.product_runtime %> (<%= vars.product_short %>).
+This page has information specific to deploying Rack, Rails, or Sinatra apps with Cloud Foundry.
 
 
 ## <a id='bundler'></a> App Bundling
 
-You must run Bundler to create a `Gemfile` and a `Gemfile.lock`. These files must be in your app before you push to <%= vars.product_short %>.
+You must run Bundler to create a `Gemfile` and a `Gemfile.lock`. These files must be in your app before you push to Cloud Foundry.
 
 To download Bundler, see [Gem Bundler](http://gembundler.com/).
 
@@ -25,7 +25,7 @@ run HelloWorld.new
 
 ## <a id='precompile'></a> Asset Precompilation
 
-<%= vars.product_short %> supports the Rails asset pipeline. If you do not precompile assets before deploying your app, <%= vars.product_short %> precompiles them when staging the app. Precompiling before deploying reduces the time it takes to stage an app.
+Cloud Foundry supports the Rails asset pipeline. If you do not precompile assets before deploying your app, Cloud Foundry precompiles them when staging the app. Precompiling before deploying reduces the time it takes to stage an app.
 
 To precompile assets before deployment, run:
 
@@ -39,7 +39,7 @@ The Rake precompile task reinitializes the Rails app. This could pose a problem 
 config.assets.initialize_on_precompile = false
 ~~~
 
-If the `assets:precompile` task fails, <%= vars.product_short %> uses live compilation mode, the alternative to asset precompilation. In this mode, assets are compiled when they are loaded for the first time. You can force live compilation by adding the following line to `application.rb`.
+If the `assets:precompile` task fails, Cloud Foundry uses live compilation mode, the alternative to asset precompilation. In this mode, assets are compiled when they are loaded for the first time. You can force live compilation by adding the following line to `application.rb`.
 
 ~~~
 Rails.application.config.assets.compile = true
@@ -48,7 +48,7 @@ Rails.application.config.assets.compile = true
 
 ## <a id='rake'></a> Running Rake Tasks
 
-<%= vars.product_short %> does not provide a mechanism for running a Rake task on a deployed app. If you need to run a Rake task that must be performed in the <%= vars.product_short %> environment, rather than locally before deploying or redeploying, you can configure the command that <%= vars.product_short %> uses to start the app to invoke the Rake task.
+Cloud Foundry does not provide a mechanism for running a Rake task on a deployed app. If you need to run a Rake task that must be performed in the Cloud Foundry environment, rather than locally before deploying or redeploying, you can configure the command that Cloud Foundry uses to start the app to invoke the Rake task.
 
 An app start command is configured in the app manifest file, `manifest.yml`, using the `command` attribute.
 
@@ -210,7 +210,7 @@ To create an example app:
 
 #### <a id='deploy'></a> Deploy the App
 
-You must deploy your example app twice for it to work, once as a Rails web app and once as a standalone Ruby app. One way to do this is to keep separate <%= vars.product_short %> manifests for each app type.
+You must deploy your example app twice for it to work, once as a Rails web app and once as a standalone Ruby app. One way to do this is to keep separate Cloud Foundry manifests for each app type.
 
 To create separate manifests for each app type:
 
@@ -314,7 +314,7 @@ For example: `BUNDLE_GEMFILE:/home/vcap/app/Gemfile`
 
 ### <a id='BUNDLE-WITHOUT'></a> BUNDLE_WITHOUT
 
-The `BUNDLE_WITHOUT` environment variable instructs <%= vars.product_short %> to skip gem installation in excluded groups.
+The `BUNDLE_WITHOUT` environment variable instructs Cloud Foundry to skip gem installation in excluded groups.
 
 Use this with Rails apps, where "assets" and "development" gem groups typically contain gems that are not needed when the app runs in production. 
 
@@ -322,9 +322,9 @@ For example: `BUNDLE_WITHOUT=assets`
 
 ### <a id='DATABASE-URL'></a> DATABASE_URL
 
-<%= vars.product_short %> examines the `database_uri` for bound services to see if they match known database types. If known relational database services are bound to the app, the `DATABASE_URL` environment variable is set using the first match in the list.
+Cloud Foundry examines the `database_uri` for bound services to see if they match known database types. If known relational database services are bound to the app, the `DATABASE_URL` environment variable is set using the first match in the list.
 
-If your app depends on `DATABASE_URL` to be set to the connection string for your service and <%= vars.product_short %> does not set it, use the `cf set-env` command to can set this variable manually.
+If your app depends on `DATABASE_URL` to be set to the connection string for your service and Cloud Foundry does not set it, use the `cf set-env` command to can set this variable manually.
 
 For example: 
 

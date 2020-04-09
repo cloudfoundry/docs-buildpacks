@@ -8,7 +8,7 @@ owner: Buildpacks
 <%=vars.GSG_intro_sentence%>
 
 This guide is intended to walk you through deploying a Ruby app to
-<%=vars.app_runtime_full%>.
+Cloud Foundry.
 If you experience a problem following the steps below, check the
 <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html)
 topic.
@@ -20,7 +20,7 @@ topic.
 ## <a id="deploy"></a>Deploy a Ruby Application ##
 
 This section describes how to deploy a Ruby application to
-<%=vars.product_short%>, and uses output from a sample app to show specific
+Cloud Foundry, and uses output from a sample app to show specific
 steps of the deployment process.
 
 ### Prerequisites ###
@@ -35,11 +35,11 @@ workstation
 
 This section describes using the cf CLI to configure a Redis Cloud managed service instance for an app. <%=vars.dev_console_1%>
 
-<%=vars.product_short%> supports two types of service instances:
+Cloud Foundry supports two types of service instances:
 
-* Managed services integrate with <%=vars.product_short%> through service
+* Managed services integrate with Cloud Foundry through service
 brokers that offer services and plans and manage the service calls between
-<%=vars.product_short%> and a service provider.
+Cloud Foundry and a service provider.
 * User-provided service instances enable you to connect your application to
 pre-provisioned external service instances.
 
@@ -83,7 +83,7 @@ OK
 
 #### Bind a Service Instance ####
 
-When you bind an app to a service instance, <%=vars.product_short%> writes
+When you bind an app to a service instance, Cloud Foundry writes
 information about the service instance to the VCAP_SERVICES app environment
 variable.
 The app can use this information to integrate with the service instance.
@@ -114,7 +114,7 @@ You can specify app deployment options in a manifest that the `cf push` command 
 
 #### Configure a Production Server ####
 
-<%=vars.product_short%> uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configuring a Production Server](../prod-server.html) topic for help configuring a server other than WEBrick.
+Cloud Foundry uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, Cloud Foundry can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configuring a Production Server](../prod-server.html) topic for help configuring a server other than WEBrick.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for <code>pong_matcher_ruby</code> does not require any additional configuration to deploy the app.</p>
 
@@ -142,7 +142,7 @@ administrator.
 Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the
 URL `my-app.<%=vars.app_domain%>`.
 
-The URL for your app must be unique from other apps that <%=vars.product_short%>
+The URL for your app must be unique from other apps that Cloud Foundry
 hosts or the push will fail.
 Use the following options to help create a unique URL:
 
@@ -202,10 +202,10 @@ urls: pongmatch-ex12.cfapps.io
 
 ### Step 5: Test a Deployed App ###
 
-You’ve deployed an app to <%=vars.app_runtime%>!
+You’ve deployed an app to Cloud Foundry!
 
 Use the cf <%=vars.dev_console_2%> to review information and administer your
-app and your <%=vars.app_runtime%> account.
+app and your account.
 For example, you could edit the `manifest.yml` to increase the number of app
 instances from 1 to 3, and redeploy the app with a new app name and host name.
 
@@ -217,7 +217,7 @@ Run `cf help` to view a complete list of commands, grouped by task categories,
 and run `cf help COMMAND` for detailed information about a specific command.
 For more information about using the cf CLI, refer to the Cloud Foundry Command Line Interface (cf CLI) topics, especially the <%=vars.cli_v6%> topic.
 
-<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
+<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 
@@ -234,7 +234,7 @@ learn more about troubleshooting.
 ### App Deploy Fails ###
 
 Even when deploying an app fails, the app might exist on
-<%=vars.product_short%>.
+Cloud Foundry.
 Run `cf apps` to review the apps in the currently targeted org and space.
 You might be able to correct the issue using the <%=vars.dev_console_2%>, or you
 might have to delete the app and redeploy.
@@ -249,10 +249,10 @@ Refer to the troubleshooting tip <strong>App Requires Unique URL</strong>.
 
 ### App Requires Unique URL ###
 
-<%=vars.product_short%> requires that each app that you deploy has a unique
+Cloud Foundry requires that each app that you deploy has a unique
 URL.
 Otherwise, the new app URL collides with an existing app URL and
-<%=vars.product_short%> cannot successfully deploy the app.
+Cloud Foundry cannot successfully deploy the app.
 You can resolve this issue by running `cf push` with either of the following
 flags to create a unique URL:
 

@@ -5,7 +5,7 @@ owner: Buildpacks
 
 
 
-This guide walks you through deploying a Ruby on Rails app to <%=vars.product_name%>.
+This guide walks you through deploying a Ruby on Rails app to Cloud Foundry.
 
 ##<a id='prerequisites'></a>Prerequisites
 
@@ -129,15 +129,15 @@ a `cf push`, `cf restage`, or `cf restart` command.
 
 Verify that the app is running by browsing to the URL generated in the output of the previous step. In this example, navigating to `cf-sample-app-rails.<%=vars.app_domain%>` verifies that the app is running.
 
-You've now pushed an app to <%=vars.product_short%>! For more information about this topic, see the [Pushing an App](../../devguide/deploy-apps/deploy-app.html) topic.
+You've now pushed an app to Cloud Foundry! For more information about this topic, see the [Pushing an App](../../devguide/deploy-apps/deploy-app.html) topic.
 
 ##<a id="next"></a>What to Do Next
 
-You have deployed an app to <%=vars.product_name%>. Consult the sections below for information about what to do next.
+You have deployed an app to Cloud Foundry. Consult the sections below for information about what to do next.
 
 ### Test a Deployed App
 
-Use the cf <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_name%> account. For example, you could edit the `manifest.yml` file to increase the number of app instances from 1 to 3 or redeploy the app with a new app name.
+Use the cf <%=vars.dev_console_2%> to review information and administer your app and your account. For example, you could edit the `manifest.yml` file to increase the number of app instances from 1 to 3 or redeploy the app with a new app name.
 
 ### Manage Your App with the cf CLI
 
