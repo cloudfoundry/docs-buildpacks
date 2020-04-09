@@ -3,19 +3,19 @@ title: .NET Core Buildpack
 owner: Buildpacks
 ---
 
-This topic describes how to push <%= vars.platform_name %> apps to Linux cells using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
+This topic describes how to push Cloud Foundry apps to Linux Diego Cells using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
-<p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux cells. To deploy .NET Core apps to Windows cells, use the <a href="../binary/index.html">Binary buildpack</a>.</p>
+<p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux Diego Cells. To deploy .NET Core apps to Windows Diego Cells, use the Binary buildpack. For more information about the Binary buildpack, see <a href="../binary/index.html">Binary Buildpack</a>.</p>
 
 
 ## <a id='overview'></a> Overview
 
-Buildpacks provide needed dependencies to <%= vars.windows_runtime_full %> apps. <%= vars.windows_runtime %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
+Buildpacks provide needed dependencies to <%= vars.windows_runtime_abbr_full %> (<%= vars.windows_runtime_abbr %>) apps. <%= vars.windows_runtime_abbr %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
-- The pushed app contains one or more `*.csproj` or `*.fsproj` files.
-- The app is pushed from the output directory of the `dotnet publish` command.
+* The pushed app contains one or more `*.csproj` or `*.fsproj` files.
+* The app is pushed from the output directory of the `dotnet publish` command.
 
-For information about deploying different types of .NET apps, follow the links in the table below.
+For information about deploying different types of .NET apps, follow the links in the table below:
 
 <table>
   <tr>
@@ -41,9 +41,10 @@ For information about deploying different types of .NET apps, follow the links i
   </tr>
 </table>
 
+
 ## <a id='pushing-apps'></a> Push a .NET Core App
 
-To push a .NET Core app to a Linux cell:
+To push a .NET Core app to a Linux Diego Cell:
 
 1. Run:
 
@@ -52,8 +53,8 @@ To push a .NET Core app to a Linux cell:
     ```
     Where `APP-NAME` is the name you want to give your app.
     <br>
-    <br>:
-    If your <%= vars.windows_runtime %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, run the same command with the `-b` option to specify the buildpack:
+    <br>
+    If your <%= vars.windows_runtime_abbr %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, run the same command with the `-b` option to specify the buildpack:
 
     ```
     cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
@@ -77,7 +78,7 @@ The source-based, non-published workflow ensures the buildpack can keep all your
 * [Use Non-Default Package Sources](#non-default-package-sources)
 * [Disable and Clear Your NuGet Package Cache](#disabling-nuget)
 
-<p class='note'><strong>Note:</strong> The source-based deployment workflow also uses the <code>cf push</code> command to push source-based apps to <%= vars.platform_name %>.</p>
+<p class='note'><strong>Note:</strong> The source-based deployment workflow also uses the <code>cf push</code> command to push source-based apps to Cloud Foundry.</p>
 
 ### <a id='multiple-projects'></a> Deploy Apps with Multiple Projects
 
@@ -155,7 +156,7 @@ For more information, see the [Environment Variables](../../devguide/deploy-apps
 
 ## <a id='framework-dependent'></a> Framework-Dependent Deployments
 
-For a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies. <%= vars.recommended_by %> recommends using this workflow if you deploy an app in an offline setting. For information about deploying FDDs, see [Framework-dependent deployments (FDD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#framework-dependent-deployments-fdd) in the Microsoft documentation.
+For a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies. <%= vars.company_name %> recommends using this workflow if you deploy an app in an offline setting. For information about deploying FDDs, see [Framework-dependent deployments (FDD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#framework-dependent-deployments-fdd) in the Microsoft documentation.
 
 To deploy an FDD using the buildpack:
 
@@ -177,7 +178,7 @@ To deploy an FDD using the buildpack:
 
 For a self-contained deployment (SCD), you deploy your app, third-party dependencies, and the version of .NET Core that you used to build your app. For information about SCDs, see [Self-contained deployments (SCD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/#self-contained-deployments-scd) in the Microsoft documentation.
 
-<p class="note"><strong>Note:</strong> <%= vars.recommended_by %> does not recommend using the SCD workflow. The buildpack is unable to keep dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
+<p class="note"><strong>Note:</strong> <%= vars.company_name %> does not recommend using the SCD workflow. The buildpack is unable to keep dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
 
 When using the SCD workflow for deploying your app, you must:  
 
@@ -263,14 +264,14 @@ For example:
 
 ## <a id='offline'></a> Push an App in a Disconnected Environment
 
-For offline environments, <%= vars.recommended_by %> recommends using the Framework-Dependent Deployment workflow. This workflow enables the deployed app to use the latest runtime provided by the offline buildpack.  For more information, see: [Framework-Dependent Deployments](#framework-dependent).
+For offline environments, <%= vars.company_name %> recommends using the Framework-Dependent Deployment workflow. This workflow enables the deployed app to use the latest runtime provided by the offline buildpack.  For more information, see: [Framework-Dependent Deployments](#framework-dependent).
 
 
-## <a id='runtime-store'></a>Maintain ASP.NET Core Assemblies
+## <a id='runtime-store'></a> Maintain ASP.NET Core Assemblies
 
 <p class="note"><strong>Note:</strong> This section applies only to source-based and framework-dependent deployments.</p>
 
-For maintaining ASP.NET Core assemblies, <%= vars.recommended_by %> recommends one of these methods:
+For maintaining ASP.NET Core assemblies, <%= vars.company_name %> recommends one of these methods:
 
 * Configure your app as a fully vendored app requiring fewer buildpack updates. Modify your `.csproj` file with the following:
 
@@ -293,7 +294,7 @@ For maintaining ASP.NET Core assemblies, <%= vars.recommended_by %> recommends o
 
 ## <a id='port'></a> Configure the Listen Port
 
-<%= vars.windows_runtime %> sets the `$PORT` environment variable automatically. For your .NET Core app to work on <%= vars.windows_runtime %>, you must configure the app to listen on the environment's specified port.  
+<%= vars.windows_runtime_abbr %> sets the `$PORT` environment variable automatically. For your .NET Core app to work on <%= vars.windows_runtime_abbr %>, you must configure the app to listen on the environment's specified port.  
 
 For C# apps, the following modifications allow the buildpack to pass the correct port from `$PORT` environment variable to the app when running the initial startup command:
 
@@ -360,4 +361,4 @@ If your app requires external shared libraries that are not provided by the root
 
 <p class="note"><strong>Note:</strong> You must keep these libraries up to date. They do not update automatically.</p>
 
-The .NET Core buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
+The .NET Core buildpack automatically adds the directory `APP-ROOT/ld_library_path` to `LD_LIBRARY_PATH`, where `APP-ROOT` is the app root, so that your app can access these libraries at runtime.
