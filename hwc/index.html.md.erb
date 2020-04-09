@@ -9,7 +9,7 @@ This topic describes how to configure your .NET Framework apps for use with the 
 
 ## <a id='prerequisites'></a>Prerequisites
 
-Using the HWC buildpack requires deploying Windows cells with <%= vars.windows_runtime %>.
+Using the HWC buildpack requires deploying Windows cells with <%= vars.windows_runtime_abbr %>.
 
 The HWC buildpack supports the following common app types by default:
 
@@ -51,9 +51,9 @@ Before you push your first app using the HWC buildpack, see the [Getting Started
 
 HWC relies on `Web.config` and `applicationHost.config` configuration files for configuring the .NET applications.
 
-Most `Web.config` files work out of the box with <%= vars.windows_runtime %>, with the following constraints:
+Most `Web.config` files work out of the box with <%= vars.windows_runtime_abbr %>, with the following constraints:
 
-- Integrated Windows Authentication (IWA) is not yet supported on <%= vars.windows_runtime %>.
+- Integrated Windows Authentication (IWA) is not yet supported on <%= vars.windows_runtime_abbr %>.
 - SQL server connection strings must use fully qualified domain names.
 - Place connection string values in environment variables or [user-provided service instances](../../devguide/services/user-provided.html).
 
