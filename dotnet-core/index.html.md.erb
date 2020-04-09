@@ -10,7 +10,7 @@ This topic describes how to push Cloud Foundry apps to Linux Diego Cells using t
 
 ## <a id='overview'></a> Overview
 
-Buildpacks provide needed dependencies to <%= vars.windows_runtime_abbr_full %> (<%= vars.windows_runtime_abbr %>) apps. <%= vars.windows_runtime_abbr %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
+Buildpacks provide needed dependencies to <%= vars.windows_runtime_full %> (<%= vars.windows_runtime_abbr %>) apps. <%= vars.windows_runtime_abbr %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
 * The pushed app contains one or more `*.csproj` or `*.fsproj` files.
 * The app is pushed from the output directory of the `dotnet publish` command.
