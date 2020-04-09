@@ -7,7 +7,8 @@ owner: Buildpacks
 
 <%=vars.GSG_intro_sentence%>
 
-This topic is intended to guide you through the process of deploying PHP apps to <%=vars.app_runtime_full%>. If you experience a problem deploying PHP apps, review the  [Troubleshooting](#troubleshooting) section below.
+This topic is intended to guide you through the process of deploying PHP apps to Cloud Foundry.
+If you experience a problem deploying PHP apps, review the  [Troubleshooting](#troubleshooting) section below.
 
 ## <a id="getting-started"></a>Getting Started ##
 
@@ -48,7 +49,8 @@ application with a memory limit of 128M and upload our test file.
 
 ## <a id="folder-structure"></a>Folder Structure ##
 
-The easiest way to use the buildpack is to put your assets and PHP files into a directory and push it to <%=vars.product_short%>. This way, the buildpack will take your files and automatically move them into the `WEBDIR` (defaults to `htdocs`) folder, which is the directory where your chosen web server looks for the files.
+The easiest way to use the buildpack is to put your assets and PHP files into a directory and push it to Cloud Foundry.
+This way, the buildpack will take your files and automatically move them into the `WEBDIR` (defaults to `htdocs`) folder, which is the directory where your chosen web server looks for the files.
 
 ### URL Rewriting
 

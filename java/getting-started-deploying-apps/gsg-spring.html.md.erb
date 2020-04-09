@@ -7,7 +7,7 @@ owner: Java
 
 <%=vars.GSG_intro_sentence%>
 
-This guide is intended to walk you through deploying a Spring app to <%=vars.app_runtime_full%>. You can choose whether to push a sample app, your own app, or both.
+This guide is intended to walk you through deploying a Spring app to Cloud Foundry. You can choose whether to push a sample app, your own app, or both.
 
 If you experience a problem following the steps below, see the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
@@ -17,7 +17,7 @@ If you experience a problem following the steps below, see the <%=vars.known_iss
 
 ## <a id='deploy-yourapp'></a>Deploy a Spring Application ##
 
-This section describes how to deploy your Spring application to <%=vars.product_short%>.
+This section describes how to deploy your Spring application to Cloud Foundry.
 
 ### Prerequisites ###
 
@@ -84,7 +84,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 ### Step 4: Configure Service Connections for a Spring App ###
 
-<%=vars.product_short%> provides extensive support for creating and binding a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information about creating and binding a service connection for your app, refer to the [Configure Service Connections for Spring](../configuring-service-connections/spring-service-bindings.html) topic.
+Cloud Foundry provides extensive support for creating and binding a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information about creating and binding a service connection for your app, refer to the [Configure Service Connections for Spring](../configuring-service-connections/spring-service-bindings.html) topic.
 
 <p class="tip"><strong>Sample App Step: Create a Service Instance</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
 
@@ -131,7 +131,7 @@ From the root directory of your application, run `cf push APP-NAME -p PATH-TO-FI
 
 `cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
 
-The URL for your app must be unique from other apps that <%=vars.product_short%> hosts or the push will fail. Use the following options to help create a unique URL:
+The URL for your app must be unique from other apps that Cloud Foundry hosts or the push will fail. Use the following options to help create a unique URL:
 
 * `-n` to assign a different HOST name for the app
 * `--random-route` to create a URL that includes the app name and random words
@@ -204,9 +204,9 @@ urls: spring1119.cfapps.io
 
 ### Step 8: Test Your Deployed App ###
 
-You’ve deployed an app to <%=vars.product_short%>!
+You’ve deployed an app to Cloud Foundry!
 
-Use the cf <%=vars.dev_console_2%> to review information and administer your app and your <%=vars.product_short%> account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
+Use the cf <%=vars.dev_console_2%> to review information and administer your app and your Cloud Foundry account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
@@ -253,7 +253,7 @@ You should receive a <code>201 Created</code> response.
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the cf CLI, refer to the Cloud Foundry Command Line Interface (cf CLI) topics, especially the <%=vars.cli_v6%> topic.
 
-<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only a <%=vars.product_short%> administrator can run. If you are not a <%=vars.product_short%> administrator, the following message displays for these types of commands:
+<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 
@@ -265,15 +265,15 @@ If your application fails to start, verify that the application starts in your l
 
 ### App Deploy Fails ###
 
-Even when the deploy fails, the app might exist on <%=vars.product_short%>. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
+Even when the deploy fails, the app might exist on Cloud Foundry. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
 
 ### App Requires a Content-Type ###
 
-If you specify a `Content-Encoding` header of `gzip` but do not specify a `Content-Type` within your application, <%=vars.product_short%> might send a `Content-Type` of `application/x-gzip` to the browser. This scenario might cause the deploy to fail if it conflicts with the actual encoded content of your app. To avoid this issue, be sure to explicitly set `Content-Type` within your app.
+If you specify a `Content-Encoding` header of `gzip` but do not specify a `Content-Type` within your application, Cloud Foundry might send a `Content-Type` of `application/x-gzip` to the browser. This scenario might cause the deploy to fail if it conflicts with the actual encoded content of your app. To avoid this issue, be sure to explicitly set `Content-Type` within your app.
 
 ### App Requires a Unique URL ###
 
-<%=vars.product_short%> requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and <%=vars.product_short%> cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
+Cloud Foundry requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and Cloud Foundry cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.

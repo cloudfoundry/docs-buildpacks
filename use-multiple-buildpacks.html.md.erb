@@ -7,7 +7,7 @@ This topic describes how developers can push an app with multiple buildpacks usi
 
 <p class="note"><strong>Note:</strong> As an alternative to the cf CLI procedure below, you can specify multiple buildpacks in your app manifest. This is not compatible with deprecated app manifest features. For more information, see <a href="../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.</p>
 
-For more information about pushing apps to <%= vars.product_runtime %> (<%= vars.product_short %>), see [Pushing an App](../devguide/deploy-apps/deploy-app.html).
+For more information about pushing apps, see [Pushing an App](../devguide/deploy-apps/deploy-app.html).
 
 
 ## <a id='cfcli'></a> Specifying Buildpacks with the cf CLI
@@ -40,6 +40,6 @@ To push an app with multiple buildpacks using the cf CLI:
   	cf buildpacks
   	```
 
-For more information on multi-buildpack order, see [How Buildpacks Work in <%= vars.product_short %>](understand-buildpacks.html).
+For more information on multi-buildpack order, see [How Buildpacks Work](understand-buildpacks.html).
 
 For more information about using the cf CLI, see [Using the Cloud Foundry Command Line Interface (cf CLI)](../cf-cli/index.html).

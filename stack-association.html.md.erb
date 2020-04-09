@@ -3,7 +3,7 @@ title: Stack Association
 owner: Buildpacks
 ---
 
-This topic describes the stack association feature for <%= vars.product_name %> buildpacks. 
+This topic describes the stack association feature for Cloud Foundry buildpacks.
 
 <p class="note"><strong>Note</strong>: This functionality is supported as of CAPI <a href="https://github.com/cloudfoundry/capi-release/releases/tag/1.58.0">v1.58.0</a> and cf CLI  <a href="https://github.com/cloudfoundry/cli/releases/tag/v6.39.0">v6.39.0</a>.</p>
 
@@ -11,7 +11,7 @@ This topic describes the stack association feature for <%= vars.product_name %> 
 
 ## <a id='overview'></a> Overview ##
 
-Each buildpack in your <%= vars.product_name %> deployment is associated with a stack. You can see this when you run `cf buildpacks`: there is a `stack` column in the output that shows a corresponding stack for each buildpack. See the following example: 
+Each buildpack in your deployment is associated with a stack. You can see this when you run `cf buildpacks`: there is a `stack` column in the output that shows a corresponding stack for each buildpack. See the following example:
 
 <pre class="terminal">
 $ cf buildpacks
@@ -26,11 +26,11 @@ ruby_buildpack           3          true      false    ruby_buildpack-cached-cfl
 
 Because of this stack association, buildpacks do not have to be uniquely named. This helps in managing similar buildpacks that are compatible with different stacks. 
 
-The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) includes a `-stack` option. If you use this option and upload a buildpack to <%= vars.product_name %>, the Cloud Controller detects the stack association and creates a stack record for the buildpack. 
+The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) includes a `-stack` option. If you use this option and upload a buildpack, the Cloud Controller detects the stack association and creates a stack record for the buildpack.
 
 ## <a id='no-stack-record'></a> Buildpacks without a Stack Record ##
 
-Some buildpacks may have a missing stack record. For example, if you uploaded a custom buildpack before <%= vars.product_name %> introduced stack association. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record. 
+Some buildpacks may have a missing stack record. For example, if you uploaded a custom buildpack before Cloud Foundry introduced stack association. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record.
 
 In this case, you must manually assign a stack to the buildpack. To do this, run `cf update-buildpack BUILDPACK-NAME --assign-stack stack`.
 
@@ -38,8 +38,8 @@ Buildpacks with a missing stack record will continue to work, but are more manag
 
 Consider the following behavior when pushing apps to a deployment that has buildpacks with a missing stack record:
 
-* If you push an app and specify a stack with `cf push app-name -s stack`, <%= vars.product_name %> uses that stack. Otherwise, it uses the system default, `cflinuxfs3`. 
-* You may see additional logging in the buildpack detection output of the `cf push` command when <%= vars.product_name %> detects buildpacks without a stack record. 
+* If you push an app and specify a stack with `cf push app-name -s stack`, Cloud Foundry uses that stack. Otherwise, it uses the system default, `cflinuxfs3`. 
+* You may see additional logging in the buildpack detection output of the `cf push` command when Cloud Foundry detects buildpacks without a stack record. 
 
 ## <a id='stack-cli'></a> Managing Stack Association with the cf CLI ##
 

@@ -3,14 +3,14 @@ title: Creating Custom Buildpacks
 owner: Buildpacks
 ---
 
-This topic describes how to create custom buildpacks for <%= vars.product_runtime %> (<%= vars.product_short %>).
+This topic describes how to create custom buildpacks for Cloud Foundry.
 
-For more information about how buildpacks work, see [How Buildpacks Work in <%= vars.product_short %>](understand-buildpacks.html).
+For more information about how buildpacks work, see [How Buildpacks Work in Cloud Foundry](understand-buildpacks.html).
 
 
 ## <a id='packaging-custom-buildpacks'></a> Package Custom Buildpacks
 
-<%= vars.product_short %> buildpacks can work with limited or no Internet connectivity. The Buildpack Packager gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments. For more information, see the [Buildpack Packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) repository on GitHub.
+Cloud Foundry buildpacks can work with limited or no Internet connectivity. The Buildpack Packager gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments. For more information, see the [Buildpack Packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) repository on GitHub.
 
 ### <a id='use-buildpack-packager'></a> Use the Buildpack Packager
 
@@ -101,7 +101,7 @@ The Buildpack Packager script validates this object according to the following r
 
 ## <a id='contract'></a> Core Buildpack Communication Contract
 
-This section describes the communication contract followed by the <%= vars.product_short %> core buildpacks. This contract enables buildpacks to interact with one another, so that developers can use multiple buildpacks with their apps.
+This section describes the communication contract followed by the Cloud Foundry core buildpacks. This contract enables buildpacks to interact with one another, so that developers can use multiple buildpacks with their apps.
 
 Buildpack developers must ensure their custom buildpacks follow the contract.
 
@@ -176,7 +176,7 @@ Where:
 * `REPOSITORY` is the name of your public Git repository.
 * `BUILDPACK` is the name of your custom buildpack.
 
-By default, <%= vars.product_short %> uses the default branch of the buildpack's Git repository. You can specify a different branch using the Git URL by running:
+By default, Cloud Foundry uses the default branch of the buildpack's Git repository. You can specify a different branch using the Git URL by running:
 
 ```
 cf push YOUR-APP -b https://github.com/REPOSITORY/BUILDPACK.git#BRANCH
@@ -202,7 +202,7 @@ Where:
 * `BUILDPACK` is the name of your custom buildpack.
 * `TAG` is the Git repository tag you want to use.
 
-The app is then deployed to <%= vars.product_short %>, and the buildpack is cloned from the repository and applied to the app.
+The app is then deployed to Cloud Foundry, and the buildpack is cloned from the repository and applied to the app.
 
 <p class="note"><strong>Note:</strong> If a buildpack is specified using <code>cf push -b</code>, the <code>detect</code> step is skipped. As a result, no buildpack <code>detect</code> scripts are run.</p>
 

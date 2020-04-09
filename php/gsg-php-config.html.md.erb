@@ -72,7 +72,7 @@ In this example, the `httpd-logging.conf` file overrides the one provided by the
 
 You can find the default configuration files in the [PHP Buildpack `/defaults/config` directory](https://github.com/cloudfoundry/php-buildpack/tree/master/defaults/config).
 
-You should be careful when modifying configurations, as doing so can cause your app to fail, or cause <%= vars.product_name %> to fail to stage your app.
+You should be careful when modifying configurations, as doing so can cause your app to fail, or cause Cloud Foundry to fail to stage your app.
 
 You can add your own configuration files. The components do not reference them, so you must ensure that they are included. For example, you can add an include directive to the [httpd configuration](https://github.com/cloudfoundry/php-buildpack/blob/master/defaults/config/httpd/httpd.conf) to include your file:
 

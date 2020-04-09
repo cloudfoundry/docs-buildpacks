@@ -5,29 +5,29 @@ owner: Buildpacks
 
 
 
-This topic describes how to configure a production server for your apps. 
+This topic describes how to configure a production server for your apps.
 
-When you deploy an app, <%=vars.product_short%> determines the command used to start the app through the following process: 
+When you deploy an app, Cloud Foundry determines the command used to start the app through the following process:
 
-1. If the developer uses the command `cf push -c COMMAND`, then <%=vars.product_short%> uses `COMMAND` to start the app. 
+1. If the developer uses the command `cf push -c COMMAND`, then Cloud Foundry uses `COMMAND` to start the app.
 
-1. If the developer creates a file called a Procfile, <%=vars.product_short%> uses the Procfile to configure the command that launches the app. 
+1. If the developer creates a file called a Procfile, Cloud Foundry uses the Procfile to configure the command that launches the app.
 See the <a href="#procfile">About Procfiles</a> section below for more information.
 
-1. If the developer does not use `cf push -c COMMAND` and does not create a Procfile, then <%=vars.product_short%> does one of the following, 
+1. If the developer does not use `cf push -c COMMAND` and does not create a Procfile, then Cloud Foundry does one of the following,
 depending on the buildpack:
     + Uses a default start command.
     + Fails to start the app and shows a warning that the app is missing a Procfile.
 
 ##<a id="procfile"></a>About Procfiles
 
-One reason to use a Procfile is specify a start command for buildpacks where a default start command is not provided. 
+One reason to use a Procfile is specify a start command for buildpacks where a default start command is not provided.
 Some buildpacks, such as Python, that work on a variety of frameworks, do not attempt to provide a default start command.
 
 Another reason to use a Procfile is to configure a production server for web apps.
 
-A Procfile enables you to declare required runtime processes, called process types, for your web app. 
-Process managers in a server use the process types to run and manage the workload. 
+A Procfile enables you to declare required runtime processes, called process types, for your web app.
+Process managers in a server use the process types to run and manage the workload.
 In a Procfile, you declare one process type per line and use the following syntax:
 
 <pre class="code">
@@ -45,25 +45,25 @@ web: build/install/MY-PROJECT-NAME/bin/MY-PROJECT-NAME
 
 ##<a id="specify-server"></a>Specify a Web Server
 
-Follow these steps to specify a web server using a Procfile. 
+Follow these steps to specify a web server using a Procfile.
 For more information about configuring a web server for Rails apps, see the [Configure a Ruby Web Server](#config-ruby) section of this topic.
 
-1. Create a blank file with a command line for a `web` process type. 
+1. Create a blank file with a command line for a `web` process type.
 
-2. Save it as a file named `Procfile` with no extension in the root directory of your app. 
+2. Save it as a file named `Procfile` with no extension in the root directory of your app.
 
 3. Push your app.
 
 ##<a id="config-ruby"></a>Configure a Ruby Web Server
 
-<%=vars.product_short%> uses the default standard Ruby web server library WEBrick for Ruby and Ruby on Rails apps. 
-However, <%=vars.product_short%> can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn.
+Cloud Foundry uses the default standard Ruby web server library WEBrick for Ruby and Ruby on Rails apps.
+However, Cloud Foundry can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn.
 
-To instruct <%=vars.product_short%> to use a web server other than WEBrick, perform the following steps: 
+To instruct Cloud Foundry to use a web server other than WEBrick, perform the following steps:
 
 1. Add the gem for the web server to your Gemfile.
 
-1. In the `config` directory of your app, create a new configuration file or modify an existing file. 
+1. In the `config` directory of your app, create a new configuration file or modify an existing file.
 Refer to your web server documentation for how to configure this file. The following example uses the Puma web server:
 
     <pre class="code">
@@ -76,7 +76,7 @@ Refer to your web server documentation for how to configure this file. The follo
     end
 </pre>
 
-1. In the root directory of your app, create a Procfile and add a command line for a `web` process type that points to your web server.  
+1. In the root directory of your app, create a Procfile and add a command line for a `web` process type that points to your web server.
 For information about configuring the specific command for a process type, see your web server documentation.<br/><br/>
     The following example shows a command that starts a Puma web server and specifies the app runtime environment, TCP port, and paths to the server state information and configuration files:
    
