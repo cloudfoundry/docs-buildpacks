@@ -134,8 +134,7 @@ To configure these options, add the configuration property as a new line in your
     </td>
     <td><strong>HSTS preload</strong>: Causes NGINX to respond to all requests with the following
       header: <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code><br>
-      This forces browsers to make all subsequent requests over HTTPS including subdomains and requests inclusion in browser-managed HSTS preload lists. For more information, see <a href="https://hstspreload.org">https://hstspreload.org</a>. This setting defaults to a <code>max-age</code> of one year. This setting defaults to a <code>max-age</code> of one
-      year.
+      This forces browsers to make all subsequent requests over HTTPS including subdomains and requests inclusion in browser-managed HSTS preload lists. For more information, see <a href="https://hstspreload.org">https://hstspreload.org</a>. This setting defaults to a <code>max-age</code> of one year.
       <p class="note"><strong>Note</strong>: Setting this property to <code>true</code> also makes <code>http_strict_transport_security</code> and <code>http_strict_transport_security_include_subdomains</code> default to true.</p>
     </td>
   </tr>
