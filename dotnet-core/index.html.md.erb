@@ -3,14 +3,16 @@ title: .NET Core Buildpack
 owner: Buildpacks
 ---
 
-This topic describes how to push Cloud Foundry apps to Linux Diego Cells using the .NET Core buildpack. You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
+This topic describes how to push Cloud Foundry apps to Linux Diego Cells using the .NET Core buildpack.
+You can find supported ASP.NET Core versions in the [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
 <p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux Diego Cells. To deploy .NET Core apps to Windows Diego Cells, use the Binary buildpack. For more information about the Binary buildpack, see <a href="../binary/index.html">Binary Buildpack</a>.</p>
 
 
 ## <a id='overview'></a> Overview
 
-Buildpacks provide needed dependencies to <%= vars.windows_runtime_full %> (<%= vars.windows_runtime_abbr %>) apps. <%= vars.windows_runtime_abbr %> automatically uses the .NET Core buildpack when one or more of the following conditions are met:
+Buildpacks provide needed dependencies to Cloud Foundry apps.
+Cloud Foundry automatically uses the .NET Core buildpack when one or more of the following conditions are met:
 
 * The pushed app contains one or more `*.csproj` or `*.fsproj` files.
 * The app is pushed from the output directory of the `dotnet publish` command.
@@ -54,7 +56,8 @@ To push a .NET Core app to a Linux Diego Cell:
     Where `APP-NAME` is the name you want to give your app.
     <br>
     <br>
-    If your <%= vars.windows_runtime_abbr %> deployment does not have the .NET Core buildpack installed or the installed version is out of date, run the same command with the `-b` option to specify the buildpack:
+    If your Cloud Foundry deployment does not have the .NET Core buildpack installed or the installed version is out of date,
+    run the same command with the `-b` option to specify the buildpack:
 
     ```
     cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
@@ -78,7 +81,8 @@ The source-based, non-published workflow ensures the buildpack can keep all your
 * [Use Non-Default Package Sources](#non-default-package-sources)
 * [Disable and Clear Your NuGet Package Cache](#disabling-nuget)
 
-<p class='note'><strong>Note:</strong> The source-based deployment workflow also uses the <code>cf push</code> command to push source-based apps to Cloud Foundry.</p>
+<p class='note'><strong>Note:</strong> The source-based deployment workflow also uses the
+    <code>cf push</code> command to push source-based apps to Cloud Foundry.</p>
 
 ### <a id='multiple-projects'></a> Deploy Apps with Multiple Projects
 
@@ -294,7 +298,8 @@ For maintaining ASP.NET Core assemblies, <%= vars.company_name %> recommends one
 
 ## <a id='port'></a> Configure the Listen Port
 
-<%= vars.windows_runtime_abbr %> sets the `$PORT` environment variable automatically. For your .NET Core app to work on <%= vars.windows_runtime_abbr %>, you must configure the app to listen on the environment's specified port.  
+Cloud Foundry sets the `$PORT` environment variable automatically.
+For your .NET Core app to work on Cloud Foundry, you must configure the app to listen on the environment's specified port.  
 
 For C# apps, the following modifications allow the buildpack to pass the correct port from `$PORT` environment variable to the app when running the initial startup command:
 
