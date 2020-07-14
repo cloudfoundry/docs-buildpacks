@@ -96,12 +96,12 @@ cf push YOUR-APP
 
 Where `YOUR-APP` is the name of your app.
 
-For more information, see [Groovy Container](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/container-groovy.md) in the Cloud Foundry Java Buildpack repository on GitHub.
+For more information, see [Groovy Container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-groovy.md) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='java-main'></a> Java Main
 
-Java apps with a `main()` method can be run provided that they are packaged as self-executable JARs. For more information, see [Java Main Container](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/container-java_main.md) in the Cloud Foundry Java Buildpack repository on GitHub.
+Java apps with a `main()` method can be run provided that they are packaged as self-executable JARs. For more information, see [Java Main Container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-java_main.md) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 <p class="note"><strong>Note:</strong> If your app is not web-enabled, you must suppress route creation to avoid a <code>failed to start accepting connections</code> error. To suppress route creation, add <code>no-route: true</code> to the app manifest or use the <code>--no-route</code> flag with the <code>cf push</code> command. <br><br>For more information about the <code>no-route</code> attribute, see <a href="../../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.</p>
 
@@ -162,7 +162,7 @@ cf push YOUR-APP
 
 Where `YOUR-APP` is the name of your app.
 
-For more information, see [Spring Boot](https://spring.io/projects/spring-boot) on the Spring website and [Spring Boot CLI Container](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/container-spring_boot_cli.md) in the Cloud Foundry Java Buildpack repository on GitHub.
+For more information, see [Spring Boot](https://spring.io/projects/spring-boot) on the Spring website and [Spring Boot CLI Container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-spring_boot_cli.md) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='servlet'></a> Servlet
@@ -223,7 +223,7 @@ If you do not allocate sufficient memory to a Java app when you deploy it, it ma
 * Stack size per Thread
 * JVM overhead
 
-The `config/open_jdk_jre.yml` file of the Java buildpack contains default memory size and weighting settings for the JRE. For an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app, see [Open JDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md) in the Cloud Foundry Java Buildpack on GitHub.
+The `config/open_jdk_jre.yml` file of the Java buildpack contains default memory size and weighting settings for the JRE. For an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app, see [Open JDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) in the Cloud Foundry Java Buildpack on GitHub.
 
 To configure memory-related JRE options for your app, either create a custom buildpack and specify this buildpack in your deployment manifest, or override the default memory settings of your buildpack as described in [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) with the properties listed in the Open JDK JRE README in the Cloud Foundry Java Buildpack on GitHub. For more information about configuring custom buildpacks and manifests, see [Custom Buildpacks](../custom.html) and [Deploying with App Manifests](../../devguide/deploy-apps/manifest.html).
 
@@ -282,7 +282,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
     This example shows that `150m` of the overall available `1G` is reserved for anything that is not `heap`, `metaspace`, or `permgen`. In less common cases, this may come from companion processes started by the JVM, such as the Process API.
 
-    For more information about measuring how much `native` memory a Java app needs, see [Native Memory Tracking](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) in the Java documentation. For more information about configuring the Java buildpack using the `native` setting, see [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/jre-open_jdk_jre.md#memory-sizes) in the Cloud Foundry Java Buildpack on GitHub. For more information about the Process API, see [Class Process](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html) in the Java documentation.
+    For more information about measuring how much `native` memory a Java app needs, see [Native Memory Tracking](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) in the Java documentation. For more information about configuring the Java buildpack using the `native` setting, see [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md#memory-sizes) in the Cloud Foundry Java Buildpack on GitHub. For more information about the Process API, see [Class Process](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html) in the Java documentation.
 
 * **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under heavy load, it uses a high number of threads and consumes a significant amount of memory.
 
@@ -443,7 +443,7 @@ class NewRelicAgent < JavaBuildpack::Component::VersionedDependencyComponent
 end
 ```
 
-For more information, see [Design](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/design.md), [Extending](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/extending.md), and [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
+For more information, see [Design](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/design.md), [Extending](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/extending.md), and [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='env-var'></a> Environment Variables
