@@ -25,10 +25,10 @@ $ git remote add upstream git<span>@</span>github.com:cloudfoundry/ruby-buildpac
 <pre class="terminal">
 $ git fetch upstream
 </pre>
-1. Merge the upstream changes into the intended branch. You may need to resolve merge conflicts. This example shows merging the `master` branch of the upstream buildpack into the `master` branch of the forked buildpack.
+1. Merge the upstream changes into the intended branch. You may need to resolve merge conflicts. This example shows merging the `main` branch of the upstream buildpack into the `main` branch of the forked buildpack.
 <pre class="terminal">
-$ git checkout master
-$ git merge upstream/master
+$ git checkout main
+$ git merge upstream/main
 </pre>
 <p class="note"><strong>Note</strong>: When merging upstream buildpacks, do not use <code>git rebase</code>. 
 This approach is not sustainable because you confront the same merge conflicts repeatedly.</p>

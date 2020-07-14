@@ -90,7 +90,7 @@ To build the binary for a dependency, perform the following steps:
 1. Pushing your changes triggers the binary building process, which you can  monitor at the [binary-builder pipeline](https://buildpacks.ci.cf-app.com/pipelines/binary-builder)
 of your own `buildpacks-ci` Concourse deployment. When the build completes, it adds a link to the Concourse build run to the Tracker story specified in the commit message for the new release.
 
-    <p class="note"><strong>Note</strong>: Binary builds are executed by the Cloud Foundry <a href="https://github.com/cloudfoundry/binary-builder">Binary Builder</a> and the <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/binary-builder.yml">binary-builder pipeline</a>.</p>
+    <p class="note"><strong>Note</strong>: Binary builds are executed by the Cloud Foundry <a href="https://github.com/cloudfoundry/binary-builder">Binary Builder</a> and the <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline.</p>
 
 ##<a id="manifest-updates"></a>Update Buildpack Manifests
 
@@ -116,7 +116,7 @@ After you build the binary for a dependency that you can access and download fro
           - cflinuxfs3
     ```
     * Follow the current structure of the manifest. For example, if the manifest includes the two most recent patch versions for each minor version of the language, you should also include the two most recent patch versions for each minor version of the language, such as both `ruby-2.1.9` and `ruby-2.1.8`.
-    * Copy the `uri` and the `md5` from the `build-BINARY-NAME` job that ran in the Concourse binary-builder pipeline and add them to the manifest.
+    * Copy the `uri` and the `md5` from the `build-BINARY-NAME` job that ran in the Concourse dependency-builds pipeline and add them to the manifest.
     <p class="note"><strong>Note</strong>: In the PHP buildpack, you may see a <code>modules</code> line for each PHP dependency in the manifest. Do not include this <code>modules</code> line in your new PHP dependency entry. The <code>modules</code> line will be added to the manifest by the <code>ensure-manifest-has-modules</code> Concourse job in the <code>php-buildpack</code> when you commit and push your changes. You can see this in the output logs of the <code>build-out</code> task.</p>
 
 1. Replace any other mentions of the old version number in the buildpack repository with the new version number. The CF buildpack team uses [Ag](https://github.com/ggreer/the_silver_searcher) for text searching.
@@ -157,7 +157,7 @@ __Godep__:
 * **Verified with**: The SHA256 of the source
 **Example**: [Automated enqueuing of binary build for Godep 72](https://github.com/cloudfoundry/buildpacks-ci/commit/42a361193ea9a4c77a93451228c93bf96f78d50a)
 
-    <p class="note"><strong>Note</strong>: The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/binary-builder.yml">binary-builder</a> pipeline automates the process of detecting, uploading, and updating Godep in the manifest.</p>
+    <p class="note"><strong>Note</strong>: The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline automates the process of detecting, uploading, and updating Godep in the manifest.</p>
 
 ###<a id="build-nodejs-buildpack"></a>Node.js Buildpack
 
@@ -221,7 +221,7 @@ __Composer__:
 * For Composer, there is no build process as the `composer.phar` file is the binary. In the manual process, connect to the appropriate S3 bucket using the correct AWS credentials. Create a new directory with the name of the
 composer version, for example `1.0.2`, and put the appropriate `composer.phar` file into that directory. For Composer `v1.0.2`, connect and create the `php/binaries/trusty/composer/1.0.2` directory. Then place the `composer.phar` file into that directory so the binary is available at `php/binaries/trusty/composer/1.0.2/composer.phar`.
 
-    <p class="note"><strong>Note</strong>: The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/binary-builder.yml">binary-builder</a> pipeline automates the process of detecting, uploading, and updating Composer in the manifest.</p>
+    <p class="note"><strong>Note</strong>: The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline automates the process of detecting, uploading, and updating Composer in the manifest.</p>
 
 * **Example**: [Automated enqueuing of binary build for Composer 1.1.2](https://github.com/cloudfoundry/buildpacks-ci/commit/d51abbdb919ca51df86628b37366c55311b05f38)
 
