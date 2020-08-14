@@ -129,7 +129,7 @@ For all buildpacks that supply dependencies via `/bin/supply`:
 	* `/lib`: Contains libraries intended for `$LD_LIBRARY_PATH` during staging and launch.
 	* `/include`: Contains header files intended for compilation during staging.
 	* `/pkgconfig`: Contains `pkgconfig` files intended for compilation during staging.
-	* `/env`: Contains environment variabless intended for staging, loaded as `FILENAME=FILECONTENTS`.
+	* `/env`: Contains environment variables intended for staging, loaded as `FILENAME=FILECONTENTS`.
 	* `/profile.d`: Contains scripts intended for `/app/.profile.d`, sourced before launch.
 
 * The buildpack may make use of previous non-final buildpacks by scanning `/tmp/deps/` for index-named directories containing `config.yml`.
