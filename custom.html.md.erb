@@ -62,7 +62,7 @@ To specify a default version:
 1. Run the `default_version_for` script from the [compile-extensions](https://github.com/cloudfoundry/compile-extensions) repository, passing the path of your `manifest.yml` and the dependency name as arguments. Run:
 
     ```
-    ./compile-extensions/bin/default\_version\_for manifest.yml DEPENDENCY-NAME
+    ./compile-extensions/bin/default_version_for manifest.yml DEPENDENCY-NAME
     ```
     Where `DEPENDENCY-NAME` is the `name` property from the `default_versions` object in your `manifest.yml` file.
 
@@ -140,7 +140,7 @@ For the last buildpack:
 
 * To make use of dependencies provided by previous buildpacks, the last buildpack:
 	* May use `/bin` during staging, or make it available in `$PATH` during launch.
-	* May use `/lib` during staging, or make it available in `$LD\_LIBRARY\_PATH` during launch.
+	* May use `/lib` during staging, or make it available in `$LD_LIBRARY_PATH` during launch.
 	* May use `/include`, `/pkgconfig`, or `/env` during staging.
 	* May copy files from `/profile.d` to `/tmp/app/.profile.d` during staging.
 	* May use the supplied config object in `config.yml` during the staging process.

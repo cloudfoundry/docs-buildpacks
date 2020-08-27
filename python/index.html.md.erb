@@ -120,9 +120,9 @@ fixtures==2.0.0
 If the private repository uses a custom SSL certificate that is installed on the platform, you may see an error similar to the following:
 
 <pre class="terminal">
-Could not fetch URL <span>https:</span>//example.com/api/pypi/ext\_pypi/simple/fixtures/:
+Could not fetch URL <span>https:</span>//example.com/api/pypi/ext_pypi/simple/fixtures/:
 There was a problem confirming the ssl certificate:
-[SSL: CERTIFICATE\_VERIFY\_FAILED] certificate verify failed (\_ssl.c:777) - skipping
+[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:777) - skipping
 </pre>
 
 This error occurs because `pip` does not use system certificates by default. To resolve this issue, set the `PIP_CERT` environment variable in the `manifest.yml` file to point to the system certificate store.
@@ -152,7 +152,7 @@ channels:
 If the private repository uses a custom SSL certificate that is installed on the platform, you may see an error similar to the following:
 
 <pre class="terminal">
-Error: Connection error: [SSL: CERTIFICATE\_VERIFY\_FAILED] certificate verify failed (\_ssl.c:581):
+Error: Connection error: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:581):
 </pre>
 
 This error occurs because `conda` does not use system certificates by default. To resolve this issue, set the `CONDA_SSL_VERIFY` environment variable in the `manifest.yml` file to point to the system certificate store.
