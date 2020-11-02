@@ -206,6 +206,7 @@ If you need to use a proxy to download dependencies during staging, you can set 
 
 Versions of Python 2.7.9 and later use certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to [add the custom certificates into the application container](https://docs.cloudfoundry.org/adminguide/trusted-system-certificates.html).
 
+To configure your Python applications to make HTTP requests with this custom certificate, set the environment variable `REQUESTS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"`. 
 
 ## <a id='help_support'></a> Help and Support
 
