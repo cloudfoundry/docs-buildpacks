@@ -209,14 +209,3 @@ The app is then deployed to Cloud Foundry, and the buildpack is cloned from the 
 <%= vars.disable_custom %>
 
 <p class="note"><strong>Note:</strong> A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, see <a href="https://help.github.com/articles/syncing-a-fork">Syncing a fork</a> in the GitHub documentation.</p>
-
-
-## <a id='cf-compat-cnb'></a> About Creating CF-compatible CNBs
-
-If you are creating a CF-compatible CNB (Cloud Foundry-compatible Cloud Native Buildpack),
-then you need to use the `cnb2cf` tool to generate the compatibility layer.
-
-This layer mediates API differences between Cloud Native Buildpacks and Cloud Foundry Buildpacks.
-For information about this tool, see [cnb2cf](https://github.com/cloudfoundry/cnb2cf) in GitHub.
-
-For general information about CNBs, see [What Are Buildpacks?](https://buildpacks.io/) in Buildpacks.io.
