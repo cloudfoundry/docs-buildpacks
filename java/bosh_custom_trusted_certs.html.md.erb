@@ -15,6 +15,6 @@ Run the following command to configure support for this feature:
 $ cf set-env APP-NAME JBP_CONFIG_CONTAINER_CERTIFICATE_TRUST_STORE '{enabled: true}'
 </pre>
 
-Alternatively, you can modify the buildpack by setting the [<code>enabled</code>](https://github.com/cloudfoundry/java-buildpack/blob/master/config/container_certificate_trust_store.yml#L18) property to true in `config/container_certificate_trust_store.yml`. 
+Alternatively, you can modify the buildpack by setting the [<code>trust_manager_enabled</code>](https://github.com/cloudfoundry/java-buildpack/blob/main/config/container_security_provider.yml) property to `true` in `config/container_security_provider.yml`. 
 
 For more information, see [Container Security Provider](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/framework-container_security_provider.md) in the official Java buildpack documentation. 
