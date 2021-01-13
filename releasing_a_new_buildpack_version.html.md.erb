@@ -55,7 +55,7 @@ a Git tag to the buildpack and mark the tag as a release on GitHub.
 
 If `buildpacks-ci` is deployed to Concourse, the buildpack update passes through the following life cycle:
 
-1. Concourse triggers the `buildpack-to-master` job in the pipeline for the updated buildpack. This job merges develop onto the master branch of the buildpack.
+1. Concourse triggers the `buildpack-to-master` job in the pipeline for the updated buildpack. This job merges develop onto the master or main branch of the buildpack.
 
 1. The `detect-new-buildpack-and-upload-artifacts` job triggers in the pipeline for the updated buildpack. This job creates a cached and uncached buildpack and uploads them to an AWS S3 bucket. 
 
