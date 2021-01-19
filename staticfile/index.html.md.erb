@@ -174,9 +174,9 @@ Allows you to specify custom location definitions with additional directives. Fo
 
 To customize the `location` block of the NGINX configuration file:
 
-1. Set an alternative `root` directory. The `location_include` property only works in conjunction with an alternative `root`.
-    * **Directory**: 'public'
-    * **File**: 'public/index.html' or other static content files ...
+1. Set an alternative `root` directory. The `location_include` property only works in conjunction with an alternative `root`. See the following example that includes a static content file:
+    * **Directory**: `public`
+    * **File**: `public/index.html`
 1. Create a file with location-scoped NGINX directives. See the following example, which causes visitors of your site to receive the `X-MySiteName` HTTP header:
     * **File**: `nginx/conf/includes/custom_header.conf`
     * **Content**: `add_header X-MySiteName BestSiteEver;`
