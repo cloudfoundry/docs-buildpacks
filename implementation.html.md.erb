@@ -20,7 +20,7 @@ This Ruby buildpack uses public accessible Amazon S3 hosting for these dependenc
 
 ## <a id='online'></a>Online Cloud Foundry Deployments ##
 
-Online deployments of Cloud Foundry, such as [Pivotal Web Services](https://run.pivotal.io/), generally work well with third-party and Heroku buildpacks without modification.
+Online deployments of Cloud Foundry generally work well with third-party and Heroku buildpacks without modification.
 You can specify the use of these buildpacks with the `-b` option to the Cloud
 Foundry Command Line Interface (cf CLI).
 
@@ -30,4 +30,3 @@ Many of our customers do not allow the cell, or any part of their Cloud Foundry 
 Security and Change Management concerns impact how an enterprise or smaller business business decides to architect their network.
 
 To satisfy these customers, we fork existing buildpacks, or create customized ones, which support the loading of dependencies from behind a firewall. When building your buildpack, you should consider these mechanisms, especially if you want enterprise companies to adopt your platform.
-
