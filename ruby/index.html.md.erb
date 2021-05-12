@@ -37,7 +37,7 @@ Specify specific versions of the Ruby runtime in the `Gemfile` for your app as d
 
 ### <a id='mri_runtime'></a>MRI ###
 
-For MRI, specify the version of Ruby in your `Gemfile` as follows: 
+For MRI, specify the version of Ruby in your `Gemfile` as follows:
 
 ```ruby
 ruby '~> 2.2.3'
@@ -54,14 +54,14 @@ In <a href="https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.6.18"
 
 For JRuby, specify the version of Ruby in your `Gemfile` based on the version of JRuby your app uses.
 
-JRuby version `1.7.x` supports either `1.9` mode or `2.0` mode. 
+JRuby version `1.7.x` supports either `1.9` mode or `2.0` mode.
 
-- For `1.9` mode, use the following: 
+- For `1.9` mode, use the following:
 
     ```ruby
     ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.25'
     ```
-- For `2.0` mode, use the following: 
+- For `2.0` mode, use the following:
 
     ```ruby
     ruby '2.0.0', :engine => 'jruby', :engine_version => '1.7.25'
@@ -91,7 +91,7 @@ Staging failed: Buildpack compilation step failed
 
 As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' its dependencies.
 
-For the Ruby buildpack, use the `bundle package --all` command in Bundler to vendor the dependencies. 
+For the Ruby buildpack, use the `bundle package --all` command in Bundler to vendor the dependencies.
 
 Example:
 
@@ -128,11 +128,9 @@ the `http_proxy` and/or `https_proxy` environment variables. For more informatio
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-Ruby uses certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to add the custom certificates into the app container. 
+Ruby uses certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to add the custom certificates into the app container.
 
-<% if vars.platform_code == 'CF' %>
-  <%= partial "../link-configure-trusted-certificates" %>
-<% end %>
+<% vars.link_configure_trusted_certificates %>
 
 ## <a id='help_support'></a>Help and Support ##
 
@@ -141,4 +139,3 @@ Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.
 For more information about using and extending the Ruby buildpack in Cloud Foundry, see the [Ruby buildpack repository](https://github.com/cloudfoundry/ruby-buildpack) on GitHub.
 
 You can find current information about the Ruby buildpack in the [release notes for the Ruby buildpack](https://github.com/cloudfoundry/ruby-buildpack/releases) on GitHub.
-
