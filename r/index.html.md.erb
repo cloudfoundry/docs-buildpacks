@@ -49,11 +49,12 @@ see [Starting, Restarting, and Restaging Applications](../../devguide/deploy-app
 
 ## <a name='specifying_dependencies'></a> Specifying App Dependencies
 
-As of v0.0.5, the following packages are provided by the buildpack:
+As of v1.0.0, the following packages are provided by the buildpack:
 
 - Rserve
 - forecast
 - shiny
+- plumber
 
 To specify additional packages needed by your app, provide the CRAN mirror and names of the packages inside your `r.yml` file. You can also specify the number of threads to use for parallel installation. For example:
 
