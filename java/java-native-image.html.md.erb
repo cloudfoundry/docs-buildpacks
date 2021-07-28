@@ -3,79 +3,98 @@ title: Using Java Native Image
 owner: Java
 ---
 
-There are a growing number of Java users that are building Java applications using <a href="https://www.graalvm.org/reference-manual/native-image/">support for Native Images</a>.
+This topic describes how to build Java apps with native image support and deploy those apps to <%= vars.app_runtime_first %>.
 
-Java users deploying to CloudFoundry may deploy applications compiled using Native Image support, however, the CloudFoundry Java buildpack does not provide support to build, compile and turn applications into a native image. You need to perform those steps before deploying to CloudFoundry.
+## <a id="overview"></a>Overview
 
-There are two paths you can take to build your application in a way suitable for running on CloudFoundry.
+A growing number of Java users are building Java apps using support for native images.
+For more information, see [Native Image](https://www.graalvm.org/reference-manual/native-image/) in the GraalVM documentation.
 
-## Build with Cloud Native Buildpacks
+Java users deploying to <%= vars.app_runtime_abbr %> can deploy apps compiled using native image support.
+However, the <%= vars.app_runtime_abbr %> Java buildpack does not provide support to build, compile, and turn apps into a native image.
+You must perform those steps before deploying to <%= vars.app_runtime_abbr %>.
 
-Cloud Native Buildpacks include support for building native image applications, so building is easy. You may pass in your source code or a compiled JAR and Cloud Native Buildpacks will install all the tools required and build a compatible image.
+To build your app in a way that is suitable for running on <%= vars.app_runtime_abbr %>, you can do one of the following:
 
-### Example Build Using Cloud Native Buildpacks
+- [Build Using Cloud Native Buildpacks](#cloud-native-buildpacks)
+- [Build Using Native Build Tools](#native-build-tools)
 
-1. Check out the examples.
+
+## <a id="cloud-native-buildpacks"></a>Build Using Cloud Native Buildpacks
+
+Cloud Native Buildpacks include support for building native image apps.
+You can pass in your source code or a compiled JAR and Cloud Native Buildpacks installs the required tools and builds a compatible image.
+
+### <a id="cnb-example-build"></a>Example Build Using Cloud Native Buildpacks
+
+1. Clone the example repository from GitHub:
 
     ```bash
     git clone https://github.com/paketo-buildpacks/samples
     cd samples/java/native-image/java-native-image-sample
     ```
 
-2. Build.
+2. Build the example image:
 
     ```bash
     ./mvnw package
     pack build apps/native-image -p target/demo-0.0.1-SNAPSHOT.jar -e BP_NATIVE_IMAGE=true -B paketobuildpacks/builder:tiny
     ```
 
-For further help building with Cloud Native Buildpacks, see the [Getting Started Guide here](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks).
+For more information about building with Cloud Native Buildpacks, see [Getting Started](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks) in the Spring Native documentation.
 
-### Example Deploy using Cloud Native Buildpacks
+### <a id="cnb-example-deploy"></a>Deploy Using Cloud Native Buildpacks
 
-To deploy an application compiled using the steps from the previous section on CloudFoundry, you can either deploy the resulting image directly using CloudFoundry's Docker support, or if that is disabled, you may extract the native image binary from the container image and deploy using the binary buildpack.
+This section describes how to deploy a Java app with native image support using Cloud Native Buildpacks.
 
-#### Deploy from Image
+To deploy an app compiled using the steps from the previous section to <%= vars.app_runtime_abbr %>, you can deploy the image directly using <%= vars.app_runtime_abbr %>'s Docker support.
+If Docker support is disabled, you can extract the native image binary from the container image and deploy the app using the binary buildpack.
 
-1. Publish your image. You can do this in a number of ways. For example, with the `--publish` flag to `pack build`, with `docker tag` and `docker push` or through any other means of publishing a container image to a registry.
+#### <a id="deploy-image"></a>Deploy from Image
+
+To deploy the app from an image:
+
+1. Publish your image. You can do this in a number of ways. For example, you can use the `--publish` flag to `pack build` with `docker tag` and `docker push`, or through any other means of publishing a container image to a registry.
 
 2. Run `cf push -o registry.example.com/apps/native-image native-image-app`.
+    This option requires that your foundation support deploying Docker images.
+    To validate this, run the following command and confirm that `diego_docker` is set to `enabled`. If it is set to `disabled`, you cannot use this deployment option.
 
-This option requires that your foundation support deploying Docker images. To validate this, run the following command and confirm that `diego_docker` is set to `enabled`. If it's set to `disabled`, you cannot use this deployment option.
+    ```bash
+    > cf feature-flags
+    Retrieving status of all flagged features as user@example.com...
 
-```bash
-> cf feature-flags
-Retrieving status of all flagged features as user@example.com...
+    features                                      state
+    user_org_creation                             disabled
+    private_domain_creation                       enabled
+    app_bits_upload                               enabled
+    app_scaling                                   enabled
+    route_creation                                enabled
+    service_instance_creation                     enabled
+    diego_docker                                  enabled
+    set_roles_by_username                         enabled
+    unset_roles_by_username                       enabled
+    task_creation                                 enabled
+    env_var_visibility                            enabled
+    space_scoped_private_broker_creation          enabled
+    space_developer_env_var_visibility            enabled
+    service_instance_sharing                      enabled
+    hide_marketplace_from_unauthenticated_users   disabled
+    resource_matching                             enabled
+    ```
 
-features                                      state
-user_org_creation                             disabled
-private_domain_creation                       enabled
-app_bits_upload                               enabled
-app_scaling                                   enabled
-route_creation                                enabled
-service_instance_creation                     enabled
-diego_docker                                  enabled
-set_roles_by_username                         enabled
-unset_roles_by_username                       enabled
-task_creation                                 enabled
-env_var_visibility                            enabled
-space_scoped_private_broker_creation          enabled
-space_developer_env_var_visibility            enabled
-service_instance_sharing                      enabled
-hide_marketplace_from_unauthenticated_users   disabled
-resource_matching                             enabled
-```
+#### <a id="deploy-binary"></a>Extract the Image and Deploy the Binary
 
-#### Extract & Deploy the Binary
+To extract and deploy your app using the binary buildpack:
 
-1. Create a script to extract the files.
+1. Create a script to extract the files:
 
     ```bash
     #!/bin/bash
 
     if [ -z "$1" ] || [ -z "$2" ]; then
         echo "USAGE: extract.sh image-name full-main-class"
-        echo 
+        echo
         exit 1
     fi
 
@@ -85,77 +104,98 @@ resource_matching                             enabled
     docker rm "$CONTAINER_ID" > /dev/null
     ```
 
-    This script is option, but illustrates the process of extracting the binary file. It is just running `docker create` and `docker cp` to extract the file from the image, followed by `docker rm` to remove the container which is not needed. You could do this manually, or using any other tools for interacting with a container image.
+    This script is optional, but illustrates the process of extracting the binary file.
+    It runs `docker create` and `docker cp` to extract the file from the image, followed by `docker rm` to remove the containerd.
+    You can do this manually, or you can use any other tools for interacting with a container image.
 
-2. Run extract script.
+2. Run the extract script:
 
     ```bash
-    $ ./extract.sh apps/native-image io.paketo.demo.DemoApplication
-    $ file ./out/io.paketo.demo.DemoApplication
-    io.paketo.demo.DemoApplication: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=05cb81992f3859c9653a9ef6a691e798a9c48b9b, with debug_info, not stripped
+    $ ./extract.sh apps/native-image io.paketo.demo.Demoapp
+    $ file ./out/io.paketo.demo.Demoapp
+    io.paketo.demo.Demoapp: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=05cb81992f3859c9653a9ef6a691e798a9c48b9b, with debug_info, not stripped
     ```
 
-    The extract script will place the resulting binary in a directory called `out` under the current working directory. You can run `file` to examine it and confirm that it is a 64-bit Linux executable.
+    The extract script places the binary in a directory called `out` under the current working directory.
+    You can run `file` to examine it and confirm that it is a 64-bit Linux executable.
 
-3. Run `cf push -b binary_buildpack -m 256M -p ./out -c ./io.paketo.demo.DemoApplication native-image`. This will push up just the compiled binary and execute it. You may adjust other properties or use a `manifest.yml` file to deploy as well.
+3. Run `cf push -b binary_buildpack -m 256M -p ./out -c ./io.paketo.demo.Demoapp native-image`. This pushes the compiled binary and executes it. You can adjust other properties or use a `manifest.yml` file to deploy as well.
 
-## Build Native Build Tools
+## <a id="native-build-tools"></a>Build Using Native Build Tools
 
-If you do not want to build using Cloud Native Buildpacks, you may build and compile directly using the Native Build Tools tools.
+This section describes how to deploy a Java app with native image support using Native Build Tools.
+If you do not want to build using Cloud Native Buildpacks, you can build and compile directly using the Native Build Tools.
 
-1. Obtain an Ubuntu Bionic computer, VM or container. It may not be strictly necessary to use Ubuntu Bionic, but this is recommended for best compatibility with the CloudFoundry `cflinuxfs3` root filesystem.
+To build a Java app using Native Build Tools:
 
-2. [Install GraalVM](https://www.graalvm.org/docs/getting-started/) and [Install the Java Native Image tools](https://www.graalvm.org/reference-manual/native-image/#install-native-image).
+1. Obtain an Ubuntu Bionic computer, VM, or container.
+Ubuntu Bionic is recommended for best compatibility with the <%= vars.app_runtime_abbr %> `cflinuxfs3` root filesystem.
 
-3. Follow the [instructions here](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#_add_the_native_build_tools_plugin) to add the Native Build Tools to your Maven or Gradle project. This only needs to be done once.
+2. Install GraalVM. See [Get Started with GraalVM](https://www.graalvm.org/docs/getting-started/).
 
-3. Check out the examples.
+1. Install the Java Native Image tools. See [Install Native Image](https://www.graalvm.org/reference-manual/native-image/#install-native-image).
+
+3. To add the Native Build Tools to your Maven or Gradle project, follow the instructions in [Add the native build tools plugin](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#_add_the_native_build_tools_plugin) in the Spring documentation. This only needs to be done once.
+
+1. Clone the example repository from GitHub:
 
     ```bash
     git clone https://github.com/paketo-buildpacks/samples
     cd samples/java/native-image/java-native-image-sample
     ```
 
-4. Build.
+2. Build the example image:
 
     ```bash
     mvn -Pnative -DskipTests package
     ```
 
-For further help building with Native Build Tools, see the [Getting Started Guide here](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-native-build-tools).
+For more information about building with Native Build Tools, see [Getting started with Native Build Tools](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-native-build-tools) in the Spring documentation.
 
-### Example Deploy with Direct Build
+### <a id="direct-build"></a>Deploy with Direct Build
 
-To deploy on CloudFoundry, you just need to `cf push` using the binary buildpack. Continuing the example from the previous section, you can do that with the following steps.
-    
-1. Zip the executable created by your build tool, either Maven or Gradle. For example with Maven, `zip demo.zip target/demo`. Alternatively, you can copy the executable into a directory by itself. For example with Maven, `mkdir -p ./out && cp target/demo ./out/`. This will be the root for `cf push`.
-2. Run `cf push -b binary_buildpack -p demo.zip -c ./target/demo native-image`. This will push the root zip or directory we created in the previous step. If you use a directory instead of a zip archive, simply adjust the `-p` argument. This is important so that it only uploads the compiled binary, not your entire project. You may adjust other properties or use a `manifest.yml` file to deploy as well.
+This section describes how to deploy a Java app with native image support using a direct build.
 
-## Spring Boot & Spring Native
+To deploy a Java app with native image support using the binary buildpack:
 
-Regardless of how you build, with Spring Boot 2.5 and Spring Native 0.10.1, there is a [bug](https://github.com/spring-projects-experimental/spring-native/issues/870) that will cause `cf push` to fail. The problem is caused by conditional behavior in Spring Boot Actuator when run on CloudFoundry. It is fixed in Spring Native 0.10.2.
+1. Zip the executable created by your build tool, either Maven or Gradle.
+For example, with Maven, `zip demo.zip target/demo`.
+Alternatively, you can copy the executable into a directory by itself.
+For example, with Maven, `mkdir -p ./out && cp target/demo ./out/`.
+This is the root for `cf push`.
+2. Run `cf push -b binary_buildpack -p demo.zip -c ./target/demo native-image`. This pushes the root zip or directory you created in the previous step.
+If you use a directory instead of a zip archive, adjust the `-p` argument.
+This is important so that it only uploads the compiled binary, not your entire project.
+You can adjust other properties or use a `manifest.yml` file to deploy as well.
 
-You can also work around this by adding the following hints above your `@SpringBootApplication` annotation.
+## <a id="spring-boot"></a>Spring Boot and Spring Native
+
+Regardless of how you build your app, with Spring Boot v2.5 and Spring Native v0.10.1, there is a bug that causes `cf push` to fail.
+The problem is caused by conditional behavior in Spring Boot Actuator when run on <%= vars.app_runtime_abbr %>. It is fixed in Spring Native v0.10.2.
+
+For more information, see the [spring-projects-experimental](https://github.com/spring-projects-experimental/spring-native/issues/870) repository on GitHub.
+
+You can also work around this issue by adding the following hints above your `@SpringBootapp` annotation:
 
 For example:
 
-```java
-@NativeHint(trigger = ReactiveCloudFoundryActuatorAutoConfiguration.class, types = {
-        @TypeHint(types = EndpointCloudFoundryExtension.class, access = AccessBits.ANNOTATION),
-        @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryEndpointFilter"),
-        @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.cloudfoundry.reactive.CloudFoundryWebFluxEndpointHandlerMapping$CloudFoundryLinksHandler", access = AccessBits.LOAD_AND_CONSTRUCT
-                | AccessBits.DECLARED_METHODS) })
-@NativeHint(trigger = CloudFoundryActuatorAutoConfiguration.class, types = {
-        @TypeHint(types = EndpointCloudFoundryExtension.class, access = AccessBits.ANNOTATION),
-        @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryEndpointFilter"),
-        @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.cloudfoundry.servlet.CloudFoundryWebEndpointServletHandlerMapping$CloudFoundryLinksHandler", access = AccessBits.LOAD_AND_CONSTRUCT
-                | AccessBits.DECLARED_METHODS) })
-@SpringBootApplication
-public class DemoApplication {
+  ```java
+  @NativeHint(trigger = Reactive<%= vars.app_runtime_abbr %>ActuatorAutoConfiguration.class, types = {
+          @TypeHint(types = Endpoint<%= vars.app_runtime_abbr %>Extension.class, access = AccessBits.ANNOTATION),
+          @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.<%= vars.app_runtime_abbr %>EndpointFilter"),
+          @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.reactive.<%= vars.app_runtime_abbr %>WebFluxEndpointHandlerMapping$<%= vars.app_runtime_abbr %>LinksHandler", access = AccessBits.LOAD_AND_CONSTRUCT
+                  | AccessBits.DECLARED_METHODS) })
+  @NativeHint(trigger = <%= vars.app_runtime_abbr %>ActuatorAutoConfiguration.class, types = {
+          @TypeHint(types = Endpoint<%= vars.app_runtime_abbr %>Extension.class, access = AccessBits.ANNOTATION),
+          @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.<%= vars.app_runtime_abbr %>EndpointFilter"),
+          @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.servlet.<%= vars.app_runtime_abbr %>WebEndpointServletHandlerMapping$<%= vars.app_runtime_abbr %>LinksHandler", access = AccessBits.LOAD_AND_CONSTRUCT
+                  | AccessBits.DECLARED_METHODS) })
+  @SpringBootapp
+  public class Demoapp {
 
-    public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
-    }
+      public static void main(String[] args) {
+          Springapp.run(Demoapp.class, args);
+      }
 
-}
-```
+  }
+  ```
