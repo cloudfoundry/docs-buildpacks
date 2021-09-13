@@ -3,11 +3,9 @@ title: R Buildpack
 owner: Buildpacks
 ---
 
-
-
 This topic describes how to push your R app to Cloud Foundry and how to configure your R app to use the R buildpack.
 
-## <a name='pushing_apps'></a> Push an App
+## <a id="pushing_apps"></a> Push an App
 
 Cloud Foundry automatically uses the R buildpack if it detects a
 `r.yml` file in the root directory of your project.
@@ -18,13 +16,13 @@ If your Cloud Foundry deployment does not have the R buildpack installed, or the
 $ cf push my_app -b https://github.com/cloudfoundry/r-buildpack.git
 </pre>
 
-## <a name='supported_versions'></a> Supported Versions
+## <a id="supported_versions"></a> Supported Versions
 
 You can find the list of supported R versions in the 
 [R buildpack release notes](https://github.com/cloudfoundry/r-buildpack/releases).
 
 
-## <a name='start_command'></a>Start Command ###
+## <a id="start_command"></a>Start Command ###
 
 The R buildpack does not generate a default start command for your applications. Instead, you must specify a start command for your app.
 
@@ -47,7 +45,7 @@ To stage an app with the R buildpack and start the app, do one of the following:
 For more information about starting apps, 
 see [Starting, Restarting, and Restaging Applications](../../devguide/deploy-apps/start-restart-restage.html).
 
-## <a name='specifying_dependencies'></a> Specifying App Dependencies
+## <a id="specifying_dependencies"></a> Specifying App Dependencies
 
 As of v0.0.5, the following packages are provided by the buildpack:
 
@@ -67,7 +65,7 @@ packages:
       - name: jsonlite
 ```
 
-## <a name='vendoring'></a> Vendoring App Dependencies
+## <a id="vendoring"></a> Vendoring App Dependencies
 
 If you are deploying in an environment that is disconnected from the Internet, you must _vendor_ your app's dependencies, which means you must make these packages available for offline use. You can vendor dependencies by using a package manager. 
 
@@ -103,18 +101,18 @@ Example app directory tree:
 
 For more information about using buildpacks in disconnected environments, see [Disconnected environments](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md).
 
-## <a name='proxy_support'></a> Proxy Support
+## <a id="proxy_support"></a> Proxy Support
 
 If you need to use a proxy to download dependencies during staging, you can set
 the `http_proxy` and `https_proxy` environment variables. For more information, see [Using a Proxy](../proxy-usage.html).
 
 
-## <a name='bosh_trusted_cert'></a> BOSH Configured Custom Trusted Certificate Support
+## <a id="bosh_trusted_cert"></a> BOSH Configured Custom Trusted Certificate Support
 
 R uses certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to add the custom certificates into the application container. For more information, see [Configuring Trusted System Certificates for Applications](../../devguide/deploy-apps/trusted-system-certificates.html).
 
 
-## <a name='help_support'></a> Help and Support
+## <a id="help_support"></a> Help and Support
 
 Join the **#buildpacks** channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
 
