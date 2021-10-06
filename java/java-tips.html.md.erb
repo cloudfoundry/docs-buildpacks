@@ -112,7 +112,7 @@ If you require end-to-end HTTP/2, for example because of gRPC, you will need to 
 1. The application needs to enable support for HTTP/2.
     - <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.webserver.configure-http2">Spring Boot instructions to enable HTTP/2 support in the application</a>.
     - If you are deploying a standard non-executable WAR file, you do not need to perform any additional steps. The Java buildpack will configure Apache Tomcat to accept HTTP/2 connections.
-    - For other frameworkslike Play and Ratpack or for apps utilizing the Dist Zip format, these also embed an HTTP server and need to be configured to enable HTTP/2 (specifically H2C, clear-text). See your framework's documentation for enabling HTTP/2 and H2C (only H2C is required because Cloud Foundry uses Envoy to secure communications into the application container).
+    - For other frameworks like Play and Ratpack or for apps utilizing the Dist Zip format, these also embed an HTTP server and need to be configured to enable HTTP/2 (specifically H2C, clear-text). See your framework's documentation for enabling HTTP/2 and H2C (only H2C is required because Cloud Foundry uses Envoy to secure communications into the application container).
 2. You need to configure the route to use the HTTP/2 protocol.
     - Using the cf cli: `cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2`.
     - Using a `manifest.yml` file:
