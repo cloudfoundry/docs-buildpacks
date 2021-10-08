@@ -102,7 +102,7 @@ For more information, see [Groovy Container](https://github.com/cloudfoundry/jav
 
 Java applications can be deployed on Cloud Foundry and use HTTP/2. There are two requirements.
 
-1. A Cloud Foundry foundation that has <a href="../../devguide/http2-protocol.html">HTTP/2 support enabled</a>.
+1. A Cloud Foundry foundation that has HTTP/2 support enabled. <%= vars.http2_admin_link %>
 2. Version 8+ of the cf cli.
 
 Without any changes to your application, you can deploy any Java application and get automatic support for the HTTP/2 protocol. A client can connect through routes mapped to your Java applications over HTTP/2, and the foundation will transparently downgrade the protocol and communicate with your application over HTTP/1.1.
@@ -116,7 +116,7 @@ If you require end-to-end HTTP/2, for example because of gRPC, you will need to 
 2. You need to configure the route to use the HTTP/2 protocol.
     - Using the cf cli: `cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2`.
     - Using a `manifest.yml` file:
-        
+
         ```
         ---
         applications:
@@ -285,12 +285,12 @@ Where `YOUR-APP` is the name of your app.
 
 A Java app may crash because of insufficient memory on the Garden container or the JVM on which it runs. The sections below provide guidance for help diagnosing and resolving such issues.
 
-#### <a id='jvm'></a> JVM 
+#### <a id='jvm'></a> JVM
 
 * **Error**: `java.lang.OutOfMemoryError`. For example:
     <pre class="terminal">
     $ cf logs YOUR-APP --recent
-    2016-06-20T09:18:51.00+0100 [APP/0] OUT java.lang.OutOfMemoryError: Metaspace   
+    2016-06-20T09:18:51.00+0100 [APP/0] OUT java.lang.OutOfMemoryError: Metaspace
     </pre>
     Where `YOUR-APP` is the name of your app.
 
@@ -374,8 +374,8 @@ If your app fails to upload when you push it to Cloud Foundry, it may be for one
         ```
         path: .
         ```
-        To re-push just the WAR, either:  
-        * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag. 
+        To re-push just the WAR, either:
+        * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag.
         * Edit the `path` argument in `manifest.yml` to point to the WAR, and re-push the app.
 
 ### <a id='debugging'></a> Debug Java Apps on Cloud Foundry
