@@ -98,6 +98,52 @@ Where `YOUR-APP` is the name of your app.
 
 For more information, see [Groovy Container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-groovy.md) in the Cloud Foundry Java Buildpack repository on GitHub.
 
+## <a id='http-2'></a> HTTP/2
+
+Java applications can be deployed on Cloud Foundry and use HTTP/2. There are two requirements.
+
+1. A Cloud Foundry foundation that has <a href="../../devguide/http2-protocol.html">HTTP/2 support enabled</a>.
+2. Version 8+ of the cf cli.
+
+Without any changes to your application, you can deploy any Java application and get automatic support for the HTTP/2 protocol. A client can connect through routes mapped to your Java applications over HTTP/2, and the foundation will transparently downgrade the protocol and communicate with your application over HTTP/1.1.
+
+If you require end-to-end HTTP/2, for example because of gRPC, you will need to take some additional steps.
+
+1. The application needs to enable support for HTTP/2.
+    - <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.webserver.configure-http2">Spring Boot instructions to enable HTTP/2 support in the application</a>.
+    - If you are deploying a standard non-executable WAR file, you only need to ensure you are using version 4.43 or newer of the Java buildpack. Starting with 4.43, the Java buildpack will configure Apache Tomcat to accept HTTP/2 connections.
+    - For other frameworks like Play and Ratpack or for apps utilizing the Dist Zip format, these also embed an HTTP server and need to be configured to enable HTTP/2 (specifically H2C, clear-text). See your framework's documentation for enabling HTTP/2 and H2C (only H2C is required because Cloud Foundry uses Envoy to secure communications into the application container).
+2. You need to configure the route to use the HTTP/2 protocol.
+    - Using the cf cli: `cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2`.
+    - Using a `manifest.yml` file:
+        
+        ```
+        ---
+        applications:
+        - name: MY-APP
+          routes:
+            - route: MY-APP.EXAMPLE.COM
+              protocol: http2
+        ```
+
+Example:
+
+1. Fetch the Spring Music application: `git clone https://github.com/cloudfoundry-samples/spring-music.git`.
+2. Build the application: `./gradlew assemble`
+3. Push the application but don't assign a route: `cf push --no-route`
+4. Map a route: `cf map-route spring-music EXAMPLE.COM --hostname spring-music --destination-protocol http2`
+5. Validate: `curl https://spring-music.EXAMPLE.COM/request --http2 -s | jq .`
+
+```
+> curl https://spring-music.EXAMPLE.COM/request --http2 -s | jq .
+{
+  "protocol": "HTTP/2.0",
+  "remote-addr": "198.51.100.100",
+  "method": "GET",
+  "scheme": "https",
+  "session-id": "1A891C614AB6B6CB59A56D7F520BBCBD"
+}
+```
 
 ## <a id='java-main'></a> Java Main
 
