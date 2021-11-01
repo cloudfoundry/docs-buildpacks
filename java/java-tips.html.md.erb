@@ -3,7 +3,9 @@ title: Tips for Java Developers
 owner: Java
 ---
 
-Cloud Foundry can deploy a number of different JVM-based artifact types. For a more detailed explanation of what it supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the Cloud Foundry Java Buildpack repository on GitHub.
+This topic describes how the Java buildpack can be used with <%= vars.app_runtime_first %>.
+
+<%= vars.app_runtime_abbr %> can deploy a number of different JVM-based artifact types. For a more detailed explanation of what the Cloud Foundry Java Builpack supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the repository on GitHub.
 
 
 ## <a id='buildpack'></a> Java Buildpack
@@ -41,12 +43,12 @@ Initialized empty Git repository in /tmp/buildpacks/java-buildpack/.git/
 
 ## <a id='configuration'></a> Configuration
 
-In most cases, the buildpack should work without any configuration. If you are new to Cloud Foundry, <%= vars.recommended_by %> recommends that you make your first attempts without modifying the buildpack configuration. If the buildpack requires some configuration, use a fork of the buildpack. For more information, see [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
+In most cases, the buildpack should work without any configuration. If you are new to <%= vars.app_runtime_abbr %>, <%= vars.recommended_by %> recommends that you make your first attempts without modifying the buildpack configuration. If the buildpack requires some configuration, use a fork of the buildpack. For more information, see [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='java-client-library'></a> Java Client Library
 
-The Cloud Foundry Client Library provides a Java API for interacting with a Cloud Foundry instance. This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven plugin, the Cloud Foundry Gradle plugin, and other Java-based tools.
+The Cloud Foundry Client Library provides a Java API for interacting with a <%= vars.app_runtime_abbr %> instance. This library, `cloudfoundry-client-lib`, is used by the Cloud Foundry Maven plugin, the Cloud Foundry Gradle plugin, and other Java-based tools.
 
 For information about using this library, see [Java Cloud Foundry Library](./java-client.html).
 
@@ -68,11 +70,11 @@ Where:
 
 ## <a id='groovy'></a> Groovy
 
-Cloud Foundry supports Groovy apps based on both Ratpack and a simple collection of files.
+<%= vars.app_runtime_abbr %> supports Groovy apps based on both Ratpack and a simple collection of files.
 
 ### <a id='ratpack'></a> Ratpack
 
-Ratpack packages apps into two different styles. Cloud Foundry supports the `distZip` style. To build the ZIP file and deploy it, run:
+Ratpack packages apps into two different styles. <%= vars.app_runtime_abbr %> supports the `distZip` style. To build the ZIP file and deploy it, run:
 
 ```
 gradle distZip
@@ -100,21 +102,23 @@ For more information, see [Groovy Container](https://github.com/cloudfoundry/jav
 
 ## <a id='http-2'></a> HTTP/2
 
-Java applications can be deployed on Cloud Foundry and use HTTP/2. There are two requirements.
+To deploy Java apps that use HTTP/2 on <%= vars.app_runtime_abbr %>, you must have:
 
-1. A Cloud Foundry foundation that has HTTP/2 support enabled. <%= vars.http2_admin_link %>
-2. Version 8+ of the cf cli.
+1. A <%= vars.app_runtime_abbr %> foundation that has HTTP/2 support enabled. <%= vars.http2_admin_link %>
+2. Cloud Foundry Command-Line Interface (cf CLI) v8 or later. See [Upgrading to cf CLI v8](../../cf-cli/v8.html).
 
-Without any changes to your application, you can deploy any Java application and get automatic support for the HTTP/2 protocol. A client can connect through routes mapped to your Java applications over HTTP/2, and the foundation will transparently downgrade the protocol and communicate with your application over HTTP/1.1.
+You can deploy any Java app and get automatic support for the HTTP/2 protocol without making any changes to your app.
+When a client connects through a route mapped to your Java apps over HTTP/2, the foundation transparently downgrades the protocol and communicates with your app over HTTP/1.1.
 
-If you require end-to-end HTTP/2, for example because of gRPC, you will need to take some additional steps.
+If you require end-to-end HTTP/2, for example, because of gRPC, do the following:
 
-1. The application needs to enable support for HTTP/2.
-    - <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.webserver.configure-http2">Spring Boot instructions to enable HTTP/2 support in the application</a>.
-    - If you are deploying a standard non-executable WAR file, you only need to ensure you are using version 4.43 or newer of the Java buildpack. Starting with 4.43, the Java buildpack will configure Apache Tomcat to accept HTTP/2 connections.
-    - For other frameworks like Play and Ratpack or for apps utilizing the Dist Zip format, these also embed an HTTP server and need to be configured to enable HTTP/2 (specifically H2C, clear-text). See your framework's documentation for enabling HTTP/2 and H2C (only H2C is required because Cloud Foundry uses Envoy to secure communications into the application container).
-2. You need to configure the route to use the HTTP/2 protocol.
-    - Using the cf cli: `cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2`.
+1. Enable HTTP/2 support in the app:
+    - See <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.webserver.configure-http2">Configure HTTP/2</a> in the Spring Boot documentation.
+    - If you are deploying a standard non-executable WAR file, you only need to make sure that you are using Java buildpack v4.43 or later. Starting with v4.43, the Java buildpack configures Apache Tomcat to accept HTTP/2 connections.
+    - Other frameworks, including Play, Ratpack, and apps that use the distZip format, embed an HTTP server. You must configure these apps to enable HTTP/2, specifically H2C, clear-text. See your framework's documentation for enabling HTTP/2 and H2C.
+    <p class="note"><strong>Note</strong>: H2C is required because <%= vars.app_runtime_abbr %> uses Envoy to secure communications into the app container.</p>
+2. Configure the route to use the HTTP/2 protocol using either the cf CLI or the app manifest:
+    - Using the cf CLI: `cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2`.
     - Using a `manifest.yml` file:
 
         ```
@@ -126,24 +130,44 @@ If you require end-to-end HTTP/2, for example because of gRPC, you will need to 
               protocol: http2
         ```
 
-Example:
+For example:
 
-1. Fetch the Spring Music application: `git clone https://github.com/cloudfoundry-samples/spring-music.git`.
-2. Build the application: `./gradlew assemble`
-3. Push the application but don't assign a route: `cf push --no-route`
-4. Map a route: `cf map-route spring-music EXAMPLE.COM --hostname spring-music --destination-protocol http2`
-5. Validate: `curl https://spring-music.EXAMPLE.COM/request --http2 -s | jq .`
+1. Fetch the Spring Music app:
 
-```
-> curl https://spring-music.EXAMPLE.COM/request --http2 -s | jq .
-{
-  "protocol": "HTTP/2.0",
-  "remote-addr": "198.51.100.100",
-  "method": "GET",
-  "scheme": "https",
-  "session-id": "1A891C614AB6B6CB59A56D7F520BBCBD"
-}
-```
+    ```
+    git clone https://github.com/cloudfoundry-samples/spring-music.git
+    ```
+2. Build the app:
+
+    ```
+    ./gradlew assemble
+    ```
+3. Push the app without assigning a route:
+
+    ```
+    cf push --no-route
+    ```
+4. Map a route:
+
+    ```
+    cf map-route spring-music EXAMPLE.COM --hostname spring-music --destination-protocol http2
+    ```
+5. Validate:
+
+    ```
+    curl https://spring-music.EXAMPLE.COM/request --http2 -s | jq .
+    ```
+  A successful response looks like the following:
+
+    ```
+    {
+      "protocol": "HTTP/2.0",
+      "remote-addr": "198.51.100.100",
+      "method": "GET",
+      "scheme": "https",
+      "session-id": "1A891C614AB6B6CB59A56D7F520BBCBD"
+    }
+    ```
 
 ## <a id='java-main'></a> Java Main
 
@@ -182,7 +206,7 @@ Where:
 
 ## <a id='play-framework'></a> Play Framework
 
-The Play Framework packages apps into two different styles. Cloud Foundry supports both the `staged` and `dist` styles. To build the `dist` style and deploy it, run:
+The Play Framework packages apps into two different styles. <%= vars.app_runtime_abbr %> supports both the `staged` and `dist` styles. To build the `dist` style and deploy it, run:
 
 ```
 play dist
@@ -261,7 +285,7 @@ The Java buildpack does not bundle a JDBC driver with your app. If you want your
 
 ### <a id='memory'></a> Allocate Sufficient Memory
 
-If you do not allocate sufficient memory to a Java app when you deploy it, it may fail to start, or Cloud Foundry may terminate it. You must allocate enough memory to allow for:
+If you do not allocate sufficient memory to a Java app when you deploy it, it may fail to start, or <%= vars.app_runtime_abbr %> may terminate it. You must allocate enough memory to allow for:
 
 * Java heap
 * Metaspace, if using Java 8
@@ -352,13 +376,13 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
 ### <a id='upload'></a> Troubleshoot Failed Upload
 
-If your app fails to upload when you push it to Cloud Foundry, it may be for one of the following reasons:
+If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it may be for one of the following reasons:
 
-* **WAR is too large**: An upload may fail due to the size of the WAR file. Cloud Foundry testing indicates WAR files as large as 250&nbsp;MB upload successfully. If a WAR file larger than that fails to upload, it may be a result of the file size.
+* **WAR is too large**: An upload may fail due to the size of the WAR file. <%= vars.app_runtime_abbr %> testing indicates WAR files as large as 250&nbsp;MB upload successfully. If a WAR file larger than that fails to upload, it may be a result of the file size.
 
-* **Connection issues**: App uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target Cloud Foundry instance. If an app upload takes a long time, your authorization token can expire before the upload completes. A workaround is to copy the WAR to a server that is closer to the Cloud Foundry instance, and then push it from there.
+* **Connection issues**: App uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target <%= vars.app_runtime_abbr %> instance. If an app upload takes a long time, your authorization token can expire before the upload completes. A workaround is to copy the WAR to a server that is closer to the <%= vars.app_runtime_abbr %> instance, and then push it from there.
 
-* **Out-of-date Cloud Foundry Command-Line Interface (cf CLI) client**: Upload of a large WAR is faster and hence less likely to fail if you are using a recent version of the cf CLI. If you are using an older version of the cf CLI client to upload a large WAR, and having problems, try updating to the latest version of the cf CLI.
+* **Out-of-date cf CLI client**: Upload of a large WAR is faster and hence less likely to fail if you are using a recent version of the cf CLI. If you are using an older version of the cf CLI client to upload a large WAR, and having problems, try updating to the latest version of the cf CLI.
 
 * **Incorrect WAR targeting**: By default, `cf push` uploads everything in the current directory. For a Java app, `cf push` with no option flags uploads source code and other unnecessary files, in addition to the WAR. When you push a Java app, specify the path to the WAR by running:
 
@@ -378,11 +402,11 @@ If your app fails to upload when you push it to Cloud Foundry, it may be for one
         * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag.
         * Edit the `path` argument in `manifest.yml` to point to the WAR, and re-push the app.
 
-### <a id='debugging'></a> Debug Java Apps on Cloud Foundry
+### <a id='debugging'></a> Debug Java Apps on <%= vars.app_runtime_abbr %>
 
-Because of the way that Cloud Foundry deploys your apps and isolates them, it is not possible to connect to your app with the remote Java debugger. Instead, instruct the app to connect to the Java debugger on your local machine.
+Because of the way that <%= vars.app_runtime_abbr %> deploys your apps and isolates them, it is not possible to connect to your app with the remote Java debugger. Instead, instruct the app to connect to the Java debugger on your local machine.
 
-To set up remote debugging when using BOSH Lite or a Cloud Foundry installation:
+To set up remote debugging when using BOSH Lite or a <%= vars.app_runtime_abbr %> installation:
 
 1. Open your project in Eclipse.
 
@@ -396,7 +420,7 @@ To set up remote debugging when using BOSH Lite or a Cloud Foundry installation:
 
 The debugger should now be running. If you switch to the Debug perspective, you should see your app listed in the Debug panel, and it should say `Waiting for vm to connect at port`.
 
-Next, to push your app to Cloud Foundry and instruct Cloud Foundry to connect to the debugger running on your local machine:
+Next, to push your app to <%= vars.app_runtime_abbr %> and instruct <%= vars.app_runtime_abbr %> to connect to the debugger running on your local machine:
 
 1. Edit your `manifest.yml` file. Set the instances count to 1. If you set this greater than one, multiple apps try to connect to your debugger.
 
