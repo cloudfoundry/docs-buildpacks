@@ -90,6 +90,13 @@ To configure these options, add the configuration property as a new line in your
     <td><strong>Proxy support</strong>: Allows you to use a proxy when downloading dependencies during the staging of your app.</td>
   </tr>
   <tr>
+    <td id="enable-http2">
+      <code>enable_http2: true</code><br><br>
+      Alternatively, set the <code>ENABLE_HTTP2</code> environment variable to <code>true</code>.
+    </td>
+    <td><strong>Enable HTTP/2</strong>: Serve requests via HTTP/2 instead of HTTP/1.1. This will disable serving HTTP/1.1 traffic.</td>
+  </tr>
+  <tr>
     <td id="force-https">
       <code>force_https: true</code><br><br>
       Alternatively, set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.
