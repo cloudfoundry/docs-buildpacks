@@ -47,9 +47,16 @@ Staging failed: Buildpack compilation step failed
 
 ## <a id='pip-version'></a> Specify a PIP Version
 
-The Python buildpack supports dependency installation via PIP when a `requirements.txt` file is included at the top level of your app's directory. By default, the PIP module built into Python will be used when staging your app. The version of PIP used in this case will depend on which version of Python is being used. To instead use the latest version of PIP, set the `BP_PIP_VERSION` environment variable to `latest` before staging your app (either via [`cf set-env`](https://cli.cloudfoundry.org/en-US/v6/set-env.html) or by [setting it in the app's `manifest.yml`](../../devguide/deploy-apps/manifest-attributes.html#env-block).
+The Python buildpack supports dependency installation using PIP when a `requirements.txt` file is included at the top level of your app's directory.
+By default, the PIP module built into Python is used when staging your app.
+The version of PIP used in this case depends on which version of Python is being used.
 
-<p class="note" markdown="1"><strong>Note</strong>: Currently, only <code>latest</code> is supported when setting <code>BP_PIP_VERSION</code>, as the buildpack does not provide multiple versions of its independent PIP dependency. You may inspect the <a href="https://github.com/cloudfoundry/python-buildpack/releases">buildpack's releases</a> to determine which version of PIP is currently provided.</p>
+To use the latest version of PIP, set the `BP_PIP_VERSION` environment variable to `latest` before staging your app by doing either of the following:
+
+  - Use `cf set-env`. See [set-env](https://cli.cloudfoundry.org/en-US/v6/set-env.html) in the Cloud Foundry CLI Reference Guide.
+  - Set the PIP version in the app manifest. See _Environment Variables_ in [App Manifest Attribute Reference](../../devguide/deploy-apps/manifest-attributes.html#env-block).
+
+<p class="note" markdown="1"><strong>Note</strong>: Currently, only <code>latest</code> is supported when setting <code>BP_PIP_VERSION</code>. The buildpack does not provide multiple versions of its independent PIP dependency. You can inspect the buildpack's releases to determine which version of PIP is currently provided. See <a href="https://github.com/cloudfoundry/python-buildpack/releases">Python buildpack releases</a> on GitHub.</p>
 
 ## <a id='start-command'></a> Specify a Start Command
 
@@ -211,7 +218,7 @@ If you need to use a proxy to download dependencies during staging, you can set 
 
 Versions of Python 2.7.9 and later use certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to [add the custom certificates into the application container](https://docs.cloudfoundry.org/adminguide/trusted-system-certificates.html).
 
-To configure your Python applications to make HTTP requests with this custom certificate, set the environment variable `REQUESTS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"`. 
+To configure your Python applications to make HTTP requests with this custom certificate, set the environment variable `REQUESTS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"`.
 
 ## <a id='help_support'></a> Help and Support
 
