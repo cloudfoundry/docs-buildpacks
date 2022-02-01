@@ -47,11 +47,14 @@ applications:
 If you do not specify a start command in a `Procfile`, in the manifest, or with the `-c` flag for `cf push`, the generated binary will be used as the start command. Example: `my-go-server`
 
 ### <a id='with_godep'></a>Push an App with Go Modules ###
-
-In Go v1.11 and later, you can use the `go mod` vendoring tool that comes with Go.
+As of Go 1.11 you can use the `go mod` vendoring tool that comes with Go.
 If you are using [go mod](https://github.com/golang/go/wiki/Modules) to package your dependencies, make sure that you have created a valid `go.mod` file in the root directory of your app by running `go mod init`.
 
-The following is an example `go.mod` file:
+#### <a id='gomod_1.11'></a>Go Sample App
+
+* [Sample Go app](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/mod)
+
+An example `go.mod` file:
 
 ```
 module go-online
@@ -102,7 +105,11 @@ If you are using [godep](https://github.com/tools/godep) to package your depende
 
 When using godep, you can fix your Go version in `GoVersion` key of the `Godeps/Godeps.json` file.
 
-The following is an example `Godeps/Godeps.json` file:
+#### <a id='godeps_1.6'></a>Go Sample App
+
+* [Sample Go app](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/godep)
+
+An example `Godeps/Godeps.json`:
 
 ```json
 {
@@ -120,7 +127,11 @@ To vendor your dependencies before pushing, run `glide install`.
 This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies.
 You must have a `glide.lock` file when pushing a vendored app. You do not need a `glide.lock` file when deploying a non-vendored app.
 
-The following is an example `glide.yml` file:
+####<a id='glide_app'></a>Glide
+
+* [Sample Go app with Glide](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/glide)
+
+An example `glide.yml` file:
 
 ```yaml
 package: go_app_with_glide
@@ -141,7 +152,6 @@ applications:
 ```
 
 ### <a id='with_dep'></a>Push an App with dep ###
-
 If you use [dep](https://github.com/golang/dep) to specify or package your dependencies,
 make sure that you have created a valid `Gopkg.toml` file in the root directory of your app by running `dep init`.
 
@@ -149,7 +159,11 @@ To vendor your dependencies before pushing, run `dep ensure`.
 This will generate a `vendor` directory and a `Gopkg.lock` file specifying the latest compatible versions of your dependencies.
 You must have a `Gopkg.lock` file when pushing a vendored app. You do not need a `Gopkg.lock` file when deploying a non-vendored app.
 
-The following is an example `Gopkg.toml` file:
+####<a id='dep_app'></a>dep
+
+* [Sample Go app with dep](https://github.com/cloudfoundry/go-buildpack/tree/master/fixtures/godep)
+
+An example `Gopkg.toml` file:
 
 ```toml
 [[constraint]]
@@ -190,6 +204,10 @@ Set the `GO_LINKER_SYMBOL` and `GO_LINKER_VALUE` in the application's configurat
 
 This can be used to embed the commit SHA or other build-specific data directly
 into the compiled executable.
+
+For a sample Go app,
+see the [go-buildpack](https://github.com/cloudfoundry/go-buildpack)
+repository on GitHub.
 
 ## <a id='c_dependencies'></a>C Dependencies ##
 
