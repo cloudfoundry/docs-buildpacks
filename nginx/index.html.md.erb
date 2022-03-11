@@ -10,7 +10,7 @@ This topic describes how to push your NGINX app to Cloud Foundry and how to conf
 
 If your app contains an `nginx.conf` file, Cloud Foundry automatically uses the NGINX buildpack when you run `cf push` to deploy your app.
 
-If your Cloud Foundry deployment does not have the NGINX buildpack installed or the installed version is outdated, run `cf push YOUR-APP -b https://github.com/cloudfoundry/nginx-buildpack.git` to deploy your app with the current buildpack. Replace `YOUR-APP` with the name of your app. 
+If your Cloud Foundry deployment does not have the NGINX buildpack installed or the installed version is outdated, run `cf push YOUR-APP -b https://github.com/cloudfoundry/nginx-buildpack.git` to deploy your app with the current buildpack. Replace `YOUR-APP` with the name of your app.
 
 For example:
 
@@ -50,13 +50,14 @@ server {
 }
 ```
 
-### <a id='nameservers'></a> Name resolution ###
+### <a id='nameservers'></a> Name Resolution
 
-NGINX will not resolve internal routes by default. To resolve internal routes, use `{{nameservers}}` to set the resolver IP address. At launch time, 
-`{{nameservers}}` will interpolate in the address of a platform-provided DNS service that includes about internal routes. 
+NGINX does not resolve internal routes by default. To resolve internal routes, use `{{nameservers}}` to set the resolver IP address. At launch time,
+`{{nameservers}}` interpolates the address of a platform-provided DNS service that includes information about internal routes.
 
-Connections to internal routes do not go through the Cloud Foundry routing tier. As a result, you may see errors if you 
-are proxying an app on an internal route while it is restarting. There are [some workarounds](https://www.nginx.com/blog/dns-service-discovery-nginx-plus/) you may need to consider.
+Connections to internal routes do not go through the Cloud Foundry routing tier. As a result, you might see errors if you proxy an app on an internal route while it is restarting. There are some workarounds you might need to consider.
+
+For more information, see [Using DNS for Service Discovery with NGINX and NGINX Plus](https://www.nginx.com/blog/dns-service-discovery-nginx-plus/) on the NGINX blog.
 
 ### <a id='env'></a> Environment Variables ###
 
