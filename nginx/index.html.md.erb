@@ -50,6 +50,14 @@ server {
 }
 ```
 
+### <a id='nameservers'></a> Name resolution ###
+
+NGINX will not resolve internal routes by default. To resolve internal routes, use `{{nameservers}}` to set the resolver IP address. At launch time, 
+`{{nameservers}}` will interpolate in the address of a platform-provided DNS service that includes about internal routes. 
+
+Connections to internal routes do not go through the Cloud Foundry routing tier. As a result, you may see errors if you 
+are proxying an app on an internal route while it is restarting. There are [some workarounds](https://www.nginx.com/blog/dns-service-discovery-nginx-plus/) you may need to consider.
+
 ### <a id='env'></a> Environment Variables ###
 
 To use an environment variable, include `{{env "YOUR-VARIABLE"}}`. Replace `YOUR-VARIABLE` with the name of an environment variable. At staging and at launch, the current value of the environment variable is retrieved.
