@@ -43,6 +43,26 @@ For example, a Procfile with the following content starts the launch script crea
 web: build/install/MY-PROJECT-NAME/bin/MY-PROJECT-NAME
 ```
 
+Procfile support is integrated into the the [buildpack lifecycle](https://github.com/cloudfoundry/buildpackapplifecycle).
+However, due to differing behavior of buildpacks, it may not be suitable with all buildpacks. Procfiles can be used with the
+following buildpacks:
+
+* [Binary Buildpack](../binary/index.html)
+
+* [.NET Core Buildpack](../dotnet-core/index.html)
+
+* [Go Buildpack](../go/index.html)
+
+* [NGINX Buildpack](../nginx/index.html)
+
+* [Node.js Buildpack](../node/index.html)
+
+* [Python Buildpack](../python/index.html)
+
+* [R Buildpack](../r/index.html)
+
+* [Ruby Buildpack](../ruby/index.html)
+
 ##<a id="specify-server"></a>Specify a Web Server
 
 Follow these steps to specify a web server using a Procfile.
