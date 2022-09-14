@@ -261,7 +261,7 @@ If your application is depending on Auto Reconfiguration behavior, then you need
 
 Once you have added `java-cfenv` to your classpath, the Java buildpack will no longer install the Auto Reconfiguration JAR and you will no longer see this message.
 
-If your application is not depending on Auto Reconfiguration behavior, and has already updated to `java-cfenv` then you should not see this message. If your application does not use Auto Reconfiguration or `java-cfenv` then you can either run `cf set-env <APP> JBP_CONFIG_SPRING_AUTO_RECONFIGURATION '{enabled: false}` or add `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}` to the `env:` block in your `manifest.yml` file. Alternatively, you can wait for a buildpack released after Aug 2022, when this feature will no longer be enabled by default.
+If your application is not depending on Auto Reconfiguration behavior, and has already updated to `java-cfenv` then you should not see this message. If your application does not use Auto Reconfiguration or `java-cfenv` then you can either run `cf set-env <APP> JBP_CONFIG_SPRING_AUTO_RECONFIGURATION '{enabled: false}'` or add `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'` to the `env:` block in your `manifest.yml` file. Alternatively, you can wait for a buildpack released after Aug 2022, when this feature will no longer be enabled by default.
 
 #### <a id='scc-included'></a>Spring Cloud Connectors Present ####
 
