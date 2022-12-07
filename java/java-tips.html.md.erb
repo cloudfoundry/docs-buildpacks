@@ -341,7 +341,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
     For more information about measuring how much `native` memory a Java app needs, see [Native Memory Tracking](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) in the Java documentation. For more information about configuring the Java buildpack using the `native` setting, see [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md#memory) in the Cloud Foundry Java Buildpack on GitHub. For more information about the Process API, see [Class Process](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html) in the Java documentation.
 
-* **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under heavy load, it uses a high number of threads. Each thread consume some memory and if there are enough threads they will consume a significant amount of memory.
+* **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under heavy load, it uses a high number of threads. Each thread consumes some memory and if there are enough threads they will consume a significant amount of memory.
 
 * **Solution 2**: Set the reserved memory for stack traces to the correct value for your app.
 <br>
@@ -370,7 +370,7 @@ If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it
 
 * **Connection issues**: App uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target <%= vars.app_runtime_abbr %> instance. If an app upload takes a long time, your authorization token can expire before the upload completes. A workaround is to copy the WAR to a server that is closer to the <%= vars.app_runtime_abbr %> instance, and then push it from there.
 
-* **Out-of-date cf CLI client**: Upload of a large WAR is faster and hence less likely to fail if you are using a recent version of the cf CLI. If you are using an older version of the cf CLI client to upload a large WAR, and having problems, try updating to the latest version of the cf CLI.
+* **Out-of-date cf CLI client**: Upload of a large WAR is faster and therefore less likely to fail if you are using a recent version of the cf CLI. If you are using an older version of the cf CLI client to upload a large WAR, and having problems, try updating to the latest version of the cf CLI.
 
 * **Incorrect WAR targeting**: By default, `cf push` uploads everything in the current directory. For a Java app, `cf push` with no option flags uploads source code and other unnecessary files, in addition to the WAR. When you push a Java app, specify the path to the WAR by running:
 
@@ -392,19 +392,19 @@ If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it
 
 ### <a id='debugging'></a> Debug Java Apps on <%= vars.app_runtime_abbr %>
 
-Because of the way that <%= vars.app_runtime_abbr %> deploys your apps and isolates them, it is not possible to connect to your app with the remote Java debugger. Instead, instruct the app to connect to the Java debugger on your local machine.
+Because of the way <%= vars.app_runtime_abbr %> deploys your apps and isolates them, it is not possible to connect to your app with the remote Java debugger. Instead, instruct the app to connect to the Java debugger on your local machine.
 
 To set up remote debugging when using BOSH Lite or a <%= vars.app_runtime_abbr %> installation:
 
 1. Open your project in Eclipse.
 
-1. Right-click on your project, go to **Debug as** and pick **Debug Configurations**.
+2. Right-click on your project, go to **Debug as** and pick **Debug Configurations**.
 
-1. Create a new **Remote Java Application**.
+3. Create a new **Remote Java Application**.
 
-1. Make sure your project is selected, pick **Standard (Socket Listen)** from the **Connection Type** drop down and set a port. Make sure this port is open if you are running a firewall.
+4. Make sure your project is selected, pick **Standard (Socket Listen)** from the **Connection Type** drop down and set a port. Make sure this port is open if you are running a firewall.
 
-1. Click **Debug**.
+5. Click **Debug**.
 
 The debugger should now be running. If you switch to the Debug perspective, you should see your app listed in the Debug panel, and it should say `Waiting for vm to connect at port`.
 
@@ -450,9 +450,9 @@ Where:
 
 ## <a id='extension'></a> Extension
 
-The Java buildpack is also designed to be easily extended. It creates abstractions for three types of components (containers, frameworks, and JREs) in order to allow users to easily add functionality. In addition to these abstractions, there are a number of utility classes for simplifying typical buildpack behaviors.
+The Java buildpack is also designed to be easily extended. It creates abstractions for three types of components (containers, frameworks, and JREs) to allow users to easily add functionality. In addition to these abstractions, there are a number of utility classes for simplifying typical buildpack behaviors.
 
-As an example, the New Relic framework looks like the below:
+As an example, the New Relic framework looks like this:
 
 ```
 class NewRelicAgent < JavaBuildpack::Component::VersionedDependencyComponent
