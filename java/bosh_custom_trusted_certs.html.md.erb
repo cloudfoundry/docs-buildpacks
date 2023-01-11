@@ -7,11 +7,14 @@ owner: Java
 
 ## <a id='trusted-cert'></a>Configure ##
 
-The Java buildpack support BOSH-configured custom trusted certificates. For more information, see [Configuring Trusted Certificates](https://bosh.io/docs/trusted-certs.html) in the BOSH documentation. It also supports importing the Diego Instance ID cert and key.
+The Java buildpack supports BOSH-configured custom trusted certificates. For more information, see [Configuring Trusted Certificates](https://bosh.io/docs/trusted-certs.html) in the BOSH documentation. It also supports importing the Diego Instance ID cert and key.
 
 This support is enabled by default in the buildpack and no additional configuration is required.
 
 You can disable support for each feature individually by setting the following environment variables:
+
+* key manager
+* trust manager
 
 To disable the key manager (Diego Instance ID cert/key import):
 
@@ -25,4 +28,4 @@ To disable the trust manager (Bosh Trusted Certificates):
 $ cf set-env APP-NAME JBP_CONFIG_CONTAINER_SECURITY_PROVIDER '{trust_manager_enabled: false}'
 </pre>
 
-For more information, see [Container Security Provider](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/framework-container_security_provider.md) in the official Java buildpack documentation. 
+For more information, see [Container Security Provider](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/framework-container_security_provider.md) in the official Java buildpack documentation.
