@@ -84,7 +84,7 @@ To migrate a database schema using a Rake task:
     ~~~
 
 1. Update the app by running:
-    
+
     ```
     cf push
     ```
@@ -204,9 +204,9 @@ To create an example app:
     ```
     Create the view as follows:
 
-    ```
-    <%= @things.inspect %>
-    ```
+    <pre class="terminal">
+    &lt;%= @things.inspect %&gt;
+    </pre>
 
 #### <a id='deploy'></a> Deploy the App
 
@@ -316,7 +316,7 @@ For example: `BUNDLE_GEMFILE:/home/vcap/app/Gemfile`
 
 The `BUNDLE_WITHOUT` environment variable instructs Cloud Foundry to skip gem installation in excluded groups.
 
-Use this with Rails apps, where "assets" and "development" gem groups typically contain gems that are not needed when the app runs in production. 
+Use this with Rails apps, where "assets" and "development" gem groups typically contain gems that are not needed when the app runs in production.
 
 For example: `BUNDLE_WITHOUT=assets`
 
@@ -326,7 +326,7 @@ Cloud Foundry examines the `database_uri` for bound services to see if they matc
 
 If your app depends on `DATABASE_URL` to be set to the connection string for your service and Cloud Foundry does not set it, use the `cf set-env` command to can set this variable manually.
 
-For example: 
+For example:
 
 ```
 cf set-env my-app-name DATABASE_URL mysql://example-database-connection-string
