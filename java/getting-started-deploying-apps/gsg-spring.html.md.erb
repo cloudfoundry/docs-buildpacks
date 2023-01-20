@@ -57,7 +57,41 @@ The table lists build script information for Gradle and Maven and provides docum
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pom.xml</code> file contains the dependencies for the <code>pong_matcher_spring</code> sample app, as the example below shows.
 </p>
 
-<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_spring', at: 'gsg-spring-s3' %>
+```xml
+<dependencies>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.jayway.jsonpath</groupId>
+        <artifactId>json-path</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+```
 
 <p class="note"><strong>Note</strong>: Make sure you are not building <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html">fully executable jars</a> because application push may fail.</p>
 

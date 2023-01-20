@@ -3,8 +3,6 @@ title: Getting Started Deploying Grails Apps
 owner: Java
 ---
 
-
-
 <%=vars.GSG_intro_sentence%>
 
 This guide is intended to walk you through deploying a Grails app to Cloud Foundry.
@@ -51,7 +49,15 @@ Declare all the dependency tasks for your app in the build script of your chosen
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails/app/grails-app/conf/BuildConfig.groovy</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app, as the example below shows.
 </p>
 
-<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_grails', at: 'gsg-grails-s3' %>
+```
+dependencies {
+        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
+        // runtime 'mysql:mysql-connector-java:5.1.29'
+        // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
+        test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
+        runtime 'mysql:mysql-connector-java:5.1.33'
+    }
+```
 
 ### Step 2: Allocate Sufficient Memory ###
 
@@ -74,7 +80,24 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_grails</code> sample app declares a MySQL JDBC driver in the <code>pong_matcher_grails/app/grails-app/conf/DataSource.groovy</code> file because the app uses ClearDB, which is a database-as-service for MySQL-powered apps. The example below shows this declaration.</p>
 
-<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_grails', at: 'gsg-grails-s5' %>
+```
+dataSource {
+    pooled = true
+    jmxExport = true
+    driverClassName = "com.mysql.jdbc.Driver"
+    dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+    uri = new URI(System.env.DATABASE_URL ?: "mysql://foo:bar@localhost")
+    username = uri.userInfo ? uri.userInfo.split(":")[0] : ""
+    password = uri.userInfo ? uri.userInfo.split(":")[1] : ""
+    url = "jdbc:mysql://" + uri.host + uri.path
+
+    properties {
+        dbProperties {
+            autoReconnect = true
+        }
+    }
+}
+```
 
 ### Step 4: (Optional) Configure a Procfile
 

@@ -3,8 +3,6 @@ title: Getting Started Deploying Ruby Apps
 owner: Buildpacks
 ---
 
-
-
 <%=vars.GSG_intro_sentence%>
 
 This guide is intended to walk you through deploying a Ruby app to
@@ -102,9 +100,12 @@ Sample App Step.
 
 <%=vars.dev_console_5%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The manifest for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.</p>
+<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.</p>
 
-<%= yield_for_code_snippet from: 'cloudfoundry-samples/pong_matcher_ruby', at: 'ruby-2b' %>
+```yaml
+services:
+      - redis
+```
 
 ### <a id="deployment-options"></a> Step 2: Configure Deployment Options  ###
 
