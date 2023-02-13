@@ -24,15 +24,15 @@ For more detailed information about deploying Ruby applications see the followin
 * <a href="./ruby-service-bindings.html" class="subnav">Configuring Service Connections for Ruby</a>
 * <a href="./windows.html" class="subnav">Support for Windows Gemfiles</a>
 
-You can find the source for the Ruby buildpack in the [Ruby buildpack repository](https://github.com/cloudfoundry/ruby-buildpack) on GitHub.
+See the source for the Ruby buildpack in the [Ruby buildpack repository](https://github.com/cloudfoundry/ruby-buildpack) on GitHub.
 
 ## <a id='supported_versions'></a>Supported Versions ##
 
-You can find supported Ruby versions in the [release notes for the Ruby buildpack](https://github.com/cloudfoundry/ruby-buildpack/releases) on GitHub.
+See the supported Ruby versions in the [release notes for the Ruby buildpack](https://github.com/cloudfoundry/ruby-buildpack/releases) on GitHub.
 
 ## <a id='runtime'></a>Specify a Ruby Version ##
 
-Specify specific versions of the Ruby runtime in the `Gemfile` for your app as described in the sections below.
+Specify specific versions of the Ruby runtime in the `Gemfile` for your app as described in the following sections.
 <p class="note"><strong>Note</strong>: If you don't specify a version of the Ruby runtime, we will use the default Ruby version listed in the [buildpack manifest.yml file](https://github.com/cloudfoundry/ruby-buildpack/blob/950b2337ff8a7ac0a68f7420f48ddc4ae4764977/manifest.yml#L3-L5).</p>
 
 ### <a id='mri_runtime'></a>MRI ###
@@ -56,18 +56,18 @@ For JRuby, specify the version of Ruby in your `Gemfile` based on the version of
 
 JRuby version `1.7.x` supports either `1.9` mode or `2.0` mode.
 
-- For `1.9` mode, use the following:
+- For `1.9` mode, use:
 
     ```ruby
     ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.25'
     ```
-- For `2.0` mode, use the following:
+- For `2.0` mode, use:
 
     ```ruby
     ruby '2.0.0', :engine => 'jruby', :engine_version => '1.7.25'
     ```
 
-For Jruby version `>= 9.0`, use the following:
+For Jruby version `>= 9.0`, use:
 
 ```ruby
 ruby '2.2.3', :engine => 'jruby', :engine_version => '9.0.5.0'
@@ -102,40 +102,38 @@ bundle package --all
 
 The `cf push` command uploads your vendored dependencies. The Ruby buildpack compiles any dependencies requiring compilation while staging your app.
 
-## <a id='logging'></a>Buildpack Logging and Application Logging ##
+## <a id='logging'></a>Buildpack Logging and Application Logging
 
-The Ruby buildpack only runs during the staging process, and only logs what is important to staging, such as what is being downloaded, what the configuration is, and work that the buildpack does on your application.
+The Ruby buildpack only runs during staging, and only logs what is important to staging, such as what is being downloaded, what the configuration is, and work that the buildpack does on your application.
 
-The buildpack stops logging when the staging process finishes. The Loggregator handles application logging.
+The buildpack stops logging when the staging is complete. The Loggregator handles application logging.
 
-Your application must write to STDOUT or STDERR for its logs to be included in
-the Loggregator stream. For more information, see the [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html) topic.
+Your application must write to stdout or stderr for its logs to be included in the Loggregator stream. For more information, see  [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
 
-If you are deploying a Rails application, the buildpack may or may not automatically install the necessary plugin or gem for logging, depending on the Rails version of the application:
+If you are deploying a Rails application, the buildpack might not automatically install the necessary plugin or gem for logging, depending on the Rails version of the application:
 
-* Rails 2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application. For more information about the `rails_log_stdout` plugin, refer to the [GitHub README](https://github.com/ddollar/rails_log_stdout).
+* Rails 2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application. For more information about the `rails_log_stdout` plugin, see the [GitHub README](https://github.com/ddollar/rails_log_stdout).
 
-* Rails 3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, refer to the [GitHub README](https://github.com/heroku/rails_12factor).
+* Rails 3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, see the [GitHub README](https://github.com/heroku/rails_12factor).
 
-* Rails 4.x: The buildpack only issues a warning message that the `rails_12factor` gem is not present, but does not install the gem. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, refer to the [GitHub README](https://github.com/heroku/rails_12factor).
+* Rails 4.x: The buildpack issues a warning message that the `rails_12factor` gem is not present, but does not install the gem. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, see the [GitHub README](https://github.com/heroku/rails_12factor).
 
-For more information about the `rails_12factor` gem, refer to the [GitHub README](https://github.com/heroku/rails_12factor).
+For more information about the `rails_12factor` gem, see [GitHub README](https://github.com/heroku/rails_12factor).
 
 ## <a id='proxy_support'></a> Proxy Support ##
 
-If you need to use a proxy to download dependencies during staging, you can set
-the `http_proxy` and/or `https_proxy` environment variables. For more information, see [Using a Proxy](../proxy-usage.html).
+If you need to use a proxy to download dependencies during staging, set the `http_proxy` and `https_proxy` environment variables. For more information, see [Using a Proxy](../proxy-usage.html).
 
 ## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
 
-Ruby uses certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to add the custom certificates into the app container.
+Ruby uses certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to add the custom certificates into the application container.
 
 <%= vars.link_configure_trusted_certificates %>
 
 ## <a id='help_support'></a>Help and Support ##
 
-Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
+Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need help.
 
 For more information about using and extending the Ruby buildpack in Cloud Foundry, see the [Ruby buildpack repository](https://github.com/cloudfoundry/ruby-buildpack) on GitHub.
 
-You can find current information about the Ruby buildpack in the [release notes for the Ruby buildpack](https://github.com/cloudfoundry/ruby-buildpack/releases) on GitHub.
+See the current information about the Ruby buildpack in the [release notes for the Ruby buildpack](https://github.com/cloudfoundry/ruby-buildpack/releases) on GitHub.
