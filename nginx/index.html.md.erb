@@ -5,12 +5,11 @@ owner: Buildpacks
 
 This topic describes how to push your NGINX app to Cloud Foundry and how to configure your NGINX app to use the NGINX buildpack.
 
-
 ## <a id='pushing-apps'></a> Push an App
 
 If your app contains an `nginx.conf` file, Cloud Foundry automatically uses the NGINX buildpack when you run `cf push` to deploy your app.
 
-If your Cloud Foundry deployment does not have the NGINX buildpack installed or the installed version is outdated, run `cf push YOUR-APP -b https://github.com/cloudfoundry/nginx-buildpack.git` to deploy your app with the current buildpack. Replace `YOUR-APP` with the name of your app.
+If your Cloud Foundry deployment does not have the NGINX buildpack installed or the installed version is outdated, run `cf push YOUR-APP -b https://github.com/cloudfoundry/nginx-buildpack.git` to deploy your app with the current buildpack, where `YOUR-APP` is the name of your app.
 
 For example:
 
@@ -18,12 +17,11 @@ For example:
 $ cf push my-app -b https://github.com/cloudfoundry/nginx-buildpack.git
 </pre>
 
-
 ## <a id='nginx'></a> Configure NGINX
 
-<%= vars.recommended_by %> recommends that you use the default NGINX directory structure for your NGINX webserver. You can view this directory structure in the [nginx-buildpack](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) repository in GitHub.
+<%= vars.recommended_by %> recommends that you use the default NGINX directory structure for your NGINX web server. You can view this directory structure in the [nginx-buildpack](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) repository in GitHub.
 
-The NGINX webserver setup includes the following:
+The NGINX web server setup includes the following:
 
 * A root folder for all static web content
 * A MIME type configuration file
@@ -36,9 +34,9 @@ You should make any custom configuration changes based on these default files to
 
 Use the templating syntax when you create an `nginx.conf` file. This templating syntax loads modules and binds to ports based on values known at launch time.
 
-### <a id='port'></a> Port ###
+### <a id='port'></a> Port
 
-Use `{{port}}` to set the port to listen on. At launch time, `{{port}}` will interpolate in the value of `$PORT`.
+Use `{{port}}` to set the port on which to listen. At launch time, `{{port}}` will interpolate in the value of `$PORT`.
 
 <p class="note"><strong>Note</strong>: You must use <code>{{port}}</code> in your <code>nginx.conf</code> file.</p>
 
@@ -50,18 +48,17 @@ server {
 }
 ```
 
-### <a id='nameservers'></a> Name Resolution
+### <a id='nameservers'></a> Name resolution
 
-NGINX does not resolve internal routes by default. To resolve internal routes, use `{{nameservers}}` to set the resolver IP address. At launch time,
-`{{nameservers}}` interpolates the address of a platform-provided DNS service that includes information about internal routes.
+NGINX does not resolve internal routes by default. To resolve internal routes, use `{{nameservers}}` to set the resolver IP address. At launch time, `{{nameservers}}` interpolates the address of a platform-provided DNS service that includes information about internal routes.
 
 Connections to internal routes do not go through the Cloud Foundry routing tier. As a result, you might see errors if you proxy an app on an internal route while it is restarting. There are some workarounds you might need to consider.
 
 For more information, see [Using DNS for Service Discovery with NGINX and NGINX Plus](https://www.nginx.com/blog/dns-service-discovery-nginx-plus/) on the NGINX blog.
 
-### <a id='env'></a> Environment Variables ###
+### <a id='env'></a> Environment variables
 
-To use an environment variable, include `{{env "YOUR-VARIABLE"}}`. Replace `YOUR-VARIABLE` with the name of an environment variable. At staging and at launch, the current value of the environment variable is retrieved.
+To use an environment variable, include `{{env "YOUR-VARIABLE"}}`, where `YOUR-VARIABLE` is the name of an environment variable. At staging and at launch, the current value of the environment variable is retrieved.
 
 For example, include the following in your `nginx.conf` file to enable or disable GZipping based on the value of `GZIP_DOWNLOADS`:
 
@@ -72,9 +69,9 @@ gzip {{env "GZIP_DOWNLOADS"}};
 * If you set `GZIP_DOWNLOADS` to `off`, NGINX does not GZip files.
 * If you set `GZIP_DOWNLOADS` to `on`, NGINX GZips files.
 
-### <a id='unescaped-env'></a> Unescaped Environment Variables ###
+### <a id='unescaped-env'></a> Unescaped environment variables
 
-To use unescaped environment variables, add an array of environment variable names to the <code>buildpack.yml</code>. See the following example:
+To use unescaped environment variables, add an array of environment variable names to the `buildpack.yml`. See the following example:
 
 ```
 ---
@@ -85,13 +82,11 @@ nginx:
 ```
 
 In this example, the `OVERRIDE` environment variable can contain `.json` content without being `html` escaped.
-Ensure that you properly quote such variables to appear as strings in the ` nginx.conf` file.
+You must properly quote such variables to appear as strings in the ` nginx.conf` file.
 
-### <a id='loading-modules'></a> Loading Dynamic Modules  ###
+### <a id='loading-modules'></a> Loading dynamic modules
 
-NGINX can dynamically load modules at runtime. These modules are shared-object
-files that can be dynamically loaded using the `load_module` directive. In addition to loading modules dynamically,
-the version of NGINX provided by the buildpack has statically compiled the following modules into the NGINX binary:
+NGINX can dynamically load modules at runtime. These modules are shared-object files that can be dynamically loaded using the `load_module` directive. In addition to loading modules dynamically, the NGINX version provided by the buildpack has statically compiled the following modules into the NGINX binary:
 
 * `ngx_http_ssl_module`
 * `ngx_http_realip_module`
@@ -105,46 +100,47 @@ the version of NGINX provided by the buildpack has statically compiled the follo
 
 These statically compiled modules do not need to be loaded at runtime and are already available for use.
 
-To load a dynamic NGINX module, use the following syntax in your app's `nginx.conf` file:
+To load a dynamic NGINX module, use the following syntax in the app `nginx.conf` file for your app:
 
-```{{module "MODULE-NAME"}}```
+```
+{{module "MODULE-NAME"}}
+```
 
 If you have provided a module in a `modules` directory located at the root of your app, the buildpack instructs NGINX to load that module.
 If you have not provided a module, the buildpack instructs NGINX to search for a matching built-in dynamic module.
 
-As of v0.0.5 of the buildpack, the `ngx_stream_module` is available as a
-dynamic module that is built into the buildpack.
+As of v0.0.5 of the buildpack, the `ngx_stream_module` is available as a dynamic module that is built into the buildpack.
 
-For example, to load a custom module named `ngx_hello_module`, provide a
-`modules/ngx_hello_module.so` file in your app directory and add the following
-to the top of your `nginx.conf` file:
+For example, to load a custom module named `ngx_hello_module`, provide a `modules/ngx_hello_module.so` file in your app directory and add the line below to the top of your `nginx.conf` file:
 
-```{{module "ngx_hello_module"}}```
+```
+{{module "ngx_hello_module"}}
+```
 
-To load a built-in module like `ngx_stream_module`, add the following to the
-top of your `nginx.conf` file. You do not need to provide an
-`ngx_stream_module.so` file:
+To load a built-in module like `ngx_stream_module`, add the line below to the top of your `nginx.conf` file. You do not need to provide an `ngx_stream_module.so` file:
 
-```{{module "ngx_stream_module"}}```
+```
+{{module "ngx_stream_module"}}
+```
 
 <p class="note"><strong>Note</strong>: To name your modules directory something other than <code>modules</code>, use the NGINX <code>load_module</code> directive, providing a path to the module relative to the location of your <code>nginx.conf</code> file. For example:
 <code>load_module some_module_dir/my_module.so</code></p>
 
+### <a id='enabling-debugging'></a> Enabling debugging
 
-### <a id='enabling-debugging'></a> Enabling Debugging ###
-Debugging helps to identify a bug in the program code if something goes wrong. It is generally used in developing or testing third-party or experimental modules.
+By default, debug logging will be disabled in the NGINX buildpack. This helps optimize performance. Set the debug level with the `error_log` directive in the `nginx.conf` to enable debug logging.
 
-By default, debug logging will be disabled in the NGINX buildpack, which helps optimize performance. The user will need to set the debug level with the `error_log` directive in the `nginx.conf` to enable debug logging.
-
-To use the debug logging, add the `error_log` entry to your `nginx.conf` file, following the syntax below:
+To use the debug logging, add the `error_log` entry to your `nginx.conf` file, using the syntax below:
 
 ```
 Syntax:	error_log file [level];
 ```
 
-* The first parameter defines a file that will store the log. The special value `stderr` selects the standard error file. Logging to `syslog` can be configured by specifying the “`syslog:`” prefix.
+Where:
 
-* The second parameter determines the level of logging, and can be one of the following:
+* `file` is the name of the file where the log is to be stored. The special value `stderr` selects the standard error file. Logging to `syslog` can be configured by specifying the “`syslog:`” prefix.
+* `level` specifies the level of logging, and can be one of the following:
+
   * `debug`
   * `info`
   * `notice`
@@ -154,7 +150,7 @@ Syntax:	error_log file [level];
   * `alert`
   * `emerg`
 
-<p class="note"><strong>Note</strong>: Log levels above are listed in the order of increasing severity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged. For example, the default level <code>error</code> will cause error, crit, alert, and emerg messages to be logged. If this parameter is omitted then <code>error</code> is used. </p>
+<p class="note"><strong>Note</strong>: The log levels above are listed in the order of increasing severity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged. For example, the default level <code>error</code> will cause error, crit, alert, and emerg messages to be logged. If this parameter is omitted, then <code>error</code> is used. </p>
 
 
 Example:
@@ -163,9 +159,9 @@ Example:
 error_log /path/to/log debug;
 ```
 
-#### <a id='debugging-logs-selected-clients'></a> Debugging Logs for Selected Clients ###
+#### <a id='debugging-logs-selected-clients'></a> Debugging logs for selected clients
 
-It is also possible to enable the debugging log for selected client addresses only:
+To enable the debugging log for selected client addresses only, use the syntax below.
 
 ```
 error_log /path/to/log;
@@ -175,14 +171,16 @@ debug_connection 192.168.1.1;
 debug_connection 192.168.10.0/24;
 }
 ```
-#### <a id='logging-to-a-cyclic-memory-buffer'></a> Logging to a cyclic memory buffer ###
-The debugging log can be written to a cyclic memory buffer:
+
+#### <a id='logging-to-a-cyclic-memory-buffer'></a> Logging to a cyclic memory buffer
+
+The debugging log can be written to a cyclic memory buffer. Use the syntax shown below.
 
 ```
 error_log memory:32m debug;
 ```
 
-Logging to the memory buffer on the debug level does not have significant impact on performance even under high load. In this case, the log can be extracted using a gdb script like the following one:
+Logging to the memory buffer on the debug level does not have significant impact on performance, even under high load. In this case, the log can be extracted using a gdb script like the one shown below.
 
 ```
 set $log = ngx_cycle->log
@@ -195,9 +193,9 @@ set $buf = (ngx_log_memory_buf_t *) $log->wdata
 dump binary memory debug_log.txt $buf->start $buf->end
 ```
 
-## <a id='help'></a>Buildpack Support ##
+## <a id='help'></a>Buildpack support
 
-The following resources can assist you when using the NGINX buildpack or when developing your own NGINX buildpack:
+The resources listed in this section can assist you when using the NGINX buildpack or when developing your own NGINX buildpack.
 
 * **NGINX Buildpack Repository in GitHub**: Find more information about using and extending the NGINX buildpack in the [NGINX buildpack](https://github.com/cloudfoundry/nginx-buildpack) GitHub repository.
 
