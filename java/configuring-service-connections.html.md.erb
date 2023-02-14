@@ -5,12 +5,14 @@ owner: Java
 
 
 
-The recommended path for configuring service access in your Java-based applications is to use the [java-cfenv](https://github.com/pivotal-cf/java-cfenv) library. This library can read and parse `VCAP_SERVICES` and help you extract the information for use in your application.
+The recommended path for configuring service access in your Java-based applications is the [java-cfenv](https://github.com/pivotal-cf/java-cfenv) library. This library can read and parse `VCAP_SERVICES` and help you extract the information for use in your application.
 
-There are a number of ways to do this and all Java applications can use the library, it is not limited to specific frameworks. To get started, you'll first need to add a dependency in your project for the library.
+There are a number of ways to do this and all Java applications can use the library; it is not limited to specific frameworks. To get started, you must first add a dependency in your project for the library.
 
 
 ## <a id='dependencies'></a>Dependencies
+
+The examples below show the dependency syntax for Maven and Gradle.
 
 For Maven:
 
@@ -28,11 +30,11 @@ For Gradle:
 implementation "io.pivotal.cfenv:java-cfenv:2.4.0"
 ```
 
-## <a id='no-framework'></a>Java-Only / No Framework
+## <a id='no-framework'></a>Java-only / No framework
 
-The entry point for the library is the class `CfEnv`, which parses Cloud Foundry environment variables such as `VCAP_SERVICES`. The information in `VCAP_SERVICES` is a JSON string that contains credential information to access bound services, such as a database.
+The entry point for the library is the class `CfEnv`, which parses Cloud Foundry environment variables such as `VCAP_SERVICES`. `VCAP_SERVICES` contains a JSON string that includes credential information used to access bound services, such as databases.
 
-This can be done by creating a `CfEnv` instance and using its `findCredentialsBy*` methods. There are methods for finding by label, name, and tag. Multiple strings can be passed to match against more than one tag and the finder method supports passing a regex string for pattern matching.
+Create a `CfEnv` instance and use its `findCredentialsBy*` methods. There are methods for finding by label, name, and tag. Multiple strings can be passed to match against more than one tag, and the finder method supports passing a regex string for pattern matching.
 
 For example:
 
@@ -59,9 +61,9 @@ cfService = cfEnv.findServiceByLabel("p-redis");
 cfService = cfEnv.findServiceByLabel(".*-redis");
 ```
 
-### <a id='jdbc'></a>JDBC Support
+### <a id='jdbc'></a>JDBC support
 
-There is additional support for getting a JDBC URL from a service binding. This support is contained in the module `java-cfenv-jdbc`. To enable this module, add the following additional dependency.
+There is additional support for getting a JDBC URL from a service binding. This support is contained in the module `java-cfenv-jdbc`. To enable this module, add the appropriate dependency.
 
 For Maven:
 
@@ -79,7 +81,7 @@ For Gradle:
 implementation "io.pivotal.cfenv:java-cfenv-jdbc:2.4.0"
 ```
 
-The entry point for this feature is the class `CfJdbcEnv`, which is a subclass of `CfEnv` and adds a few methods. The method `findJdbcService` will heuristically look at all services for known tags, labels, and names of common database services to create the URL.
+The entry point for this feature is the class `CfJdbcEnv`, which is a subclass of `CfEnv` and adds a few methods. The method `findJdbcService` heuristically looks at all services for known tags, labels, and names of common database services to create the URL.
 
 For example:
 
@@ -96,7 +98,7 @@ String driverClassName = cfJdbcService.getDriverClassName();
 
 ## <a id='spring'></a>Spring Framework
 
-There is additional support for application developers using the Spring Framework.
+The Spring Framework provides additional support for application developers.
 
 ### <a id='spring-spel'></a>Spring Expression Language
 
@@ -109,7 +111,7 @@ public CfEnv cfEnv() {
 }
 ```
 
-Then, in a properties file imported by Spring, refer to the `CfEnv` bean using the following syntax.
+Then, in a properties file imported by Spring, refer to the `CfEnv` bean using the syntax below.
 
 ```
 cassandra.contact-points=#{ cfEnv.findCredentialsByTag('cassandra').get('node_ips') }
@@ -118,7 +120,7 @@ cassandra.password=#{ cfEnv.findCredentialsByTag('cassandra').getPassword() }
 cassandra.port=#{ cfEnv.findCredentialsByTag('cassandra').get('cqlsh_port') }
 ```
 
-If you're specifically targeting JDBC databases, you can register this instead.
+To specifically target JDBC databases, register this instead.
 
 ```
 @Bean
@@ -127,7 +129,7 @@ public CfJdbcEnv cfJdbcEnv() {
 }
 ```
 
-Then in a property file imported by Spring, refer to the `CfJdbcEnv` bean using the following syntax.
+Then in a property file imported by Spring, refer to the `CfJdbcEnv` bean using the syntax shown below.
 
 ```
 myDatasourceUrl=#{ cfJdbcEnv.findJdbcService().getUrl() }
@@ -135,7 +137,7 @@ myDatasourceUrl=#{ cfJdbcEnv.findJdbcService().getUrl() }
 
 ### <a id='spring-boot'></a>Spring Boot
 
-The module `java-cfenv-boot` provides several `EnvironmentPostProcessor` implementations that set well-known Spring Boot properties so that Spring Boot’s auto-configuration will be active. For example, the `CfDataSourceEnvironmentPostProcessor` sets the Spring Boot property `spring.datasource.url`.
+The module `java-cfenv-boot` provides several `EnvironmentPostProcessor` implementations that set well-known Spring Boot properties so that Spring Boot’s auto-configuration is active. For example, the `CfDataSourceEnvironmentPostProcessor` sets the Spring Boot property, `spring.datasource.url`.
 
 To use these, add a dependency on `java-cfenv-boot`.
 
@@ -165,17 +167,17 @@ The list of supported services are:
 * CredHub
 * HashiCorp Vault
 
-If you need to disable processing of a specific service instance, you can do so by setting the following flag in your application properties:
+If you need to prevent processing of a specific service instance, set the flag in your application properties to false.
 
 ```
 cfenv.service.{serviceName}.enabled=false
 ```
 
-## <a id='migrating'></a>Migrating from Spring AutoReconfiguration & Spring Cloud Connectors
+## <a id='migrating'></a>Migrating from Spring AutoReconfiguration and Spring Cloud Connectors
 
 The `java-cfenv` library replaces the older Spring AutoReconfiguration and Spring Cloud Connectors libraries. Use the information in the following sections to migrate to `java-cfenv`.
 
-### <a id='migrating-dependencies'></a>Change Dependencies
+### <a id='migrating-dependencies'></a>Change dependencies
 
 Remove references to any of these libraries from the application build files.
 
@@ -194,84 +196,83 @@ org.springframework.cloud:spring-cloud-spring-service-connector
 
 Then add a reference to the [`java-cfenv` library](#dependencies).
 
-### <a id='migrating-code-changes'></a>Code Changes
+### <a id='migrating-code-changes'></a>Code changes
 
 Remove any of the `@ServiceScan` or `@CloudScan` annotations from Spring Java configuration classes (provided by Spring Cloud Connectors). Replace them with the [Spring SPeL or Spring Boot configuration options](#spring) listed above.
 
-### <a id='migrating-considerations'></a>Migration Considerations
+### <a id='migrating-considerations'></a>Migration considerations
 
-The following additional considerations should be reviewed when migrating.
+ Review these additional considerations before migrating.
 
-#### <a id='migrating-non-boot'></a>Non-Spring Boot Applications
+* <a id='migrating-non-boot'></a>**Non-Spring Boot applications**
 
-If you have a Spring Application that is a non-Spring Boot application, you can still migrate to `java-cfenv`. You will need to use either the [no framework options](#no-framework) or the [Spring SPeL option](#spring-spel). With SPeL, you may need to manually process the expressions, depending on where you are configuring them. Please refer to the Spring documentation for places where SPeL expressions are processed by default.
+  If you have a Spring Application that is a non-Spring Boot application, you can still migrate to `java-cfenv`. You must use either the [no framework options](#no-framework) or the [Spring SPeL option](#spring-spel). With SPeL, you might need to manually process the expressions, depending on where you are configuring them. See the Spring documentation for places where SPeL expressions are processed by default.
 
-#### <a id='migrating-multiple-instances'></a>Multiple Service Instances
+* <a id='migrating-multiple-instances'></a>**Multiple service instances**
 
-Spring Cloud Connectors support connections to multiple service instances.
+  Spring Cloud Connectors support connections to multiple service instances.
 
-If you need to configure connections to multiple instances of a given service type, or do anything more than setting application properties for Spring Boot to pick up and use in auto-configuration, then you will need to follow the manual configuration approaches laid out in the sections above to access the binding credentials. Either [with direct Java code](#no-framework) or with [SPeL](#spring-spel). Then follow the same procedure that would be used to connect to your services in any other non-Cloud Foundry deployment environment.
+  If you need to configure connections to multiple instances of a given service type, or do anything more than setting application properties for Spring Boot to pick up and use in auto-configuration, then you must follow the manual configuration approaches laid out in the sections above to access the binding credentials. Either [with direct Java code](#no-framework) or with [SPeL](#spring-spel). Then follow the same procedure that is used to connect to the services in any other non-Cloud Foundry deployment environment.
 
-#### <a id='migrating-code-modifications'></a>Code Modifications
+* <a id='migrating-code-modifications'></a>**Code modifications**
 
-For better or worse, the Java Buildpack will inject the Spring Auto Reconfiguration module code into your application and will overwrite your service configuration. This works well in some cases, but sometimes it causes problems.
+  The Java Buildpack injects the Spring Auto Reconfiguration module code into your application and overwrites your service configuration. This works well in some cases, but sometimes it causes problems.
 
-With `java-cfenv`, there is no auto-reconfiguration magic. You can explicitly configure your services or you can use the [Spring Boot mappers](#spring-boot). The [Spring Boot mappers](#spring-boot) are the option most similar to previous operation. Note that when things don't work, it's generally clearer what happened, and it's easier to debug the problem.
+  With `java-cfenv`, there is no auto-reconfiguration magic. You can explicitly configure your services or you can use the [Spring Boot mappers](#spring-boot). The [Spring Boot mappers](#spring-boot) are the option most similar to previous operation. Note that when things don't work, it's generally clearer what happened, and it's easier to debug the problem.
 
-#### <a id='migrating-cloud-properties'></a>Cloud Property Placeholders
+* <a id='migrating-cloud-properties'></a>**Cloud property placeholders**
 
-The Spring Auto Reconfiguration module exposes a set of property placeholder values that you can use to access values from `VCAP_SERVICES`. If you are using these placeholders, then you need to switch from using `cloud.<property>`. Use `vcap.<property>` instead.
+  The Spring Auto Reconfiguration module exposes a set of property placeholder values that you can use to access values from `VCAP_SERVICES`. If you are using these placeholders, then you must switch from using `cloud.<property>`. Use `vcap.<property>` instead.
 
-Spring Boot exposes the same information, just under the `vcap.` prefix instead of `cloud.`.
+  Spring Boot exposes the same information, just under the `vcap.` prefix instead of the `cloud.` prefix.
 
-#### <a id='migrating-cloud-profile'></a>Spring Cloud Profile
+* <a id='migrating-cloud-profile'></a>**Spring Cloud Profile**
 
-The Spring Auto Reconfiguration module enables a Spring Profile called `cloud`, by default. Users have come to expect this behavior when deploying to Cloud Foundry. Without the Spring Auto Reconfiguration module, you do not get this behavior. Fortunately, you can enable it very easily using one of these methods:
+  The Spring Auto Reconfiguration module enables a Spring Profile called `cloud`, by default. Users have come to expect this behavior when deploying to Cloud Foundry. Without the Spring Auto Reconfiguration module, you do not get this behavior. Fortunately, you can enable it using one of these methods:
 
-* Run `cf set-env <APP> SPRING_PROFILES_ACTIVE cloud`
-* Add `SPRING_PROFILES_ACTIVE: cloud` to the `env:` block in your `manifest.yml` file. This will supply the given list of profiles for Spring to use.
+  * Run `cf set-env <APP> SPRING_PROFILES_ACTIVE cloud`
+  * Add `SPRING_PROFILES_ACTIVE: cloud` to the `env:` block in your `manifest.yml` file. This supplies the list of profiles for Spring to use.
 
-If you need to set additional profiles, you may use `SPRING_PROFILES_INCLUDE` instead. This will append to the existing set of profiles.
+  If you need to set additional profiles, you can use `SPRING_PROFILES_INCLUDE` instead. This appends to the existing set of profiles.
 
-#### <a id='migrating-extensions'></a>Spring Cloud Connector Extensions
+* <a id='migrating-extensions'></a>**Spring Cloud Connector extensions**
 
-If you have created any custom Spring Cloud Connector extensions, you will need to migrate them to `java-cfenv`. This requires two steps:
+  If you have created any custom Spring Cloud Connector extensions, you must migrate them to `java-cfenv`. This requires two steps:
 
-1. Write a [Spring Boot Auto Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html) library that creates connections to your service from Spring configuration properties. This makes it easy to also use it in a non-cloud Spring Boot app. When this is done correctly, you should be able to use the library, and set properties in `application.properties` (or through other means), and you will have a connection to your service.
+    1. Write a [Spring Boot Auto Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html) library that creates connections to your service from Spring configuration properties. This makes it easy to also use it in a non-cloud Spring Boot app. When this is done correctly, you can to use the library, and set properties in `application.properties` (or through other means), and you will have a connection to your service.
 
-2. [Write a `java-cfenv` extension](https://github.com/pivotal-cf/java-cfenv#supporting-other-services). This takes values from `VCAP_SERVICES` and maps them to the properties that you exposed with your Spring Boot Auto Configuration library from the previous step.
+    2. [Write a java-cfenv extension](https://github.com/pivotal-cf/java-cfenv#supporting-other-services). This takes values from `VCAP_SERVICES` and maps them to the properties that you exposed with your Spring Boot Auto Configuration library from the previous step.
 
-### <a id='migrating-warnings'></a>Java Buildpack Warnings
+### <a id='migrating-warnings'></a>Java Buildpack warnings
 
-The Java Buildpack generates a few warnings to help with migrating from Spring Cloud Connectors and Spring Auto Reconfiguration.
+The Java Buildpack generates warnings to help with migrating from Spring Cloud Connectors and Spring Auto Reconfiguration.
 
-#### <a id='sar-installed'></a>Spring Auto Reconfiguration Installed
+* <a id='sar-installed'></a>**Spring Auto Reconfiguration installed**
 
-The following message is generated when the buildpack installs the Spring Auto Reconfiguration JAR. This happens by default, and alerts you that it is happening.
+  This is the message that is generated when the buildpack installs the Spring Auto Reconfiguration JAR. This happens by default, and alerts you that it is happening.
 
-```
-   [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Auto Reconfiguration and shaded Spring Cloud Connectors libraries are being installed. These projects have been deprecated, are no longer receiving updates and should not be used going forward.
-   [SpringAutoReconfiguration]      WARN  If you are not using these libraries, set `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION='{enabled: false}'` to disable their installation and clear this warning message. The buildpack will switch its default to disable by default after Aug 2022. Spring Auto Reconfiguration and its shaded Spring Cloud Connectors will be removed from the buildpack after Dec 2022.
-   [SpringAutoReconfiguration]      WARN  If you are using these libraries, please migrate to java-cfenv immediately. See https://via.vmw.com/EhzD for migration instructions.
-```
+  ```
+     [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Auto Reconfiguration and shaded Spring Cloud Connectors libraries are being installed. These projects have been deprecated, are no longer receiving updates and should not be used going forward.
+     [SpringAutoReconfiguration]      WARN  If you are not using these libraries, set `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION='{enabled: false}'` to their installation and clear this warning message. The buildpack will switch its default to disable by default after Aug 2022. Spring Auto Reconfiguration and its shaded Spring Cloud Connectors will be removed from the buildpack after Dec 2022.
+     [SpringAutoReconfiguration]      WARN  If you are using these libraries, please migrate to java-cfenv immediately. See https://via.vmw.com/EhzD for migration instructions
+     ```
 
-How you resolve this depends on whether you are depending on the Auto Reconfiguration to occur.
+  How you resolve this depends on whether you are depending on the Auto Reconfiguration to occur.
 
-If your application is depending on Auto Reconfiguration behavior, then you need to make code changes in your application to use the `java-cfenv` library. See the instructions above for how to include the dependencies and how to access service information using this library.
+    * If your application depends on Auto Reconfiguration behavior, then you must make code changes in your application to use the `java-cfenv` library. See the instructions above for how to include the dependencies and how to access service information using this library.
+    After you have added `java-cfenv` to your classpath, the Java buildpack will no longer install the Auto Reconfiguration JAR and you will no longer see this message.
 
-After you have added `java-cfenv` to your classpath, the Java buildpack will no longer install the Auto Reconfiguration JAR and you will no longer see this message.
+    * If your application is not depending on Auto Reconfiguration behavior, and has already been updated to `java-cfenv`, then this message is not generated. If your application does not use Auto Reconfiguration or `java-cfenv`, then you can either run `cf set-env <APP> JBP_CONFIG_SPRING_AUTO_RECONFIGURATION '{enabled: false}'` or add `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'` to the `env:` block in your `manifest.yml` file. Alternatively, you can use a buildpack released after Aug 2022, after which this feature will no longer be enabled by default.
 
-If your application is not depending on Auto Reconfiguration behavior, and has already been updated to `java-cfenv`, then you should not see this message. If your application does not use Auto Reconfiguration or `java-cfenv`, then you can either run `cf set-env <APP> JBP_CONFIG_SPRING_AUTO_RECONFIGURATION '{enabled: false}'` or add `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'` to the `env:` block in your `manifest.yml` file. Alternatively, you can use a buildpack released after Aug 2022, after which this feature will no longer be enabled by default.
+* <a id='scc-included'></a>**Spring Cloud Connectors present**
 
-#### <a id='scc-included'></a>Spring Cloud Connectors Present
+  The following message is generated when the buildpack detects that the Spring Cloud Connectors library is present on the classpath.
 
-The following message is generated when the buildpack detects that the Spring Cloud Connectors library is present on the classpath.
+  ```
+     [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Cloud Connectors library is present in your application. This library has been in maintenance mode since July 2019 and will stop receiving all updates after Dec 2022.
+     [SpringAutoReconfiguration]      WARN  Please migrate to java-cfenv immediately. See https://via.vmw.com/EhzD for migration instructions.
+  ```
 
-```
-   [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Cloud Connectors library is present in your application. This library has been in maintenance mode since July 2019 and will stop receiving all updates after Dec 2022.
-   [SpringAutoReconfiguration]      WARN  Please migrate to java-cfenv immediately. See https://via.vmw.com/EhzD for migration instructions.
-```
+  When this message appears, it means that your application or one of its dependencies is including the Spring Cloud Connectors library. You must remove it and migrate to `java-cfenv`.
 
-When this message appears, it means that your application or one of its dependencies is including the Spring Cloud Connectors library. You must remove it and migrate to `java-cfenv`.
-
-Once you have migrated to `java-cfenv`, and the Spring Cloud Connectors libraries are no longer on your classpath, this error will no longer appear. There is no way to manually suppress this message.
+  After you have migrated to `java-cfenv`, and the Spring Cloud Connectors libraries are no longer on your classpath, this error will no longer appear. There is no way to manually suppress this message.
