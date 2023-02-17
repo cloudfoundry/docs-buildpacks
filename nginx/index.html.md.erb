@@ -1,32 +1,32 @@
 ---
-title: NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> Buildpack
+title: NGINX Buildpack
 owner: Buildpacks
 ---
 
-This topic describes how to push your NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> app to Cloud Foundry and how to configure your NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> app to use the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> buildpack.
+This topic describes how to push your NGINX app to Cloud Foundry and how to configure your NGINX app to use the NGINX buildpack.
 
 ## <a id='pushing-apps'></a> Push an App
 
-If your app contains an `nginx.conf` file, Cloud Foundry automatically uses the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> buildpack when you run `cf push` to deploy your app.
+If your app contains an `nginx.conf` file, Cloud Foundry automatically uses the NGINX buildpack when you run `cf push` to deploy your app.
 
-If your Cloud Foundry deployment does not have the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> buildpack installed or the installed version is outdated, run `cf push YOUR-APP -b https://github.com/cloudfoundry/nginx-buildpack.git` to deploy your app with the current buildpack, where `YOUR-APP` is the name of your app.
+If your Cloud Foundry deployment does not have the NGINX buildpack installed or the installed version is outdated, run `cf push YOUR-APP -b https://github.com/cloudfoundry/nginx-buildpack.git` to deploy your app with the current buildpack, where `YOUR-APP` is the name of your app.
 
 For example:
 
 <pre class="terminal">
-$ cf push<!--฿ If code, add code tags and sandwich between |the| and |command|. ฿--> my-app -b https://github.com/cloudfoundry/nginx-buildpack.git<!--฿ |Git| is the preferred casing. ฿-->
+$ cf push my-app -b https://github.com/cloudfoundry/nginx-buildpack.git
 </pre>
 
-## <a id='nginx'></a> Configure NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿-->
+## <a id='nginx'></a> Configure NGINX
 
-<%= vars.recommended_by %> recommends that you use the default NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> directory structure for your NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> web server. You can view this directory structure in the [nginx-buildpack](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline)<!--฿ Verify that the link name should not be a topic title or |THIRD-PARTY-NAME documentation|. ฿--> repository in GitHub.
+<%= vars.recommended_by %> recommends that you use the default NGINX  directory structure for your NGINX web server. You can view this directory structure in the [nginx-buildpack](https://github.com/cloudfoundry/nginx-buildpack/tree/master/fixtures/mainline) repository in GitHub.
 
-Configure the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> web server. You need these elements.
+Configure the NGINX web server. You need these elements.
 
 * A root directory for all static web content
 * A MIME type configuration file
-* An NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> configuration file
-* A `buildpack.yml<!--฿ Per YAML.org, |.yaml| is the preferred extension. If the reader creates this YAML file, fix every instance of the filename in every topic as part of your commit. Files with the |.yml| extension downloaded from elsewhere are outside our control. ฿-->` YAML file that defines the version of NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> to use. For example, see [buildpack.yml<!--฿ Per YAML.org, |.yaml| is the preferred extension. If the reader creates this YAML file, fix every instance of the filename in every topic as part of your commit. Files with the |.yml| extension downloaded from elsewhere are outside our control. ฿-->](https://github.com/cloudfoundry/nginx-buildpack/blob/master/fixtures/mainline/buildpack.yml<!--฿ Per YAML.org, |.yaml| is the preferred extension. If the reader creates this YAML file, fix every instance of the filename in every topic as part of your commit. Files with the |.yml| extension downloaded from elsewhere are outside our control. ฿-->)<!--฿ Verify that the link name should not be a topic title or |THIRD-PARTY-NAME documentation|. ฿--> in the Cloud Foundry NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> Buildpack repository in GitHub.
+* An NGINX configuration file
+* A `buildpack.yml` YAML file that defines the version of NGINX to use. For example, see [buildpack.yml](https://github.com/cloudfoundry/nginx-buildpack/blob/master/fixtures/mainline/buildpack.yml) Buildpack repository in GitHub.
 
 Make any custom configuration changes based on these default files to verify compatibility with the buildpack.
 
@@ -36,11 +36,11 @@ Use the templating syntax when you create an `nginx.conf` file. This templating 
 
 ### <a id='port'></a> Port
 
-Use `{{port}}` to set the port on which to listen. At start time, `{{port}}` will<!--฿ Avoid |will|: present tense is preferred. ฿--> interpolate in the value of `$PORT`.
+Use `{{port}}` to set the port on which to listen. At start time, `{{port}}` will interpolate in the value of `$PORT`.
 
 <p class="note"><strong>Note</strong>: You must use <code>{{port}}</code> in your <code>nginx.conf</code> file.</p>
 
-For example, to set an NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> server to listen on `$PORT`, include the following in your `nginx.conf` file:
+For example, to set an NGINX server to listen on `$PORT`, include the following in your `nginx.conf` file:
 
 ```
 server {
@@ -50,11 +50,11 @@ server {
 
 ### <a id='nameservers'></a> Name resolution
 
-NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> does not resolve internal routes by default. To resolve internal routes, use `{{nameservers}}` to set the resolver IP address. At start time, `{{nameservers}}` interpolates the address of a platform-provided DNS service that includes information about internal routes.
+NGINX does not resolve internal routes by default. To resolve internal routes, use `{{nameservers}}` to set the resolver IP address. At start time, `{{nameservers}}` interpolates the address of a platform-provided DNS service that includes information about internal routes.
 
-Connections to internal routes do not go through the Cloud Foundry routing tier. As a result, you might see errors if you proxy an app on an internal route while it is restarting. There are some workarounds you might need<!--฿ Avoid anthropomorphizing: |require| might be better here. ฿--> to consider.
+Connections to internal routes do not go through the Cloud Foundry routing tier. As a result, you might see errors if you proxy an app on an internal route while it is restarting. There are some workarounds you might need to consider.
 
-For more information, see [Using DNS for Service Discovery with NGINX and NGINX Plus](https://www.nginx.com/blog/dns-service-discovery-nginx-plus/) on the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> blog.
+For more information, see [Using DNS for Service Discovery with NGINX and NGINX Plus](https://www.nginx.com/blog/dns-service-discovery-nginx-plus/) on the NGINX blog.
 
 ### <a id='env'></a> Environment variables
 
@@ -64,14 +64,14 @@ For example, include the following in your `nginx.conf` file to activate or deac
 
 ```
 gzip {{env "GZIP_DOWNLOADS"}};
-```<!--฿ Verify that no placeholders above require explanation in the style of |Where PLACEHOLDER is...| ฿-->
+```
 
-* If you set `GZIP_DOWNLOADS` to `off`, NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> does not GZip files.
-* If you set `GZIP_DOWNLOADS` to `on`, NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> GZips files.
+* If you set `GZIP_DOWNLOADS` to `off`, NGINX does not GZip files.
+* If you set `GZIP_DOWNLOADS` to `on`, NGINX GZips files.
 
 ### <a id='unescaped-env'></a> Unescaped environment variables
 
-To use unescaped environment variables, add an array of environment variable names to the `buildpack.yml<!--฿ Per YAML.org, |.yaml| is the preferred extension. If the reader creates this YAML file, fix every instance of the filename in every topic as part of your commit. Files with the |.yml| extension downloaded from elsewhere are outside our control. ฿-->`. See the following example:
+To use unescaped environment variables, add an array of environment variable names to the `buildpack.yml`. See the following example:
 
 ```
 ---
@@ -86,49 +86,49 @@ You must properly quote such variables to appear as strings in the ` nginx.conf`
 
 ### <a id='loading-modules'></a> Loading dynamic modules
 
-NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> can dynamically load modules at runtime. These modules are shared-object files that can be<!--฿ Consider switching to active voice. ฿--> dynamically loaded using the `load_module` directive. In addition to loading modules dynamically, the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> version provided by the buildpack has statically compiled the following modules into the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> binary:
+NGINX can dynamically load modules at runtime. These modules are shared-object files that can be dynamically loaded using the `load_module` directive. In addition to loading modules dynamically, the NGINX version provided by the buildpack has statically compiled the following modules into the NGINX binary:
 
-* `ngx_http_ssl_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
-* `ngx_http_realip_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
-* `ngx_http_gunzip_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
-* `ngx_http_gzip_static_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
-* `ngx_http_auth_request_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
-* `ngx_http_random_index_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
-* `ngx_http_secure_link_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
-* `ngx_http_stub_status_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
-* `ngx_http_sub_module`<!--฿ Use dashes for spacing in placeholders, not underscores. ฿-->
+* `ngx_http_ssl_module`
+* `ngx_http_realip_module`
+* `ngx_http_gunzip_module`
+* `ngx_http_gzip_static_module`
+* `ngx_http_auth_request_module`
+* `ngx_http_random_index_module`
+* `ngx_http_secure_link_module`
+* `ngx_http_stub_status_module`
+* `ngx_http_sub_module`
 
-These statically compiled modules do not need to<!--฿ |must| is preferred or, better, rephrase as an imperative. ฿--> be loaded at runtime and are already available for use.
+These statically compiled modules do not need to be loaded at runtime and are already available for use.
 
-To load a dynamic NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> module, use the following syntax in the app `nginx.conf` file for your app:
+To load a dynamic NGINX module, use the following syntax in the app `nginx.conf` file for your app:
 
 ```
 {{module "MODULE-NAME"}}
-```<!--฿ Verify that no placeholders above require explanation in the style of |Where PLACEHOLDER is...| ฿-->
+```
 
-If you have provided<!--฿ |you verbed| is punchier than |you have verbed| and it fits in most cases. ฿--> a module in a `modules` directory located at the root of your app, the buildpack instructs NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> to load that module.
-If you have not provided a module, the buildpack instructs NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> to search for a matching built-in dynamic module.
+If you have provided a module in a `modules` directory located at the root of your app, the buildpack instructs NGINX to load that module.
+If you have not provided a module, the buildpack instructs NGINX to search for a matching built-in dynamic module.
 
 As of v0.0.5 of the buildpack, the `ngx_stream_module` is available as a dynamic module that is built into the buildpack.
 
-For example, to load a custom module named `ngx_hello_module`, provide a `modules/ngx_hello_module.so` file in your app directory and add the line below<!--฿ If referring to a page location, use |following| or |later| or, better, just use an anchor. If referring to product versions, use |earlier|. ฿--> to the top of your `nginx.conf` file:
+For example, to load a custom module named `ngx_hello_module`, provide a `modules/ngx_hello_module.so` file in your app directory and add the line below to the top of your `nginx.conf` file:
 
 ```
 {{module "ngx_hello_module"}}
 ```
 
-To load a built-in module like `ngx_stream_module`, add the line below<!--฿ If referring to a page location, use |following| or |later| or, better, just use an anchor. If referring to product versions, use |earlier|. ฿--> to the top of your `nginx.conf` file. You do not need to<!--฿ |must| is preferred or, better, rephrase as an imperative. ฿--> provide an `ngx_stream_module.so` file:
+To load a built-in module like `ngx_stream_module`, add the line below to the top of your `nginx.conf` file. You do not need to provide an `ngx_stream_module.so` file:
 
 ```
 {{module "ngx_stream_module"}}
 ```
 
-<p class="note"><strong>Note</strong>: To name your modules directory something other than <code>modules</code>, use the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> <code>load_module</code> directive, providing a path to the module relative to the location of your <code>nginx.conf</code> file. For example:
+<p class="note"><strong>Note</strong>: To name your modules directory something other than <code>modules</code>, use the NGINX <code>load_module</code> directive, providing a path to the module relative to the location of your <code>nginx.conf</code> file. For example:
 <code>load_module some_module_dir/my_module.so</code></p>
 
 ### <a id='enabling-debugging'></a> Enabling debugging
 
-By default, debug logging will<!--฿ Avoid |will|: present tense is preferred. ฿--> be deactivated in the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> buildpack. This helps optimize performance. Set the debug level with the `error_log` directive in the `nginx.conf` to enable debug logging.
+By default, debug logging will be deactivated in the NGINX buildpack. This helps optimize performance. Set the debug level with the `error_log` directive in the `nginx.conf` to enable debug logging.
 
 To use the debug logging, add the `error_log` entry to your `nginx.conf` file, using the syntax below:
 
@@ -138,14 +138,14 @@ Syntax:  error_log file [level];
 
 Where:
 
-* `file` is the name of the file where the log is to be stored. The special value `stderr` selects the standard error<!--฿ |stderr| is preferred. ฿--> file. Logging to `syslog` can be<!--฿ Consider switching to active voice. ฿--> configured by<!--฿ Active voice is preferred. ฿--> specifying the “`syslog:`” prefix.
-* `level` specifies the level of logging, and can be<!--฿ Consider switching to active voice. ฿--> one of the following:
+* `file` is the name of the file where the log is to be stored. The special value `stderr` selects the standard error file. Logging to `syslog` can be configured by specifying the “`syslog:`” prefix.
+* `level` specifies the level of logging, and can be one of the following:
 
   * `debug`
   * `info`
   * `notice`
   * `warn`
-  * `error`
+  * `error` (default)
   * `crit`
   * `alert`
   * `emerg`
@@ -158,7 +158,7 @@ Example:
 error_log /path/to/log debug;
 ```
 
-#### <a id='debugging-logs-selected-clients<!--฿ Shorten the anchor ID to 25 characters or fewer. Use dashes instead of spaces or periods. ฿-->'></a> Debugging logs for selected clients
+#### <a id='debugging-logs-selected-clients'></a> Debugging logs for selected clients
 
 To enable the debugging log for selected client addresses only, use the syntax below.
 
@@ -171,7 +171,7 @@ debug_connection 192.168.10.0/24;
 }
 ```
 
-#### <a id='logging-to-a-cyclic-memory-buffer<!--฿ Shorten the anchor ID to 25 characters or fewer. Use dashes instead of spaces or periods. ฿-->'></a> Logging to a cyclic memory buffer
+#### <a id='logging-to-a-cyclic-memory-buffer'></a> Logging to a cyclic memory buffer
 
 The debugging log can be written to a cyclic memory buffer. Use the syntax shown below.
 
@@ -194,9 +194,9 @@ dump binary memory debug_log.txt $buf->start $buf->end
 
 ## <a id='help'></a>Buildpack support
 
-The resources listed in this section can assist you when using the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> buildpack or when developing your own NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> buildpack.
+The resources listed in this section can assist you when using the NGINX buildpack or when developing your own NGINX buildpack.
 
-* **NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> Buildpack Repository in GitHub**: Find more information about using and extending the NGINX<!--฿ |NGINX| for the brand. |nginx| for files and code. ฿--> buildpack in the [NGINX buildpack](https://github.com/cloudfoundry/nginx-buildpack) GitHub repository.
+* **NGINX Buildpack Repository in GitHub**: Find more information about using and extending the NGINX buildpack in the [NGINX buildpack](https://github.com/cloudfoundry/nginx-buildpack) GitHub repository.
 
 * **Release Notes**: Find current information about this buildpack on the [NGINX buildpack release page](https://github.com/cloudfoundry/nginx-buildpack/releases) in GitHub.
 
