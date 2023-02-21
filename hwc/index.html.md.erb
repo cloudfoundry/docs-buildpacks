@@ -85,7 +85,7 @@ Follow the steps below to push your application.
 <br>
     For example:
 
-    <pre class='terminal'>
+    <pre class="terminal">
     $ cf push my-app -s windows -b hwc_buildpack
     Creating app my-app in org sample-org / space sample-space as username@example.com...
     OK
@@ -156,7 +156,7 @@ To define a context path route, such as `app1.example.com/app2`, run the followi
 
 For example, the following commands define context path routing for two HWC apps, `app1` and `app2`, where `app2` is made accessible under `app1` as `app1.example.com/app2`:
 
-<pre class='terminal'>
+<pre class="terminal">
 $ cf push app1 -s windows -b hwc_buildpack
 $ cf push app2 --no-start --no-route -s windows -b hwc_buildpack
 $ cf map-route app2 example.com --hostname app1 --path app2

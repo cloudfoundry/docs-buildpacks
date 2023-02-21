@@ -20,7 +20,7 @@ Cloud Foundry automatically uses the Node.js buildpack if it detects a `package.
 The `-b` option lets you specify a buildpack to use with the `cf push` command. If your Cloud Foundry deployment does not have the Node.js buildpack installed or the installed version is out of date, run `cf push APP-NAME -b https://github.com/cloudfoundry/nodejs-buildpack`, where `APP-NAME` is the name of your app, to push your app with the latest version of the buildpack. 
 
 For example:
-<pre class='terminal'>
+<pre class="terminal">
 $ cf push my-nodejs-app -b https<span>:</span>//github.com/cloudfoundry/nodejs-buildpack
 </pre>
 
@@ -57,7 +57,7 @@ Example showing a specific version:
 
 If you try to use a version that is not currently supported, staging your app fails with the following error message:
 
-<pre class='terminal'>
+<pre class="terminal">
 Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST:...
 !
 !     exit
@@ -91,7 +91,7 @@ If you do not specify an npm version, your app uses the default npm packaged wit
 
 If your environment cannot connect to the Internet and you specified a non-supported version of npm, the buildpack fails to download npm and you see the following error message:
 
-<pre class='terminal'>
+<pre class="terminal">
 We're unable to download the version of npm you've provided (...).
 Please remove the npm version specification in package.json (...)
 Staging failed: Buildpack compilation step failed

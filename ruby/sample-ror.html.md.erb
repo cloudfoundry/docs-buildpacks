@@ -19,7 +19,7 @@ In order to deploy a sample Ruby on Rails app, you must have the following:
 ##<a id='clone'></a>Step 1: Clone the App ##
 
 Run the following terminal command to create a local copy of the cf-sample-app-rails.
-<pre class='terminal'>
+<pre class="terminal">
 $ git clone <span>https</span>://github.com/cloudfoundry-samples/cf-sample-app-rails.git
 </pre>
 The newly created directory contains a `manifest.yml` file, which assists CF with deploying the app. See [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#minimal-manifest) for more information.
@@ -28,7 +28,7 @@ The newly created directory contains a `manifest.yml` file, which assists CF wit
 
 1. Run the following terminal command to log in and target the API endpoint of your deployment.  <%= vars.api_endpoint_book %>
 
-    <pre class='terminal'>$ cf login -a YOUR-API-ENDPOINT</pre>
+    <pre class="terminal">$ cf login -a YOUR-API-ENDPOINT</pre>
 
 1. Use your credentials to log in, and to select a [Space and Org](../../concepts/roles.html).
 
@@ -47,7 +47,7 @@ For more information about the `postgresql-10-odb` service, see [Crunchy Postgre
 
 Make sure you are in the `cf-sample-app-rails` directory. Run the following terminal command to deploy the app:
 
-<pre class='terminal'>$ cf push cf-sample-app-rails</pre>
+<pre class="terminal">$ cf push cf-sample-app-rails</pre>
 
 `cf push cf-sample-app-rails` creates a URL route to your application in the form HOST.DOMAIN. In this example, HOST is cf-sample-app-rails. Administrators specify the DOMAIN. For example, for the DOMAIN `<%=vars.app_domain%>`, running `cf push cf-sample-app-rails` creates the URL `cf-sample-app-rails.<%=vars.app_domain%>`.
 
