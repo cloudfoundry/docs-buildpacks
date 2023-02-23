@@ -15,9 +15,9 @@ For information about using, configuring, and extending the Cloud Foundry Java b
 
 ## <a id='design'></a> Design
 
-The Java buildpack is designed to convert artifacts that run on the JVM into executable apps. It does this by identifying one of the supported artifact types (Grails, Groovy, Java, Play Framework, Spring Boot, and Servlet) and downloading all additional dependencies needed to run. It also analyzes the collection of services bound to the app and downloads any dependencies related to those services.
+The Java buildpack can convert artifacts that run on the JVM into executable apps. It does this by identifying one of the supported artifact types (Grails, Groovy, Java, Play Framework, Spring Boot, and Servlet) and downloading all additional dependencies needed to run. It also analyzes the collection of services bound to the app and downloads any dependencies related to those services.
 
-As an example, pushing a WAR file that is bound to a PostgreSQL database and New Relic for performance monitoring results in the following:
+For example, pushing a WAR file that is bound to a PostgreSQL database and New Relic for performance monitoring shows output like this:
 
 <pre class="terminal">
 -----> Java Buildpack v4.50 | https://github.com/cloudfoundry/java-buildpack#e1d6dbc
@@ -35,7 +35,7 @@ Exit status 0
 
 ## <a id='configuration'></a> Configuration
 
-In most cases, the buildpack should work without any configuration. If you are new to <%= vars.app_runtime_abbr %>, <%= vars.recommended_by %> recommends that you make your first attempts without modifying the buildpack configuration. The buildpack is flexible though and can be configured through environment variables. For more information, see [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
+In most cases, the buildpack can work without any configuration. If you are new to <%= vars.app_runtime_abbr %>, <%= vars.recommended_by %> recommends that you make your first attempts without modifying the buildpack configuration. The buildpack is flexible, though, and you can configure it through environment variables. For more information, see [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='java-client-library'></a> Java Client Library
@@ -282,7 +282,7 @@ If you do not allocate sufficient memory to a Java app when you deploy it, it ma
 
 The `config/open_jdk_jre.yml` file of the Java buildpack contains default memory size and weighting settings for the JRE. For an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app, see [Open JDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) in the Cloud Foundry Java Buildpack on GitHub.
 
-To configure memory-related JRE options for your app you may override the default memory settings of your buildpack as described in [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) with the properties listed in the Open JDK JRE README in the Cloud Foundry Java Buildpack on GitHub. For more information about configuring manifests, see [Deploying with App Manifests](../../devguide/deploy-apps/manifest.html).
+To configure memory-related JRE options for your app, you can override the default memory settings of your buildpack as described in [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) with the properties listed in the Open JDK JRE README in the Cloud Foundry Java Buildpack on GitHub. For more information about configuring manifests, see [Deploying with App Manifests](../../devguide/deploy-apps/manifest.html).
 
 To see memory utilization when your app is running, run:
 
@@ -313,7 +313,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
 <p class="note"><strong>Note:</strong> The solutions in this section require configuring the memory calculator, which is a sub-project of the Java buildpack that calculates suitable memory settings for Java apps when you push them. For more information, see the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">java-buildpack-memory-calculator</a> repository on GitHub. If you have questions about the memory calculator, you can ask them in the <strong>#java-buildpack</strong> channel of the <a href="https://slack.cloudfoundry.org/">Cloud Foundry Slack organization</a>.</p>
 
-* **Error**: The Garden container terminates the Java process with the `out of memory` event. For example:
+* **Error**: The Garden container terminates the Java process with the out of memory event. For example:
     <pre class="terminal">
     $ cf events YOUR-APP
     time                          event         actor         description
@@ -323,9 +323,9 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
     This error appears when the JVM allocates more OS-level memory than the quota requested by the app, such as through the manifest.
 
-* **Cause 1 - Insufficient native memory**: This error commonly means that the JVM requires more `native` memory. In the scope of the Java buildpack and the memory calculator, the term `native` means the memory required for the JVM to work, along with forms of memory not covered in the other classifications of the memory calculator. This includes the memory footprint of OS-level threads, program counters, if an app forks and runs subprocesses, or if an app uses JNI to allocate memory.
+* **Cause 1 - Insufficient native memory**: This error commonly means that the JVM requires more native memory. In the scope of the Java buildpack and the memory calculator, the term "native" means the memory required for the JVM to work, along with forms of memory not covered in the other classifications of the memory calculator. This includes the memory footprint of OS-level threads, program counters, when an app forks and runs subprocesses, or when an app uses JNI to allocate memory.
 
-* **Solution 1**: Determine how much `native` memory a Java app needs by measuring it with realistic workloads and fine-tuning it accordingly. You can then configure the Java buildpack using the `native` setting of the memory calculator, as in the example below:
+* **Solution 1**: Determine how much native memory a Java app needs by measuring it with realistic workloads and fine-tuning it accordingly. You can then configure the Java buildpack using the native setting of the memory calculator, as in the example below:
 
     ```
     ---
@@ -337,9 +337,9 @@ A Java app may crash because of insufficient memory on the Garden container or t
     ```
     Where `YOUR-APP` is the name of your app.
 
-    This example shows that `10%` of the overall available `1G` is reserved for anything that is not `heap`, `metaspace`, `direct`, `code cache` or `threads`. In less common cases, this may come from companion processes started by the JVM, such as the Process API.
+    This example shows that 10% of the overall available `1G` is reserved for anything that is not `heap`, `metaspace`, `direct`, `code cache` or `threads`. In less common cases, this may come from companion processes started by the JVM, such as the Process API.
 
-    For more information about measuring how much `native` memory a Java app needs, see [Native Memory Tracking](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) in the Java documentation. For more information about configuring the Java buildpack using the `native` setting, see [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md#memory) in the Cloud Foundry Java Buildpack on GitHub. For more information about the Process API, see [Class Process](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html) in the Java documentation.
+    For more information about measuring how much native memory a Java app needs, see [Native Memory Tracking](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) in the Java documentation. For more information about configuring the Java buildpack using the native setting, see [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md#memory) in the Cloud Foundry Java Buildpack on GitHub. For more information about the Process API, see [Class Process](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html) in the Java documentation.
 
 * **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under heavy load, it uses a high number of threads. Each thread consumes some memory and if there are enough threads they will consume a significant amount of memory.
 
@@ -450,7 +450,7 @@ Where:
 
 ## <a id='extension'></a> Extension
 
-The Java buildpack is also designed to be easily extended. It creates abstractions for three types of components (containers, frameworks, and JREs) to allow users to easily add functionality. In addition to these abstractions, there are a number of utility classes for simplifying typical buildpack behaviors.
+The Java buildpack can also be easily extended. It creates abstractions for three types of components (containers, frameworks, and JREs) to allow users to easily add functionality. In addition to these abstractions, there are a number of utility classes for simplifying typical buildpack behaviors.
 
 As an example, the New Relic framework looks like this:
 
