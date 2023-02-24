@@ -3,8 +3,6 @@ title: Getting Started Deploying PHP Apps
 owner: Buildpacks
 ---
 
-
-
 <%=vars.GSG_intro_sentence%>
 
 This topic is intended to guide you through the process of deploying PHP apps to Cloud Foundry.
@@ -25,7 +23,7 @@ $ cd my-php-app
 $ cat << EOF > index.php
 &lt;?php
   phpinfo();
-?&gt; 
+?&gt;
 EOF
 $ cf push my-php-app -m 128M
 </pre>
@@ -143,19 +141,20 @@ To troubleshoot problems using the buildpack, you can do one of the following:
 
 1. Review the output from the buildpack. The buildpack writes basic information to stdout, for example the files that it downloads. The buildpack also writes information in the form of stack traces when a process fails.
 
-1. Review the logs from the buildpack. The buildpack writes logs to disk. Follow the steps below to access these logs: 
+1. Review the logs from the buildpack. The buildpack writes logs to disk. Follow the steps below to access these logs:
   1. Run `cf ssh APP-NAME` to ssh into the app container, replacing `APP-NAME` with the name of your app.
   1. Run `cat app/.bp/logs/bp.log` to view the logs.
-  <pre class="terminal">
-  $ cf ssh my-app
-  $ cat app/.bp/logs/bp.log
-  </pre>
+  
+      <pre class="terminal">
+      $ cf ssh my-app
+      $ cat app/.bp/logs/bp.log
+      </pre>
 
 By default, log files contain more detail than output to stdout. Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the buildpack to set its log level to `DEBUG`, and to output logs to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
 
 ### Increase Log Output with fpm.d ###
 
-If you use [fpm.d](./gsg-php-config.html#fpm_d), follow the steps below to configure `fpm` to redirect worker stdout and stderr into the logs. 
+If you use [fpm.d](./gsg-php-config.html#fpm_d), follow the steps below to configure `fpm` to redirect worker stdout and stderr into the logs.
 
 1. Create a file in the `.bp-config/php/fpm.d/` directory of your app.
 

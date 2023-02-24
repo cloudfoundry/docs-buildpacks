@@ -3,12 +3,10 @@ title: Configuring Rake Tasks for Deployed Apps
 owner: Buildpacks
 ---
 
-
-
 For Cloud Foundry to automatically invoke a Rake task while a Ruby or Ruby on Rails app is deployed, you must do the following:
 
- * Include the Rake task in your app
- * Configure the application start command using the `command` attribute in the application manifest
+* Include the Rake task in your app
+* Configure the application start command using the `command` attribute in the application manifest
 
 The following is an example that shows how to invoke a Rake database migration task at application startup.
 
@@ -16,7 +14,7 @@ The following is an example that shows how to invoke a Rake database migration t
 
 1. Add the following code to your rake file:
 
-    <pre class="code">
+    ```ruby
     namespace :cf do
         desc "Only run on the first application instance"
         task :on_first_instance do
@@ -24,14 +22,14 @@ The following is an example that shows how to invoke a Rake database migration t
         exit(0) unless instance_index == 0
         end
     end
-    </pre>
+    ```
 
     This Rake task limits an idempotent command to the first instance of a deployed application.
 
 1. Add the task to the `manifest.yml` file with the `command` attribute, referencing the idempotent command `rake db:migrate` chained with a start command.
 
-    <pre class="code">
-applications:
- &#8208; name: my-rails-app
+    ```yaml
+    applications:
+    - name: my-rails-app
       command: bundle exec rake cf:on_first_instance db:migrate && rails s -p $PORT
-    </pre>
+    ```

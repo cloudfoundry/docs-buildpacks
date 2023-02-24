@@ -46,43 +46,52 @@ For more information about creating and using service instances, refer to the
 
 #### Create a Service Instance ####
 
-Run `cf marketplace` to view managed and user-provided services and plans
-that are available to you.
+To create a service instance:
 
-The example shows three of the available managed database-as-a-service providers
-and the plans that they offer: `cleardb` MySQL and `postgresql-10-odb` PostgreSQL as a
-Service.
+1. View managed and user-provided services and plans that are available to you by running:
 
-<pre class="terminal">
-$  cf marketplace
-Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
-OK
+    ```console
+    cf marketplace
+    ```
 
-service             plans                                     description
-...
-cleardb             spark, boost, amp, shock                  Highly available MySQL for your Apps
-...
-postgresql-10-odb   standalone, standalone-replica, general   PostgreSQL as a Service
-...
-</pre>
+    The example shows three of the available managed database-as-a-service providers
+    and the plans that they offer: `cleardb` MySQL and `postgresql-10-odb` PostgreSQL as a
+    Service.
 
-Run `cf create-service SERVICE PLAN SERVICE_INSTANCE` to create a service
-instance for your app.
-Choose a SERVICE and PLAN from the list, and provide a unique name for the
-SERVICE_INSTANCE.
+    <pre class="terminal">
+    $  cf marketplace
+    Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
+    OK
 
-<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 30mb redis</code>. This creates a service instance named <code>redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.</p>
+    service             plans                                     description
+    ...
+    cleardb             spark, boost, amp, shock                  Highly available MySQL for your Apps
+    ...
+    postgresql-10-odb   standalone, standalone-replica, general   PostgreSQL as a Service
+    ...
+    </pre>
 
-<pre class="terminal">
-$ cf create-service rediscloud 30mb redis
-Creating service redis in org Cloud-Apps / space development as clouduser@example.com....
-OK
-</pre>
+1. Create a service instance for your app.
+
+    ```console
+    cf create-service SERVICE PLAN SERVICE-INSTANCE
+    ```
+
+    Choose a `SERVICE` and `PLAN` from the list, and provide a unique name for the
+    `SERVICE-INSTANCE`.
+
+    <p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 30mb redis</code>. This creates a service instance named <code>redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.</p>
+
+    <pre class="terminal">
+    $ cf create-service rediscloud 30mb redis
+    Creating service redis in org Cloud-Apps / space development as clouduser@example.com....
+    OK
+    </pre>
 
 #### Bind a Service Instance ####
 
 When you bind an app to a service instance, Cloud Foundry writes
-information about the service instance to the VCAP_SERVICES app environment
+information about the service instance to the `VCAP_SERVICES` app environment
 variable.
 The app can use this information to integrate with the service instance.
 
@@ -90,7 +99,11 @@ Most services support bindable service instances.
 Refer to your service provider's documentation to confirm if they support this
 functionality.
 
-You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`.
+You can bind a service to an application by running:
+
+```console
+cf bind-service APPLICATION SERVICE-INSTANCE
+```
 
 Alternately, you can configure the deployment manifest file by adding a
 `services` block to the `applications` block and specifying the service
@@ -121,24 +134,30 @@ Cloud Foundry uses the default standard Ruby web server library, WEBrick, for Ru
 
 ### Step 3: Log in and Target the API Endpoint ###
 
-Run `cf login -a API_ENDPOINT`, enter your login credentials, and select a space
+Enter your login credentials, and select a space
 and org.
+
+```console
+cf login -a API-ENDPOINT
+```
 The API endpoint is <%=vars.api_endpoint%>.
 
-  <%=vars.gen_GSG%>
+<%=vars.gen_GSG%>
 
-
-  <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
+<p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
 
 ### Step 4: Deploy an App ###
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
-From the root directory of your application, run `cf push APP_NAME` to deploy
-your application.
+Deploy your application by running the following command from the root directory of your application:
 
-`cf push APP_NAME` creates a URL route to your application in the form
-HOST.DOMAIN, where HOST is your APP_NAME and DOMAIN is specified by your
+```
+cf push APP-NAME
+```
+
+`cf push APP-NAME` creates a URL route to your application in the form
+HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your
 administrator.
 Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the
 URL `my-app.<%=vars.app_domain%>`.
@@ -152,7 +171,7 @@ Use the following options to help create a unique URL:
 * `cf help push` to view other options for this command.
 
 If you want to view log activity while the app deploys, launch a new terminal
-window and run `cf logs APP_NAME`.
+window and run `cf logs APP-NAME`.
 
 Once your app deploys, browse to your app URL.
 Search for the `urls` field in the `App started` block in the output of the `cf push` command.
