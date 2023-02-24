@@ -175,11 +175,19 @@ Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
-From the root directory of your application, run `cf push APP-NAME -p PATH-TO-FILE.distZip` to deploy your application.
+From the root directory of your application, run the following command to deploy your application:
+
+```console
+cf push APP-NAME -p PATH-TO-FILE.distZip
+```
 
 <p class="note"><strong>Note</strong>: You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="../java-tips.html">Tips for Java Developers</a> topic.</p>
 
-`cf push APP-NAME` creates a URL route to your application in the form HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your administrator. Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the URL `my-app.<%=vars.app_domain%>`.
+The `cf push` command creates a URL route to your application in the form `HOST.DOMAIN`,
+where `HOST` is your `APP-NAME` and `DOMAIN` is specified by your administrator.
+Your `DOMAIN` is`<%= vars.app_domain %>`.
+
+For example, `cf push my-app` creates the URL `my-app.<%= vars.app_domain %>`.
 
 The URL for your app must be unique from other apps that Cloud Foundry hosts or the push will fail. Use the following options to help create a unique URL:
 

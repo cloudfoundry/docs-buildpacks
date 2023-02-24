@@ -156,11 +156,12 @@ Deploy your application by running the following command from the root directory
 cf push APP-NAME
 ```
 
-`cf push APP-NAME` creates a URL route to your application in the form
-HOST.DOMAIN, where HOST is your APP-NAME and DOMAIN is specified by your
+This command creates a URL route to your application in the form
+`HOST.DOMAIN`, where `HOST` is your `APP-NAME` and `DOMAIN` is specified by your
 administrator.
-Your DOMAIN is`<%=vars.app_domain%>`. For example: `cf push my-app` creates the
-URL `my-app.<%=vars.app_domain%>`.
+Your `DOMAIN` is`<%= vars.app_domain %>`.
+
+For example, `cf push my-app` creates the URL `my-app.<%= vars.app_domain %>`.
 
 The URL for your app must be unique from other apps that Cloud Foundry
 hosts or the push will fail.
