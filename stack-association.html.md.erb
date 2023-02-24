@@ -5,7 +5,7 @@ owner: Buildpacks
 
 This topic describes the stack association feature for Cloud Foundry buildpacks.
 
-<p class="note warning"><strong>Warning</strong>: To avoid security exposure, ensure that you migrate your apps and custom buildpacks to use the <code>cflinuxfs4</code> stack based on Ubuntu 22.04 LTS (Jammy Jellyfish). <code>cflinuxfs3</code> is based on Ubuntu 18.04 (Bionic Beaver), which reaches end of standard support in April 2023. </p>
+<p class="note important"><strong>Important</strong>: To avoid security exposure, ensure that you migrate your apps and custom buildpacks to use the <code>cflinuxfs4</code> stack based on Ubuntu 22.04 LTS (Jammy Jellyfish). <code>cflinuxfs3</code> is based on Ubuntu 18.04 (Bionic Beaver), which reaches end of standard support in April 2023. </p>
 
 ## <a id='overview'></a> Overview
 
@@ -33,7 +33,11 @@ The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/maste
 
 Some buildpacks might have a missing stack record. For example, if you uploaded a custom buildpack before Cloud Foundry introduced stack association. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record.
 
-In this case, you must manually assign a stack to the buildpack. To do this, run `cf update-buildpack BUILDPACK-NAME --assign-stack stack`.
+In this case, you must manually assign a stack to the buildpack. To do this, run:
+
+```console
+cf update-buildpack BUILDPACK-NAME --assign-stack stack
+```
 
 Buildpacks with a missing stack record will continue to work, but are more manageable when the stack record is present.
 

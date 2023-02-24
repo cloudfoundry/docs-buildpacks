@@ -18,27 +18,29 @@ To push an app with multiple buildpacks using the cf CLI:
 
 1. Ensure that you are using the cf CLI v6.38 or later by running:
 
-	```
-	cf version
-	```
-  	For more information about upgrading the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html).
+    ```
+    cf version
+    ```
+    For more information about upgrading the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html).
 
 1. To push your app with multiple buildpacks, specify each buildpack with a `-b` flag. Run:
 
-	```
-  	cf push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2 ... -b BUILDPACK-NAME-3
-  	```
-  	Where:
-  	* `YOUR-APP` is the name of your app.
-  	* `BUILDPACK-NAME-1`, `BUILDPACK-NAME-2`, and `BUILDPACK-NAME-3` are the names of the buildpacks you want to push with your app.
-  	<br><br>
-  	The last buildpack you specify is the **final buildpack**, which can modify the launch environment and set the start command.
-  	<br><br>
-  	To see a list of available buildpacks, run:
+    ```
+    cf push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2 ... -b BUILDPACK-NAME-3
+    ```
+    Where:
+    <ul>
+      <li><code>YOUR-APP</code> is the name of your app.</li>
+      <li><code>BUILDPACK-NAME-1</code>, <code>BUILDPACK-NAME-2</code>, and <code>BUILDPACK-NAME-3</code> are the names of the buildpacks you want to push with your app.</li>
+    </ul>
+    
+    The last buildpack you specify is the **final buildpack**, which can modify the launch environment and set the start command.
+    <br><br>
+    To see a list of available buildpacks, run:
 
-  	```
-  	cf buildpacks
-  	```
+    ```
+    cf buildpacks
+    ```
 
 For more information on multi-buildpack order, see [How Buildpacks Work](understand-buildpacks.html).
 
