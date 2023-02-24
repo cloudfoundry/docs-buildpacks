@@ -21,7 +21,7 @@ To use the Buildpack Packager:
 1. Create a `manifest.yml` file in your buildpack.
 
 1. Run the packager in cached mode by running:
-  
+
     ```
     buildpack-packager build -cached -any-stack
     ```
@@ -116,13 +116,17 @@ For all buildpacks that supply dependencies via `/bin/supply`:
 
 * The `config.yml` file should be formatted as follows:
 
-	```
-	name: BUILDPACK
-	config: YAML-OBJECT
-	```
-  Where:
-  * `BUILDPACK` is the name of the buildpack providing dependencies.
-  * `YAML-OBJECT` is the YAML object that contains buildpack-specific configuration.
+    ```
+    name: BUILDPACK
+    config: YAML-OBJECT
+    ```
+    
+    Where:
+    <ul>
+      <li><code>BUILDPACK</code> is the name of the buildpack providing dependencies.</li>
+      <li><code>YAML-OBJECT</code> is the YAML object that contains buildpack-specific configuration.</li>
+    </ul>
+
 
 * The following directories may be created inside of `/tmp/deps/IDX/` to provide dependencies to subsequent buildpacks:
 	* `/bin`: Contains binaries intended for `$PATH` during staging and launch.
