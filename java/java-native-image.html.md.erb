@@ -56,12 +56,15 @@ To deploy the app from an image:
 
 1. Publish your image. You can do this in a number of ways. For example, you can use the `--publish` flag to `pack build` with `docker tag` and `docker push`, or through any other means of publishing a container image to a registry.
 
-2. Run `cf push -o registry.example.com/apps/native-image native-image-app`.
-    This option requires that your foundation support deploying Docker images.
-    To validate this, run the following command and confirm that `diego_docker` is set to `enabled`. If it is set to `disabled`, you cannot use this deployment option.
+2.  Validate that your foundation supports deploying Docker images by running the following command and confirming that `diego_docker` is set to `enabled`. If it is set to `disabled`, you cannot use this deployment option.
 
-    ```bash
-    > cf feature-flags
+    ```console
+    cf feature-flags
+    ```
+
+    For example:
+    <pre class="terminal">
+    $ cf feature-flags
     Retrieving status of all flagged features as user@example.com...
 
     features                                      state
@@ -81,6 +84,12 @@ To deploy the app from an image:
     service_instance_sharing                      enabled
     hide_marketplace_from_unauthenticated_users   disabled
     resource_matching                             enabled
+    </pre>
+
+1. Push your app by running:
+
+    ```console
+    cf push -o registry.example.com/apps/native-image native-image-app
     ```
 
 #### <a id="deploy-binary"></a>Extract the Image and Deploy the Binary
@@ -119,7 +128,11 @@ To extract and deploy your app using the binary buildpack:
     The extract script places the binary in a directory called `out` under the current working directory.
     You can run `file` to examine it and confirm that it is a 64-bit Linux executable.
 
-3. Run `cf push -b binary_buildpack -m 256M -p ./out -c ./io.paketo.demo.Demoapp native-image`. This pushes the compiled binary and executes it. You can adjust other properties or use a `manifest.yml` file to deploy as well.
+3. Push and execute the compiled binary by running the following command. You can adjust other properties or use a `manifest.yml` file to deploy as well.
+
+    ```console
+    cf push -b binary_buildpack -m 256M -p ./out -c ./io.paketo.demo.Demoapp native-image
+    ```
 
 ## <a id="native-build-tools"></a>Build Using Native Build Tools
 
@@ -163,10 +176,15 @@ For example, with Maven, `zip demo.zip target/demo`.
 Alternatively, you can copy the executable into a directory by itself.
 For example, with Maven, `mkdir -p ./out && cp target/demo ./out/`.
 This is the root for `cf push`.
-2. Run `cf push -b binary_buildpack -p demo.zip -c ./target/demo native-image`. This pushes the root zip or directory you created in the previous step.
-If you use a directory instead of a zip archive, adjust the `-p` argument.
+
+2. Push the root ZIP file or directory you created in the previous step.
+If you use a directory instead of a ZIP archive, adjust the `-p` argument.
 This is important so that it only uploads the compiled binary, not your entire project.
 You can adjust other properties or use a `manifest.yml` file to deploy as well.
+
+   ```console
+   cf push -b binary_buildpack -p demo.zip -c ./target/demo native-image
+   ```
 
 ## <a id="spring-boot"></a>Spring Boot and Spring Native
 
@@ -179,23 +197,23 @@ You can also work around this issue by adding the following hints above your `@S
 
 For example:
 
-  ```java
-  @NativeHint(trigger = Reactive<%= vars.app_runtime_abbr %>ActuatorAutoConfiguration.class, types = {
-          @TypeHint(types = Endpoint<%= vars.app_runtime_abbr %>Extension.class, access = AccessBits.ANNOTATION),
-          @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.<%= vars.app_runtime_abbr %>EndpointFilter"),
-          @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.reactive.<%= vars.app_runtime_abbr %>WebFluxEndpointHandlerMapping$<%= vars.app_runtime_abbr %>LinksHandler", access = AccessBits.LOAD_AND_CONSTRUCT
-                  | AccessBits.DECLARED_METHODS) })
-  @NativeHint(trigger = <%= vars.app_runtime_abbr %>ActuatorAutoConfiguration.class, types = {
-          @TypeHint(types = Endpoint<%= vars.app_runtime_abbr %>Extension.class, access = AccessBits.ANNOTATION),
-          @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.<%= vars.app_runtime_abbr %>EndpointFilter"),
-          @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.servlet.<%= vars.app_runtime_abbr %>WebEndpointServletHandlerMapping$<%= vars.app_runtime_abbr %>LinksHandler", access = AccessBits.LOAD_AND_CONSTRUCT
-                  | AccessBits.DECLARED_METHODS) })
-  @SpringBootapp
-  public class Demoapp {
+```java
+@NativeHint(trigger = Reactive<%= vars.app_runtime_abbr %>ActuatorAutoConfiguration.class, types = {
+        @TypeHint(types = Endpoint<%= vars.app_runtime_abbr %>Extension.class, access = AccessBits.ANNOTATION),
+        @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.<%= vars.app_runtime_abbr %>EndpointFilter"),
+        @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.reactive.<%= vars.app_runtime_abbr %>WebFluxEndpointHandlerMapping$<%= vars.app_runtime_abbr %>LinksHandler", access = AccessBits.LOAD_AND_CONSTRUCT
+                | AccessBits.DECLARED_METHODS) })
+@NativeHint(trigger = <%= vars.app_runtime_abbr %>ActuatorAutoConfiguration.class, types = {
+        @TypeHint(types = Endpoint<%= vars.app_runtime_abbr %>Extension.class, access = AccessBits.ANNOTATION),
+        @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.<%= vars.app_runtime_abbr %>EndpointFilter"),
+        @TypeHint(typeNames = "org.springframework.boot.actuate.autoconfigure.<%= vars.app_runtime_abbr %>.servlet.<%= vars.app_runtime_abbr %>WebEndpointServletHandlerMapping$<%= vars.app_runtime_abbr %>LinksHandler", access = AccessBits.LOAD_AND_CONSTRUCT
+                | AccessBits.DECLARED_METHODS) })
+@SpringBootapp
+public class Demoapp {
 
-      public static void main(String[] args) {
-          Springapp.run(Demoapp.class, args);
-      }
+    public static void main(String[] args) {
+        Springapp.run(Demoapp.class, args);
+    }
 
-  }
-  ```
+}
+```

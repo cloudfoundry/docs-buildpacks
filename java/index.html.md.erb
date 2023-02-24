@@ -13,8 +13,8 @@ See the following topics for more information:
 * <a href="./java-client.html" class="subnav">Cloud Foundry Java Client Library</a>
 * <a href="./java-native-image.html" class="subnav">Using Java Native Image</a>
 
-See the [Java Buildpack Release Notes](https://github.com/cloudfoundry/java-buildpack/releases) for information about specific versions. 
-You can find the source for the Java buildpack in the [Java buildpack repository](https://github.com/cloudfoundry/java-buildpack) on GitHub: 
+See the [Java Buildpack Release Notes](https://github.com/cloudfoundry/java-buildpack/releases) for information about specific versions.
+You can find the source for the Java buildpack in the [Java buildpack repository](https://github.com/cloudfoundry/java-buildpack) on GitHub:
 
 ## <a id='logging'></a> Buildpack and Application Logging ##
 
@@ -30,7 +30,7 @@ The Java buildpack source documentation states the following:
 a log level of `ERROR`. The exception stack trace is logged with a log
 level of `DEBUG`. This prevents users from seeing stack traces by default.
 
-Once staging completes, the buildpack stops logging. The Loggregator handles application logging. 
+Once staging completes, the buildpack stops logging. The Loggregator handles application logging.
 
 Your application must write to STDOUT or STDERR for its logs to be included in
 the Loggregator stream. For more information, see [App Logging in <%= vars.product_short %>](../../devguide/deploy-apps/streaming-logs.html).
@@ -43,7 +43,7 @@ The Java buildpack pulls the contents of `/etc/ssl/certs/ca-certificates.crt` an
 
 The log output for Diego Instance Identity-based `KeyStore` appears as follows:
 
-<pre>
+<pre class="terminal">
 Adding System Key Manager
 Adding Key Manager for /etc/cf-instance-credentials/instance.key and /etc/cf-instance-credentials/instance.crt
 Start watching /etc/cf-instance-credentials/instance.crt
@@ -53,7 +53,7 @@ Initialized KeyManager for /etc/cf-instance-credentials/instance.key and /etc/cf
 
 The log output for Diego Trusted Certificate-based `TrustStore` appears as follows:
 
-<pre>
+<pre class="terminal">
 Adding System Trust Manager
 Adding TrustManager for /etc/ssl/certs/ca-certificates.crt
 Start watching /etc/ssl/certs/ca-certificates.crt

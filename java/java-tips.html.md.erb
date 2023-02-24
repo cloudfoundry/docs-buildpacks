@@ -121,6 +121,7 @@ If you require end-to-end HTTP/2, for example, because of gRPC, do the following
             - route: MY-APP.EXAMPLE.COM
               protocol: http2
         ```
+### <a id='example'></a> HTTP/2 Example
 
 For example:
 
@@ -319,6 +320,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
     time                          event         actor         description
     2016-06-20T09:18:51.00+0100   app.crash     app-name      index: 0, reason: CRASHED, exit_description: out of memory, exit_status: 255
     </pre>
+
     Where `YOUR-APP` is the name of your app.
 
     This error appears when the JVM allocates more OS-level memory than the quota requested by the app, such as through the manifest.
@@ -379,16 +381,22 @@ If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it
     ```
 
     Where:
-    * `YOUR-APP` is the name of your app.
-    * `PATH/TO/WAR-FILE` is the path to the WAR.
-    You can determine whether or not the path was specified for a previously pushed app by examining the app deployment manifest, `manifest.yml`. If the `path` attribute specifies the current directory, the manifest includes a line like:
-
-        ```
+    <ul>
+      <li><code>YOUR-APP</code> is the name of your app.</li>
+      <li>
+        <code>PATH/TO/WAR-FILE</code> is the path to the WAR.
+        You can determine whether or not the path was specified for a previously pushed app by examining the app deployment manifest, <code>manifest.yml</code>.
+        If the <code>path</code> attribute specifies the current directory, the manifest includes a line like:
+        <pre class="terminal">
         path: .
-        ```
-        To re-push just the WAR, either:
-        * Delete `manifest.yml` and run `cf push` again, specifying the location of the WAR using the `-p` flag.
-        * Edit the `path` argument in `manifest.yml` to point to the WAR, and re-push the app.
+        </pre>
+        To re-push just the WAR, do one of the following:
+        <ul>
+          <li>Delete <code>manifest.yml</code> and run <code>cf push</code> again, specifying the location of the WAR using the <code>-p</code> flag.</li>
+          <li>Edit the <code>path</code> argument in <code>manifest.yml</code> to point to the WAR, and re-push the app.</li>
+        </ul>
+      </li>
+    </ul>
 
 ### <a id='debugging'></a> Debug Java Apps on <%= vars.app_runtime_abbr %>
 

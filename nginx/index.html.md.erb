@@ -9,7 +9,13 @@ This topic describes how to push your NGINX app to Cloud Foundry and how to conf
 
 If your app contains an `nginx.conf` file, Cloud Foundry automatically uses the NGINX buildpack when you run `cf push` to deploy your app.
 
-If your Cloud Foundry deployment does not have the NGINX buildpack installed or the installed version is outdated, run `cf push YOUR-APP -b https://github.com/cloudfoundry/nginx-buildpack.git` to deploy your app with the current buildpack, where `YOUR-APP` is the name of your app.
+If your Cloud Foundry deployment does not have the NGINX buildpack installed or the installed version is outdated, deploy your app with the current buildpack by running:
+
+```console
+cf push YOUR-APP -b https://github.com/cloudfoundry/nginx-buildpack.git
+```
+
+Where `YOUR-APP` is the name of your app.
 
 For example:
 
