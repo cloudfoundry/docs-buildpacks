@@ -205,24 +205,28 @@ Remove any of the `@ServiceScan` or `@CloudScan` annotations from Spring Java co
 * <a id='migrating-non-boot'></a>**Non-Spring Boot applications:**
 <br><br>
 If you have a Spring Application that is a non-Spring Boot application, you can still migrate to `java-cfenv`. You must use either the [no framework options](#no-framework) or the [Spring SPeL option](#spring-spel). With SPeL, you might need to manually process the expressions, depending on where you are configuring them. See the Spring documentation for places where SPeL expressions are processed by default.
+<br><br>
 
 * <a id='migrating-multiple-instances'></a>**Multiple service instances:**
 <br><br>
 Spring Cloud Connectors support connections to multiple service instances.
 <br><br>
     If you need to configure connections to multiple instances of a given service type, or do anything more than setting application properties for Spring Boot to pick up and use in auto-configuration, then you must follow the manual configuration approaches laid out in the sections above to access the binding credentials. Either [with direct Java code](#no-framework) or with [SPeL](#spring-spel). Then follow the same procedure that is used to connect to the services in any other non-Cloud Foundry deployment environment.
+<br><br>
 
 * <a id='migrating-code-modifications'></a>**Code modifications:**
 <br><br>
 The Java Buildpack injects the Spring Auto Reconfiguration module code into your application and overwrites your service configuration. This works well in some cases, but sometimes it causes problems.
 <br><br>
     With `java-cfenv`, there is no auto-reconfiguration magic. You can explicitly configure your services or you can use the [Spring Boot mappers](#spring-boot). The [Spring Boot mappers](#spring-boot) are the option most similar to previous operation. Note that when things don't work, it's generally clearer what happened, and it's easier to debug the problem.
+<br><br>
 
 * <a id='migrating-cloud-properties'></a>**Cloud property placeholders:**
 <br><br>
 The Spring Auto Reconfiguration module exposes a set of property placeholder values that you can use to access values from `VCAP_SERVICES`. If you are using these placeholders, then you must switch from using `cloud.<property>`. Use `vcap.<property>` instead.
 <br><br>
     Spring Boot exposes the same information, just under the `vcap.` prefix instead of the `cloud.` prefix.
+<br><br>
 
 * <a id='migrating-cloud-profile'></a>**Spring Cloud Profile:**
 <br><br>
