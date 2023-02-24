@@ -142,13 +142,18 @@ To troubleshoot problems using the buildpack, you can do one of the following:
 1. Review the output from the buildpack. The buildpack writes basic information to stdout, for example the files that it downloads. The buildpack also writes information in the form of stack traces when a process fails.
 
 1. Review the logs from the buildpack. The buildpack writes logs to disk. Follow the steps below to access these logs:
-  1. Run `cf ssh APP-NAME` to ssh into the app container, replacing `APP-NAME` with the name of your app.
-  1. Run `cat app/.bp/logs/bp.log` to view the logs.
-  
-      <pre class="terminal">
-      $ cf ssh my-app
-      $ cat app/.bp/logs/bp.log
-      </pre>
+    1. SSH into the app container by running:
+
+        ```console
+        cf ssh APP-NAME
+        ```
+        Where `APP-NAME` is the name of your app.
+
+    1. To view the logs, run:
+
+        ```console
+        cat app/.bp/logs/bp.log
+        ```
 
 By default, log files contain more detail than output to stdout. Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the buildpack to set its log level to `DEBUG`, and to output logs to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
 
