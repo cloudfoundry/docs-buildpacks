@@ -261,7 +261,6 @@ The following message is generated when the buildpack detects that the Spring Cl
     [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Cloud Connectors library is present in your application. This library has been in maintenance mode since July 2019 and will stop receiving all updates after Dec 2022.
     [SpringAutoReconfiguration]      WARN  Please migrate to java-cfenv immediately. See https://via.vmw.com/EhzD for migration instructions.
     </pre>
-
     When this message appears, it means that your application or one of its dependencies is including the Spring Cloud Connectors library. You must remove it and migrate to `java-cfenv`.
-
+    <br><br>
     After you have migrated to `java-cfenv`, and the Spring Cloud Connectors libraries are no longer on your classpath, this error will no longer appear. There is no way to manually suppress this message.
