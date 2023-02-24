@@ -202,51 +202,42 @@ Remove any of the `@ServiceScan` or `@CloudScan` annotations from Spring Java co
 
  Review these additional considerations before migrating.
 
-* <a id='migrating-non-boot'></a>**Non-Spring Boot applications**
-    <br><br>
-    If you have a Spring Application that is a non-Spring Boot application, you can still migrate to `java-cfenv`. You must use either the [no framework options](#no-framework) or the [Spring SPeL option](#spring-spel). With SPeL, you might need to manually process the expressions, depending on where you are configuring them. See the Spring documentation for places where SPeL expressions are processed by default.
-<br>
-* <a id='migrating-multiple-instances'></a>**Multiple service instances**
-    <br><br>
-    Spring Cloud Connectors support connections to multiple service instances.
-    <br><br>
-    If you need to configure connections to multiple instances of a given service type, or do anything more than setting application properties for Spring Boot to pick up and use in auto-configuration, then you must follow the manual configuration approaches laid out in the sections above to access the binding credentials. Either [with direct Java code](#no-framework) or with [SPeL](#spring-spel). Then follow the same procedure that is used to connect to the services in any other non-Cloud Foundry deployment environment.
-<br>
-* <a id='migrating-code-modifications'></a>**Code modifications**
-    <br><br>
-    The Java Buildpack injects the Spring Auto Reconfiguration module code into your application and overwrites your service configuration. This works well in some cases, but sometimes it causes problems.
-    <br><br>
-    With `java-cfenv`, there is no auto-reconfiguration magic. You can explicitly configure your services or you can use the [Spring Boot mappers](#spring-boot). The [Spring Boot mappers](#spring-boot) are the option most similar to previous operation. Note that when things don't work, it's generally clearer what happened, and it's easier to debug the problem.
-<br>
-* <a id='migrating-cloud-properties'></a>**Cloud property placeholders**
-    <br><br>
-    The Spring Auto Reconfiguration module exposes a set of property placeholder values that you can use to access values from `VCAP_SERVICES`. If you are using these placeholders, then you must switch from using `cloud.<property>`. Use `vcap.<property>` instead.
-    <br><br>
-    Spring Boot exposes the same information, just under the `vcap.` prefix instead of the `cloud.` prefix.
-<br>
-* <a id='migrating-cloud-profile'></a>**Spring Cloud Profile**
-    <br><br>
-    The Spring Auto Reconfiguration module enables a Spring Profile called `cloud`, by default. Users have come to expect this behavior when deploying to Cloud Foundry. Without the Spring Auto Reconfiguration module, you do not get this behavior. Fortunately, you can enable it using one of these methods:
+* <a id='migrating-non-boot'></a>**Non-Spring Boot applications:**
+If you have a Spring Application that is a non-Spring Boot application, you can still migrate to `java-cfenv`. You must use either the [no framework options](#no-framework) or the [Spring SPeL option](#spring-spel). With SPeL, you might need to manually process the expressions, depending on where you are configuring them. See the Spring documentation for places where SPeL expressions are processed by default.
 
+* <a id='migrating-multiple-instances'></a>**Multiple service instances:**
+Spring Cloud Connectors support connections to multiple service instances.
+
+    If you need to configure connections to multiple instances of a given service type, or do anything more than setting application properties for Spring Boot to pick up and use in auto-configuration, then you must follow the manual configuration approaches laid out in the sections above to access the binding credentials. Either [with direct Java code](#no-framework) or with [SPeL](#spring-spel). Then follow the same procedure that is used to connect to the services in any other non-Cloud Foundry deployment environment.
+
+* <a id='migrating-code-modifications'></a>**Code modifications:**
+The Java Buildpack injects the Spring Auto Reconfiguration module code into your application and overwrites your service configuration. This works well in some cases, but sometimes it causes problems.
+
+    With `java-cfenv`, there is no auto-reconfiguration magic. You can explicitly configure your services or you can use the [Spring Boot mappers](#spring-boot). The [Spring Boot mappers](#spring-boot) are the option most similar to previous operation. Note that when things don't work, it's generally clearer what happened, and it's easier to debug the problem.
+
+* <a id='migrating-cloud-properties'></a>**Cloud property placeholders:**
+The Spring Auto Reconfiguration module exposes a set of property placeholder values that you can use to access values from `VCAP_SERVICES`. If you are using these placeholders, then you must switch from using `cloud.<property>`. Use `vcap.<property>` instead.
+
+    Spring Boot exposes the same information, just under the `vcap.` prefix instead of the `cloud.` prefix.
+
+* <a id='migrating-cloud-profile'></a>**Spring Cloud Profile:**
+The Spring Auto Reconfiguration module enables a Spring Profile called `cloud`, by default. Users have come to expect this behavior when deploying to Cloud Foundry. Without the Spring Auto Reconfiguration module, you do not get this behavior. Fortunately, you can enable it using one of these methods:
     * Run `cf set-env <APP> SPRING_PROFILES_ACTIVE cloud`
     * Add `SPRING_PROFILES_ACTIVE: cloud` to the `env:` block in your `manifest.yml` file. This supplies the list of profiles for Spring to use.
 
     If you need to set additional profiles, you can use `SPRING_PROFILES_INCLUDE` instead. This appends to the existing set of profiles.
-<br>
-* <a id='migrating-extensions'></a>**Spring Cloud Connector extensions**
-    <br><br>
-    If you have created any custom Spring Cloud Connector extensions, you must migrate them to `java-cfenv`. This requires two steps:
-        1. Write a [Spring Boot Auto Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html) library that creates connections to your service from Spring configuration properties. This makes it easy to also use it in a non-cloud Spring Boot app. When this is done correctly, you can to use the library, and set properties in `application.properties` (or through other means), and you will have a connection to your service.
 
-        2. [Write a java-cfenv extension](https://github.com/pivotal-cf/java-cfenv#supporting-other-services). This takes values from `VCAP_SERVICES` and maps them to the properties that you exposed with your Spring Boot Auto Configuration library from the previous step.
+* <a id='migrating-extensions'></a>**Spring Cloud Connector extensions:**
+If you have created any custom Spring Cloud Connector extensions, you must migrate them to `java-cfenv`. This requires two steps:
+    1. Write a [Spring Boot Auto Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html) library that creates connections to your service from Spring configuration properties. This makes it easy to also use it in a non-cloud Spring Boot app. When this is done correctly, you can to use the library, and set properties in `application.properties` (or through other means), and you will have a connection to your service.
+    2. [Write a java-cfenv extension](https://github.com/pivotal-cf/java-cfenv#supporting-other-services). This takes values from `VCAP_SERVICES` and maps them to the properties that you exposed with your Spring Boot Auto Configuration library from the previous step.
 
 ### <a id='migrating-warnings'></a>Java Buildpack warnings
 
 The Java Buildpack generates warnings to help with migrating from Spring Cloud Connectors and Spring Auto Reconfiguration.
 
-* <a id='sar-installed'></a>**Spring Auto Reconfiguration installed**
-    <br><br>
-    This is the message that is generated when the buildpack installs the Spring Auto Reconfiguration JAR. This happens by default, and alerts you that it is happening.
+* <a id='sar-installed'></a>**Spring Auto Reconfiguration installed:**
+This is the message that is generated when the buildpack installs the Spring Auto Reconfiguration JAR. This happens by default, and alerts you that it is happening.
 
     ```
     [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Auto Reconfiguration and shaded Spring Cloud Connectors libraries are being installed. These projects have been deprecated, are no longer receiving updates and should not be used going forward.
@@ -255,7 +246,6 @@ The Java Buildpack generates warnings to help with migrating from Spring Cloud C
     ```
 
     How you resolve this depends on whether you are depending on the Auto Reconfiguration to occur.
-
     * If your application depends on Auto Reconfiguration behavior, then you must make code changes in your application to use the `java-cfenv` library. See the instructions above for how to include the dependencies and how to access service information using this library.
     After you have added `java-cfenv` to your classpath, the Java buildpack will no longer install the Auto Reconfiguration JAR and you will no longer see this message.
     * If your application is not depending on Auto Reconfiguration behavior, and has already been updated to `java-cfenv`, then this message is not generated. If your application does not use Auto Reconfiguration or `java-cfenv`, then you can either:
@@ -263,14 +253,13 @@ The Java Buildpack generates warnings to help with migrating from Spring Cloud C
         * Add `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'` to the `env:` block in your `manifest.yml` file.
 
         Alternatively, you can use a buildpack released after Aug 2022, after which this feature will no longer be enabled by default.
-<br>
-* <a id='scc-included'></a>**Spring Cloud Connectors present**
-    <br><br>
-    The following message is generated when the buildpack detects that the Spring Cloud Connectors library is present on the classpath.
+
+* <a id='scc-included'></a>**Spring Cloud Connectors present:**
+The following message is generated when the buildpack detects that the Spring Cloud Connectors library is present on the classpath.
     <pre class="terminal">
     [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Cloud Connectors library is present in your application. This library has been in maintenance mode since July 2019 and will stop receiving all updates after Dec 2022.
     [SpringAutoReconfiguration]      WARN  Please migrate to java-cfenv immediately. See https://via.vmw.com/EhzD for migration instructions.
     <pre>
     When this message appears, it means that your application or one of its dependencies is including the Spring Cloud Connectors library. You must remove it and migrate to `java-cfenv`.
-    <br><br>
+
     After you have migrated to `java-cfenv`, and the Spring Cloud Connectors libraries are no longer on your classpath, this error will no longer appear. There is no way to manually suppress this message.
