@@ -121,6 +121,7 @@ If you require end-to-end HTTP/2, for example, because of gRPC, do the following
             - route: MY-APP.EXAMPLE.COM
               protocol: http2
         ```
+
 ### <a id='example'></a> HTTP/2 Example
 
 For example:
@@ -338,9 +339,9 @@ A Java app may crash because of insufficient memory on the Garden container or t
         JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {headroom: 10}}]'
     ```
     Where `YOUR-APP` is the name of your app.
-
+    <br><br>
     This example shows that 10% of the overall available `1G` is reserved for anything that is not `heap`, `metaspace`, `direct`, `code cache` or `threads`. In less common cases, this may come from companion processes started by the JVM, such as the Process API.
-
+    <br><br>
     For more information about measuring how much native memory a Java app needs, see [Native Memory Tracking](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) in the Java documentation. For more information about configuring the Java buildpack using the native setting, see [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md#memory) in the Cloud Foundry Java Buildpack on GitHub. For more information about the Process API, see [Class Process](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html) in the Java documentation.
 
 * **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under heavy load, it uses a high number of threads. Each thread consumes some memory and if there are enough threads they will consume a significant amount of memory.
@@ -359,7 +360,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
         JAVA_OPTS: '-Xss512k'
     ```
     Where `YOUR-APP` is the name of your app.
-
+    <br><br>
     In this example, the overall memory amount reserved by the JVM for representing the stacks of Java threads is `800 * 512k = 400m`.
     <br><br>
     The correct settings for `-Xss` and `stack_threads` depend on your app code, including the libraries it uses. Your app may technically have no upper limit, such as in the case of [cavalier usage]() of `CachedThreadPool` executors. However, you still must calculate the depth of the thread stacks and the amount of space the JVM should reserve for each of them. For more information, see [Executors.newCachedThreadPool() considered harmful](http://dev.bizo.com/2014/06/cached-thread-pool-considered-harmlful.html) on the Bizo website and the [newCachedThreadPool](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--) section of the _Class Executors_ topic in the Java documentation.
@@ -387,9 +388,7 @@ If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it
         <code>PATH/TO/WAR-FILE</code> is the path to the WAR.
         You can determine whether or not the path was specified for a previously pushed app by examining the app deployment manifest, <code>manifest.yml</code>.
         If the <code>path</code> attribute specifies the current directory, the manifest includes a line like:
-        <pre class="terminal">
-        path: .
-        </pre>
+        <pre class="terminal">path: .</pre>
         To re-push just the WAR, do one of the following:
         <ul>
           <li>Delete <code>manifest.yml</code> and run <code>cf push</code> again, specifying the location of the WAR using the <code>-p</code> flag.</li>
