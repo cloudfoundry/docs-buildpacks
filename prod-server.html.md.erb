@@ -3,8 +3,6 @@ title: Production Server Configuration
 owner: Buildpacks
 ---
 
-
-
 This topic describes how to configure a production server for your apps.
 
 When you deploy an app, Cloud Foundry determines the command used to start the app through the following process:
@@ -31,10 +29,12 @@ Process managers in a server use the process types to run and manage the workloa
 In a Procfile, you declare one process type per line and use the following syntax:
 
 <pre class="terminal">
-PROCESS_TYPE: COMMAND
+PROCESS-TYPE: COMMAND
 </pre>
 
-* `PROCESS_TYPE` is `web`. A `web` process handles HTTP traffic.
+Where:
+
+* `PROCESS-TYPE` is `web`. A `web` process handles HTTP traffic.
 * `COMMAND` is the command line to launch the process.
 
 For example, a Procfile with the following content starts the launch script created by the build process for a Java app:
