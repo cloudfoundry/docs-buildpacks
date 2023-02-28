@@ -3,8 +3,6 @@ title: Getting Started Deploying Ratpack Apps
 owner: Java
 ---
 
-
-
 <%=vars.GSG_intro_sentence%>
 
 This guide is intended to walk you through deploying a Ratpack app to Cloud Foundry.
@@ -104,33 +102,47 @@ For more information about creating and using service instances, refer to the [S
 
 #### Create a Service Instance ####
 
-Run `cf marketplace` to view managed and user-provided services and plans available to you.
+1. View managed and user-provided services and plans available to you by running:
 
-The example shows two of the available managed database-as-a-service providers and their offered plans: `postgresql-10-odb` PostgreSQL as a Service and `rediscloud` Enterprise-Class Redis for Developers.
+    ```console
+    cf marketplace
+    ```
 
-<pre class="terminal">
-$ cf marketplace
-Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
-OK
+    The example shows two of the available managed database-as-a-service providers and their offered plans: `postgresql-10-odb` PostgreSQL as a Service and `rediscloud` Enterprise-Class Redis for Developers.
 
-service            plans                                      description
+    <pre class="terminal">
+    $ cf marketplace
+    Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
+    OK
 
-postgresql-10-odb  standalone, standalone-replica, general    PostgreSQL as a Service
+    service            plans                                      description
 
-rediscloud         30mb, 100mb, 1gb, 10gb, 50gb               Enterprise-Class Redis for Developers
+    postgresql-10-odb  standalone, standalone-replica, general    PostgreSQL as a Service
 
-</pre>
+    rediscloud         30mb, 100mb, 1gb, 10gb, 50gb               Enterprise-Class Redis for Developers
 
-Run `cf create-service SERVICE PLAN SERVICE-INSTANCE` to create a service instance for your app. Choose a SERVICE and PLAN from the list, and provide a unique name for the SERVICE-INSTANCE.
+    </pre>
 
-<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 30mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.
+1. Create a service instance for your app by running:
+
+    ```console
+    cf create-service SERVICE PLAN SERVICE-INSTANCE
+    ```
+
+    Where:
+    <ul>
+      <li><code>SERVICE</code> and <code>PLAN</code> are chosen from the output of the previous step.</li>
+      <li><code>SERVICE-INSTANCE</code> is a unique name you provide for the service instance.</li>
+    </ul>
+
+<div class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 30mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.
 
 <pre class="terminal">
 $ cf create-service rediscloud 30mb baby-redis
 Creating service baby-redis in org Cloud-Apps / space development as clouduser@example.com....
 OK
 </pre>
-</p>
+</div>
 
 #### Bind a Service Instance ####
 
@@ -277,7 +289,7 @@ Use the cf <%=vars.dev_console_2%> to review information and administer your app
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-<p class="tip"><strong>Sample App Step</strong><br />
+<div class="tip"><strong>Sample App Step</strong><br />
 To test the sample app, do the following:
 <br /><br />
 1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
@@ -286,7 +298,7 @@ To test the sample app, do the following:
 <br />
 <code>curl -v -X DELETE $HOST/all</code>
 <br />
-You should get a response of <code:>200</code>.
+You should get a response of <code>200</code>.
 <br /><br />
 3. To request a match as "andrew", run:
 <br />
@@ -314,7 +326,7 @@ The last line of the output shows the <code>match_id</code>.
 }'</code>
 <br />
 You should receive a <code>201 Created</code> response.
-</p>
+</div>
 
 ##<a id='cli-manage'></a>Manage Your Application with the cf CLI ##
 
