@@ -149,7 +149,13 @@ Refer to the [Deploying with Application Manifests](../../../devguide/deploy-app
 
 ### Step 6: Log in and Target the API Endpoint ###
 
-Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+Enter your login credentials, and select a space and org.
+
+```console
+cf login -a API-ENDPOINT
+```
+
+Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 
 <%=vars.gen_GSG%>
 

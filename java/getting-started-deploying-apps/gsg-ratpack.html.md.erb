@@ -134,11 +134,15 @@ OK
 
 #### Bind a Service Instance ####
 
-When you bind an app to a service instance, Cloud Foundry writes information about the service instance to the VCAP_SERVICES app environment variable. The app can use this information to integrate with the service instance.
+When you bind an app to a service instance, Cloud Foundry writes information about the service instance to the `VCAP_SERVICES` app environment variable. The app can use this information to integrate with the service instance.
 
 Most services support bindable service instances. Refer to your service provider's documentation to confirm if they support this functionality.
 
-You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE_INSTANCE`.
+You can bind a service to an application with the command
+
+```console
+cf bind-service APPLICATION SERVICE_INSTANCE
+```
 
 Alternately, you can configure the deployment manifest file by adding a `services` sub-block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see the Sample App step.
 
@@ -146,7 +150,7 @@ Alternately, you can configure the deployment manifest file by adding a `service
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
 
-<pre class="code">
+<pre class="terminal">
 ---
 applications:
 ...
@@ -165,7 +169,13 @@ Refer to the [Deploying with Application Manifests](../../../devguide/deploy-app
 
 ### Step 7: Log in and Target the API Endpoint ###
 
-Run `cf login -a API-ENDPOINT`, enter your login credentials, and select a space and org. The API endpoint is <%=vars.api_endpoint%>.
+Enter your login credentials, and select a space and org.
+
+```console
+cf login -a API-ENDPOINT
+```
+
+Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 
 <%=vars.gen_GSG%>
 
@@ -185,7 +195,7 @@ cf push APP-NAME -p PATH-TO-FILE.distZip
 
 The `cf push` command creates a URL route to your application in the form `HOST.DOMAIN`,
 where `HOST` is your `APP-NAME` and `DOMAIN` is specified by your administrator.
-Your `DOMAIN` is`<%= vars.app_domain %>`.
+Your `DOMAIN` is` <%= vars.app_domain %>`.
 
 For example, `cf push my-app` creates the URL `my-app.<%= vars.app_domain %>`.
 
