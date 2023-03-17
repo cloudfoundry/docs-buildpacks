@@ -1,11 +1,11 @@
 ---
-title: Using a Proxy Server
+title: Using a proxy server
 owner: Buildpacks
 ---
 
-This topic describes how developers can use a proxy server with the buildpacks for their application.
+This topic describes how to use a proxy server with buildpacks for your application.
 
-##<a id='proxy-usage'></a> Use a Proxy
+## <a id='proxy-usage'></a> Using a proxy server
 
 You can assign proxy servers to environment variables. Proxy servers can be used to monitor your application's traffic or to fetch your application's dependencies.
 
@@ -14,11 +14,11 @@ A buildpack uses a proxy server if that buildpack contacts the internet during s
 <p class="note"><strong>Note:</strong> The binary buildpack does not use a proxy server because it does not access the internet during staging.
 </p>
 
-##<a id='env-variable'></a> Setting environment variables
+## <a id='env-variable'></a> Setting environment variables
 
-<p class="note"><strong>Note</strong>: If you are using the Java buildpack, the <code>http_proxy</code> and <code>https_proxy</code> environment variables are not supported at runtime. The Java buildpack does not add the functionality to make proxies work at runtime.</p>
+<p class="note"><strong>Note</strong>: If you are using a Java buildpack, the <code>http_proxy</code> and <code>https_proxy</code> environment variables are not supported at runtime. The Java buildpack does not add the functionality to make proxies work at runtime.</p> To set your environment variables:
 
-1. Add the following section to the `env` block of your application manifest YAML file:
+1. Add the following  to the `env` block of your application manifest YAML file:
 
     ```yaml
     ---
@@ -34,13 +34,14 @@ A buildpack uses a proxy server if that buildpack contacts the internet during s
       <li><code>PORT</code> is the port number you are using for your proxy server.</li>
     </ul>
 
-1. Set the environment variables with the Cloud Foundry Command Line Interface's (cf CLI) `cf set-env` command
-by running these commands:
+1. Set the environment variables with the Cloud Foundry Command Line Interface (cf CLI) `cf set-env` command:
 
-    ```
+
+    ```console
     cf set-env YOUR-APP http_proxy "http://YOUR-HTTP-PROXY:PORT"
     ```
-    ```
+
+    ```console
     cf set-env YOUR-APP https_proxy "https://YOUR-HTTPS-PROXY:PORT"
     ```
 

@@ -9,8 +9,7 @@ When you push an app, Cloud Foundry automatically detects an appropriate buildpa
 
 <p class="note"><strong>Note:</strong> Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.</p>
 
-
-## <a id='using-buildpacks'></a> Using Buildpacks
+## <a id='using-buildpacks'></a> Using buildpacks
 
 The following topics discuss different usage scenarios for buildpacks in Cloud Foundry:
 
@@ -26,26 +25,22 @@ The following topics discuss different usage scenarios for buildpacks in Cloud F
 
 * [Production Server Configuration](prod-server.html)
 
+## <a id='system-buildpacks'></a> System buildpacks
 
-## <a id='system-buildpacks'></a> System Buildpacks
+For information about the existing buildpacks that Cloud Foundry supports, see [System buildpacks](system-buildpacks.html).
 
-For information about the existing buildpacks that Cloud Foundry supports, see [System Buildpacks](system-buildpacks.html).
+## <a id='sidecar-buildpacks'></a> Sidecar buildpacks
 
+For information about deploying a sidecar buildpack, see [Sidecar buildpack](sidecar-buildpacks.html).
 
-## <a id='sidecar-buildpacks'></a> Sidecar Buildpacks
+## <a id='community-buildpacks'></a> Community buildpacks
 
-For information about deploying a sidecar buildpack, see [Sidecar Buildpack](sidecar-buildpacks.html).
+For a list of unsupported, community created buildpacks, see [Community created](https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks#community-created) section of the _Buildpack information for Cloud Foundry v2_ page in the cf-docs-contrib repository on GitHub.
 
+## <a id='developing-buildpacks'></a> Customizing and developing buildpacks
 
-## <a id='community-buildpacks'></a> Community Buildpacks
+For information about customizing existing buildpacks and developing new buildpacks, see [Customizing and developing buildpacks](./developing-buildpacks.html).
 
-For a list of unsupported, community-created buildpacks, see the [Community created](https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks#community-created) section of the _Buildpack information for Cloud Foundry v2_ page in the cf-docs-contrib repository on GitHub.
+## <a id='buildpack-ci'></a> Using continuous integration for buildpacks
 
-
-## <a id='developing-buildpacks'></a> Customizing and Developing Buildpacks
-
-For information about customizing existing buildpacks and developing new buildpacks, see [Customizing and Developing Buildpacks](./developing-buildpacks.html).
-
-### <a id='buildpack-ci'></a> Using Continuous Integration for Buildpacks
-
-For information about updating and releasing a new version of a Cloud Foundry buildpack through the Cloud Foundry Buildpacks Team Concourse pipeline, see [Using CI for Buildpacks](./buildpack-ci-index.html). You can use this as a model when working with Concourse to build and release new versions of your own buildpacks.
+For information about updating and releasing a new version of a Cloud Foundry buildpack through the Cloud Foundry Buildpacks Team Concourse pipeline, see [Using CI for buildpacks](./buildpack-ci-index.html). You can use this topic as a model when working with Concourse to build, and release new versions of your own buildpacks.

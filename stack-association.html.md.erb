@@ -5,11 +5,13 @@ owner: Buildpacks
 
 This topic describes the stack association feature for Cloud Foundry buildpacks.
 
-<p class="note important"><strong>Important</strong>: To avoid security exposure, ensure that you migrate your apps and custom buildpacks to use the <code>cflinuxfs4</code> stack based on Ubuntu 22.04 LTS (Jammy Jellyfish). <code>cflinuxfs3</code> is based on Ubuntu 18.04 (Bionic Beaver), which reaches end of standard support in April 2023. </p>
+<p class="note important"><strong>Important</strong>: To avoid security exposure, verify that you migrate your apps and custom buildpacks to use the <code>cflinuxfs4</code> stack based on Ubuntu 22.04 LTS (Jammy Jellyfish). The <code>cflinuxfs3</code> stack is based on Ubuntu 18.04 (Bionic Beaver), which reaches end of standard support in April 2023. </p>
 
-## <a id='overview'></a> Overview
+## <a id='overview'></a> Stack association
 
-Each buildpack in your deployment is associated with a stack. You can see this when you run `cf buildpacks`: there is a `stack` column in the output that shows a corresponding stack for each buildpack. For example:
+Each buildpack, in your deployment, is associated with a stack. You can see this, when you run `cf buildpacks`. There is a `stack` column in the output that shows a corresponding stack for each buildpack.
+
+For example:
 
 <pre class="terminal">
 $ cf buildpacks
@@ -25,11 +27,11 @@ position   name                                stack        enabled   locked   f
 . . .
 </pre>
 
-Because of this stack association, buildpacks do not have to be uniquely named. This helps in managing similar buildpacks that are compatible with different stacks.
+Because of the stack association, buildpacks do not have to be uniquely named. This helps in managing similar buildpacks that are compatible with different stacks.
 
-The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) includes a `-stack` option. If you use this option and upload a buildpack, the Cloud Controller detects the stack association and creates a stack record for the buildpack.
+The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) includes a `-stack` option. If you use this option and upload a buildpack, the Cloud Controller detects the stack association, and creates a stack record for the buildpack.
 
-## <a id='no-stack-record'></a> Buildpacks without a stack record
+## <a id='no-stack-record'></a> Missing stack record in buildpacks
 
 Some buildpacks might have a missing stack record. For example, if you uploaded a custom buildpack before Cloud Foundry introduced stack association. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record.
 
@@ -39,9 +41,9 @@ In this case, you must manually assign a stack to the buildpack. To do this, run
 cf update-buildpack BUILDPACK-NAME --assign-stack stack
 ```
 
-Buildpacks with a missing stack record will continue to work, but are more manageable when the stack record is present.
+Buildpacks with a missing stack record continue to work, but are more manageable when the stack record is present.
 
-When pushing apps to a deployment that has buildpacks with a missing stack record:
+If you push apps to a deployment that has buildpacks with a missing stack record, the following might occur:
 
 * If you push an app and specify a stack with `cf push app-name -s stack`, Cloud Foundry uses that stack. Otherwise, it uses the system default, `cflinuxfs3`.
 * You might see additional logging in the buildpack detection output of the `cf push` command when Cloud Foundry detects buildpacks without a stack record.
@@ -52,16 +54,16 @@ The cf CLI commands for managing buildpacks include functionality to support ass
 
 <p class="note"><strong>Note</strong>: cf CLI v7 removes the <code>cf rename-buildpack</code> command in favor of a <code>--rename</code> option for <code>cf update-buildpack</code>.</p>
 
-When operating on buildpacks with the cf CLI, consider the following:
+When using buildpacks with the cf CLI, consider the following:
 
-* You cannot upload a buildpack with `cf create-buildpack` if a buildpack of the same name already exists and it has a missing stack record.
+* You cannot upload a buildpack with `cf create-buildpack` if a buildpack of the same name already exists and has a missing stack record.
 * When using `cf create-buildpack`, you might inadvertently create a duplicate buildpack with a `nil` stack. `cf create-buildpack` does not disallow creation of buildpacks with no stack association.
-* The `-s` flag is required when there are two buildpacks with the same name. If you are operating on a uniquely named buildpack, you do not need to specify its stack.
-* If you have two buildpacks of the same name, one with a stack record and one without, running cf CLI commands without `-s` operates on the buildpack with the missing stack record.
+* The `-s` flag is required when there are buildpacks with the same name. If you are working on a uniquely named buildpack, you do not need to specify its stack.
+* If you have buildpacks of the same name, one with a stack record and one without, run cf CLI commands without `-s` option on the buildpack with the missing stack record.
 
-### <a id='examples-cli'></a> Example scenarios
+### <a id='examples-cli'></a> Scenario examples
 
-See the following examples of managing buildpacks with the cf CLI, which are applicable when running `cf update-buildpack` or `cf delete-buildpack`:
+See the following examples for managing buildpacks with the cf CLI. These examples are applicable when running `cf update-buildpack` or `cf delete-buildpack`:
 
 * **Updating or deleting a uniquely-named buildpack:**
 	* You have a single buildpack named `my-buildpack`, and it is associated with `stack_a`. To delete the buildpack, run `cf delete-buildpack my-buildpack`.

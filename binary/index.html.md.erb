@@ -17,7 +17,7 @@ For example:
 $ cf push MY-AWESOME-APP -b https://github.com/cloudfoundry/binary-buildpack.git
 </pre>
 
-You can provide Cloud Foundry with the shell command to execute your binary in
+You can provide Cloud Foundry with the shell command to run your binary in
 the following two ways:
 
 * **Procfile**: In the root directory of your app, add a `Procfile` that
@@ -98,8 +98,8 @@ For more information, see [Configuring Trusted System Certificates for Applicati
 To run .NET Core apps on the Windows stack, you must use the Binary buildpack. Follow the steps below to configure your
 Cloud Foundry manifest appropriately.
 
-1. In the app manifest file, specify the `windows` stack and a custom start command. 
-This file should be in the same folder as your `.csproj` file and be marked **copy always**.  
+1. In the app manifest file, specify the `windows` stack and a custom start command.
+This file should be in the same folder as your `.csproj` file and be marked **copy always**.
 
     ```
     ---
@@ -125,7 +125,7 @@ This file should be in the same folder as your `.csproj` file and be marked **co
 **.NET Framework**
 
 To run a self hosted application using OWIN or another kind of .NET Framework app that requires a TCP port, compile the app
-to `myapp.exe` and use the Binary buildpack. For an example, see the following manifest: 
+to `myapp.exe` and use the Binary buildpack. For an example, see the following manifest:
 
 ```
 applications:

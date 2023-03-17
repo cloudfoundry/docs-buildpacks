@@ -48,7 +48,7 @@ For more information about building with Cloud Native Buildpacks, see [Getting S
 This section describes how to deploy a Java app with native image support using Cloud Native Buildpacks.
 
 To deploy an app compiled using the steps from the previous section to <%= vars.app_runtime_abbr %>, you can deploy the image directly using <%= vars.app_runtime_abbr %>'s Docker support.
-If Docker support is disabled, you can extract the native image binary from the container image and deploy the app using the binary buildpack.
+If Docker support is deactivated, you can extract the native image binary from the container image and deploy the app using the binary buildpack.
 
 #### <a id="deploy-image"></a>Deploy from Image
 
@@ -128,7 +128,7 @@ To extract and deploy your app using the binary buildpack:
     The extract script places the binary in a directory called `out` under the current working directory.
     You can run `file` to examine it and confirm that it is a 64-bit Linux executable.
 
-3. Push and execute the compiled binary by running the following command. You can adjust other properties or use a `manifest.yml` file to deploy as well.
+3. Push and run the compiled binary by running the following command. You can adjust other properties or use a `manifest.yml` file to deploy as well.
 
     ```console
     cf push -b binary_buildpack -m 256M -p ./out -c ./io.paketo.demo.Demoapp native-image
@@ -191,7 +191,7 @@ You can adjust other properties or use a `manifest.yml` file to deploy as well.
 Regardless of how you build your app, with Spring Boot v2.5 and Spring Native v0.10.1, there is a bug that causes `cf push` to fail.
 The problem is caused by conditional behavior in Spring Boot Actuator when run on <%= vars.app_runtime_abbr %>. It is fixed in Spring Native v0.10.2.
 
-For more information, see the [spring-projects-experimental](https://github.com/spring-projects-experimental/spring-native/issues/870) repository on GitHub.
+For more information, see [spring-projects-experimental](https://github.com/spring-projects-experimental/spring-native/issues/870) repository on GitHub.
 
 You can also work around this issue by adding the following hints above your `@SpringBootapp` annotation:
 

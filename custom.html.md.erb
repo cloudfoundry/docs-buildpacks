@@ -1,5 +1,5 @@
 ---
-title: Creating Custom Buildpacks
+title: Creating custom buildpacks
 owner: Buildpacks
 ---
 
@@ -8,11 +8,11 @@ This topic describes how to create custom buildpacks for Cloud Foundry.
 For more information about how buildpacks work, see [How Buildpacks Work](understand-buildpacks.html).
 
 
-## <a id='packaging-custom-buildpacks'></a> Package Custom Buildpacks
+## <a id='packaging-custom-buildpacks'></a> Packaging custom buildpacks
 
-Cloud Foundry buildpacks can work with limited or no Internet connectivity. The Buildpack Packager gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments. For more information, see the [Buildpack Packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) repository on GitHub.
+Cloud Foundry buildpacks can work with limited or no internet connectivity. The Buildpack Packager gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments. For more information, see the [Buildpack Packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) repository on GitHub.
 
-### <a id='use-buildpack-packager'></a> Use the Buildpack Packager
+### <a id='use-buildpack-packager'></a> Using the Buildpack Packager
 
 To use the Buildpack Packager:
 
@@ -20,34 +20,31 @@ To use the Buildpack Packager:
 
 1. Create a `manifest.yml` file in your buildpack.
 
-1. Run the packager in cached mode by running:
+1. Run the packager in cached mode:
 
-    ```
+    ```console
     buildpack-packager build -cached -any-stack
     ```
 
-The packager will add everything in your buildpack directory into a ZIP file, excluding anything marked for exclusion in your manifest.
+The packager adds everything in your buildpack directory into a ZIP file, and excludes anything marked for exclusion in your manifest.
 
-In cached mode, the packager downloads and adds dependencies as described in the manifest.
+In cached mode, the packager downloads, and adds dependencies as described in the manifest.
 
-For more information, see the [Buildpack Packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) repository on GitHub.
+For more information, see [Buildpack Packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) repository on GitHub.
 
+### <a id='share-buildpack-package'></a> Using and sharing the packaged buildpack
 
-### <a id='share-buildpack-package'></a> Use and Share the Packaged Buildpack
+After you have packaged the buildpack using Buildpack Packager, you can use the ZIP file locally, or share it with others by uploading it to any network location that is accessible to the CLI. You can can then specify the buildpack with the `-b` option when you push apps. For more information, see [Deploying Apps with a Custom Buildpack](#deploying-with-custom-buildpacks).
 
-After you have packaged your buildpack using Buildpack Packager, you can use the resulting ZIP file locally, or share it with others by uploading it to any network location that is accessible to the CLI. Users can then specify the buildpack with the `-b` option when they push apps. For more information, see [Deploying Apps with a Custom Buildpack](#deploying-with-custom-buildpacks).
+<p class="note"><strong>Note:</strong> Offline buildpack packages might contain proprietary dependencies that require distribution licensing or export control measures. For more information about offline buildpacks, see <a href="depend-pkg-offline.html#offline-buildpacks">About Offline Buildpacks</a> section of the <em>Packaging dependencies for offline Buildpacks</em> topic.</p>
 
-<p class="note"><strong>Note:</strong> Offline buildpack packages may contain proprietary dependencies that require distribution licensing or export control measures. For more information about offline buildpacks, see the <a href="depend-pkg-offline.html#offline-buildpacks">About Offline Buildpacks</a> section of the <em>Packaging Dependencies for Offline Buildpacks</em> topic.</p>
+### <a id='specifying-default-versions'></a> Specifying a default version
 
-<%= vars.upload_custom_buildpacks %>
+As of Buildpack Packager v2.3.0, you can specify the default version for a dependency by adding a `default_versions` object to the `manifest.yml` file. The `default_versions` object has two properties, `name` and `version`.
 
-<%= vars.link_adminguide_buildpack %>
+For example:
 
-### <a id='specifying-default-versions'></a> Specify a Default Version
-
-As of Buildpack Packager v2.3.0, you can specify the default version for a dependency by adding a `default_versions` object to the `manifest.yml` file. The `default_versions` object has two properties, `name` and `version`. For example:
-
-```
+```console
 default_versions:
 - name: go
   version: 1.6.3
@@ -68,7 +65,7 @@ To specify a default version:
 
 For more information, see [Buildpack Packager v2.3.0](https://github.com/cloudfoundry/buildpack-packager/releases/tag/v2.3.0) in the Buildpack Packager repository on GitHub.
 
-#### <a id='rules'></a> Rules for Specifying a Default Version
+### <a id='rules'></a> Rules for specifying a default version
 
 The Buildpack Packager script validates this object according to the following rules:
 
@@ -84,7 +81,7 @@ The Buildpack Packager script validates this object according to the following r
 
 * If you specify a `default_version` for a dependency, you must also list that dependency and version under the `dependencies` section of the manifest. The following example causes Buildpack Packager to fail with an error because the manifest specifies `version: 1.9.2` for the `go` dependency, but lists `version: 1.7.5` under `dependencies`.
 
-    ```
+    ```console
     default_versions:
     - name: go
       version: 1.9.2
@@ -99,7 +96,7 @@ The Buildpack Packager script validates this object according to the following r
     ```
 
 
-## <a id='contract'></a> Core Buildpack Communication Contract
+## <a id='contract'></a> Core buildpack communication contract
 
 This section describes the communication contract followed by the Cloud Foundry core buildpacks. This contract enables buildpacks to interact with one another, so that developers can use multiple buildpacks with their apps.
 
@@ -110,17 +107,17 @@ This section uses the following placeholders:
 * `IDX` is the zero-padded index matching the position of the buildpack in the priority list.
 * `MD5` is the MD5 checksum of the buildpack's URL.
 
-For all buildpacks that supply dependencies via `/bin/supply`:
+For all buildpacks that supply dependencies through `/bin/supply`:
 
-* The buildpack must create `/tmp/deps/IDX/config.yml` to provide a name to subsequent buildpacks. This file may also contain miscellaneous configuration for subsequent buildpacks.
+* The buildpack must create `/tmp/deps/IDX/config.yml` to provide a name to subsequent buildpacks. This file might also contain miscellaneous configuration for subsequent buildpacks.
 
-* The `config.yml` file should be formatted as follows:
+* The `config.yml` file must be formatted as:
 
-    ```
+    ```console
     name: BUILDPACK
     config: YAML-OBJECT
     ```
-    
+
     Where:
     <ul>
       <li><code>BUILDPACK</code> is the name of the buildpack providing dependencies.</li>
@@ -128,7 +125,7 @@ For all buildpacks that supply dependencies via `/bin/supply`:
     </ul>
 
 
-* The following directories may be created inside of `/tmp/deps/IDX/` to provide dependencies to subsequent buildpacks:
+* The following directories can be created inside of `/tmp/deps/IDX/` to provide dependencies to subsequent buildpacks:
 	* `/bin`: Contains binaries intended for `$PATH` during staging and launch.
 	* `/lib`: Contains libraries intended for `$LD_LIBRARY_PATH` during staging and launch.
 	* `/include`: Contains header files intended for compilation during staging.
@@ -136,27 +133,27 @@ For all buildpacks that supply dependencies via `/bin/supply`:
 	* `/env`: Contains environment variables intended for staging, loaded as `FILENAME=FILECONTENTS`.
 	* `/profile.d`: Contains scripts intended for `/app/.profile.d`, sourced before launch.
 
-* The buildpack may make use of previous non-final buildpacks by scanning `/tmp/deps/` for index-named directories containing `config.yml`.
+* The buildpack might make use of previous non-final buildpacks by scanning `/tmp/deps/` for index-named directories containing `config.yml`.
 
 For the last buildpack:
 
 * To make use of dependencies provided by the previously applied buildpacks, the last buildpack must scan `/tmp/deps/` for index-named directories containing `config.yml.`
 
 * To make use of dependencies provided by previous buildpacks, the last buildpack:
-	* May use `/bin` during staging, or make it available in `$PATH` during launch.
-	* May use `/lib` during staging, or make it available in `$LD_LIBRARY_PATH` during launch.
-	* May use `/include`, `/pkgconfig`, or `/env` during staging.
-	* May copy files from `/profile.d` to `/tmp/app/.profile.d` during staging.
-	* May use the supplied config object in `config.yml` during the staging process.
+	* Can use `/bin` during staging, or make it available in `$PATH` during launch.
+	* Can use `/lib` during staging, or make it available in `$LD_LIBRARY_PATH` during launch.
+	* Can use `/include`, `/pkgconfig`, or `/env` during staging.
+	* Can copy files from `/profile.d` to `/tmp/app/.profile.d` during staging.
+	* Can use the supplied config object in `config.yml` during the staging process.
 
 
-## <a id='deploying-with-custom-buildpacks'></a> Deploy Apps with a Custom Buildpack
+## <a id='deploying-with-custom-buildpacks'></a> Deploying apps with a custom buildpack
 
 Once a custom buildpack has been created and pushed to a public Git repository, the Git URL can be passed through the cf CLI when pushing an app.
 
 For example, you can use a buildpack that has been pushed to GitHub by running:
 
-```
+```console
 cf push YOUR-APP -b git://github.com/REPOSITORY/BUILDPACK.git
 ```
 
@@ -166,9 +163,9 @@ Where:
 * `REPOSITORY` is the name of your public Git repository.
 * `BUILDPACK` is the name of your custom buildpack.
 
-Alternatively, you can use a private Git repository, with HTTPS and username and password authentication, by running:
+Alternatively, you can use a private Git repository, with HTTPS, and username and password authentication:
 
-```
+```console
 cf push YOUR-APP -b https://USERNAME:PASSWORD@github.com/REPOSITORY/BUILDPACK.git
 ```
 
@@ -180,9 +177,9 @@ Where:
 * `REPOSITORY` is the name of your public Git repository.
 * `BUILDPACK` is the name of your custom buildpack.
 
-By default, Cloud Foundry uses the default branch of the buildpack's Git repository. You can specify a different branch using the Git URL by running:
+By default, Cloud Foundry uses the default branch of the buildpack's Git repository. You can specify a different branch using the Git URL:
 
-```
+```console
 cf push YOUR-APP -b https://github.com/REPOSITORY/BUILDPACK.git#BRANCH
 ```
 
@@ -193,9 +190,9 @@ Where:
 * `BUILDPACK` is the name of your custom buildpack.
 * `BRANCH` is the branch you want to use.
 
-Additionally, you can use tags in a Git repository by running:
+Additionally, you can use tags in a Git repository:
 
-```
+```console
 cf push YOUR-APP -b https://github.com/REPOSITORY/BUILDPACK#TAG
 ```
 
@@ -210,6 +207,8 @@ The app is then deployed to Cloud Foundry, and the buildpack is cloned from the 
 
 <p class="note"><strong>Note:</strong> If a buildpack is specified using <code>cf push -b</code>, the <code>detect</code> step is skipped. As a result, no buildpack <code>detect</code> scripts are run.</p>
 
+```console
 <%= vars.disable_custom %>
+```
 
 <p class="note"><strong>Note:</strong> A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, see <a href="https://help.github.com/articles/syncing-a-fork">Syncing a fork</a> in the GitHub documentation.</p>

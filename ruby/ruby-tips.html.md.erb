@@ -92,7 +92,7 @@ To migrate a database schema using a Rake task:
 
 ## <a id='workers'></a> Rails 3 Worker Tasks
 
-This section describes how to create and deploy an example Rails app that uses a worker library to defer a task that a separate app executes. It also describes how to scale the resources available to the worker app.
+This section describes how to create and deploy an example Rails app that uses a worker library to defer a task that a separate app runs. It also describes how to scale the resources available to the worker app.
 
 <p class="note"><strong>Note:</strong> Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the app manifest, to suppress route creation.</p>
 
@@ -352,7 +352,7 @@ For example: `RACK_ENV=development`
 
 ### <a id='RAILS-ENV'></a> RAILS_ENV
 
-This variable specifies the Rails deployment environment. Valid values are `development`, `test`, and `production`. This controls which of the environment-specific configuration files governs how the app is executed.
+This variable specifies the Rails deployment environment. Valid values are `development`, `test`, and `production`. This controls which of the environment-specific configuration files governs how the app is run.
 
 For example: `RAILS_ENV=production`
 

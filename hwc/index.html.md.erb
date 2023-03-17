@@ -51,13 +51,13 @@ Before you push your first app using the HWC buildpack, see the [Getting Started
 
 HWC relies on `Web.config` and `applicationHost.config` configuration files for configuring the .NET applications.
 
-Most `Web.config` files work out of the box with <%= vars.windows_runtime_abbr %>, with the following constraints:
+Most `Web.config` files work immediately with <%= vars.windows_runtime_abbr %>, but with the following constraints:
 
 - Integrated Windows Authentication (IWA) is not yet supported on <%= vars.windows_runtime_abbr %>.
 - SQL server connection strings must use fully qualified domain names.
 - Place connection string values in environment variables or [user-provided service instances](../../devguide/services/user-provided.html).
 
-Additionally, [Shadow Copy Setting](#shadow-copy), and [Dynamic and Static HTTP Compression](#http-compression) `Web.config` settings can be customized as needed.
+In addition, the [Shadow Copy Setting](#shadow-copy), and [Dynamic and Static HTTP Compression](#http-compression) `Web.config` settings can be customized as needed.
 
 The HWC buildpack includes a default configuration for the `applicationHost.config`, similar to IIS.
 
@@ -69,11 +69,11 @@ To configure a global error handler that logs to `stdout`, see [Application Erro
 
 ## <a id='push-your-app'></a> Step 3. Push an App
 
-Follow the steps below to push your application.
+Follow these steps to push your application.
 
 1. Build your HWC app in Visual Studio.
 
-1. On the command line, navigate to the directory containing the app files.
+1. On the command line, go to the directory containing the app files.
 
 1. To push your HWC app, run the following `cf push` command:
 
@@ -96,11 +96,11 @@ Follow the steps below to push your application.
     urls: my-app.example.com
     </pre>
 
-1. Confirm your application is running by finding your app's URL in the push command output and navigating to it. In the example above, `my-app.example.com` is the URL of your app.
+1. Confirm your application is running by going to your app's URL in the push command output. In the previous example, `my-app.example.com` is the URL of your app.
 
 ## <a id='features'></a> Features
 
-The following features can be used with HWC buildpack:
+You can use the following features with HWC buildpack:
 <ul>
   <li>[Context Path Routing](#context-path)</li>
   <li>[Shadow Copy Setting](#shadow-copy)</li>
@@ -111,11 +111,11 @@ The following features can be used with HWC buildpack:
 
 ### <a id='context-path'></a> Context Path Routing
 
-Context path routing enables multiple apps to share the same route hostname,
-such as `app1.example.com/app2`. The context path routing feature is analogous to IIS virtual directories.
+With context path routing you can implement multiple apps to share the same route hostname.
+For example, `app1.example.com/app2`. The context path routing feature is analogous to IIS virtual directories.
 
-Making an application accessible under another app's URL requires pushing both apps and applying a map-route between them.
-To define a context path route, such as `app1.example.com/app2`, run the following commands:
+Making an application accessible under another app's URL requires pushing both apps and applying a map-route correlation between them.
+To define a context path route, for example, `app1.example.com/app2`, run the following commands:
 
 1. To push the primary app, run the following command:
 
@@ -125,7 +125,7 @@ To define a context path route, such as `app1.example.com/app2`, run the followi
 
     Where `TOP-LEVEL-APP-NAME` is your top-level app's name.
 
-1. To push the secondary app and disable the app's starting and default routing, run the following command:
+1. To push the secondary app and deactivate the app's starting and default routing, run the following command:
 
     ```shell
     cf push LOWER-LEVEL-APP-NAME --no-start --no-route -s windows -b hwc_buildpack
@@ -171,13 +171,13 @@ app's bound route corresponds to the <code>applicationHost.config</code>.</p>
 [Shadow Copy](https://msdn.microsoft.com/en-us/library/ms228159(v=vs.100).aspx)
 is a hosting option that copies assemblies for an app in the `bin` directory
 to the app's temporary files directory. This feature is turned off and
-unnecessary for apps running under Cloud Foundry. An app can override this
+is unnecessary for apps running under Cloud Foundry. An app can override this
 setting in its `Web.config` file.
 
 ### <a id='http-compression'></a>Dynamic and Static HTTP Compression
 
-The HWC buildpack enables dynamic and static HTTP compression by default.
-You can disable HTTP compression in your app's `Web.config` file.
+The HWC buildpack implements dynamic and static HTTP compression by default.
+You can deactivate HTTP compression in your app's `Web.config` file.
 
 Dynamic HTTP compression is hardcoded at level 4.
 Static HTTP compression is hardcoded at level 9.
@@ -185,21 +185,21 @@ Static HTTP compression is hardcoded at level 9.
 ### <a id='url-rewrite'></a>URL Rewrite
 
 The HWC buildpack supports the URL Rewrite module.
-It is preinstalled in the Windows file system.
+It's preinstalled in the Windows file system.
 
 ### <a id='profile-scripts'></a>Profile Scripts
 
-The HWC buildpack allows developers to provide `.profile.bat` scripts with their applications.
-You can use a `.profile.bat` script to perform app-specific initialization tasks, such as setting custom environment variables.
+With the HWC buildpack you can provide `.profile.bat` scripts with your applications.
+You can use a `.profile.bat` script to perform app-specific initialization tasks. For example, setting custom environment variables.
 
-For information about configuring `.profile.bat` scripts, see the [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) section of <em>Pushing an App</em>.
+For information about configuring `.profile.bat` scripts, see [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) section of <em>Pushing an App</em>.
 
 ## <a id='help'></a>Buildpack Support
 
-A number of channels exist to assist you with using the HWC buildpack, or when developing your own HWC buildpack.
+A number of channels exist to assist you with using the HWC buildpack, or developing your own HWC buildpack.
 
-* **HWC Buildpack Repository in GitHub**: Find more information about using and extending the HWC buildpack in the [HWC buildpack repository](https://github.com/cloudfoundry/hwc-buildpack) in GitHub.
+* **HWC Buildpack Repository in GitHub**: For more information about using and extending the HWC buildpack in the [HWC buildpack repository] see, (https://github.com/cloudfoundry/hwc-buildpack) in GitHub.
 
-* **Release Notes**: Find current information about this buildpack on the [HWC buildpack release page](https://github.com/cloudfoundry/hwc-buildpack/releases) in GitHub.
+* **Release Notes**: For more information about this buildpack, see [HWC buildpack release page](https://github.com/cloudfoundry/hwc-buildpack/releases) in GitHub.
 
 * **Slack**: Join the #buildpacks channel in the [Cloud Foundry Slack community](http://slack.cloudfoundry.org/).

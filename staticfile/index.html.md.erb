@@ -5,13 +5,11 @@ owner: Buildpacks
 
 This topic describes how to configure and use the Staticfile buildpack.
 
-
 ## <a id='definitions'></a> Definitions
 
 **Staticfile app**: An app or content that requires no backend code other than the NGINX webserver, which the buildpack provides. Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
 
-**Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with back ends hosted elsewhere. To find which version of NGINX the current Staticfile buildpack uses, see the [Staticfile buildpack release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
-
+**Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with back ends hosted elsewhere. To find which version of NGINX the current Staticfile buildpack uses, see [Staticfile buildpack release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
 
 ## <a id='staticfile'></a> Staticfile Detection
 
@@ -21,16 +19,15 @@ The `Staticfile` file can be an empty file, or it can contain configuration sett
 
 ## <a id='memory'></a> Memory Usage
 
-NGINX requires 20&nbsp;MB of RAM to serve static assets. When using the Staticfile buildpack, <%= vars.recommended_by %> recommends pushing apps with the `-m 64M` option to reduce RAM allocation from the default 1&nbsp;GB allocated to containers by default.
-
+NGINX requires 20&nbsp;MB of RAM to serve static assets. When using the Staticfile buildpack, <%= vars.recommended_by %> push the apps with the `-m 64M` option to reduce RAM allocation from the default 1&nbsp;GB that are allocated to containers by default.
 
 ## <a id='configure'></a>Configure the Buildpack
 
-This section describes configuration options available for the Staticfile buildpack. If you need to make configuration changes to NGINX that are not listed in the table below, use the NGINX Buildpack instead of the Staticfile buildpack. For more information, see [NGINX Buildpack](../nginx/index.html).
+This section describes configuration options that are available for the Staticfile buildpack. If you need to make configuration changes to NGINX that are not listed in the table, use the NGINX Buildpack instead of the Staticfile buildpack. For more information, see [NGINX Buildpack](../nginx/index.html).
 
 ### <a id='staticfile'></a> Staticfile File Configuration
 
-To configure these options, add the configuration property as a new line in your `Staticfile` file as described in the following table.
+To configure these options, add the configuration property as a new line in your `Staticfile` file as described in the following table:
 
 <table border='1' class='nice'>
   <tr>
@@ -44,7 +41,7 @@ To configure these options, add the configuration property as a new line in your
       <code>root: public</code>
     </td>
     <td><strong>Alternative root</strong>: Specifies a root directory other than the default. Use this option to serve <code>index.html</code> and other assets, such as HTML, CSS, or JavaScript files, from a location other than the root directory.<br><br>
-      For example, you can specify an alternate folder such as <code>dist</code> or
+      For example, you can specify an alternate folder, <code>dist</code> or
       <code>public</code>.
     </td>
   </tr>
@@ -52,8 +49,8 @@ To configure these options, add the configuration property as a new line in your
     <td id="dir-list">
       <code>directory: visible</code>
     </td>
-    <td><strong>Directory list</strong>: Displays an HTML page that shows a directory index for your site. A sample of a directory list is shown below.<br>
-      <img src="../images/directory-index.png" alt="directory index" style="margin: 20px"><br>
+    <td><strong>Directory list</strong>: Displays an HTML page that shows a directory index for your site. A sample of a directory list is shown here:<br>
+      <img src="../images/directory-index.png" ![alt-text="HTML page that shows a directory index"] style="margin: 20px"><br>
       If your site is missing an <code>index.html</code> file, your app displays a directory list instead of the standard 404 error page.
     </td>
   </tr>
@@ -61,22 +58,22 @@ To configure these options, add the configuration property as a new line in your
     <td id="ssi">
       <code>ssi: enabled</code>
     </td>
-    <td><strong>SSI</strong>: Enables Server Side Includes (SSI), which allow you to embed the contents of one or more files into a web page on a web server. For general information about SSI, see the <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side Includes</a> entry on Wikipedia.
+    <td><strong>SSI</strong>: Activates Server Side Includes (SSI). You can embed the contents of one or more files into a web page on a web server. For general information about SSI, see <a href="https://en.wikipedia.org/wiki/Server_Side_Includes">Server Side Includes</a> entry on Wikipedia.
     </td>
   </tr>
   <tr>
     <td id="pushstate">
       <code>pushstate: enabled</code>
     </td>
-    <td><strong>Pushstate routing</strong>: Keeps browser-visible URLs clean for client-side JavaScript apps that serve multiple routes. For example, pushstate routing allows a single JavaScript file to route to multiple anchor-tagged URLs that look like <code>/some/path1</code> instead of <code>/some#path1</code>.
+    <td><strong>Pushstate routing</strong>: Keeps browser-visible URLs clean for client-side JavaScript apps that serve multiple routes. For example, pushState routing allows a single JavaScript file to route to multiple anchor tagged URLs that look like <code>/some/path1</code> instead of <code>/some#path1</code>.
     </td>
   </tr>
   <tr>
     <td id="gzip">
       <code>gzip: off</code>
     </td>
-    <td><strong>GZip file serving and compression</strong>: Disables <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a> and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules, which are enabled by default. These modules allow NGINX to serve files stored in compressed GZ format and to uncompress them for clients that do not support compressed content or responses.<br><br>
-      You may want to disable compression under particular circumstances such as serving content to very old browser clients.
+    <td><strong>GZip file serving and compression</strong>: Deactivate <a href="http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html">gzip_static</a> and <a href="http://nginx.org/en/docs/http/ngx_http_gunzip_module.html">gunzip</a> modules are activated by default. With these modules you can use NGINX to serve files stored in compressed GZ format and to decompress them for clients that do not support compressed content or responses.<br><br>
+      You might want to deactivate compression under certain circumstances. For example,when you serve content to very old browser clients.
     </td>
   </tr>
   <tr>
@@ -87,29 +84,29 @@ To configure these options, add the configuration property as a new line in your
       <code>http_proxy: http://www.example.com/</code><br>
       <code>https_proxy: https://www.example.com/</code>
     </td>
-    <td><strong>Proxy support</strong>: Allows you to use a proxy when downloading dependencies during the staging of your app.</td>
+    <td><strong>Proxy support</strong>: You can use a proxy when downloading dependencies during the staging of your app.</td>
   </tr>
   <tr>
     <td id="enable-http2">
       <code>enable_http2: true</code><br><br>
       Alternatively, set the <code>ENABLE_HTTP2</code> environment variable to <code>true</code>.
     </td>
-    <td><strong>Enable HTTP/2</strong>: Serve requests over HTTP/2 instead of HTTP/1.1. This disables serving HTTP/1.1 traffic.</td>
+    <td><strong>Enable HTTP/2</strong>: Serve requests over HTTP/2 instead of HTTP/1.1. This deactivates serving HTTP/1.1 traffic.</td>
   </tr>
   <tr>
     <td id="force-https">
       <code>force_https: true</code><br><br>
-      Alternatively, set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.
+      Alternatively, you can set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.
     </td>
     <td><strong>Force HTTPS</strong>: Forces all requests to be sent through HTTPS. This redirects non-HTTPS requests as HTTPS requests.
-      <p class="note"><strong>Note</strong>: Do not enable <code>FORCE_HTTPS</code> if you have a proxy server or load balancer loops, for example, if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p>
+      <p class="note"><strong>Note</strong>: Do not activate <code>FORCE_HTTPS</code> if you have a proxy server or load balancer loops. For example, if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p>
     </td>
   </tr>
   <tr>
     <td id="host-dot-files">
       <code>host_dot_files: true</code>
     </td>
-    <td><strong>Dot files</strong>: By default, hidden files, which are those starting with a <code>.</code>, are not served by this buildpack.</td>
+    <td><strong>Dot files</strong>: By default, hidden files, which start with a <code>.</code>, are not served by this buildpack.</td>
   </tr>
   <tr>
     <td id="status-codes">
@@ -117,7 +114,7 @@ To configure these options, add the configuration property as a new line in your
     <code>&nbsp;&nbsp;404: /404.html</code><br>
     <code>&nbsp;&nbsp;500: /500.html</code>
     </td>
-    <td><strong>Status Codes</strong>: Allows to define custom pages for HTTP STATUS codes instead of the default NGINX pages.</td>
+    <td><strong>Status Codes</strong>: You can define custom pages for HTTP STATUS codes instead of the default NGINX pages.</td>
   </tr>
   <tr>
     <td id="strict-security">
@@ -149,13 +146,13 @@ To configure these options, add the configuration property as a new line in your
 
 ### <a id='staticfile'></a>Other Configuration
 
-Follow the instructions below to make other configuration changes.
+Use the following instructions to make other configuration changes.
 
 <hr>
 
 #### <a name="basic-authentication"></a> Basic Authentication
 
-Allows you to enable basic authentication for your app or website. A sample basic authentication dialog box is shown below:
+You can enable basic authentication for your app or website. A sample basic authentication dialog box is shown below:
 
 <img src="../images/basicauth.png">
 
@@ -171,11 +168,12 @@ Example:
 pat:$example1$DuUQEQp8$ZccZCHQElNSjrgerwSFC0
 stevie:$example1$22derfaecZSJJRw4rKE$KKEWKSK
 ```
+
 <hr>
 
 #### <a name="custom-location"></a> Custom Location
 
-Allows you to specify custom location definitions with additional directives. For information about NGINX directives, see [Creating NGINX Plus and NGINX Configuration Files](https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files) and [Alphabetical index of directives](https://nginx.org/en/docs/dirindex.html) in the _NGINX documentation_.
+You can specify custom location definitions with additional directives. For information about NGINX directives, see [Creating NGINX Plus and NGINX Configuration Files](https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files) and [Alphabetical index of directives](https://nginx.org/en/docs/dirindex.html) in the _NGINX documentation_.
 
 **Configuration**
 
@@ -190,9 +188,9 @@ To customize the `location` block of the NGINX configuration file:
 
 1. Set the `location_include` variable in your **Staticfile** to the path of the file from the previous step. This path is relative to `nginx/conf`.
 
-	 Example:
+  Example:
 
-	 ```
+  ```
     ...
     root: public
     location_include: includes/*.conf
@@ -203,17 +201,18 @@ To customize the `location` block of the NGINX configuration file:
 
 #### <a name="basic-authentication"></a> Additional MIME Type Support
 
-Allows you to configure additional MIME types on your NGINX server.
+You can configure additional MIME types on your NGINX server.
 
 **Configuration**
 
-To add MIME types, add a `mime.types` file to your root folder, or to the alternate root folder if you specified one.
+To add MIME types, add a `mime.types` file to your root folder, or to the alternate root folder, if you specified one.
 
 For more information about the `mime.types` file, see [mime.types](https://www.nginx.com/resources/wiki/start/topics/examples/full/#mime-types") in the _NGINX documentation_.
 
 Example MIME types file:
 
 ```
+
 types {
     text/html     html htm shtml;
     text/css      css;
@@ -221,10 +220,10 @@ types {
     image/gif     gif;
     ...
     }
+
 ```
 
 <hr>
-
 
 ## <a id='push_app'></a> Push an App
 
@@ -232,21 +231,25 @@ To push your app, you can use either the system Staticfile buildpack or specify 
 
 ### Option 1: Use the System Staticfile Buildpack
 
-To use the Staticfile buildpack installed in your deployment, run the command below in the root directory of the app.
+To use the Staticfile buildpack installed in your deployment, run the following command in the root directory of the app.
 The root directory of the app must contain a file named `Staticfile`.
 
 ```
+
 cf push APP-NAME
+
 ```
 
 Where `APP-NAME` is the name you want to give your app.
 
 ### Option 2: Specify a Staticfile Buildpack
 
-To explicitly specify a Staticfile buildpack, run the command below in the root directory of the app. You may want to specify a buildpack if your deployment does not have the Staticfile buildpack installed or the installed version is outdated.
+To explicitly specify a Staticfile buildpack, run the following command in the root directory of the app. You might want to specify a buildpack if your deployment does not have the Staticfile buildpack installed or the installed version is outdated.
 
 ```
+
 cf push APP-NAME -b BUILDPACK-NAME-OR-PATH
+
 ```
 
 Where:
@@ -256,17 +259,15 @@ Where:
 
 ### Verifying the Push
 
-After you push the app, follow the steps below to verify that the push was successful:
+After you push the app, follow these steps to verify that the push was successful:
 
 1. Find the URL of your app in the output of the `cf push` command. For example, the URL in the terminal output above is `my-app.example.com`.
 
-1. In a browser, navigate to the URL to view your app.
-
+1. In a browser, go to the URL to view your app.
 
 ## <a id='examples'></a> Example Staticfile Buildpack Apps
 
 For different examples of apps that use the Staticfile buildpack, see the [fixtures](https://github.com/cloudfoundry/staticfile-buildpack/tree/master/fixtures) directory in the Staticfile buildpack GitHub repo.
-
 
 ## <a id='help'></a> Help and Support
 
