@@ -75,9 +75,4 @@ The following table lists the system buildpacks:
     <td><p>HTML, CSS, JavaScript, or NGINX</p></td>
     <td><a href="https://github.com/cloudfoundry/staticfile-buildpack">Staticfile source</a></td>
   </tr>
-  <% if current_major_version == "4-0" %>
-    <% if vars.platform_code != "CF" %>
-      <%= partial "./pcf/core/commercial_buildpacks" %>
-    <% end %>
-  <% end %>
 </table>
