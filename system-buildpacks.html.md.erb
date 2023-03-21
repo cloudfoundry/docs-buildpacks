@@ -76,6 +76,6 @@ The following table lists the system buildpacks:
     <td><a href="https://github.com/cloudfoundry/staticfile-buildpack">Staticfile source</a></td>
   </tr>
   <% if vars.platform_code != "CF" %>
-    <%= partial "/pcf/core/commercial_buildpacks" %>
+    <%= partial "./pcf/core/commercial_buildpacks" %>
   <% end %>
 </table>
