@@ -1,11 +1,11 @@
 ---
-title: Binary Buildpack
+title: Binary buildpack
 ---
 
 
-Use the binary buildpack for running arbitrary binary web servers.
+Use the binary buildpack to run arbitrary binary web servers.
 
-## <a id='pushing_apps'></a> Push an App ##
+## <a id='pushing_apps'></a> Push an app
 
 Specify the binary buildpack to stage an app as a binary file.
 On a command line, use `cf push MY-AWESOME-APP` with the `-b` option to specify the
@@ -32,7 +32,7 @@ specifies a `web` task:
     $ cf push MY-AWESOME-APP -c './app' -b binary_buildpack
     </pre>
 
-## <a id='compiling'></a> Compile your Binary ##
+## <a id='compiling'></a> Compile your binary
 Cloud Foundry expects your binary to bind to the port specified by the `PORT`
 environment variable.
 
@@ -84,14 +84,14 @@ When deploying your binary to Cloud Foundry, use `cf push` with the `-s` option 
 $ cf push MY-AWESOME-APP -s (cflinuxfs3|lucid64)
 </pre>
 
-## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
+## <a id='bosh_trusted_cert'></a>BOSH configured custom trusted certificate support
 
 Your platform operator can configure the platform to add the custom certificates into the application container.
 The custom trusted certificates are added to the `/etc/ssl/certs` directory and can be used by binary applications.
 
 For more information, see [Configuring Trusted System Certificates for Applications](https://docs.cloudfoundry.org/running/trusted-system-certificates.html).
 
-## <a id='dotnet-console'></a>.NET Apps
+## <a id='dotnet-console'></a>.NET apps
 
 **.NET Core on Windows**
 
@@ -160,7 +160,7 @@ For information about deploying different types of .NET apps, follow the links i
   </tr>
 </table>
 
-## <a id='help_support'></a>Help and Support ##
+## <a id='help_support'></a>Help and support
 
 Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
 

@@ -1,5 +1,5 @@
 ---
-title: Getting Started Deploying Grails Apps
+title: Getting started deploying Grails apps
 owner: Java
 ---
 
@@ -364,7 +364,7 @@ Run `cf help` to view a complete list of commands, grouped by task categories, a
 If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
 ### App deploy fails
-Even when the deploy fails, the app might exist on Cloud Foundry. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
+Even when the deploy fails, the app might exist on Cloud Foundry. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy it.
 
 ### App requires a unique URL
 Cloud Foundry requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and Cloud Foundry cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:

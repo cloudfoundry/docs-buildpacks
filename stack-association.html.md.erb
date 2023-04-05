@@ -1,5 +1,5 @@
 ---
-title: Stack Association
+title: Stack association
 owner: Buildpacks
 ---
 
@@ -57,9 +57,9 @@ The cf CLI commands for managing buildpacks include functionality to support ass
 When using buildpacks with the cf CLI, consider the following:
 
 * You cannot upload a buildpack with `cf create-buildpack` if a buildpack of the same name already exists and has a missing stack record.
-* When using `cf create-buildpack`, you might inadvertently create a duplicate buildpack with a `nil` stack. `cf create-buildpack` does not disallow creation of buildpacks with no stack association.
+* When using `cf create-buildpack`, you might inadvertently create a duplicate buildpack with a `nil` stack. `cf create-buildpack` does not prevent creation of buildpacks with no stack association.
 * The `-s` flag is required when there are buildpacks with the same name. If you are working on a uniquely named buildpack, you do not need to specify its stack.
-* If you have buildpacks of the same name, one with a stack record and one without, run cf CLI commands without `-s` option on the buildpack with the missing stack record.
+* If you have buildpacks of the same name, one with a stack record and one without, run cf CLI commands without the `-s` flag on the buildpack with the missing stack record.
 
 ### <a id='examples-cli'></a> Scenario examples
 

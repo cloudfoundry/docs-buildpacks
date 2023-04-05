@@ -1,5 +1,5 @@
 ---
-title: Tips for Java Developers
+title: Tips for Java developers
 owner: Java
 ---
 
@@ -8,7 +8,7 @@ This topic describes how the Java buildpack can be used with <%= vars.app_runtim
 <%= vars.app_runtime_abbr %> can deploy a number of different JVM-based artifact types. For a more detailed explanation of what the Cloud Foundry Java Builpack supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the repository on GitHub.
 
 
-## <a id='buildpack'></a> Java Buildpack
+## <a id='buildpack'></a> Java buildpack
 
 For information about using, configuring, and extending the Cloud Foundry Java buildpack, see the [Cloud Foundry Java Buildpack](https://github.com/cloudfoundry/java-buildpack) repository on GitHub.
 
@@ -262,18 +262,18 @@ Where:
 * `YOUR-APP-VERSION` is the name of the WAR you want to build and deploy.
 
 
-## <a id='services'></a> Binding to Services
+## <a id='services'></a> Binding to services
 
 For more information about binding apps to services, see [Configuring Service Connections](configuring-service-connections.html).
 
 
-## <a id='java-apps'></a> Java and Grails Best Practices
+## <a id='java-apps'></a> Java and Grails best practices
 
-### <a id='jdbc'></a> Provide a JDBC Driver
+### <a id='jdbc'></a> Provide a JDBC driver
 
 The Java buildpack does not bundle a JDBC driver with your app. If you want your app to access a SQL RDBMS, include the appropriate driver in your app.
 
-### <a id='memory'></a> Allocate Sufficient Memory
+### <a id='memory'></a> Allocate sufficient memory
 
 If you do not allocate sufficient memory to a Java app when you deploy it, it may fail to start, or <%= vars.app_runtime_abbr %> may terminate it. You must allocate enough memory to allow for:
 
@@ -294,7 +294,7 @@ cf app YOUR-APP
 
 Where `YOUR-APP` is the name of your app.
 
-### <a id='memory-troubleshoot'></a> Troubleshoot Out of Memory
+### <a id='memory-troubleshoot'></a> Troubleshoot out of memory
 
 A Java app may crash because of insufficient memory on the Garden container or the JVM on which it runs. The sections below provide guidance for help diagnosing and resolving such issues.
 
@@ -311,7 +311,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
 * **Solution**: Configure the JVM correctly for your app. For more information, see [Allocate Sufficient Memory](#memory).
 
-#### <a id='garden-container'></a> Garden Container
+#### <a id='garden-container'></a> Garden container
 
 <p class="note"><strong>Note:</strong> The solutions in this section require configuring the memory calculator, which is a sub-project of the Java buildpack that calculates suitable memory settings for Java apps when you push them. For more information, see the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">java-buildpack-memory-calculator</a> repository on GitHub. If you have questions about the memory calculator, you can ask them in the <strong>#java-buildpack</strong> channel of the <a href="https://slack.cloudfoundry.org/">Cloud Foundry Slack organization</a>.</p>
 
@@ -365,7 +365,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
     <br><br>
     The correct settings for `-Xss` and `stack_threads` depend on your app code, including the libraries it uses. Your app may technically have no upper limit, such as in the case of [cavalier usage]() of `CachedThreadPool` executors. However, you still must calculate the depth of the thread stacks and the amount of space the JVM should reserve for each of them. For more information, see [Executors.newCachedThreadPool() considered harmful](http://dev.bizo.com/2014/06/cached-thread-pool-considered-harmlful.html) on the Bizo website and the [newCachedThreadPool](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--) section of the _Class Executors_ topic in the Java documentation.
 
-### <a id='upload'></a> Troubleshoot Failed Upload
+### <a id='upload'></a> Troubleshoot failed upload
 
 If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it may be for one of the following reasons:
 
@@ -397,7 +397,7 @@ If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it
       </li>
     </ul>
 
-### <a id='debugging'></a> Debug Java Apps on <%= vars.app_runtime_abbr %>
+### <a id='debugging'></a> Debug Java apps on <%= vars.app_runtime_abbr %>
 
 Because of the way <%= vars.app_runtime_abbr %> deploys your apps and isolates them, it is not possible to connect to your app with the remote Java debugger. Instead, instruct the app to connect to the Java debugger on your local machine.
 
@@ -433,7 +433,7 @@ Next, to push your app to <%= vars.app_runtime_abbr %> and instruct <%= vars.app
 
 Upon completion, you should see that your app has started and is now connected to the debugger running in your IDE. You can now add breakpoints and interrogate the app just as you would if it were running locally.
 
-### <a id='slow-start'></a> Slow Starting Java or Grails Apps
+### <a id='slow-start'></a> Slow starting Java or Grails apps
 
 Some Java and Grails apps do not start quickly, and the health check for an app can fail if an app starts too slowly.
 
@@ -511,7 +511,7 @@ end
 For more information, see [Design](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/design.md), [Extending](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/extending.md), and [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
-## <a id='env-var'></a> Environment Variables
+## <a id='env-var'></a> Environment variables
 
 You can access environments variable programmatically.
 

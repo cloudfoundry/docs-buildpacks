@@ -1,5 +1,5 @@
 ---
-title: Getting Started Deploying Ruby Apps
+title: Getting started deploying Ruby apps
 owner: Buildpacks
 ---
 
@@ -15,13 +15,13 @@ topic.
 
 <p class="note"><strong>Note</strong>: Ensure that your Ruby app runs locally before continuing with this procedure.</p>
 
-## <a id="deploy"></a>Deploy a Ruby Application ##
+## <a id="deploy"></a>Deploy a Ruby app
 
 This section describes how to deploy a Ruby application to
 Cloud Foundry, and uses output from a sample app to show specific
 steps of the deployment process.
 
-### Prerequisites ###
+### Prerequisites
 
 * A Ruby 2.x application that runs locally on your workstation
 * [Bundler](http://bundler.io) configured on your workstation
@@ -29,7 +29,7 @@ steps of the deployment process.
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) installed on your
 workstation
 
-###<a id="create-bind"></a>  Step 1: Create and Bind a Service Instance for a Ruby Application ###
+###<a id="create-bind"></a>  Step 1: Create and bind a service instance for a Ruby app
 
 This section describes using the cf CLI to configure a Redis Cloud managed service instance for an app. <%=vars.dev_console_1%>
 
@@ -44,7 +44,7 @@ pre-provisioned external service instances.
 For more information about creating and using service instances, refer to the
 [Services Overview](../../devguide/services/index.html) topic.
 
-#### Create a Service Instance ####
+#### Create a service instance
 
 To create a service instance:
 
@@ -88,7 +88,7 @@ To create a service instance:
     OK
     </pre>
 
-#### Bind a Service Instance ####
+#### Bind a service instance
 
 When you bind an app to a service instance, Cloud Foundry writes
 information about the service instance to the `VCAP_SERVICES` app environment
@@ -120,19 +120,19 @@ services:
       - redis
 ```
 
-### <a id="deployment-options"></a> Step 2: Configure Deployment Options  ###
+### <a id="deployment-options"></a> Step 2: Configure deployment options
 
-#### Configure the Deployment Manifest ####
+#### Configure the deployment manifest
 
 You can specify app deployment options in a manifest that the `cf push` command uses. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
 
-#### Configure a Production Server ####
+#### Configure a production server
 
 Cloud Foundry uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, Cloud Foundry can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configuring a Production Server](../prod-server.html) topic for help configuring a server other than WEBrick.
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for <code>pong_matcher_ruby</code> does not require any additional configuration to deploy the app.</p>
 
-### Step 3: Log in and Target the API Endpoint ###
+### Step 3: Log in and target the API endpoint
 
 Enter your login credentials, and select a space
 and org.
@@ -146,7 +146,7 @@ The API endpoint is <%=vars.api_endpoint%>.
 
 <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
 
-### Step 4: Deploy an App ###
+### Step 4: Deploy an app
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
@@ -221,7 +221,7 @@ urls: pongmatch-ex12.cfapps.io
 #0   running   2014-12-09 10:04:40 AM   0.0%   35.2M of 256M   45.8M of 1G
 </pre>
 
-### Step 5: Test a Deployed App ###
+### Step 5: Test a deployed app
 
 You’ve deployed an app to Cloud Foundry!
 
@@ -232,7 +232,7 @@ instances from 1 to 3, and redeploy the app with a new app name and host name.
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-## <a id='cli-manage'></a>Manage Your Application with the cf CLI ##
+## <a id='cli-manage'></a>Manage your application with the cf CLI
 
 Run `cf help` to view a complete list of commands, grouped by task categories,
 and run `cf help COMMAND` for detailed information about a specific command.
@@ -245,20 +245,20 @@ For more information about using the cf CLI, refer to the Cloud Foundry Command 
 <%=vars.dev_console_note%>
 </p>
 
-##<a id='troubleshoot'></a>Troubleshooting ##
+##<a id='troubleshoot'></a>Troubleshooting
 
 If your application fails to start, verify that the application starts in your
 local environment.
 Refer to the [Troubleshooting Application Deployment and Health](../../devguide/deploy-apps/troubleshoot-app-health.html) topic to
 learn more about troubleshooting.
 
-### App Deploy Fails ###
+### App deploy fails
 
 Even when deploying an app fails, the app might exist on
 Cloud Foundry.
-Run `cf apps` to review the apps in the currently targeted org and space.
+Run `cf apps` to review the apps in the targeted org and space.
 You might be able to correct the issue using the <%=vars.dev_console_2%>, or you
-might have to delete the app and redeploy.
+might have to delete the app and redeploy it.
 
 Common reasons deploying an app fails include:
 
@@ -268,7 +268,7 @@ Refer to Step 2: Create and Bind a Service Instance for a Ruby Application.
 * You did not successfully create a unique URL for the app.
 Refer to the troubleshooting tip <strong>App Requires Unique URL</strong>.
 
-### App Requires Unique URL ###
+### App requires unique URL
 
 Cloud Foundry requires that each app that you deploy has a unique
 URL.

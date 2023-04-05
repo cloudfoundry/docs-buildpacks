@@ -7,7 +7,7 @@ owner: Buildpacks
 
 This topic describes the dependency storage options available to developers creating offline buildpacks.
 
-##<a id='offline-buildpacks'></a>About Offline Buildpacks
+##<a id='offline-buildpacks'></a>About offline buildpacks
 
 Online, or uncached, buildpacks require an internet connection to download dependencies. For example, language interpreters, and compilers. Alternatively, you can create offline, or cached, buildpacks that are packaged with their dependencies. These offline buildpacks do not connect to the Internet when they are used to deploy Cloud Foundry apps.
 
@@ -15,7 +15,7 @@ Online, or uncached, buildpacks require an internet connection to download depen
 
 You can find instructions for building offline packages in the `README.md` file for each buildpack repository. For example, see the [Java buildpack](https://github.com/cloudfoundry/java-buildpack#offline-package).
 
-## <a id='package-directly'></a> Packaging dependencies in the buildpack ##
+## <a id='package-directly'></a> Packaging dependencies in the buildpack
 
 The simple way to package dependencies for a custom buildpack is to keep the dependencies in your buildpack source. However, this is not recommended. Keeping the dependencies in your source consumes unnecessary space.
 
@@ -37,23 +37,23 @@ $ # Adds the buildpack zipfile to the Cloud Foundry instance
 $ cf create-buildpack SomeBuildPackName ZippedBuildPackName.zip 1
 </pre>
 
-### Pros ###
+### Pros
 
 * Least complicated process for operators.
 * Least complicated maintenance process for buildpack developers.
 
-### Cons ###
+### Cons
 
 * Cloud Foundry admin buildpack uploads are limited to 1 GB, so the dependencies might not fit.
 * Security and functional patches to dependencies require updating the buildpack.
 
 
-## <a id='package-selected'></a>Packaging selected dependencies in the buildpack ##
+## <a id='package-selected'></a>Packaging selected dependencies in the buildpack
 
 This is a variant of the [package dependencies in the buildpack](#package-directly) method. In this variation, the administrator edits a configuration file. For example, the `dependencies.yml` file to include a limited subset of the buildpack dependencies,
 packages, and uploads to the buildpack.
 
-<p class="note"><strong>Note</strong>: This approach is not reccomended. See the Cons section for more information.</p>
+<p class="note"><strong>Note</strong>: This approach is not recommended. See the Cons section for more information.</p>
 
 The administrator completes the following steps:
 
@@ -78,13 +78,13 @@ $ cd ~/my_app
 $ cf push my-cobol-webapp -b cobol-buildpack
 </pre>
 
-### Pros ###
+### Pros
 
 * It's possible to avoid the Cloud Foundry admin buildpack upload size limit in the following ways:
   * The administrator chooses a limited subset of dependencies.
   * The administrator maintains different packages for different dependency sets.
 
-### Cons ###
+### Cons
 
 * More complex for buildpack maintainers.
 * Security updates to dependencies require updating the buildpack.
@@ -95,7 +95,7 @@ $ cf push my-cobol-webapp -b cobol-buildpack
   * Administrators need to track configurations and merge them with updates to the buildpack.
   * Might result in a different configuration for each app.
 
-## <a id='package-local'></a>Relying on a local mirror ##
+## <a id='package-local'></a>Relying on a local mirror
 
 In this method, the administrator provides a compatible file store of dependencies. When running the buildpack, the administrator specifies the location of the file store.
 
@@ -122,7 +122,7 @@ $ cf push my-cobol-webapp -b cobol-buildpack
     https://OUR-INTERNAL-SITE.example.com/dependency/repository/dep2.tgz.... WARNING: dependency not found!
 </pre>
 
-### Pros ###
+### Pros
 
 * Avoids the Cloud Foundry admin buildpack upload size limit.
 * Leaves the administrator completely in control of providing dependencies.
@@ -131,7 +131,7 @@ $ cf push my-cobol-webapp -b cobol-buildpack
   * The buildpack is designed to use newer semantically versioned dependencies.
   * Buildpack behavior does not change with the newer functional changes.
 
-### Cons ###
+### Cons
 
 * The administrator needs to set up and maintain a mirror.
 * The additional config option presents a maintenance burden.

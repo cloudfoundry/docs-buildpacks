@@ -20,12 +20,12 @@ To build your app in a way that is suitable for running on <%= vars.app_runtime_
 - [Build Using Native Build Tools](#native-build-tools)
 
 
-## <a id="cloud-native-buildpacks"></a>Build Using Cloud Native Buildpacks
+## <a id="cloud-native-buildpacks"></a>Build using Cloud Native Buildpacks
 
 Cloud Native Buildpacks include support for building native image apps.
 You can pass in your source code or a compiled JAR and Cloud Native Buildpacks installs the required tools and builds a compatible image.
 
-### <a id="cnb-example-build"></a>Example Build Using Cloud Native Buildpacks
+### <a id="cnb-example-build"></a>Example build Using Cloud Native Buildpacks
 
 1. Clone the example repository from GitHub:
 
@@ -43,14 +43,14 @@ You can pass in your source code or a compiled JAR and Cloud Native Buildpacks i
 
 For more information about building with Cloud Native Buildpacks, see [Getting Started](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks) in the Spring Native documentation.
 
-### <a id="cnb-example-deploy"></a>Deploy Using Cloud Native Buildpacks
+### <a id="cnb-example-deploy"></a>Deploy using Cloud Native Buildpacks
 
 This section describes how to deploy a Java app with native image support using Cloud Native Buildpacks.
 
 To deploy an app compiled using the steps from the previous section to <%= vars.app_runtime_abbr %>, you can deploy the image directly using <%= vars.app_runtime_abbr %>'s Docker support.
 If Docker support is deactivated, you can extract the native image binary from the container image and deploy the app using the binary buildpack.
 
-#### <a id="deploy-image"></a>Deploy from Image
+#### <a id="deploy-image"></a>Deploy from image
 
 To deploy the app from an image:
 
@@ -92,7 +92,7 @@ To deploy the app from an image:
     cf push -o registry.example.com/apps/native-image native-image-app
     ```
 
-#### <a id="deploy-binary"></a>Extract the Image and Deploy the Binary
+#### <a id="deploy-binary"></a>Extract the image and deploy the Binary
 
 To extract and deploy your app using the binary buildpack:
 
@@ -134,7 +134,7 @@ To extract and deploy your app using the binary buildpack:
     cf push -b binary_buildpack -m 256M -p ./out -c ./io.paketo.demo.Demoapp native-image
     ```
 
-## <a id="native-build-tools"></a>Build Using Native Build Tools
+## <a id="native-build-tools"></a>Build using Native Build Tools
 
 This section describes how to deploy a Java app with native image support using Native Build Tools.
 If you do not want to build using Cloud Native Buildpacks, you can build and compile directly using the Native Build Tools.
@@ -165,7 +165,7 @@ Ubuntu Bionic is recommended for best compatibility with the <%= vars.app_runtim
 
 For more information about building with Native Build Tools, see [Getting started with Native Build Tools](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-native-build-tools) in the Spring documentation.
 
-### <a id="direct-build"></a>Deploy with Direct Build
+### <a id="direct-build"></a>Deploy with direct build
 
 This section describes how to deploy a Java app with native image support using a direct build.
 
@@ -191,7 +191,7 @@ You can adjust other properties or use a `manifest.yml` file to deploy as well.
 Regardless of how you build your app, with Spring Boot v2.5 and Spring Native v0.10.1, there is a bug that causes `cf push` to fail.
 The problem is caused by conditional behavior in Spring Boot Actuator when run on <%= vars.app_runtime_abbr %>. It is fixed in Spring Native v0.10.2.
 
-For more information, see [spring-projects-experimental](https://github.com/spring-projects-experimental/spring-native/issues/870) repository on GitHub.
+For more information, see the [spring-projects-experimental](https://github.com/spring-projects-experimental/spring-native/issues/870) repository on GitHub.
 
 You can also work around this issue by adding the following hints above your `@SpringBootapp` annotation:
 

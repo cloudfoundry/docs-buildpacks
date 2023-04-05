@@ -1,5 +1,5 @@
 ---
-title: Getting Started Deploying Spring Apps
+title: Getting started deploying Spring apps
 owner: Java
 ---
 
@@ -15,20 +15,20 @@ If you experience a problem following the steps below, see the <%=vars.known_iss
 
 <p class="note"><strong>Note</strong>: Ensure that your Spring app runs locally before continuing with this procedure.</p>
 
-## <a id='deploy-yourapp'></a>Deploy a Spring Application ##
+## <a id='deploy-yourapp'></a>Deploy a Spring application
 
 This section describes how to deploy your Spring application to Cloud Foundry.
 
-### Prerequisites ###
+### Prerequisites
 
 * A Spring app that runs locally on your workstation
 * Intermediate to advanced Spring knowledge
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
 * JDK 1.6, 1.7, or 1.8 for Java 6, 7, or 8 configured on your workstation
 
-<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. For more information, refer to the <a href="../../custom.html">Custom Buildpacks</a> topic.</p>
+<p class="note"><strong>Note</strong>: The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. For more information, refer to <a href="../../custom.html">Custom Buildpacks</a></p>
 
-### Step 1: Declare App Dependencies  ###
+### Step 1: Declare app dependencies
 
 Be sure to declare all the dependency tasks for your app in the build script of your chosen build tool.
 
@@ -95,7 +95,7 @@ The table lists build script information for Gradle and Maven and provides docum
 
 <p class="note"><strong>Note</strong>: Make sure you are not building <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html">fully executable jars</a> because application push may fail.</p>
 
-### Step 2: Allocate Sufficient Memory ###
+### Step 2: Allocate sufficient memory
 
 Use the `cf push -m` command to specify the amount of memory that should be allocated to the application. Memory allocated this way is done in preset amounts of `64M`, `128M`, `256M`, `512M`, `1G`, or `2G`. For example:
 
@@ -107,7 +107,7 @@ When your app is running, you can use the `cf app APP-NAME` command to see memor
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The Cloud Foundry Java buildpack uses settings declared in the sample app to allocate 1 GB of memory to the app.</p>
 
-### Step 3: Provide a JDBC Driver ###
+### Step 3: Provide a JDBC driver
 
 The Java buildpack does not bundle a JDBC driver with your application. If your application accesses a SQL RDBMS, you must do the following:
 
@@ -116,7 +116,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>pong_matcher_spring</code> sample app, the <code>src/main/resources/application.yml</code> file declares the JDBC driver, and the <code>pom.xml</code> file includes the JDBC driver as a dependency.</p>
 
-### Step 4: Configure Service Connections for a Spring App ###
+### Step 4: Configure service connections for a Spring app
 
 Cloud Foundry provides extensive support for creating and binding a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information about creating and binding a service connection for your app, refer to [Configuring Service Connections](../configuring-service-connections.html).
 
@@ -140,7 +140,7 @@ applications:
 </pre>
 </div>
 
-### Step 5: Configure the Deployment Manifest ###
+### Step 5: Configure the deployment manifest
 
 You can specify deployment options in a manifest file `manifest.yml` that the `cf push` command uses when deploying your app.
 
@@ -148,7 +148,7 @@ Refer to the [Deploying with Application Manifests](../../../devguide/deploy-app
 
 <p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_spring</code> sample app does not require any additional configuration to deploy the app.</p>
 
-### Step 6: Log in and Target the API Endpoint ###
+### Step 6: Log in and target the API endpoint
 
 Enter your login credentials, and select a space and org.
 
@@ -162,11 +162,11 @@ Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 
   <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
 
-### Step 7: Deploy Your Application ###
+### Step 7: Deploy your app
 
 <p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
 
-From the root directory of your application, run the following command to deploy your application.
+From the root directory of your app, run the following command to deploy your application.
 
 ```console
 cf push APP-NAME -p PATH-TO-FILE.jar
@@ -193,9 +193,9 @@ Once your app deploys, browse to your app URL. Search for the `urls` field in th
 <p class="tip"><strong>Sample App Step</strong><br />
 1. Run <code>brew install maven</code>.
 <br />
-2. Change to the <code>app</code>directory, and run <code>mvn package</code> to build the app.
+1. Change to the <code>app</code>directory, and run <code>mvn package</code> to build the app.
 <br />
-3. Run <code>cf push pong_matcher_spring -n HOSTNAME</code> to push the app.
+1. Run <code>cf push pong_matcher_spring -n HOSTNAME</code> to push the app.
 <br /><br />
 Example: <code>cf push pong_matcher_spring -n my-spring-app</code>
 </p>
@@ -251,9 +251,7 @@ urls: spring1119.cfapps.io
 #0   running   2014-11-19 12:29:27 PM   0.0%   553.6M of 1G   127.4M of 1G
 </pre>
 
-### Step 8: Test Your Deployed App ###
-
-You’ve deployed an app to Cloud Foundry!
+### Step 8: Test Your deployed app
 
 Use the cf <%=vars.dev_console_2%> to review information and administer your app and your Cloud Foundry account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
@@ -264,29 +262,29 @@ To test the sample app, do the following:
 <br /><br />
 1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
 <br /><br />
-2. To clear the database from any previous tests, run:
+1. To clear the database from any previous tests, run:
 <br />
 <code>curl -v -X DELETE $HOST/all</code>
 <br />
 You should get a response of <code:>200</code>.
 <br /><br />
-3. To request a match as "andrew", run:
+1. To request a match as "andrew", run:
 <br />
 <code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/firstrequest -d '{"player": "andrew"}'</code>
 <br />
 You should again get a response of <code>200</code>.
 <br /><br />
-4. To request a match as a different player, run:
+1. To request a match as a different player, run:
 <br />
 <code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/secondrequest -d '{"player": "navratilova"}'</code>
 <br /><br />
-5. To check the status of the first match request, run:
+1. To check the status of the first match request, run:
 <br />
 <code>curl -v -X GET $HOST/match_requests/firstrequest</code>
 <br />
 The last line of the output shows the <code>match_id</code>.
 <br /><br />
-6. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
+1. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
 <br />
 <code>curl -v -H "Content-Type: application/json" -X POST $HOST/results -d '
 {
@@ -298,7 +296,8 @@ The last line of the output shows the <code>match_id</code>.
 You should receive a <code>201 Created</code> response.
 </p>
 
-## <a id='cli-manage'></a>Manage Your App with the cf CLI ##
+## <a id='cli-manage'></a>Manage your app with the cf CLI
+
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the cf CLI, refer to the Cloud Foundry Command Line Interface (cf CLI) topics, especially the <%=vars.cli_v6%> topic.
 
@@ -309,18 +308,19 @@ Run `cf help` to view a complete list of commands, grouped by task categories, a
 <%=vars.dev_console_note%>
 </p>
 
-## <a id='troubleshoot'></a>Troubleshooting ##
+## <a id='troubleshoot'></a>Troubleshooting
+
 If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.
 
-### App Deploy Fails ###
+### App deploy fails
 
-Even when the deploy fails, the app might exist on Cloud Foundry. Run `cf apps` to review the apps in the currently targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy.
+Even when the deploy fails, the app might exist on Cloud Foundry. Run `cf apps` to review the apps in the targeted org and space. You might be able to correct the issue using the <%=vars.dev_console_2%>, or you might have to delete the app and redeploy it.
 
-### App Requires a Content-Type ###
+### App requires a Content-Type
 
 If you specify a `Content-Encoding` header of `gzip` but do not specify a `Content-Type` within your application, Cloud Foundry might send a `Content-Type` of `application/x-gzip` to the browser. This scenario might cause the deploy to fail if it conflicts with the actual encoded content of your app. To avoid this issue, be sure to explicitly set `Content-Type` within your app.
 
-### App Requires a Unique URL ###
+### App requires a unique URL
 
 Cloud Foundry requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and Cloud Foundry cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
 

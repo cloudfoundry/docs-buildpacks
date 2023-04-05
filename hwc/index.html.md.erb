@@ -1,5 +1,5 @@
 ---
-title: HWC Buildpack
+title: Hosted Web Core (HWC) buildpack
 owner: Buildpacks
 ---
 
@@ -61,13 +61,13 @@ In addition, the [Shadow Copy Setting](#shadow-copy), and [Dynamic and Static HT
 
 The HWC buildpack includes a default configuration for the `applicationHost.config`, similar to IIS.
 
-## <a id="error-handling"></a> Step 2. Add a Global Error Handler
+## <a id="error-handling"></a> Step 2. Add a global error handler
 
 Before you push your app for the first time, add a global error handler to receive log information from your app if it crashes on startup.
 
 To configure a global error handler that logs to `stdout`, see [Application Error Handling](https://dotnet-cookbook.apps.pcfone.io/intro/getting_started/#application-error-handling) in the <em>.NET Cookbook</em>.
 
-## <a id='push-your-app'></a> Step 3. Push an App
+## <a id='push-your-app'></a> Step 3. Push an app
 
 Follow these steps to push your application.
 
@@ -109,7 +109,7 @@ You can use the following features with HWC buildpack:
   <li>[Profile Scripts](#profile-scripts)</li>
 </ul>
 
-### <a id='context-path'></a> Context Path Routing
+### <a id='context-path'></a> Context path routing
 
 With context path routing you can implement multiple apps to share the same route hostname.
 For example, `app1.example.com/app2`. The context path routing feature is analogous to IIS virtual directories.
@@ -131,7 +131,7 @@ To define a context path route, for example, `app1.example.com/app2`, run the fo
     cf push LOWER-LEVEL-APP-NAME --no-start --no-route -s windows -b hwc_buildpack
     ```
 
-    Where `LOWER-LEVEL-APP-NAME` is your lower-level app's name.
+    Where `LOWER-LEVEL-APP-NAME` is the name of the lower-level app.
 
 1. To map routes between the primary and secondary apps, run the following command:
 
@@ -146,7 +146,7 @@ To define a context path route, for example, `app1.example.com/app2`, run the fo
       <li><code>APP-DOMAIN</code> is your site&#39;s public domain name.</li>
     </ul>
 
-1. To start the secondary app, run the following command:
+2. To start the secondary app, run the following command:
 
     ```shell
     cf start LOWER-LEVEL-APP-NAME
@@ -167,14 +167,15 @@ $ cf start app2
 to read out the bound app URIs. Any context path that exists underneath the root in the
 app's bound route corresponds to the <code>applicationHost.config</code>.</p>
 
-### <a id='shadow-copy'></a> Shadow Copy Setting
+### <a id='shadow-copy'></a> Shadow Copy setting
+
 [Shadow Copy](https://msdn.microsoft.com/en-us/library/ms228159(v=vs.100).aspx)
 is a hosting option that copies assemblies for an app in the `bin` directory
 to the app's temporary files directory. This feature is turned off and
 is unnecessary for apps running under Cloud Foundry. An app can override this
 setting in its `Web.config` file.
 
-### <a id='http-compression'></a>Dynamic and Static HTTP Compression
+### <a id='http-compression'></a>Dynamic and static HTTP compression
 
 The HWC buildpack implements dynamic and static HTTP compression by default.
 You can deactivate HTTP compression in your app's `Web.config` file.
@@ -182,19 +183,19 @@ You can deactivate HTTP compression in your app's `Web.config` file.
 Dynamic HTTP compression is hardcoded at level 4.
 Static HTTP compression is hardcoded at level 9.
 
-### <a id='url-rewrite'></a>URL Rewrite
+### <a id='url-rewrite'></a>URL rewrite
 
 The HWC buildpack supports the URL Rewrite module.
 It's preinstalled in the Windows file system.
 
-### <a id='profile-scripts'></a>Profile Scripts
+### <a id='profile-scripts'></a>Profile scripts
 
 With the HWC buildpack you can provide `.profile.bat` scripts with your applications.
 You can use a `.profile.bat` script to perform app-specific initialization tasks. For example, setting custom environment variables.
 
 For information about configuring `.profile.bat` scripts, see [Configure Pre-Runtime Hooks](../../devguide/deploy-apps/deploy-app.html#profile) section of <em>Pushing an App</em>.
 
-## <a id='help'></a>Buildpack Support
+## <a id='help'></a>Buildpack support
 
 A number of channels exist to assist you with using the HWC buildpack, or developing your own HWC buildpack.
 
