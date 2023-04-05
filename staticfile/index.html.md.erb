@@ -1,5 +1,5 @@
 ---
-title: Staticfile Buildpack
+title: Staticfile buildpack
 owner: Buildpacks
 ---
 
@@ -11,21 +11,21 @@ This topic describes how to configure and use the Staticfile buildpack.
 
 **Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with back ends hosted elsewhere. To find which version of NGINX the current Staticfile buildpack uses, see [Staticfile buildpack release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
 
-## <a id='staticfile'></a> Staticfile Detection
+## <a id='staticfile'></a> Staticfile detection
 
 If you create a file named `Staticfile` and locate it in the build directory of your app, Cloud Foundry automatically uses the Staticfile buildpack when you push your app.
 
 The `Staticfile` file can be an empty file, or it can contain configuration settings for your app. For more information, see [Configuring the Buildpack](#configure) and [Pushing an App](#push_app).
 
-## <a id='memory'></a> Memory Usage
+## <a id='memory'></a> Memory usage
 
 NGINX requires 20&nbsp;MB of RAM to serve static assets. When using the Staticfile buildpack, <%= vars.recommended_by %> push the apps with the `-m 64M` option to reduce RAM allocation from the default 1&nbsp;GB that are allocated to containers by default.
 
-## <a id='configure'></a>Configure the Buildpack
+## <a id='configure'></a>Configure the buildpack
 
 This section describes configuration options that are available for the Staticfile buildpack. If you need to make configuration changes to NGINX that are not listed in the table, use the NGINX Buildpack instead of the Staticfile buildpack. For more information, see [NGINX Buildpack](../nginx/index.html).
 
-### <a id='staticfile'></a> Staticfile File Configuration
+### <a id='staticfile'></a> Staticfile file configuration
 
 To configure these options, add the configuration property as a new line in your `Staticfile` file as described in the following table:
 
@@ -144,13 +144,13 @@ To configure these options, add the configuration property as a new line in your
   </tr>
 </table>
 
-### <a id='staticfile'></a>Other Configuration
+### <a id='staticfile'></a>Other configuration changes
 
 Use the following instructions to make other configuration changes.
 
 <hr>
 
-#### <a name="basic-authentication"></a> Basic Authentication
+#### <a name="basic-authentication"></a> Basic authentication
 
 You can enable basic authentication for your app or website. A sample basic authentication dialog box is shown below:
 
@@ -171,7 +171,7 @@ stevie:$example1$22derfaecZSJJRw4rKE$KKEWKSK
 
 <hr>
 
-#### <a name="custom-location"></a> Custom Location
+#### <a name="custom-location"></a> Custom location
 
 You can specify custom location definitions with additional directives. For information about NGINX directives, see [Creating NGINX Plus and NGINX Configuration Files](https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files) and [Alphabetical index of directives](https://nginx.org/en/docs/dirindex.html) in the _NGINX documentation_.
 
@@ -199,7 +199,7 @@ To customize the `location` block of the NGINX configuration file:
 
 <hr>
 
-#### <a name="basic-authentication"></a> Additional MIME Type Support
+#### <a name="basic-authentication"></a> Additional MIME type support
 
 You can configure additional MIME types on your NGINX server.
 
@@ -225,11 +225,11 @@ types {
 
 <hr>
 
-## <a id='push_app'></a> Push an App
+## <a id='push_app'></a> Push an app
 
 To push your app, you can use either the system Staticfile buildpack or specify a Staticfile buildpack.
 
-### Option 1: Use the System Staticfile Buildpack
+### Option 1: Use the system Staticfile buildpack
 
 To use the Staticfile buildpack installed in your deployment, run the following command in the root directory of the app.
 The root directory of the app must contain a file named `Staticfile`.
@@ -242,7 +242,7 @@ cf push APP-NAME
 
 Where `APP-NAME` is the name you want to give your app.
 
-### Option 2: Specify a Staticfile Buildpack
+### Option 2: Specify a Staticfile buildpack
 
 To explicitly specify a Staticfile buildpack, run the following command in the root directory of the app. You might want to specify a buildpack if your deployment does not have the Staticfile buildpack installed or the installed version is outdated.
 
@@ -257,7 +257,7 @@ Where:
 * `APP-NAME` is the name you want to give your app.
 * `BUILDPACK-NAME-OR-PATH` is either the name of a buildpack that is installed in your deployment or the path to a buildpack. You can find the Cloud Foundry Staticfile buildpack in the [Staticfile repository](https://github.com/cloudfoundry/staticfile-buildpack.git) on GitHub.
 
-### Verifying the Push
+### Verifying the push
 
 After you push the app, follow these steps to verify that the push was successful:
 
@@ -265,11 +265,11 @@ After you push the app, follow these steps to verify that the push was successfu
 
 1. In a browser, go to the URL to view your app.
 
-## <a id='examples'></a> Example Staticfile Buildpack Apps
+## <a id='examples'></a> Example Staticfile buildpack apps
 
 For different examples of apps that use the Staticfile buildpack, see the [fixtures](https://github.com/cloudfoundry/staticfile-buildpack/tree/master/fixtures) directory in the Staticfile buildpack GitHub repo.
 
-## <a id='help'></a> Help and Support
+## <a id='help'></a> Help and support
 
 A number of channels exist where you can get more help when using the Staticfile buildpack, or with developing your own Staticfile buildpack.
 

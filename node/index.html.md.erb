@@ -1,5 +1,5 @@
 ---
-title: Node.js Buildpack
+title: Node.js buildpack
 owner: Buildpacks
 ---
 
@@ -11,7 +11,7 @@ You can use the Node.js buildpack with Node or JavaScript apps. The follow secti
 
 You must install the [Cloud Foundry Command Line Interface tool](../../cf-cli/install-go-cli.html) (cf CLI) to run some of the commands listed in this topic.
 
-## <a id='pushing_apps'></a>Push Node.js Apps ##
+## <a id='pushing_apps'></a>Push Node.js apps
 
 Cloud Foundry automatically uses the Node.js buildpack if it detects a `package.json` file in the root directory of your project.
 
@@ -38,11 +38,11 @@ For more detailed information about deploying Node.js apps, see the following to
 * <a href="./node-service-bindings.html" class="subnav">Configuring Service Connections for Node</a>
 * <a href="https://github.com/cloudfoundry/nodejs-buildpack">Node.js Buildpack Source Code on GitHub</a>
 
-## <a id='supported_versions'></a>Supported Versions ##
+## <a id='supported_versions'></a>Supported versions
 
 For a list of supported Node versions, see the Node.js Buildpack [release notes](https://github.com/cloudfoundry/nodejs-buildpack/releases) on GitHub.
 
-## <a id='runtime'></a>Specify a Node.js Version ##
+## <a id='runtime'></a>Specify a Node.js version
 
 To specify a Node.js version, set the `engines.node` in the `package.json` file to the semantic versioning specification (semver) range or the specific version of Node you are using.
 
@@ -72,7 +72,7 @@ Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST:...
 Staging failed: Buildpack compilation step failed
 </pre>
 
-## <a id='npm_version'></a>Specify an npm Version ##
+## <a id='npm_version'></a>Specify an npm version
 
 To specify an npm version, set `engines.npm` in the `package.json` file to the semantic versioning specification (semver) range or the specific version of npm you are using:
 
@@ -104,13 +104,13 @@ Please remove the npm version specification in package.json (...)
 Staging failed: Buildpack compilation step failed
 </pre>
 
-## <a id='using_npm_or_yarn'></a>Using NPM or Yarn ##
+## <a id='using_npm_or_yarn'></a>Using npm or Yarn
 
-By default, the Node.js buildpack assumes you are using NPM. If you want to use
+By default, the Node.js buildpack assumes you are using npm. If you want to use
 [Yarn](https://yarnpkg.com/) instead, you must provide a `yarn.lock` in your top-level app
 directory. For more information on the Yarn lock file, see [yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock/) in the Yarn documentation.
 
-## <a id='vendoring'></a>Vendoring App Dependencies ##
+## <a id='vendoring'></a>Vendoring app dependencies
 
 To vendor dependencies for an app using the Node.js buildpack, run `npm install` (or `yarn install`, if you are using Yarn) from your app directory. This command vendors dependencies into the `node_modules` directory of your app directory.
 
@@ -125,7 +125,7 @@ The `cf push` command uploads the vendored dependencies with the app.
 
 <p class='note'><strong>Note</strong>: For an app to run in a disconnected environment, it must vendor its dependencies and provide a lock file.</p>
 
-### <a id='offline_environments'></a>Usage in Offline Environments ###
+### <a id='offline_environments'></a>Use in offline environments
 
 When vendoring apps for usage in offline environments, you must supply a lock file. For information
 on npm lockfiles, see [npm-package-locks](https://docs.npmjs.com/files/package-locks) in the NPM
@@ -137,7 +137,7 @@ This lock file informs the package manager of the exact versions of dependencies
 
 <p class='note'><strong>Note</strong>: <code>package-lock.json</code> is only supported by NPM 5.x and later. For earlier versions of NPM, provide a <a href='https://docs.npmjs.com/files/shrinkwrap.json'><code>npm-shrinkwrap.json</code></a> file instead.</p>
 
-#### <a id='yarn_offline'></a>Yarn Offline Mode ####
+#### <a id='yarn_offline'></a>Yarn offline mode
 
 Versions 1.5.28 and later of the Node.js buildpack include the ability to use Yarn in offline mode.
 To do so, you must mirror the Yarn registry locally by providing an `npm-packages-offline-cache` directory:
@@ -157,7 +157,7 @@ You do not have to provide a `node_modules` directory when running Yarn in offli
 
 For more information about using an offline mirror with Yarn, see the [Yarn Blog](https://yarnpkg.com/blog/2016/11/24/offline-mirror).
 
-### <a id='integrity-check'></a>Integrity Check ###
+### <a id='integrity-check'></a>Integrity check
 
 By default, the Node.js buildpack uses npm to download dependencies. Note that npm does not perform integrity checks of the downloaded packages, which is a [security risk](http://cwe.mitre.org/data/definitions/494.html).
 
@@ -165,22 +165,21 @@ If missing dependencies are detected, the buildpack runs `npm install` for non-v
 
 You can use Yarn as an alternative that verifies dependencies.
 
-## <a id='openssl'></a>OpenSSL Support ##
+## <a id='openssl'></a>OpenSSL support
 
 The [nodejs-buildpack](https://github.com/cloudfoundry/nodejs-buildpack)
 packages binaries of Node.js with OpenSSL that are statically linked. The Node.js buildpack supports Node.js 4.x and later, which relies on the Node.js release cycle to provide OpenSSL updates. The [binary-builder](https://github.com/cloudfoundry/binary-builder) enables [ static OpenSSL compilation](https://github.com/cloudfoundry/binary-builder/commit/834759affa4d7e42294a54b49bac6f1cf81b798a).
 
-## <a id='proxy_support'></a> Proxy Support ##
+## <a id='proxy_support'></a> Proxy support
 
 If you need to use a proxy to download dependencies during staging, you can set
 the `http_proxy` and/or `https_proxy` environment variables. For more information, see [Using a Proxy](../proxy-usage.html).
 
-## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
+## <a id='bosh_trusted_cert'></a>BOSH configured custom trusted certificate support
 
 Node.js hardcodes root CA certs in its source code. To use [BOSH configured custom trusted certificates](http://bosh.io/docs/trusted-certs.html), a developer must pass the specified CAs to the [tls.connect](https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback) function as extra arguments.
 
-## <a id='help_support'></a>Help and Support ##
-
+## <a id='help_support'></a>Help and support
 Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
 
 For more information about using and extending the Node.js buildpack in Cloud Foundry, see the [Node.js GitHub repository](https://github.com/cloudfoundry/nodejs-buildpack).

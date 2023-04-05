@@ -38,7 +38,7 @@ The buildpack runs with a set of default values for Composer. You can adjust the
 
 By default, the PHP buildpack uses the `composer.json` and `composer.lock` files that reside inside the root directory, or in the directory specified as `WEBDIR` in your `options.json`. If you have composer files inside your app, but not in the default directories, use a `COMPOSER_PATH` environment variable for your app to specify this custom location, relative to the app root directory. Note that the `composer.json` and `composer.lock` files must be in the same directory.
 
-## <a id="github-api-limits"></a> GitHub API Request Limits
+## <a id="github-api-limits"></a> GitHub API request limits
 
 Composer uses GitHub's API to retrieve zip files for installation into the application folder. If you do not vendor dependencies before pushing an app, Composer will fetch dependencies during staging using the GitHub API.
 
@@ -49,11 +49,11 @@ There are two ways to avoid the request limit:
 - Vendor dependencies before pushing your application.
 - Supply a GitHub OAuth API token.
 
-### Vendor Dependencies
+### Vendor dependencies
 
 To vendor dependencies, you must run `composer install` before you push your application. You might also need to configure `COMPOSER_VENDOR_DIR` to "vendor".
 
-### Supply a GitHub Token
+### Supply a GitHub token
 
 Composer can use [GitHub API OAuth tokens](https://help.github.com/articles/creating-an-access-token-for-command-line-use/), which increase your request limit, typically to 5000 per day.
 
@@ -69,7 +69,7 @@ To supply the token, use one of the following methods:
 
 - Add the token to the `env` block of your application manifest.
 
-## <a id="staging-environment"></a> Buildpack Staging Environment
+## <a id="staging-environment"></a> Buildpack staging environment
 
 Composer runs in the buildpack staging environment. Variables set with `cf set-env` or with [a manifest.yml 'env' block](../../devguide/deploy-apps/manifest.html#env-block) are visible to Composer.
 
@@ -83,7 +83,7 @@ $ cf start a_symfony_app
 
 In this example, `a_symfony_app` is supplied with an environment variable, `SYMFONY_ENV`, which is visible to Composer and any scripts started by Composer.
 
-### Non-configurable Environment Variables
+### Non-configurable environment variables
 
 User-assigned environment variables are applied to staging and runtime. Unfortunately, `LD_LIBRARY_PATH` and `PHPRC` must be different for staging and runtime. The buildpack takes care of setting these variables, which means user values for these variables are ignored.
 

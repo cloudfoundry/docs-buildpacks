@@ -1,5 +1,5 @@
 ---
-title: PHP Buildpack
+title: PHP buildpack
 owner: Buildpacks
 ---
 
@@ -7,7 +7,7 @@ owner: Buildpacks
 
 Use the PHP buildpack with PHP or HHVM runtimes.
 
-## <a id='supported_software'></a> Supported Software and Versions ##
+## <a id='supported_software'></a> Supported software and versions
 The [release notes page](https://github.com/cloudfoundry/php-buildpack/releases) has a list of currently supported modules and packages.
 
 * **PHP Runtimes**
@@ -17,10 +17,11 @@ The [release notes page](https://github.com/cloudfoundry/php-buildpack/releases)
 * **Third-Party Modules**
   * New Relic, in connected environments only.
 
-## <a id='pushing_apps'></a> Push an App ##
-### <a id='quick_start'></a> 30 Second Tutorial ###
+## <a id='pushing_apps'></a> Push an app
 
-Getting started with this buildpack is easy.  With the [Cloud Foundry Command Line Interface](https://github.com/cloudfoundry/cli) installed, open a shell, change directories to the root of your PHP files and push your application using the argument `-b https://github.com/cloudfoundry/php-buildpack.git`.
+### <a id='quick_start'></a> 30-second tutorial
+
+With the [Cloud Foundry Command Line Interface](https://github.com/cloudfoundry/cli) installed, open a shell, change directories to the root of your PHP files and push your application using the argument `-b https://github.com/cloudfoundry/php-buildpack.git`.
 
 Example:
 
@@ -50,11 +51,11 @@ Here's a breakdown of what happens when you run the example above.
     - Apache HTTPD & PHP are downloaded, configured with the buildpack defaults and run.
     - Your application is accessible at the URL `http://my-php-app.example.com` (Replacing `example.com` with the domain of your public CF provider or private instance).
 
-### <a id='more_info'></a> More information about deploying ###
+### <a id='more_info'></a> More information about deploying
 While the *30 Second Tutorial* shows how quick and easy it is to get started using the buildpack, it skips over quite a bit of what you can do to adjust, configure and extend the buildpack.  The following sections and links provide a more in-depth look at the buildpack.
 
 
-### <a id='features'></a> Features ###
+### <a id='features'></a> Features
 
 Here are some special features of the buildpack.
 
@@ -65,7 +66,7 @@ Here are some special features of the buildpack.
   - Download location is configurable, allowing users to host binaries on the same network (i.e. run without an Internet connection)
   - Smart session storage, defaults to file w/sticky sessions but can also use redis for storage.
 
-### <a id='examples'></a> Examples ###
+### <a id='examples'></a> Examples
 
 Here are some example applications that can be used with this buildpack.
 
@@ -79,7 +80,8 @@ Here are some example applications that can be used with this buildpack.
   - [phalcon]  An example which runs a Phalcon based application.
   - [composer] An example which uses Composer.
 
-### <a id='examples'></a> Advanced Topics ###
+### <a id='examples'></a> Advanced topics
+
 See the following topics:
 
 * <a href="./gsg-php-tips.html" class="subnav">Tips for PHP Developers</a>
@@ -92,18 +94,18 @@ See the following topics:
 You can find the source for the buildpack on GitHub:
 [https://github.com/cloudfoundry/php-buildpack](https://github.com/cloudfoundry/php-buildpack)
 
-## <a id='proxy_support'></a> Proxy Support ##
+## <a id='proxy_support'></a> Proxy support
 
 If you need to use a proxy to download dependencies during staging, you can set
 the `http_proxy` and/or `https_proxy` environment variables. For more information, see
 the [Proxy Usage Docs](../proxy-usage.html).
 
-## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
+## <a id='bosh_trusted_cert'></a>BOSH configured custom trusted certificate support
 
 For versions of PHP 5.6.0 and later, the default certificate location is `/usr/lib/ssl/certs`, which symlinks to `/etc/ssl/certs`.
 Your platform operator can configure the platform to [add the custom certificates into the application container](https://docs.cloudfoundry.org/adminguide/trusted-system-certificates.html).
 
-## <a id='help_support'></a>Help and Support ##
+## <a id='help_support'></a>Help and support
 
 Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
 

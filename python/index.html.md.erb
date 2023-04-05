@@ -1,12 +1,12 @@
 ---
-title: Python Buildpack
+title: Python buildpack
 owner: Buildpacks
 ---
 
 This topic describes how to push your Python app to Cloud Foundry and how to configure your Python app to use the Python buildpack.
 
 
-## <a id='pushing_apps'></a> Push an App
+## <a id='pushing_apps'></a> Push an app
 
 Cloud Foundry automatically uses this buildpack if it detects a `requirements.txt` or `setup.py` file in the root directory of your project.
 
@@ -17,12 +17,12 @@ $ cf push my_app -b https://github.com/cloudfoundry/python-buildpack.git
 </pre>
 
 
-## <a id='supported_versions'></a> Supported Versions
+## <a id='supported_versions'></a> Supported versions
 
 You can find the list of supported Python versions in the [Python buildpack release notes][releases].
 
 
-## <a id='runtime'></a> Specify a Python Version
+## <a id='runtime'></a> Specify a Python version
 
 You can specify a version of the Python runtime by including it within a `runtime.txt` file. For example:
 
@@ -45,7 +45,7 @@ Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
 Staging failed: Buildpack compilation step failed
 </pre>
 
-## <a id='pip-version'></a> Specify a PIP Version
+## <a id='pip-version'></a> Specify a PIP version
 
 The Python buildpack supports dependency installation using PIP when a `requirements.txt` file is included at the top level of your app's directory.
 By default, the PIP module built into Python is used when staging your app.
@@ -58,7 +58,7 @@ To use the latest version of PIP, set the `BP_PIP_VERSION` environment variable 
 
 <p class="note" markdown="1"><strong>Note</strong>: Currently, only <code>latest</code> is supported when setting <code>BP_PIP_VERSION</code>. The buildpack does not provide multiple versions of its independent PIP dependency. You can inspect the buildpack's releases to determine which version of PIP is currently provided. See <a href="https://github.com/cloudfoundry/python-buildpack/releases">Python buildpack releases</a> on GitHub.</p>
 
-## <a id='start-command'></a> Specify a Start Command
+## <a id='start-command'></a> Specify a start command
 
 The Python buildpack does not generate a [default start command](../../devguide/deploy-apps/start-restart-restage.html#first-time) for your apps.
 
@@ -79,7 +79,7 @@ To stage with the Python buildpack and start an app, do one of the following:
 - Specify a start command in the application manifest by setting the `command` attribute. For more information, see the [Deploying with App Manifests](../../devguide/deploy-apps/manifest.html#start-commands) topic.
 
 
-## <a id='run-web-server'></a> Run the Web Server
+## <a id='run-web-server'></a> Run the web server
 
 The Python buildpack expects the Python app to listen to port 8080. You can use the exposed `PORT` variable to start the web server on the port that Cloud Foundry expects on all network interfaces.
 
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 <p class="note"><strong>Note</strong>: The <code>PORT</code> variable is not visible in the GUI or the <code>cf env MY-APP</code> command.</p>
 
 
-## <a id='vendoring'></a> Vendor App Dependencies
+## <a id='vendoring'></a> Vendor app dependencies
 
 If you are deploying in an environment that is disconnected from the Internet, your application must vendor its dependencies. For more information, see [Disconnected environments](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md) in the `cloudfoundry/buildpack-packager` GitHub repository.
 
@@ -113,7 +113,7 @@ $ pip download -r requirements.txt --no-binary=:none: -d vendor
 <p class="note"><strong>Note</strong>: To ensure proper installation of dependencies, <%= vars.recommended_by %> recommends binary vendored dependencies (wheels). The above <code>pip install</code> command achieves this.</p>
 
 
-## <a id='private-repos'></a> Private Dependency Repository
+## <a id='private-repos'></a> Private dependency repository
 
 To deploy apps in an environment that needs to use a private dependency repository, you have the following options:
 
@@ -178,24 +178,24 @@ env:
 ```
 
 
-## <a id='cfenv'></a> Parse Environment Variables
+## <a id='cfenv'></a> Parse environment variables
 
 The `cfenv` package provides access to Cloud Foundry application environment settings by parsing all the relevant environment variables. The settings are returned as a class instance. See [https://github.com/jmcarp/py-cfenv](https://github.com/jmcarp/py-cfenv) for more information.
 
 
-## <a id='miniconda'></a> Miniconda Support <span style="font-size:1rem">(starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.6">1.5.6</a>)</span>
+## <a id='miniconda'></a> Miniconda support <span style="font-size:1rem">(starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.6">1.5.6</a>)</span>
 
 To use miniconda instead of pip for installing dependencies, place an `environment.yml` file in the root directory.
 
 For examples, see our sample app, [Using Python 3 with miniconda](https://github.com/cloudfoundry/python-buildpack/tree/master/fixtures/miniconda_python_3)
 
 
-## <a id='pipenv'></a> Pipenv Support <span style="font-size:1rem">(starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.19">1.5.19</a>)</span>
+## <a id='pipenv'></a> Pipenv support <span style="font-size:1rem">(starting in buildpack version <a href="https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.19">1.5.19</a>)</span>
 
 To use [Pipenv](https://docs.pipenv.org) instead of pip (directly) for installing dependencies, place a `Pipfile` in the root directory. Easiest to let Pipenv generate this for you.
 
 
-## <a id='nltk'></a> NLTK Support
+## <a id='nltk'></a> NLTK support
 
 To use NLTK corpora in your app, you can include an `nltk.txt` file in the root of your application. Each line in the file specifies one dataset to download. The full list of data sets available this way can be found [on the NLTK website](http://www.nltk.org/nltk_data/). The `id` listed for the corpora on that page is the string you should include in  your app's `nltk.txt`.
 
@@ -209,18 +209,18 @@ wordnet
 Having an `nltk.txt` file only causes the buildpack to download the corpora. You still must specify NLTK as a dependency of your app if you want to use it to process the corpora files.
 
 
-## <a id='proxy_support'></a> Proxy Support
+## <a id='proxy_support'></a> Proxy support
 
 If you need to use a proxy to download dependencies during staging, you can set the `http_proxy` and `https_proxy` environment variables. For more information, see [Using a Proxy](../proxy-usage.html).
 
 
-## <a id='bosh_trusted_cert'></a> BOSH Configured Custom Trusted Certificate Support
+## <a id='bosh_trusted_cert'></a> BOSH configured custom trusted certificate support
 
 Versions of Python 2.7.9 and later use certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to [add the custom certificates into the application container](https://docs.cloudfoundry.org/adminguide/trusted-system-certificates.html).
 
 To configure your Python applications to make HTTP requests with this custom certificate, set the environment variable `REQUESTS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"`.
 
-## <a id='help_support'></a> Help and Support
+## <a id='help_support'></a> Help and support
 
 Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need any further assistance.
 

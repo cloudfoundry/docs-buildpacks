@@ -1,11 +1,11 @@
 ---
-title: Ruby Buildpack
+title: Ruby buildpack
 owner: Buildpacks
 ---
 
 
 
-## <a id='pushing_apps'></a> Push Apps ##
+## <a id='pushing_apps'></a> Push an app
 
 Cloud Foundry uses the Ruby buildpack if your app has a `Gemfile` and `Gemfile.lock` in the root directory. The Ruby buildpack uses Bundler to install your dependencies.
 
@@ -26,16 +26,16 @@ For more detailed information about deploying Ruby applications see the followin
 
 See the source for the Ruby buildpack in the [Ruby buildpack repository](https://github.com/cloudfoundry/ruby-buildpack) on GitHub.
 
-## <a id='supported_versions'></a>Supported Versions ##
+## <a id='supported_versions'></a>Supported versions
 
 See the supported Ruby versions in the [release notes for the Ruby buildpack](https://github.com/cloudfoundry/ruby-buildpack/releases) on GitHub.
 
-## <a id='runtime'></a>Specify a Ruby Version ##
+## <a id='runtime'></a>Specify a Ruby version
 
 Specify specific versions of the Ruby runtime in the `Gemfile` for your app as described in the following sections.
 <p class="note"><strong>Note</strong>: If you don't specify a version of the Ruby runtime, we will use the default Ruby version listed in the [buildpack manifest.yml file](https://github.com/cloudfoundry/ruby-buildpack/blob/950b2337ff8a7ac0a68f7420f48ddc4ae4764977/manifest.yml#L3-L5).</p>
 
-### <a id='mri_runtime'></a>MRI ###
+### <a id='mri_runtime'></a>MRI
 
 For MRI, specify the version of Ruby in your `Gemfile` as follows:
 
@@ -50,7 +50,7 @@ For more information about the `ruby` directive for Bundler Gemfiles, see the [B
 <p class="note"><strong>Note</strong>: If you use v1.6.18 or earlier, you must specify an exact version, such as <code>ruby '2.2.3'</code>.
 In <a href="https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.6.18">Ruby Buildpack v1.6.18</a> and earlier, Rubygems do not support version operators for the <code>ruby</code> directive. </p>
 
-### <a id='jruby_runtime'></a>JRuby ###
+### <a id='jruby_runtime'></a>JRuby
 
 For JRuby, specify the version of Ruby in your `Gemfile` based on the version of JRuby your app uses.
 
@@ -87,7 +87,7 @@ Staging failed: Buildpack compilation step failed
 
 <p class="note"><strong>Note</strong>: The Ruby buildpack does not support the pessimistic version operator <code>~></code> on the Gemfile <code>ruby</code> directive for JRuby.</p>
 
-## <a id='vendoring'></a>Vendor App Dependencies ##
+## <a id='vendoring'></a>Vendor app dependencies
 
 As stated in the [Disconnected Environments documentation](https://github.com/cf-buildpacks/buildpack-packager/blob/master/doc/disconnected_environments.md), your application must 'vendor' its dependencies.
 
@@ -102,7 +102,7 @@ bundle package --all
 
 The `cf push` command uploads your vendored dependencies. The Ruby buildpack compiles any dependencies requiring compilation while staging your app.
 
-## <a id='logging'></a>Buildpack Logging and Application Logging
+## <a id='logging'></a>Buildpack logging and application logging
 
 The Ruby buildpack only runs during staging, and only logs what is important to staging, such as what is being downloaded, what the configuration is, and work that the buildpack does on your application.
 
@@ -120,17 +120,17 @@ If you are deploying a Rails application, the buildpack might not automatically 
 
 For more information about the `rails_12factor` gem, see [GitHub README](https://github.com/heroku/rails_12factor).
 
-## <a id='proxy_support'></a> Proxy Support ##
+## <a id='proxy_support'></a> Proxy support
 
 If you need to use a proxy to download dependencies during staging, set the `http_proxy` and `https_proxy` environment variables. For more information, see [Using a Proxy](../proxy-usage.html).
 
-## <a id='bosh_trusted_cert'></a>BOSH Configured Custom Trusted Certificate Support ##
+## <a id='bosh_trusted_cert'></a>BOSH configured custom trusted certificate support
 
 Ruby uses certificates stored in `/etc/ssl/certs`. Your platform operator can configure the platform to add the custom certificates into the application container.
 
 <%= vars.link_configure_trusted_certificates %>
 
-## <a id='help_support'></a>Help and Support ##
+## <a id='help_support'></a>Help and support
 
 Join the #buildpacks channel in our [Slack community](http://slack.cloudfoundry.org/) if you need help.
 

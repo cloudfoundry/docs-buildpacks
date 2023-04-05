@@ -1,11 +1,11 @@
 ---
-title: NGINX Buildpack
+title: NGINX buildpack
 owner: Buildpacks
 ---
 
 This topic describes how to push your NGINX app to Cloud Foundry and how to configure your NGINX app to use the NGINX buildpack.
 
-## <a id='pushing-apps'></a> Push an App
+## <a id='pushing-apps'></a> Push an app
 
 If your app contains an `nginx.conf` file, Cloud Foundry automatically uses the NGINX buildpack when you run `cf push` to deploy your app.
 
@@ -36,7 +36,7 @@ Configure the NGINX web server. You need these elements.
 
 Make any custom configuration changes based on these default files to verify compatibility with the buildpack.
 
-## <a id='templating'></a> Create the nginx.conf File
+## <a id='templating'></a> Create the nginx.conf file
 
 Use the templating syntax when you create an `nginx.conf` file. This templating syntax loads modules and binds to ports based on values known at start time.
 

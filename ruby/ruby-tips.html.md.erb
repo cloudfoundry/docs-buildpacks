@@ -1,19 +1,19 @@
 ---
-title: Tips for Ruby Developers
+title: Tips for Ruby developers
 owner: Buildpacks
 ---
 
 This page has information specific to deploying Rack, Rails, or Sinatra apps with Cloud Foundry.
 
 
-## <a id='bundler'></a> App Bundling
+## <a id='bundler'></a> App bundling
 
 You must run Bundler to create a `Gemfile` and a `Gemfile.lock`. These files must be in your app before you push to Cloud Foundry.
 
 To download Bundler, see [Gem Bundler](http://gembundler.com/).
 
 
-## <a id='config'></a> Rack Config File
+## <a id='config'></a> Rack config file
 
 For Rack and Sinatra, you must have a `config.ru` file. For example:
 
@@ -23,7 +23,7 @@ run HelloWorld.new
 ~~~
 
 
-## <a id='precompile'></a> Asset Precompilation
+## <a id='precompile'></a> Asset pre-compilation
 
 Cloud Foundry supports the Rails asset pipeline. If you do not precompile assets before deploying your app, Cloud Foundry precompiles them when staging the app. Precompiling before deploying reduces the time it takes to stage an app.
 
@@ -33,7 +33,7 @@ To precompile assets before deployment, run:
 rake assets:precompile
 ```
 
-The Rake precompile task reinitializes the Rails app. This could pose a problem if initialization requires service connections or environment checks that are unavailable during staging. To prevent reinitialization during precompilation, add the following line to `application.rb`:
+The Rake precompile task re-initializes the Rails app. This could pose a problem if initialization requires service connections or environment checks that are unavailable during staging. To prevent re-initialization during pre-compilation, add the following line to `application.rb`:
 
 ~~~
 config.assets.initialize_on_precompile = false
@@ -46,7 +46,7 @@ Rails.application.config.assets.compile = true
 ~~~
 
 
-## <a id='rake'></a> Running Rake Tasks
+## <a id='rake'></a> Running Rake tasks
 
 Cloud Foundry does not provide a mechanism for running a Rake task on a deployed app. If you need to run a Rake task that must be performed in the Cloud Foundry environment, rather than locally before deploying or redeploying, you can configure the command that Cloud Foundry uses to start the app to invoke the Rake task.
 
@@ -54,7 +54,7 @@ An app start command is configured in the app manifest file, `manifest.yml`, usi
 
 For more information about app manifests and supported attributes, see [Deploying with App Manifests](../../devguide/deploy-apps/manifest.html).
 
-### <a id='migrate-ruby-db'></a> Example: Invoking a Rake Database Migration Task at App Startup
+### <a id='migrate-ruby-db'></a> Example: Invoking a Rake database migration task at App startup
 
 Below is an example of migrating a database schema using a Rake task. For more information about migrating database schemas, see the [Migrate a Database Schema](../../devguide/services/index.html#migrating) section of the _Services Overview_ topic.
 
@@ -90,13 +90,13 @@ To migrate a database schema using a Rake task:
     ```
 
 
-## <a id='workers'></a> Rails 3 Worker Tasks
+## <a id='workers'></a> Rails 3 worker tasks
 
 This section describes how to create and deploy an example Rails app that uses a worker library to defer a task that a separate app runs. It also describes how to scale the resources available to the worker app.
 
 <p class="note"><strong>Note:</strong> Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the app manifest, to suppress route creation.</p>
 
-### <a id='worker-libs'></a> Choose a Worker Task Library
+### <a id='worker-libs'></a> Choose a worker task library
 
 You must choose a worker task library. The table below summarizes the three main libraries available for Ruby/Rails:
 
@@ -108,7 +108,7 @@ You must choose a worker task library. The table below summarizes the three main
 
 For other alternatives, see [Background Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs) on The Ruby Toolbox.
 
-### <a id='example-app'></a> Create an Example App
+### <a id='example-app'></a> Create an example app
 
 The example app described in this section uses Sidekiq.
 
@@ -208,7 +208,7 @@ To create an example app:
     &lt;%= @things.inspect %&gt;
     </pre>
 
-#### <a id='deploy'></a> Deploy the App
+#### <a id='deploy'></a> Deploy the app
 
 You must deploy your example app twice for it to work, once as a Rails web app and once as a standalone Ruby app. One way to do this is to keep separate Cloud Foundry manifests for each app type.
 
@@ -254,7 +254,7 @@ To create separate manifests for each app type:
     ```
     If the cf CLI asks for a URL for the worker app, select **none**.
 
-### <a id='test'></a> Test the App
+### <a id='test'></a> Test the app
 
 To test the app:
 
@@ -262,7 +262,7 @@ To test the app:
 
 This creates a new Sidekiq job which is queued in Redis, then picked up by the worker app. The browser is then redirected to `/thing`, which shows the collection of "Things".
 
-### <a id='scale'></a> Scale Workers
+### <a id='scale'></a> Scale workers
 
 To change the number of Sidekiq workers:
 
@@ -281,7 +281,7 @@ By default, Rails 4 returns a 404 error if an asset is not handled via an extern
 You can use this capability to populate an edge cache CDN or serve files directly from your web app. The gem enables this behavior by setting the `config.serve_static_assets` option to `true`, so you do not need to configure it manually.
 
 
-## <a id='custom-libraries'></a> Add Custom Libraries
+## <a id='custom-libraries'></a> Add custom libraries
 
 If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in an `ld_library_path` directory at the app root.
 
@@ -290,7 +290,7 @@ If your app requires external shared libraries that are not provided by the root
 The Ruby buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
 
 
-## <a id='env-var'></a> Environment Variables
+## <a id='env-var'></a> Environment variables
 
 You can access environments variable programmatically. For example, you can obtain `VCAP_SERVICES` by running:
 
