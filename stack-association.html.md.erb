@@ -9,7 +9,7 @@ This topic describes the stack association feature for Cloud Foundry buildpacks.
 
 ## <a id='overview'></a> Stack association
 
-Each buildpack, in your deployment, is associated with a stack. You can see this, when you run `cf buildpacks`. There is a `stack` column in the output that shows a corresponding stack for each buildpack.
+Each buildpack in your deployment is associated with a stack. When you run `cf buildpacks`, you can see this in the `stack` column for each buildpack.
 
 For example:
 
@@ -33,7 +33,7 @@ The [buildpack packager](https://github.com/cloudfoundry/libbuildpack/tree/maste
 
 ## <a id='no-stack-record'></a> Missing stack record in buildpacks
 
-Some buildpacks might have a missing stack record. For example, if you uploaded a custom buildpack before Cloud Foundry introduced stack association. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record.
+Some buildpacks might have a missing stack record, if for example, you uploaded a custom buildpack before Cloud Foundry introduced stack association. The output of `cf buildpacks` shows a blank `stack` column if the buildpack does not have a stack record.
 
 In this case, you must manually assign a stack to the buildpack. To do this, run:
 
