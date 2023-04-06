@@ -40,7 +40,7 @@ For more information about the `postgresql-10-odb` service, see [Crunchy Postgre
 
   <pre class="terminal">
   $ cf create-service postgresql-10-odb standalone rails-postgres
-  Creating service rails-postgres in org YOUR-ORG / space development as   clouduser<span>@</span>example.com....
+  Creating service rails-postgres in org YOUR-ORG / space development as clouduser<span>@</span>example.com....
   OK</pre>
 
 ##<a id='deploy'></a>Step 4: Deploy the app
@@ -102,13 +102,13 @@ buildpack: ruby
 
 ##<a id='bind'></a>Step 5: Bind the service instance
 
-1. Run the command below to bind the service instance to the sample app. Once bound, environment variables are stored that allow the app to connect to the service after
-a `cf push`, `cf restage`, or `cf restart` command.
+1. Run the command below to bind the service instance to the sample app. Once bound, environment variables are stored that allow the app to connect to the service after a `cf push`, `cf restage`, or `cf restart` command.
+
   <pre class="terminal">
   $ cf bind-service cf-sample-app-rails rails-postgres
   Binding service rails-postgres to app cf-sample-app-rails in org my-org / space dev
   OK
-  TIP: Use 'cf restage cf-sample-app-rails' to ensure your env variable changes take effect
+  TIP: Use 'cf restage cf-sample-app-rails' to ensure your env variable changes take effect.
   </pre>
 
 1. Run the following command to restage the sample app.

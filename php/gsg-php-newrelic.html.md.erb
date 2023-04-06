@@ -14,7 +14,7 @@ You can configure New Relic for the PHP buildpack in one of two ways:
 * With a license key
 * With a Cloud Foundry service
 
-### With a License Key
+### With a license key
 
 Use this method if you already have a New Relic account,
 
@@ -25,11 +25,10 @@ Use this method if you already have a New Relic account,
 For more information, see
 [https://github.com/cloudfoundry/php-buildpack#supported-software](https://github.com/cloudfoundry/php-buildpack#supported-software)
 
-### With a Cloud Foundry Service
+### With a Cloud Foundry service
 
 To configure New Relic for the PHP buildpack with a Cloud Foundry service, bind a New Relic service to the app. The buildpack automatically detects and configures New Relic.
 
 Your `VCAP_SERVICES` environment variable must contain a service named `newrelic`, the `newrelic` service must contain a key named `credentials`, and the `credentials` key must contain named `licenseKey`.
 
 <p class='note'><strong>NOTE</strong>: You cannot configure New Relic for the PHP buildpack with user-provided services.</p>
-

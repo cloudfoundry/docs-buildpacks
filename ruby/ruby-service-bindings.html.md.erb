@@ -1,19 +1,19 @@
 ---
-title: Configuring Service Connections for Ruby
+title: Configuring service connections for Ruby
 owner: Buildpacks
 ---
 
 After you create a service instance and bind it to an application, you must
 configure the application to connect to the service.
 
-## <a id='cf-app-utils'></a>Query VCAP_SERVICES with cf-app-utils ##
+## <a id='cf-app-utils'></a>Query VCAP_SERVICES with cf-app-utils
 
 The `cf-app-utils` gem allows your application to search for credentials from
 the `VCAP_SERVICES` environment variable by name, tag, or label.
 
 * [cf-app-utils-ruby](https://github.com/cloudfoundry/cf-app-utils-ruby)
 
-## <a id='vcap-services-defines-database-url'></a>VCAP_SERVICES defines DATABASE_URL ##
+## <a id='vcap-services-defines-database-url'></a>VCAP_SERVICES defines DATABASE_URL
 
 At runtime, Cloud Foundry creates a `DATABASE_URL` environment variable
 for every application based on the
@@ -56,7 +56,7 @@ by Cloud Foundry as a candidate for `DATABASE_URL`:
 
 Cloud Foundry uses the first candidate found to populate `DATABASE_URL`.
 
-## <a id='configuring-non-rails-applications'></a>Configure Non-Rails Applications ##
+## <a id='configuring-non-rails-applications'></a>Configure Non-Rails apps
 
 Non-Rails applications can also access the `DATABASE_URL` variable.
 
@@ -81,17 +81,17 @@ Use the hash key for the service to obtain the connection credentials from
   For example, the service provider "p-mysql" with version "n/a" forms the hash
   key `p-mysql-n/a`.
 
-## <a id='migrate'></a>Seed or Migrate Database ##
+## <a id='migrate'></a>Seed or migrate database
 
 Before you can use your database the first time, you must create and populate or migrate it. For more information about migrating database schemas, see [Services Overview](../../devguide/services/index.html#migrating).
 
-## <a id='troubleshooting'></a>Troubleshooting ##
+## <a id='troubleshooting'></a>Troubleshooting
 
 To aid in troubleshooting issues connecting to your service, you can examine
 the environment variables and log messages Cloud Foundry records for your
 application.
 
-### <a id='view-env'></a>View Environment Variables ###
+### <a id='view-env'></a>View environment variables
 
 Use the `cf env` command to view the Cloud Foundry environment variables for
 your application.
@@ -127,7 +127,7 @@ my-env-var: 100
 my-drain: http://drain.example.com
 </pre>
 
-### <a id='view-logs'></a>View Logs ###
+### <a id='view-logs'></a>View logs
 
 Use the `cf logs` command to view the Cloud Foundry log messages for your
 application.

@@ -1,12 +1,12 @@
 ---
-title: Configuring Service Connections for Node.js
+title: Configuring service connections for Node.js
 owner: Buildpacks
 ---
 
 This guide is for developers who wish to bind a data source to a Node.js
 application deployed and running on Cloud Foundry.
 
-## <a id='creds'></a>Parse VCAP_SERVICES for Credentials  ##
+## <a id='creds'></a>Parse VCAP_SERVICES for credentials
 
 You must parse the `VCAP_SERVICES` environment variable in your code to get the
 required connection details such as host address, port, user name, and
@@ -28,7 +28,7 @@ variable might look something like this:
 
 This example JSON is simplified; yours may contain additional properties.
 
-### <a id='cfenv'></a>Parse with cfenv ###
+### <a id='cfenv'></a>Parse with cfenv
 
 The `cfenv` package provides access to Cloud Foundry application environment
 settings by parsing all the relevant environment.
@@ -38,7 +38,7 @@ running as a Cloud Foundry application.
 
 For more information, see the [npm website](https://www.npmjs.org/package/cfenv).
 
-### <a id='parse-manually'></a>Manual Parsing ###
+### <a id='parse-manually'></a>Manual parsing
 
 First, parse the `VCAP_SERVICES` environment variable.
 
@@ -61,7 +61,7 @@ var uri = vcap_services.mypostgres[0].credentials.uri
 Once assigned, you can use your credentials as you would normally in your
 program to connect to your database.
 
-## <a id='Connecting'></a> Connecting to a Service ##
+## <a id='Connecting'></a> Connecting to a service
 
 You must include the appropriate package for the type of services your
 application uses. For example:
@@ -73,7 +73,7 @@ application uses. For example:
 * Postgres via the [pg](https://github.com/brianc/node-postgres) module
 * Redis via the [redis](https://github.com/mranney/node_redis) module
 
-## <a id='add'></a> Add the Dependency to package.json ##
+## <a id='add'></a> Add the dependency to package.json
 
 Edit `package.json` and add the intended module to the `dependencies` section.
 Normally, only one would be necessary, but for the sake of the example we will
