@@ -45,7 +45,7 @@ Buildpacks with a missing stack record continue to work, but are more manageable
 
 If you push apps to a deployment that has buildpacks with a missing stack record, the following might occur:
 
-* If you push an app and specify a stack with `cf push app-name -s stack`, Cloud Foundry uses that stack. Otherwise, it uses the system default, `cflinuxfs3`.
+* If you push an app and specify a stack with `cf push app-name -s stack`, Cloud Foundry uses that stack. Otherwise, it uses the system default, `cflinuxfs4`.
 * You might see additional logging in the buildpack detection output of the `cf push` command when Cloud Foundry detects buildpacks without a stack record.
 
 ## <a id='stack-cli'></a> Managing stack association with the cf CLI
