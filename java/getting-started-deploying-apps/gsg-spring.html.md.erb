@@ -190,15 +190,11 @@ If you want to view log activity while the app deploys, launch a new terminal wi
 
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
-<p class="tip"><strong>Sample App Step</strong><br />
-1. Run <code>brew install maven</code>.
-<br />
-1. Change to the <code>app</code>directory, and run <code>mvn package</code> to build the app.
-<br />
-1. Run <code>cf push pong_matcher_spring -n HOSTNAME</code> to push the app.
-<br /><br />
-Example: <code>cf push pong_matcher_spring -n my-spring-app</code>
-</p>
+**Sample App Step**
+1. Run `brew install maven`.
+1. Change to the `app` directory, and run `mvn package` to build the app.
+1. Run `cf push pong_matcher_spring -n HOSTNAME` to push the app.
+Example: `cf push pong_matcher_spring -n my-spring-app`.
 
 <p class="note"><strong>Note</strong>: You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 </p>

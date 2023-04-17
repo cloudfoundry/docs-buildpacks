@@ -221,19 +221,15 @@ If you want to view log activity while the app deploys, launch a new terminal wi
 
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
-<p class="tip"><strong>Sample App Step</strong><br />
-1. Change to the <code>app</code>directory, and run <code>./gradlew distZip</code> to build the app.
-<br />
-1. Run <code>cf push pong_matcher_groovy -n HOST-NAME</code> to push the app.
-<br /><br />
-Example: <code>cf push pong_matcher_groovy -n groovy-ratpack-app</code>
-</p>
+**Sample App Step**
+1. Change to the `app` directory, and run `./gradlew distZip` to build the app.
+1. Run `cf push pong_matcher_groovy -n HOST-NAME` to push the app.
+Example: `cf push pong_matcher_groovy -n groovy-ratpack-app`
 
 <p class="note"><strong>Note</strong>: You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 </p>
 
 The example below shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
-
 
 <pre class="terminal">
 $ cf push pong_matcher_groovy -n groovy-ratpack-app
@@ -279,7 +275,7 @@ urls: groovy-ratpack-app.cfapps.io
      state     since                    cpu    memory           disk
 #0   running   2014-10-28 04:48:58 PM   0.0%   193.5M of 512M   111.7M of 1G
 </pre>
-
+<br>
 
 ### Step 9: Test your deployed app
 
