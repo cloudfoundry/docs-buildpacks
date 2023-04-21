@@ -129,13 +129,16 @@ The `cf push` command uploads the vendored dependencies with the app.
 
 When vendoring apps for usage in offline environments, you must supply a lock file. For information
 on npm lockfiles, see [npm-package-locks](https://docs.npmjs.com/files/package-locks) in the NPM
-documentation. For information on `npm-package-lock.json` files, see
+documentation.
+
+For information on `npm-package-lock.json` files, see
 [package-lock.json](https://docs.npmjs.com/files/package-lock.json) in the NPM
 documentation.
 
 This lock file informs the package manager of the exact versions of dependencies and transitive dependencies to look for when running `npm install` or `yarn install`. For this reason, you must keep `package.json`, the vendored `node_modules` directory, and your lock file synchronized to avoid network calls.
 
-<p class='note'><strong>Note</strong>: <code>package-lock.json</code> is only supported by NPM 5.x and later. For earlier versions of NPM, provide a <a href='https://docs.npmjs.com/cli/v7/configuring-npm/npm-shrinkwrap-json</code></a> file instead.</p>
+<p class='note'><strong>Note</strong>: <code>package-lock.json</code> file is only supported by NPM 5.x and later. For earlier versions of NPM, provide a
+<a href="https://docs.npmjs.com/cli/v9/configuring-npm/npm-shrinkwrap-json?v=true">npm-shrinkwrap.json</a> file instead.
 
 #### <a id='yarn_offline'></a>Yarn offline mode
 
