@@ -208,8 +208,8 @@ The app is then deployed to Cloud Foundry, and the buildpack is cloned from the 
 
 <p class="note"><strong>Note:</strong> If a buildpack is specified using <code>cf push -b</code>, the <code>detect</code> step is skipped. As a result, no buildpack <code>detect</code> scripts are run.</p>
 
-```console
+
 <%= vars.disable_custom %>
-```
+
 
 <p class="note"><strong>Note:</strong> A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, see <a href="https://help.github.com/articles/syncing-a-fork">Syncing a fork</a> in the GitHub documentation.</p>
