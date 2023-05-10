@@ -108,7 +108,7 @@ After you build the binary for a dependency that you want to access and download
 
 To add the dependency version to the buildpack manifest
 
-1. Navigate to the directory of the buildpack for which you want to update dependencies and run `git checkout develop` to check out the `develop` branch.
+1. Go to the directory of the buildpack for which you want to update dependencies and run `git checkout develop` to check out the `develop` branch.
     <pre class="terminal">
     $ cd ~/workspace/ruby-buildpack
     $ git checkout develop
@@ -126,7 +126,7 @@ To add the dependency version to the buildpack manifest
           - cflinuxfs4
     ```
 
-    * Follow the current structure of the manifest. For example, if the manifest includes the two most recent patch versions for each minor version of the language, you should also include the two most recent patch versions for each minor version of the language, such as both `ruby-2.1.9` and `ruby-2.1.8`.
+    * Follow the current structure of the manifest. For example, if the manifest includes the two most recent patch versions for each minor version of the language, you can also include the two most recent patch versions for each minor version of the language, such as both `ruby-2.1.9` and `ruby-2.1.8`.
     * Copy the `uri` and the `md5` from the `build-BINARY-NAME` job that ran in the Concourse dependency-builds pipeline and add them to the manifest.
 
     <p class="note"><strong>Note</strong>: In the PHP buildpack, you might see a <code>modules</code> line for each PHP dependency in the manifest. Do not include this <code>modules</code> line in your new PHP dependency entry. The <code>modules</code> line is added to the manifest by the <code>ensure-manifest-has-modules</code> Concourse job in the <code>php-buildpack</code> when you commit and push your changes. You can see this in the output logs of the <code>build-out</code> task.</p>
@@ -217,7 +217,7 @@ __PHP__:
 
 __Nginx__:
 
-* __Verified with__: The `gpg-rsa-key-id` and `gpg-signature` of the version. The `gpg-rsa-key-id` is the same for each version/build, but the `gpg-signature` will be different. This information is located on the [Nginx Downloads](https://nginx.org/en/download.html) page.
+* __Verified with__: The `gpg-rsa-key-id` and `gpg-signature` of the version. The `gpg-rsa-key-id` is the same for each version/build, but the `gpg-signature` is different. This information is located on the [Nginx Downloads](https://nginx.org/en/download.html) page.
 * __Example__: [Enqueuing binary build for Nginx 1.11.0.](https://github.com/cloudfoundry/buildpacks-ci/commit/b86a09a46eb071957adaecd3a16d1ebba9cd0973)
 
 __HTTPD__:
@@ -241,7 +241,7 @@ composer version, for example `1.0.2`, and put the appropriate `composer.phar` f
 
 __Nginx__:
 
-* __Verified with__: The `gpg-rsa-key-id` and `gpg-signature` of the version. The `gpg-rsa-key-id` is the same for each version/build, but the `gpg-signature` will be different. This information is located on the [Nginx Downloads](https://nginx.org/en/download.html) page.
+* __Verified with__: The `gpg-rsa-key-id` and `gpg-signature` of the version. The `gpg-rsa-key-id` is the same for each version/build, but the `gpg-signature` is different. This information is located on the [Nginx Downloads](https://nginx.org/en/download.html) page.
 * __Example__: [Enqueuing binary build for Nginx 1.11.0.](https://github.com/cloudfoundry/buildpacks-ci/commit/b86a09a46eb071957adaecd3a16d1ebba9cd0973)
 
 ### <a id="build-binary-buildpack"></a>Binary buildpack
