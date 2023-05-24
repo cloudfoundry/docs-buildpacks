@@ -132,11 +132,26 @@ To load a built-in module like `ngx_stream_module`, add the line below to the to
 <p class="note"><strong>Note</strong>: To name your modules directory something other than <code>modules</code>, use the NGINX <code>load_module</code> directive, providing a path to the module relative to the location of your <code>nginx.conf</code> file. For example:
 <code>load_module some_module_dir/my_module.so</code></p>
 
-### <a id='enabling-debugging'></a> Enabling debugging
+### <a id='enabling-logging'></a> Enabling logging
 
-By default, debug logging will be deactivated in the NGINX buildpack. This helps optimize performance. Set the debug level with the `error_log` directive in the `nginx.conf` to enable debug logging.
+By default, logging is deactivated in the NGINX buildpack. This helps optimize performance. 
 
-To use the debug logging, add the `error_log` entry to your `nginx.conf` file, using the syntax below:
+#### <a id='enabling-access-logs'></a> Enabling access logs
+
+Use the `access_log` directive in the appropriate location in the `nginx.conf` to enable access_logging. Add the `access_log` entry to your `nginx.conf` file using the syntax below:
+
+```
+Syntax:  access_log file [format]
+```
+
+Where:
+
+* `file` is the name of the file where the log is to be stored. The special value `/dev/stdout` selects the standard output.
+* `format` is the logging format to use. Refer to NGINX documentation for valid customization options.
+
+#### <a id='enabling-debugging'></a> Enabling debug logs
+
+Set the debug level with the `error_log` directive in the `nginx.conf` to enable debug logging. Add the `error_log` entry to your `nginx.conf` file using the syntax below:
 
 ```
 Syntax:  error_log file [level];
