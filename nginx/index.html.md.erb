@@ -136,25 +136,34 @@ To load a built-in module like `ngx_stream_module`, add the line below to the to
 
 By default, logging is deactivated in the NGINX buildpack. This helps optimize performance. 
 
-#### <a id='enabling-access-logs'></a> Enabling access logs
+If you configure NGINX to log to stdout or stderr, the logs will be captured by the Cloud Foundry logging subsystem.
 
-Use the `access_log` directive in the appropriate location in the `nginx.conf` to enable access_logging. Use the syntax below:
+#### <a id='enabling-access-logs'></a> Logging access
+
+Use the `access_log` directive in the appropriate location in the `nginx.conf` to enable access logging. Use the syntax below:
 
 ```
-Syntax:  access_log file [format]
+access_log &lt;file&gt; [format]
 ```
 
 Where:
 
 * `file` is the name of the file where the log is to be stored. The special value `/dev/stdout` selects the standard output.
-* `format` is the logging format to use. Refer to NGINX documentation for valid customization options.
+* `format` is the logging format to use. Refer to [the NGINX documentation for valid customization options](https://nginx.org/en/docs/http/ngx_http_log_module.html#log_format).
 
-#### <a id='enabling-debugging'></a> Enabling debug logs
+Example:
+
+```
+access_log /dev/stdout;
+```
+
+
+#### <a id='enabling-debugging'></a> Logging errors
 
 Set the debug level with the `error_log` directive in the `nginx.conf` to enable debug logging. Add the `error_log` entry to your `nginx.conf` file using the syntax below:
 
 ```
-Syntax:  error_log file [level];
+error_log &lt;file&gt; [level];
 ```
 
 Where:
@@ -176,7 +185,7 @@ Where:
 Example:
 
 ```
-error_log /path/to/log debug;
+error_log stderr debug;
 ```
 
 #### <a id='debugging-logs-selected-clients'></a> Debugging logs for selected clients
@@ -184,7 +193,7 @@ error_log /path/to/log debug;
 To enable the debugging log for selected client addresses only, use the syntax below.
 
 ```
-error_log /path/to/log;
+error_log stderr;
 
 events {
 debug_connection 192.168.1.1;
