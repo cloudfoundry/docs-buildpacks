@@ -1,20 +1,20 @@
 ---
-title: Tips for Node.js developers
+title: Node.js buildpack specific information
 owner: Buildpacks
 ---
 
 
 
-This topic provides Node-specific information to supplement the general guidelines in the [Pushing an App](../../devguide/deploy-apps/deploy-app.html) topic.
-
-## <a id='buildpack'></a> About the Node.js buildpack
+You can use node specific information to supplement the general guidelines in
+the [Pushing an App](../../devguide/deploy-apps/deploy-app.html) topic.
 
 For information about using and extending the Node.js buildpack in Cloud
 Foundry, see the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack) in GitHub.
 
 You can find current information about this buildpack on the Node.js buildpack [release page](https://github.com/cloudfoundry/nodejs-buildpack/releases) in GitHub.
 
-The buildpack uses a default Node.js version. To specify the versions of Node.js and npm an app requires, edit the app's `package.json`, as described in "node.js and npm versions" in the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack).
+The buildpack uses a default Node.js version.
+To specify the versions of Node.js and npm an app requires, edit the app's `package.json`, as described in "node.js and npm versions" in the [nodejs-buildpack repository](https://github.com/cloudfoundry/nodejs-buildpack).
 
 ## <a id='packagejson'></a> Application package file
 
@@ -133,11 +133,11 @@ process.env.VCAP_SERVICES
 Environment variables available to you include both those [defined by the system](../../devguide/deploy-apps/environment-variable.html#app-system-env)
 and those defined by the Node.js buildpack, as described below.
 
-### <a id='BUILD-DIR'></a>BUILD_DIR
+### <a id='BUILD-DIR'></a>BUILD_DIR directory
 
 Directory into which Node.js is copied each time a Node.js app is run.
 
-### <a id='CACHE-DIR'></a>CACHE_DIR
+### <a id='CACHE-DIR'></a>CACHE_DIR directory
 
 Directory that Node.js uses for caching.
 

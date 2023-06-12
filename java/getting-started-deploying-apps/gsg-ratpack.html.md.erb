@@ -1,12 +1,12 @@
 ---
-title: Getting started deploying Ratpack apps
+title: Getting started deploying Ratpack apps to Cloud Foundry
 owner: Java
 ---
 
 <%=vars.GSG_intro_sentence%>
 
-This guide is intended to walk you through deploying a Ratpack app to Cloud Foundry.
-If you experience a problem following the steps below, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
+This information walks you through deploying a Ratpack app to Cloud Foundry.
+If you experience a problem following the steps, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
 <p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
 
@@ -91,16 +91,16 @@ Use a Procfile to declare required runtime processes for your web app and to spe
 
 ### Step 5: Create and bind a service instance for a Ratpack application
 
-This section describes using the CLI to configure a Redis managed service instance for an app. <%=vars.dev_console_1%>
+Learn how to use the CLI to configure a Redis managed service instance for an app. <%=vars.dev_console_1%>
 
-Cloud Foundry supports two types of service instances:
+Cloud Foundry supports the following types of service instances:
 
 * Managed services integrate with Cloud Foundry through service brokers that offer services and plans and manage the service calls between Cloud Foundry and a service provider.
 * User-provided service instances enable you to connect your application to pre-provisioned external service instances.
 
 For more information about creating and using service instances, refer to the [Services Overview](./../../../devguide/services/index.html) topic.
 
-#### Create a service instance
+#### Creating a service instance
 
 1. View managed and user-provided services and plans available to you by running:
 
@@ -181,7 +181,7 @@ Refer to the [Deploying with Application Manifests](../../../devguide/deploy-app
 
 ### Step 7: Log in and target the API endpoint
 
-Enter your login credentials, and select a space and org.
+Enter your log in credentials, and select a space and org.
 
 ```console
 cf login -a API-ENDPOINT
@@ -229,7 +229,7 @@ Example: `cf push pong_matcher_groovy -n groovy-ratpack-app`
 <p class="note"><strong>Note</strong>: You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 </p>
 
-The example below shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
+The following example shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
 
 <pre class="terminal">
 $ cf push pong_matcher_groovy -n groovy-ratpack-app

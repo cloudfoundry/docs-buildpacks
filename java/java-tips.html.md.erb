@@ -1,11 +1,12 @@
 ---
-title: Tips for Java developers
+title: Using Cloud Foundry Java buildpack
 owner: Java
 ---
 
-This topic tells you how the Java buildpack can be used with <%= vars.app_runtime_first %>.
+This topic tells you how the Java buildpack can be used with Cloud Foundry.
 
-<%= vars.app_runtime_abbr %> can deploy a number of different JVM-based artifact types. For a more detailed explanation of what the Cloud Foundry Java Builpack supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the repository on GitHub.
+You can deploy a number of different JVM-based artifact types.
+For a more detailed explanation of what the Cloud Foundry Java Builpack supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the repository on GitHub.
 
 
 ## <a id='buildpack'></a> Java buildpack
@@ -13,7 +14,7 @@ This topic tells you how the Java buildpack can be used with <%= vars.app_runtim
 For information about using, configuring, and extending the Cloud Foundry Java buildpack, see the [Cloud Foundry Java Buildpack](https://github.com/cloudfoundry/java-buildpack) repository on GitHub.
 
 
-## <a id='design'></a> Design
+## <a id='design'></a> Java buildpack design
 
 The Java buildpack can convert artifacts that run on the JVM into executable apps. It does this by identifying one of the supported artifact types (Grails, Groovy, Java, Play Framework, Spring Boot, and Servlet) and downloading all additional dependencies needed to run. It also analyzes the collection of services bound to the app and downloads any dependencies related to those services.
 
@@ -35,12 +36,13 @@ Exit status 0
 
 ## <a id='configuration'></a> Configuration
 
-In most cases, the buildpack can work without any configuration. If you are new to <%= vars.app_runtime_abbr %>, <%= vars.recommended_by %> recommends that you make your first attempts without modifying the buildpack configuration. The buildpack is flexible, though, and you can configure it through environment variables. For more information, see [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
+In most cases, the buildpack can work without any configuration. If you are new to Cloud Foundry, <%= vars.recommended_by %> recommends that you make your first attempts without modifying the buildpack configuration. The buildpack is flexible, though, and you can configure it through environment variables. For more information, see [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='java-client-library'></a> Java Client Library
 
-The Cloud Foundry Client Library provides a Java API for interacting with a <%= vars.app_runtime_abbr %> instance. This library, `cloudfoundry-client`, can be used by Java-based tools to interact with the platform.
+The Cloud Foundry Client Library provides a Java API for interacting with an instance. This library, `cloudfoundry-client`, can be
+used by Java based tools to interact with the platform.
 
 For information about using this library, see [Java Cloud Foundry Library](./java-client.html).
 
@@ -94,9 +96,9 @@ For more information, see [Groovy Container](https://github.com/cloudfoundry/jav
 
 ## <a id='http-2'></a> HTTP/2
 
-To deploy Java apps that use HTTP/2 on <%= vars.app_runtime_abbr %>, you must have:
+To deploy Java apps that use HTTP/2, you must have:
 
-1. A <%= vars.app_runtime_abbr %> foundation that has HTTP/2 support enabled. <%= vars.http2_admin_link %>
+1. A Cloud Floundry foundation that has HTTP/2 support enabled. <%= vars.http2_admin_link %>
 2. Cloud Foundry Command-Line Interface (cf CLI) v8 or later. See [Upgrading to cf CLI v8](../../cf-cli/v8.html).
 
 You can deploy any Java app and get automatic support for the HTTP/2 protocol without making any changes to your app.
@@ -163,11 +165,11 @@ For example:
     }
     ```
 
-## <a id='java-main'></a> Java Main
+## <a id='java-main'></a> Java main
 
 Java apps with a `main()` method can be run provided that they are packaged as self-executable JARs. For more information, see [Java Main Container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-java_main.md) in the Cloud Foundry Java Buildpack repository on GitHub.
 
-<p class="note"><strong>Note:</strong> If your app is not web-enabled, you must suppress route creation to avoid a <code>failed to start accepting connections</code> error. To suppress route creation, add <code>no-route: true</code> to the app manifest or use the <code>--no-route</code> flag with the <code>cf push</code> command. <br><br>For more information about the <code>no-route</code> attribute, see <a href="../../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.</p>
+<p class="note"><strong>Note:</strong> If your app is not web enabled, you must suppress route creation to avoid a <code>failed to start accepting connections</code> error. To suppress route creation, add <code>no-route: true</code> to the app manifest or use the <code>--no-route</code> flag with the <code>cf push</code> command. <br><br>For more information about the <code>no-route</code> attribute, see <a href="../../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.</p>
 
 ### <a id='java-main-maven'></a> Maven
 
@@ -397,7 +399,7 @@ If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it
       </li>
     </ul>
 
-### <a id='debugging'></a> Debug Java apps on <%= vars.app_runtime_abbr %>
+### <a id='debugging'></a> Debuging Java apps
 
 Because of the way <%= vars.app_runtime_abbr %> deploys your apps and isolates them, it is not possible to connect to your app with the remote Java debugger. Instead, instruct the app to connect to the Java debugger on your local machine.
 

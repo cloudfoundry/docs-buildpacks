@@ -5,9 +5,9 @@ owner: Buildpacks
 
 <%=vars.GSG_intro_sentence%>
 
-This guide is intended to walk you through deploying a Ruby app to
+Learn about deploying a Ruby app to
 Cloud Foundry.
-If you experience a problem following the steps below, check the
+If you experience a problem following the steps, check the
 <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html)
 topic.
 
@@ -17,8 +17,8 @@ topic.
 
 ## <a id="deploy"></a>Deploy a Ruby app
 
-This section describes how to deploy a Ruby application to
-Cloud Foundry, and uses output from a sample app to show specific
+You can deploy a Ruby application to
+Cloud Foundry, and use the output from a sample app to show specific
 steps of the deployment process.
 
 ### Prerequisites
@@ -31,9 +31,9 @@ workstation
 
 ###<a id="create-bind"></a>  Step 1: Create and bind a service instance for a Ruby app
 
-This section describes using the cf CLI to configure a Redis Cloud managed service instance for an app. <%=vars.dev_console_1%>
+Use the cf CLI to configure a Redis Cloud managed service instance for an app. <%=vars.dev_console_1%>
 
-Cloud Foundry supports two types of service instances:
+Cloud Foundry supports the following types of service instances:
 
 * Managed services integrate with Cloud Foundry through service
 brokers that offer services and plans and manage the service calls between
@@ -44,11 +44,11 @@ pre-provisioned external service instances.
 For more information about creating and using service instances, refer to the
 [Services Overview](../../devguide/services/index.html) topic.
 
-#### Create a service instance
+#### Creating a service instance
 
 To create a service instance:
 
-1. View managed and user-provided services and plans that are available to you by running:
+1. View managed and user provided services and plans that are available to you by running:
 
     ```console
     cf marketplace
@@ -122,7 +122,7 @@ services:
 
 ### <a id="deployment-options"></a> Step 2: Configure deployment options
 
-#### Configure the deployment manifest
+#### Configure the deployment manifest file
 
 You can specify app deployment options in a manifest that the `cf push` command uses. For more information about application manifests and supported attributes, refer to the [Deploying with Application Manifests](./../../devguide/deploy-apps/manifest.html) topic.
 

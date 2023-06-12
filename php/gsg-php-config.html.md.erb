@@ -1,17 +1,14 @@
 ---
-title: PHP Buildpack Configuration
+title: PHP buildpack configuration
 owner: Buildpacks
 ---
 
-This topic describes how to modify the configuration file for your PHP buildpack.
-
-
-## <a id="defaults"></a> Defaults
+You can modify the configuration file for your PHP buildpack.
 
 The PHP buildpack stores all of its default configuration settings in the [defaults](https://github.com/cloudfoundry/php-buildpack/tree/master/defaults) directory of the Cloud Foundry PHP Buildpack repository on GitHub.
 
 
-## <a id="options"></a> options.json
+## <a id="options"></a> options.json file
 
 The `options.json` file is the configuration file for the buildpack itself. It instructs the buildpack what to download, where to download it from, and how to install it. It allows you to configure:
 
@@ -21,12 +18,12 @@ The `options.json` file is the configuration file for the buildpack itself. It i
 
 The buildpack overrides the default `options.json` file with any configuration it finds in the `.bp-config/options.json` file of your app.
 
-Below is an explanation of the common options you might need to change.
+Here are explanations of the common options you might need to change:
 
 | Variable                     | Explanation                                                                                                                                                                                                                                                                                                                                          |
 | -------------------          | -----------------------------------------------------                                                                                                                                                                                                                                                                                                |
 | WEB_SERVER                  | Sets the web server to use. Must be one of `httpd`, `nginx`, or `none`. This value defaults to `httpd`.                                                                                                                                                                                                                                           |
-| HTTPD_VERSION                | Sets the version of Apache HTTPD to use. Currently the build pack supports the latest stable version.  This value will default to the latest release that is supported by the build pack. |
+| HTTPD_VERSION                | Sets the version of Apache HTTPD to use. Currently the build pack supports the latest stable version.  This value defaults to the latest release that is supported by the build pack. |
 | ADMIN_EMAIL                 | The value used in HTTPD's configuration for [ServerAdmin](http://httpd.apache.org/docs/2.4/mod/core.html#serveradmin)                                                                                                                                                                                                                                                                                            |
 | NGINX_VERSION               | Sets the version of Nginx to use. By default, the buildpack uses the latest stable version.                                                                                                                                                                                                                      |
 | PHP_VERSION                 | Sets the version of PHP to use. <br> Set to a minor instead of a patch version, <br> such as `"{PHP_70_LATEST}"`. See [options.json](https://github.com/cloudfoundry/php-buildpack/blob/4f5e50fabf66c5840210cbc64fcd4068d8a27448/cf_spec/fixtures/php_app_using_php_7_latest/.bp-config/options.json).             |
@@ -41,7 +38,7 @@ Below is an explanation of the common options you might need to change.
 
 For details about supported versions, see the release notes for your buildpack version on the [Releases](https://github.com/cloudfoundry/php-buildpack/releases) page of the Cloud Foundry PHP Buildpack repository on GitHub.
 
-### <a id="engine-configurations"></a> HTTPD, Nginx, and PHP Configuration
+### <a id="engine-configurations"></a> HTTPD, Nginx, and PHP configuration
 
 The buildpack automatically configures HTTPD, Nginx, and PHP for your app. This section explains how to modify the configuration.
 
@@ -72,7 +69,7 @@ In this example, the `httpd-logging.conf` file overrides the one provided by the
 
 You can find the default configuration files in the [PHP Buildpack `/defaults/config` directory](https://github.com/cloudfoundry/php-buildpack/tree/master/defaults/config).
 
-You should be careful when modifying configurations, as doing so can cause your app to fail, or cause Cloud Foundry to fail to stage your app.
+You must be careful when modifying configurations, as doing so can cause your app to fail, or cause Cloud Foundry to fail to stage your app.
 
 You can add your own configuration files. The components do not reference them, so you must ensure that they are included. For example, you can add an include directive to the [httpd configuration](https://github.com/cloudfoundry/php-buildpack/blob/master/defaults/config/httpd/httpd.conf) to include your file:
 
@@ -95,7 +92,8 @@ Include conf/extra/httpd-my-special-config.conf # This line includes your additi
 
 #### <a id="php_ini_d"></a> .bp-config/php/php.ini.d/
 
-The buildpack adds any `.bp-config/php/php.ini.d/FILE-NAME.ini` files it finds in the app to the PHP configuration. You can use this to change any value acceptable to `php.ini`. For a list of directives, see [http://php.net/manual/en/ini.list.php](http://php.net/manual/en/ini.list.php).
+The buildpack adds any `.bp-config/php/php.ini.d/FILE-NAME.ini` files it finds in the app to the PHP configuration.
+You can use this to change any value acceptable to `php.ini`. For a list of directives, see [http://php.net/manual/en/ini.list.php](http://php.net/manual/en/ini.list.php).
 
 For example, adding a file `.bp-config/php/php.ini.d/something.ini` to your app, with the following contents, overrides both the default charset and mimetype:
 
@@ -134,7 +132,7 @@ The buildpack adds any `.bp-config/php/php.ini.d/FILE-NAME.ini` files it finds i
 extension=redis.so
 extension=gd.so
 zend_extension=opcache.so
-``` 
+```
 
 If an extension is already present and enabled in the compiled PHP, such as `intl`, you do not need to explicitly enable it to use that extension.
 
@@ -163,7 +161,7 @@ NOTICE: PHP message: PHP Warning: example MUST be loaded as a Zend extension in 
 Then move the `example` extension from `zend_extension` to `extension` and re-push your app.
 
 
-## <a id="buildpack-extensions"></a> Buildpack Extensions
+## <a id="buildpack-extensions"></a> Buildpack extensions
 
 The buildpack comes with extensions for its default behavior. These are the [HTTPD](https://github.com/cloudfoundry/php-buildpack/tree/master/lib/httpd), [Nginx](https://github.com/cloudfoundry/php-buildpack/tree/master/lib/nginx), [PHP](https://github.com/cloudfoundry/php-buildpack/tree/master/lib/php), and [NewRelic](https://github.com/cloudfoundry/php-buildpack/tree/master/extensions/newrelic) extensions.
 

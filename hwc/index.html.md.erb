@@ -1,15 +1,15 @@
 ---
-title: Hosted Web Core (HWC) buildpack
+title: Hosted Web Core buildpack
 owner: Buildpacks
 ---
 
 
-
-This topic dtells you how to configure your .NET Framework apps for use with the HWC buildpack and how to push your .NET Framework apps to <%= vars.windows_runtime_full %>.
+Learn how to configure your .NET Framework apps for use with the Hosted Web Core (HWC) buildpack and how to push
+your .NET Framework apps to <%= vars.windows_runtime_full %>.
 
 ## <a id='prerequisites'></a>Prerequisites
 
-Using the HWC buildpack requires deploying Windows cells with <%= vars.windows_runtime_abbr %>.
+Using the HWC buildpack requires deploying Microsoft Windows cells with <%= vars.windows_runtime_abbr %>.
 
 The HWC buildpack supports the following common app types by default:
 
@@ -39,7 +39,7 @@ For information about deploying different types of .NET apps, follow the links i
   </tr>
 </table>
 
-## <a id='overview'></a> Overview
+## <a id='overview'></a> HWC buildpack overview
 
 The HWC buildpack provides a runtime server that uses the Hosted Web Core API for running .NET Framework applications in Windows Server containers. For more information, see [Hosted Web Core API Reference](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx) in the Microsoft documentation.
 
@@ -67,7 +67,7 @@ Before you push your app for the first time, add a global error handler to recei
 
 To configure a global error handler that logs to `stdout`, see [Application Error Handling](https://tanzu.vmware.com/developer/cookbooks/dotnet/intro/getting_started/#application-error-handling) in the <em>.NET Cookbook</em>.
 
-## <a id='push-your-app'></a> Step 3. Push an app
+## <a id='push-your-app'></a> Step 3. Pushing an app
 
 Follow these steps to push your application:
 

@@ -5,11 +5,11 @@ owner: Buildpacks
 
 ## <a id='supported_versions'></a>Supported versions
 
-Supported Go versions can be found in the [release notes](https://github.com/cloudfoundry/go-buildpack/releases).
+You can find supported Go versions in the Cloud Foundry [release notes](https://github.com/cloudfoundry/go-buildpack/releases).
 
 ## <a id='pushing_apps'></a> Push an app
 
-The Go buildpack will be automatically detected in the following circumstances:
+The Go buildpack is automatically detected in the following circumstances:
 
 - Your app has been packaged with [godep](https://github.com/tools/godep) using `godep save`.
 - Your app has a `vendor/` directory and has any files ending with `.go`.
@@ -23,7 +23,7 @@ If your Cloud Foundry deployment does not have the Go Buildpack installed, or th
 $ cf push my_app -b https://github.com/cloudfoundry/go-buildpack.git
 </pre>
 
-When specifying versions, specify only major/minor versions, such as Go 1.6, rather than Go 1.6.0. This ensures you receive the most recent patches.
+When you specify versions, specify only majoror minor versions, such as Go 1.6, rather than Go 1.6.0. This ensures you receive the most recent patches.
 
 ### <a id='start_command'></a>Start command
 

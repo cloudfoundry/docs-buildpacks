@@ -3,25 +3,26 @@ title: Getting started deploying Ruby on Rails apps
 owner: Buildpacks
 ---
 
-This guide walks you through deploying a Ruby on Rails app to Cloud Foundry.
+You can use the information in this topic to deploy a Ruby on Rails app to Cloud Foundry.
 
 ##<a id='prerequisites'></a>Prerequisites
 
 In order to deploy a sample Ruby on Rails app, you must have the following:
 
-- A Cloud Foundry deployment
-- The [Cloud Foundry Command Line Interface](../../cf-cli/install-go-cli.html)
-- A Cloud Foundry username and password with **Space Developer** [permissions](../../concepts/roles.html#roles). See your [Org Manager](../../concepts/roles.html#roles) if you require permissions.
+- Cloud Foundry deployment
+- [Cloud Foundry Command Line Interface](../../cf-cli/install-go-cli.html)
+- Cloud Foundry username and password with **Space Developer** [permissions](../../concepts/roles.html#roles). See your [Org Manager](../../concepts/roles.html#roles) if you require permissions.
 
 ##<a id='clone'></a>Step 1: Clone the app
 
-Run the following terminal command to create a local copy of the cf-sample-app-rails.
+Run the following command to create a local copy of the cf-sample-app-rails:
 
 ```console
 git clone https://github.com/cloudfoundry-samples/cf-sample-app-rails.git
 ```
 
-The newly created directory contains a `manifest.yml` file, which assists CF with deploying the app. See [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#minimal-manifest) for more information.
+The newly created directory contains a `manifest.yml` file, which assists CF with deploying the app.
+See [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#minimal-manifest) for more information.
 
 ##<a id='login'></a>Step 2: Log in and target the API endpoint
 
@@ -65,10 +66,10 @@ cf push cf-sample-app-rails
 This command creates a URL route to your application in the form `HOST.DOMAIN`.
 In this example, `HOST` is `cf-sample-app-rails`. Administrators specify the `DOMAIN`.
 
-For example, for the `DOMAIN` `<%= vars.app_domain %>`, running the above command
+For example, for the `DOMAIN` `<%= vars.app_domain %>`, running the previous command
 creates the URL `cf-sample-app-rails.<%= vars.app_domain %>`.
 
-The example below shows the terminal output when deploying the `cf-sample-app-rails`. `cf push` uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then follows the information in the manifest to start one instance of the app with 256M of RAM. After the app starts, the output displays the health and status of the app.
+The following example shows the terminal output when deploying the `cf-sample-app-rails`. `cf push` uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then follows the information in the manifest to start one instance of the app with 256M of RAM. After the app starts, the output displays the health and status of the app.
 
 <pre class="terminal">
 $ cf push cf-sample-app-rails
@@ -121,7 +122,7 @@ buildpack: ruby
 
 ##<a id='bind'></a> Step 5: Bind the service instance
 
-1. Run the command below to bind the service instance to the sample app.
+1. Run the following command to bind the service instance to the sample app.
 Once bound, environment variables are stored that allow the app to connect to the
 service after a `cf push`, `cf restage`, or `cf restart` command.
 
@@ -151,7 +152,8 @@ service after a `cf push`, `cf restage`, or `cf restart` command.
 
 ##<a id='verify'></a>Step 6: Verify the app
 
-Verify that the app is running by browsing to the URL generated in the output of the previous step. In this example, navigating to `cf-sample-app-rails.<%=vars.app_domain%>` verifies that the app is running.
+Verify that your app is running by browsing to the URL generated in the output of the previous step.
+In this example, go to `cf-sample-app-rails.<%=vars.app_domain%>` and verify that the app is running.
 
 For more information, see the [Pushing an App](../../devguide/deploy-apps/deploy-app.html) topic.
 

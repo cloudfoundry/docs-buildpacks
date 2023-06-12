@@ -3,16 +3,18 @@ title: Cloud Foundry Java Client Library
 owner: Java
 ---
 
-This topic describes how to use the Cloud Foundry Java Client Library to manage an account on a Cloud Foundry instance.
+You can use the Cloud Foundry Java Client Library to manage an account on a Cloud Foundry instance.
 
-Cloud Foundry Java Client Library v1.1.x work with apps using Spring v4.x, and Cloud Foundry Java Client Library v1.0.x work with apps using Spring v3.x. Both versions are available in the [Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub.
+Cloud Foundry Java Client Library v1.1.x works with apps using Spring v4.x, and
+Cloud Foundry Java Client Library v1.0.x work with apps using Spring v3.x. Both versions are available in the [Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub.
 
 
-## <a id='adding-the-library'></a> Adding the Library
+## <a id='adding-the-library'></a> Adding the Java Client Library
 
 To obtain the correct components, see the [Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub.
 
-Most projects need two dependencies: the Operations API and an implementation of the Client API. For more information about how to add the Cloud Foundry Java Client Library as dependencies to a Maven or Gradle project, see the sections below.
+Most projects need two dependencies: the Operations API and an implementation of the Client API.
+For more information about how to add the Cloud Foundry Java Client Library as dependencies to a Maven or Gradle project, see the sections below.
 
 ### <a id='maven'></a> Maven
 
@@ -100,7 +102,7 @@ repositories {
 ```
 
 
-## <a id='sample-code'></a> Sample Code
+## <a id='sample-code'></a> Sample code
 
 The following is a very simple sample app that connects to a Cloud Foundry instance, logs in, and displays some information about the Cloud Foundry account. When running the program, provide the Cloud Foundry target API endpoint, along with a valid user name and password as command-line parameters.
 
@@ -154,5 +156,7 @@ public final class JavaSample {
 ```
 
 For more details about the Cloud Foundry Java Client Library, see the
-[Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub. To view the
+[Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub.
+
+To view the
 objects that you can query and inspect, see [domain package](https://github.com/cloudfoundry/cf-java-client/tree/main/cloudfoundry-client/src/main/java/org/cloudfoundry/client/v2/domains) in the cloudfoundry/cf-java-client repository on GitHub.

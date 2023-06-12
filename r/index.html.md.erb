@@ -3,14 +3,15 @@ title: R buildpack
 owner: Buildpacks
 ---
 
-This topic describes how to push your R app to Cloud Foundry and how to configure your R app to use the R buildpack.
-
-## <a id="pushing_apps"></a> Push an app
+You can push your R app to Cloud Foundry and configure your R app to use the R buildpack.
 
 Cloud Foundry automatically uses the R buildpack if it detects a
 `r.yml` file in the root directory of your project.
 
-If your Cloud Foundry deployment does not have the R buildpack installed, or the installed version is out of date, you can use the latest version by specifying it with the `-b` option when you push your app. For example:
+If your Cloud Foundry deployment does not have the R buildpack installed, or the installed version is out of date,
+you can use the latest version by specifying it with the `-b` option when you push your app.
+
+For example:
 
 <pre class="terminal">
 $ cf push my_app -b https://github.com/cloudfoundry/r-buildpack.git

@@ -3,17 +3,7 @@ title: Creating an extension buildpack for .NET apps
 owner: Buildpacks
 ---
 
-This topic describes how to write extension buildpacks for .NET apps.
-
-
-## <a id='prerequisites'></a> Prerequisites
-
-* Linux or MacOS development machine or VM
-* [golang](https://golang.org/) v1.10 or later programming language
-* [direnv](https://direnv.net/) environment variable manager for your shell
-
-
-## <a id='overview'></a> Overview
+Learn how to write extension buildpacks for your .NET apps.
 
 Most .NET Framework apps are pushed with the [Hosted Web Core (HWC) buildpack](../hwc/index.html).
 
@@ -21,14 +11,20 @@ The HWC buildpack contains the commonly required .NET dependencies used by .NET 
 
 An extension buildpack supplies a custom set of .NET dependencies to an app's container.
 
-You cannot add modules or extensions directly to the HWC buildpack. If the HWC buildpack lacks dependencies your app requires, <%= vars.recommended_by %> recommends that you create an extension buildpack containing the missing dependencies required by your app.
+You cannot add modules or extensions directly to the HWC buildpack.
+If the HWC buildpack lacks dependencies your app requires, <%= vars.recommended_by %> recommends that you create an extension buildpack containing the missing dependencies required by your app.
 
-<p class='note'><strong>Note:</strong> The HWC buildpack contains a number of built-in HWC features, for example, the URL Rewrite and HTTP compression modules. Extensions should only provide additional functionality to your app. For more information about existing HWC features, see <a href="../hwc/index.html#features">Features</a> in <em>HWC Buildpack</em>.</p>
+<p class='note'><strong>Note:</strong> The HWC buildpack contains a number of built in HWC features. For example, the URL Rewrite and HTTP compression modules. Extensions should only provide additional functionality to your app. For more information about existing HWC features, see <a href="../hwc/index.html#features">Features</a> in <em>HWC Buildpack</em>.</p>
 
-For additional extension buildpack configuration and creation commands see: [Creating a Custom Buildpack](http://engineering.pivotal.io/post/creating-a-custom-buildpack/) in the _Pivotal Engineering Journal_.
+For additional extension buildpack configuration and creation commands, see: [Creating a Custom Buildpack](http://engineering.pivotal.io/post/creating-a-custom-buildpack/) in the _Pivotal Engineering Journal_.
 
+## <a id='prerequisites'></a> Prerequisites
 
-## <a id='initialize'></a> Step 1: Initialize an extension buildpack
+* Linux or MacOS development machine or VM
+* [golang](https://golang.org/) v1.10 or later programming language
+* [direnv](https://direnv.net/) environment variable manager for your shell
+
+## <a id='initialize'></a> Step 1: Initializing an extension buildpack
 
 The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager/buildpack-packager) provides boilerplate code that you can use to start writing your buildpack.
 
@@ -60,7 +56,7 @@ The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/maste
     Where `BUILDPACK-DIRECTORY` is the directory created by the buildpack-packager command, containing the boilerplate code.
 
 
-## <a id='create'></a> Step 2: Create an extension buildpack to supply additional DLLs to a .NET Framework app
+## <a id='create'></a> Step 2: Creating an extension buildpack to supply additional DLLs to a .NET Framework app
 
 An extension buildpack provides the dependencies required by your app that are missing in HWC buildpack. The extension buildpack references and supplies needed dependencies to the app's container when you push the app.
 
@@ -131,7 +127,7 @@ To create an extension buildpack containing additional DLLs:
     ```
 
 
-## <a id='finish'></a> Step 3: Build the extension buildpack
+## <a id='finish'></a> Step 3: Building the extension buildpack
 
 To build a cached extension buildpack artifact:
 
@@ -144,7 +140,7 @@ To build a cached extension buildpack artifact:
     <p class='note'><strong>Note:</strong> If the buildpack's <code>supply.go</code> script contains a mistake, <code>buildpack-packager</code> throws an error. You should not push your app with the new extension <code>buildpack</code> until after all local errors have been corrected. You must push your app to determine whether the new extension buildpack functions as intended.</p>
 
 
-## <a id='finish'></a> Step 4: Validate the extension buildpack
+## <a id='finish'></a> Step 4: Validating the extension buildpack
 
 To push an app with the cached extension buildpack artifact:
 
@@ -165,7 +161,7 @@ To push an app with the cached extension buildpack artifact:
 If your extension buildpack does not include the correct dependencies, you will receive an error message.
 
 
-## <a id='combine'></a> Step 5: Combine extension buildpack with other features
+## <a id='combine'></a> Step 5: Combine an extension buildpack with other features
 
 If your extension buildpack has executables or scripts that need to be run, you can reference them either in the start command or in profile scripts.
 

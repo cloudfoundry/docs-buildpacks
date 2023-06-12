@@ -3,19 +3,20 @@ title: Staticfile buildpack
 owner: Buildpacks
 ---
 
-This topic tells you how to configure and use the Staticfile buildpack.
-
-## <a id='definitions'></a> Definitions
+You can configure and use the Staticfile buildpack in Cloud Foundry
 
 **Staticfile app**: An app or content that requires no backend code other than the NGINX webserver, which the buildpack provides. Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
 
-**Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with back ends hosted elsewhere. To find which version of NGINX the current Staticfile buildpack uses, see [Staticfile buildpack release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
+**Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with back ends hosted elsewhere.
+To find which version of NGINX the current Staticfile buildpack uses, see [Staticfile buildpack release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
 
 ## <a id='staticfile'></a> Staticfile detection
 
-If you create a file named `Staticfile` and locate it in the build directory of your app, Cloud Foundry automatically uses the Staticfile buildpack when you push your app.
+If you create a file named `Staticfile` and locate it in the build directory of your app, Cloud Foundry automatically uses
+the Staticfile buildpack when you push your app.
 
-The `Staticfile` file can be an empty file, or it can contain configuration settings for your app. For more information, see [Configuring the Buildpack](#configure) and [Pushing an App](#push_app).
+The `Staticfile` file can be an empty file, or it can contain configuration settings for your app.
+For more information, see [Configuring the Buildpack](#configure) and [Pushing an App](#push_app).
 
 ## <a id='memory'></a> Memory usage
 

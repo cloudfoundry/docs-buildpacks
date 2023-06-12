@@ -1,10 +1,10 @@
 ---
-title: Configuring service connections for Node.js
+title: Configuring service connections for Node.js application
 owner: Buildpacks
 ---
 
-This guide is for developers who wish to bind a data source to a Node.js
-application deployed and running on Cloud Foundry.
+You can bind a data source to a Node.js
+application that is deployed and running on Cloud Foundry.
 
 ## <a id='creds'></a>Parse VCAP_SERVICES for credentials
 
@@ -64,19 +64,20 @@ program to connect to your database.
 ## <a id='Connecting'></a> Connecting to a service
 
 You must include the appropriate package for the type of services your
-application uses. For example:
+application uses.
 
-* Rabbit MQ via the [amqp](https://github.com/postwait/node-amqp) module
+For example:
+
+* Rabbit MQ through the [amqp](https://github.com/postwait/node-amqp) module
 * [mongoose](http://mongoosejs.com/) modules
-* MySQL via the [mysql](https://github.com/felixge/node-mysql) module
-* Postgres via the [pg](https://github.com/brianc/node-postgres) module
-* Redis via the [redis](https://github.com/mranney/node_redis) module
+* MySQL through the [mysql](https://github.com/felixge/node-mysql) module
+* Postgres through the [pg](https://github.com/brianc/node-postgres) module
+* Redis through the [redis](https://github.com/mranney/node_redis) module
 
-## <a id='add'></a> Add the dependency to package.json
+## <a id='add'></a> Add dependency to package.json
 
 Edit `package.json` and add the intended module to the `dependencies` section.
-Normally, only one would be necessary, but for the sake of the example we will
-add all of them:
+Normally, only one is necessary, but for the sake of the example, add all of them:
 
 ```json
 {

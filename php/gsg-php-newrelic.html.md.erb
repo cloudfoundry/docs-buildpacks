@@ -5,20 +5,20 @@ owner: Buildpacks
 
 
 
-[New Relic](http://newrelic.com/) collects analytics about application and client-side performance.
+[New Relic](http://newrelic.com/) collects analytics about your application and client side performance.
 
 ## <a id="configuration"></a> Configuration
 
 You can configure New Relic for the PHP buildpack in one of two ways:
 
-* With a license key
-* With a Cloud Foundry service
+* License key
+* Cloud Foundry service
 
 ### With a license key
 
-Use this method if you already have a New Relic account,
+Use this method if you already have a New Relic account. Use these steps:
 
-1. In a web browser. navigate to the New Relic website to find your [license key](https://docs.newrelic.com/docs/accounts-partnerships/accounts/account-setup/license-key).
+1. In a web browser. go to the New Relic website to find your [license key](https://docs.newrelic.com/docs/accounts-partnerships/accounts/account-setup/license-key).
 
 1. Set the value of the environment variable `NEWRELIC_LICENSE` to your New Relic license key, either through the [manifest.yml file](../../devguide/deploy-apps/manifest.html#env-block) or by running the `cf set-env` command.
 
@@ -27,8 +27,9 @@ For more information, see
 
 ### With a Cloud Foundry service
 
-To configure New Relic for the PHP buildpack with a Cloud Foundry service, bind a New Relic service to the app. The buildpack automatically detects and configures New Relic.
+To configure New Relic for the PHP buildpack with a Cloud Foundry service, bind a New Relic service to the app.
+The buildpack automatically detects and configures New Relic.
 
 Your `VCAP_SERVICES` environment variable must contain a service named `newrelic`, the `newrelic` service must contain a key named `credentials`, and the `credentials` key must contain named `licenseKey`.
 
-<p class='note'><strong>NOTE</strong>: You cannot configure New Relic for the PHP buildpack with user-provided services.</p>
+<p class='note'><strong>NOTE</strong>: You cannot configure New Relic for the PHP buildpack with user provided services.</p>

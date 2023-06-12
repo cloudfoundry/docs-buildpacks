@@ -1,19 +1,19 @@
 ---
-title: Getting started deploying PHP apps
+title: Getting started deploying PHP apps to Cloud Foundry
 owner: Buildpacks
 ---
 
 <%=vars.GSG_intro_sentence%>
 
-This topic is intended to guide you through the process of deploying PHP apps to Cloud Foundry.
-If you experience a problem deploying PHP apps, review the  [Troubleshooting](#troubleshooting) section below.
+Learn about the process of deploying your PHP apps to Cloud Foundry.
+If you experience a problem deploying PHP apps, review the  [Troubleshooting](#troubleshooting) section.
 
 ## <a id="getting-started"></a>Getting started
 
 ### Prerequisites
 
 * Basic PHP knowledge
-* The [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) installed on your workstation
+* [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) installed on your workstation
 
 ### A first PHP application
 
@@ -30,9 +30,9 @@ $ cf push my-php-app -m 128M
 
 Change "my-php-app" to a unique name or you may see an error and a failed push.
 
-The example above creates and pushes a test application to Cloud Foundry.
+The previous example creates and pushes a test application to Cloud Foundry.
 
-Here is a breakdown of what happens when you run the example above:
+Here is a breakdown of what happens when you run the example:
 
   - On your workstation...
     - It creates a new directory and one PHP file, which calls `phpinfo()`
@@ -58,7 +58,8 @@ Also, you can [provide your own Apache or Nginx configurations].
 
 ### Prevent access To PHP files
 
-The buildpack puts all of your files into a publicly accessible directory.  In some cases, you might want to have PHP files that are not publicly accessible but are on the [include_path]. To do that, create a `lib` directory in your project folder and place your protected files there.
+The buildpack puts all of your files into a publicly accessible directory. In some cases, you might want to
+have PHP files that are not publicly accessible but are on the [include_path]. To do that, create a `lib` directory in your project folder and place your protected files there.
 
 For example:
 
@@ -157,7 +158,7 @@ To troubleshoot problems using the buildpack, you can do one of the following:
 
 By default, log files contain more detail than output to stdout. Set the `BP_DEBUG` environment variable to `true` for more verbose logging. This instructs the buildpack to set its log level to `DEBUG`, and to output logs to stdout. Follow [Environment Variables documentation] to set `BP_DEBUG`.
 
-### Increase log output with fpm.d
+### Increasing log output with fpm.d
 
 If you use [fpm.d](./gsg-php-config.html#fpm_d), follow the steps below to configure `fpm` to redirect worker stdout and stderr into the logs.
 

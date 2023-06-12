@@ -1,11 +1,11 @@
 ---
-title: PHP buildpack
+title: Using PHP buildpack with runtimes
 owner: Buildpacks
 ---
 
 
 
-Use the PHP buildpack with PHP or HHVM runtimes.
+You can use the PHP buildpack with PHP or HHVM runtimes.
 
 ## <a id='supported_software'></a> Supported software and versions
 The [release notes page](https://github.com/cloudfoundry/php-buildpack/releases) has a list of currently supported modules and packages.
@@ -38,9 +38,9 @@ $ cf push -m 128M -b https://github.com/cloudfoundry/php-buildpack.git my-php-ap
 
 Change **my-php-app** in the above example to a unique name on your target Cloud Foundry instance to prevent a hostname conflict error and failed push.
 
-The example above creates and pushes a test application, **my-php-app**, to Cloud Foundry. The `-b` argument instructs CF to use this buildpack. The remainder of the options and arguments are not specific to the buildpack, for questions on those consult the output of `cf help push`.
+The previous example creates and pushes a test application, **my-php-app**, to Cloud Foundry. The `-b` argument instructs CF to use this buildpack. The remainder of the options and arguments are not specific to the buildpack, for questions on those consult the output of `cf help push`.
 
-Here's a breakdown of what happens when you run the example above.
+Here's a breakdown of what happens when you run the example:
 
   - On your PC:
     - It will create a new directory and one PHP file, which just invokes `phpinfo()`
@@ -51,7 +51,7 @@ Here's a breakdown of what happens when you run the example above.
     - Apache HTTPD & PHP are downloaded, configured with the buildpack defaults and run.
     - Your application is accessible at the URL `http://my-php-app.example.com` (Replacing `example.com` with the domain of your public CF provider or private instance).
 
-### <a id='more_info'></a> More information about deploying
+### <a id='more_info'></a> More information about deployment
 While the *30 Second Tutorial* shows how quick and easy it is to get started using the buildpack, it skips over quite a bit of what you can do to adjust, configure and extend the buildpack.  The following sections and links provide a more in-depth look at the buildpack.
 
 
@@ -117,7 +117,7 @@ You can find current information about this buildpack on the PHP buildpack
 
 ## License
 
-The Cloud Foundry PHP Buildpack is released under version 2.0 of the [Apache License].
+The Cloud Foundry PHP Buildpack is released under v2.0 of the [Apache License].
 
 [php-info]:https://github.com/cloudfoundry-samples/cf-ex-php-info
 [PHPMyAdmin]:https://github.com/cloudfoundry-samples/cf-ex-phpmyadmin

@@ -56,9 +56,9 @@ by Cloud Foundry as a candidate for `DATABASE_URL`:
 
 Cloud Foundry uses the first candidate found to populate `DATABASE_URL`.
 
-## <a id='configuring-non-rails-applications'></a>Configure Non-Rails apps
+## <a id='configuring-non-rails-applications'></a>Configure non Rails apps
 
-Non-Rails applications can also access the `DATABASE_URL` variable.
+Non Rails applications can also access the `DATABASE_URL` variable.
 
 If you have more than one service with credentials, only the first will be
 populated into `DATABASE_URL`.
@@ -83,7 +83,9 @@ Use the hash key for the service to obtain the connection credentials from
 
 ## <a id='migrate'></a>Seed or migrate database
 
-Before you can use your database the first time, you must create and populate or migrate it. For more information about migrating database schemas, see [Services Overview](../../devguide/services/index.html#migrating).
+Before you can use your database the first time, you must create and populate or migrate it.
+
+For more information about migrating database schemas, see [Services Overview](../../devguide/services/index.html#migrating).
 
 ## <a id='troubleshooting'></a>Troubleshooting
 
@@ -98,7 +100,7 @@ your application.
 `cf env` displays the following environment variables:
 
 * The `VCAP_SERVICES` variables existing in the container environment
-* The user-provided variables set using the `cf set-env` command
+* The user provided variables set using the `cf set-env` command
 
 <pre class="terminal">
 $ cf env my-app

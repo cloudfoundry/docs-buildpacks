@@ -1,5 +1,5 @@
 ---
-title: Configuring Rake Tasks for Deployed Apps
+title: Configuring Rake Tasks for deployed apps
 owner: Buildpacks
 ---
 
@@ -8,7 +8,7 @@ For Cloud Foundry to automatically invoke a Rake task while a Ruby or Ruby on Ra
 * Include the Rake task in your app
 * Configure the application start command using the `command` attribute in the application manifest
 
-The following is an example that shows how to invoke a Rake database migration task at application startup.
+Use the following example to invoke a Rake database migration task at application startup:
 
 1. Create a file with the Rake task name and the extension `.rake`, and store it in the `lib/tasks` directory of your application.
 

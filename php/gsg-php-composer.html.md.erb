@@ -5,9 +5,10 @@ owner: Buildpacks
 
 
 
-Composer is activated when you supply a `composer.json` or `composer.lock` file. A `composer.lock` is not required, but is strongly recommended for consistent deployments.
+Composer is activated when you supply a `composer.json` or `composer.lock` file.
+A `composer.lock` is not required, but is strongly recommended for consistent deployments.
 
-You can require dependencies for packages and extensions. Extensions must be prefixed with the standard `ext-`. If you reference an extension that is available to the buildpack, it will automatically be installed. See the main [README] for a list of supported extensions.
+You can require dependencies for packages and extensions. Extensions must be prefixed with the standard `ext-`. If you reference an extension that is available to the buildpack, it automatically is installed. See the main [README] for a list of supported extensions.
 
 The buildpack uses the version of PHP specified in your `composer.json` or `composer.lock` file. Composer settings override the version set in the `options.json` file.
 
@@ -26,7 +27,8 @@ The PHP buildpack supports a subset of the version formats supported by Composer
 
 ## <a id="configuration"></a> Configuration
 
-The buildpack runs with a set of default values for Composer. You can adjust these values by adding a `.bp-config/options.json` file to your application and setting any of the following values in it.
+The buildpack runs with a set of default values for Composer.
+You can adjust these values by adding a `.bp-config/options.json` file to your application and setting any of the following values in it.
 
 | Variable                     | Explanation                                                                                                                                                                                                                                                                                                                                                                                             |
 | ---------------------------- | -----------------------------------------------------                                                                                                                                                                                                                                                                                                                                                   |
@@ -34,13 +36,13 @@ The buildpack runs with a set of default values for Composer. You can adjust the
 | COMPOSER_INSTALL_OPTIONS   | A list of options that should be passed to `composer install`. This defaults to `["--no-interaction", "--no-dev", "--no-progress"]`. The `--no-progress` option must be used due to the way the buildpack calls Composer.                                                                                                                                                                            |
 | COMPOSER_VENDOR_DIR        | Allows you to override the default value used by the buildpack. This is passed through to Composer and instructs it where to create the `vendor` directory. Defaults to `{BUILD_DIR}/{LIBDIR}/vendor`.                                                                                                                                                                                               |
 | COMPOSER_BIN_DIR           | Allows you to override the default value used by the buildpack. This is passed through to Composer and instructs it where to place executables from packages. Defaults to `{BUILD_DIR}/php/bin`.                                                                                                                                                                                                     |
-| COMPOSER_CACHE_DIR         | Allows you to override the default value used by the buildpack. This is passed through to Composer and instructs it where to place its cache files. Generally you should not change this value. The default is `{CACHE_DIR}/composer` which is a subdirectory of the cache folder passed in to the buildpack. Composer cache files will be restored on subsequent application pushes. |
+| COMPOSER_CACHE_DIR         | Allows you to override the default value used by the buildpack. This is passed through to Composer and instructs it where to place its cache files. Generally you should not change this value. The default is `{CACHE_DIR}/composer` which is a subdirectory of the cache folder passed in to the buildpack. Composer cache files are restored on subsequent application pushes. |
 
 By default, the PHP buildpack uses the `composer.json` and `composer.lock` files that reside inside the root directory, or in the directory specified as `WEBDIR` in your `options.json`. If you have composer files inside your app, but not in the default directories, use a `COMPOSER_PATH` environment variable for your app to specify this custom location, relative to the app root directory. Note that the `composer.json` and `composer.lock` files must be in the same directory.
 
 ## <a id="github-api-limits"></a> GitHub API request limits
 
-Composer uses GitHub's API to retrieve zip files for installation into the application folder. If you do not vendor dependencies before pushing an app, Composer will fetch dependencies during staging using the GitHub API.
+Composer uses GitHub's API to retrieve zip files for installation into the application folder. If you do not vendor dependencies before pushing an app, Composer can fetch dependencies during staging using the GitHub API.
 
 GitHub's API is request-limited. If you reach your daily allowance of API requests (typically 60), GitHub's API returns a `403` error and staging fails.
 
@@ -51,7 +53,7 @@ There are two ways to avoid the request limit:
 
 ### Vendor dependencies
 
-To vendor dependencies, you must run `composer install` before you push your application. You might also need to configure `COMPOSER_VENDOR_DIR` to "vendor".
+For vendor dependencies, you must run `composer install` before you push your application. You might also need to configure `COMPOSER_VENDOR_DIR` to "vendor".
 
 ### Supply a GitHub token
 

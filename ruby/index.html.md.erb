@@ -3,13 +3,11 @@ title: Ruby buildpack
 owner: Buildpacks
 ---
 
+Cloud Foundry uses the Ruby buildpack if your app has a `Gemfile` and `Gemfile.lock` in the root directory.
+The Ruby buildpack uses Bundler to install your dependencies.
 
-
-## <a id='pushing_apps'></a> Push an app
-
-Cloud Foundry uses the Ruby buildpack if your app has a `Gemfile` and `Gemfile.lock` in the root directory. The Ruby buildpack uses Bundler to install your dependencies.
-
-If your Cloud Foundry deployment does not have the Ruby buildpack installed or the installed version is out of date, push your app with the `-b` option to specify the buildpack:
+If your Cloud Foundry deployment does not have the Ruby buildpack installed or the installed version is out of date,
+push your app with the `-b` option to specify the buildpack:
 
 <pre class="terminal">
 $ cf push MY-APP -b https://github.com/cloudfoundry/ruby-buildpack.git
@@ -32,8 +30,10 @@ See the supported Ruby versions in the [release notes for the Ruby buildpack](ht
 
 ## <a id='runtime'></a>Specify a Ruby version
 
-Specify specific versions of the Ruby runtime in the `Gemfile` for your app as described in the following sections.
-<p class="note"><strong>Note</strong>: If you don't specify a version of the Ruby runtime, we will use the default Ruby version listed in the [buildpack manifest.yml file](https://github.com/cloudfoundry/ruby-buildpack/blob/950b2337ff8a7ac0a68f7420f48ddc4ae4764977/manifest.yml#L3-L5).</p>
+You can specify specific versions of the Ruby runtime in the `Gemfile` for your app as described in the following sections.
+
+<p class="note"><strong>Note</strong>: If you don't specify a version of the Ruby runtime, the default Ruby version listed in the
+[buildpack manifest.yml file](https://github.com/cloudfoundry/ruby-buildpack/blob/950b2337ff8a7ac0a68f7420f48ddc4ae4764977/manifest.yml#L3-L5) is used.</p>
 
 ### <a id='mri_runtime'></a>MRI
 
@@ -110,19 +110,20 @@ The buildpack stops logging when the staging is complete. The Loggregator handle
 
 Your application must write to stdout or stderr for its logs to be included in the Loggregator stream. For more information, see  [Application Logging in Cloud Foundry](../../devguide/deploy-apps/streaming-logs.html).
 
-If you are deploying a Rails application, the buildpack might not automatically install the necessary plugin or gem for logging, depending on the Rails version of the application:
+If you are deploying a Rails application, the buildpack might not automatically install the necessary plug-in or gem for logging, depending on the Rails version of the application:
 
-* Rails 2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application. For more information about the `rails_log_stdout` plugin, see the [GitHub README](https://github.com/ddollar/rails_log_stdout).
+* Rails v2.x: The buildpack automatically installs the `rails_log_stdout` plugin into the application. For more information about the `rails_log_stdout` plugin, see the [GitHub README](https://github.com/ddollar/rails_log_stdout).
 
-* Rails 3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, see the [GitHub README](https://github.com/heroku/rails_12factor).
+* Rails v3.x: The buildpack automatically installs the `rails_12factor` gem if it is not present and issues a warning message. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, see the [GitHub README](https://github.com/heroku/rails_12factor).
 
-* Rails 4.x: The buildpack issues a warning message that the `rails_12factor` gem is not present, but does not install the gem. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, see the [GitHub README](https://github.com/heroku/rails_12factor).
+* Rails v4.x: The buildpack issues a warning message that the `rails_12factor` gem is not present, but does not install the gem. You must add the `rails_12factor` gem to your `Gemfile` to quiet the warning message. For more information about the `rails_12factor` gem, see the [GitHub README](https://github.com/heroku/rails_12factor).
 
 For more information about the `rails_12factor` gem, see [GitHub README](https://github.com/heroku/rails_12factor).
 
 ## <a id='proxy_support'></a> Proxy support
 
-If you need to use a proxy to download dependencies during staging, set the `http_proxy` and `https_proxy` environment variables. For more information, see [Using a Proxy](../proxy-usage.html).
+If you need to use a proxy to download dependencies during staging, set the `http_proxy` and `https_proxy` environment variables.
+For more information, see [Using a Proxy](../proxy-usage.html).
 
 ## <a id='bosh_trusted_cert'></a>BOSH configured custom trusted certificate support
 
