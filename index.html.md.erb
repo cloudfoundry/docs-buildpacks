@@ -3,11 +3,14 @@ title: Buildpacks
 owner: Buildpacks
 ---
 
-Buildpacks provide framework and runtime support for apps. Buildpacks typically examine your apps to determine what dependencies to download and how to configure the apps to communicate with bound services.
+Buildpacks provide framework and runtime support for your apps. Buildpacks typically examine your apps to
+determine what dependencies to download and how to configure your apps to communicate with bound services.
 
-When you push an app, Cloud Foundry automatically detects an appropriate buildpack for it. This buildpack is used to compile or prepare your app for launch.
+When you push an app, Cloud Foundry automatically detects an appropriate buildpack for it.
+This buildpack is used to compile or prepare your app for launch.
 
-<p class="note"><strong>Note:</strong> Cloud Foundry deployments often have limited access to dependencies. This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.</p>
+<p class="note"><strong>Note:</strong> Cloud Foundry deployments often have limited access to dependencies.
+This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.</p>
 
 ## <a id='using-buildpacks'></a> Using buildpacks
 

@@ -1,17 +1,15 @@
 ---
-title: Support for Windows Gemfiles
+title: Windows Gemfile support
 owner: Buildpacks
 ---
 
+Learn how you can handle Ruby buildpack dependencies on Windows machines.
 
-
-This topic describes how the Ruby buildpack handles dependencies on Windows machines.
-
-## <a id='gemfiles'></a>Windows Gemfiles 
+## <a id='gemfiles'></a>Windows Gemfiles
 
 When a `Gemfile.lock` is generated on a Windows machine, it often contains gems
-with Windows-specific versions. This results in versions of gems such as
-`mysql2`, `thin`, and `pg` containing "-x86-mingw32." For example, the `Gemfile` may contain the following:
+with Windows specific versions. This results in versions of gems such as
+`mysql2`, `thin`, and `pg` containing "-x86-mingw32." For example, the `Gemfile` might contain the following:
 
 ```
 gem 'sinatra'
@@ -19,7 +17,7 @@ gem 'mysql2'
 gem 'json'
 ```
 
-When you run `bundle install` with the above `Gemfile` on a Windows machine, it results in the following `Gemfile.lock`:
+When you run `bundle install` with `Gemfile` on a Windows machine, it results in the following `Gemfile.lock`:
 
 ```
 GEM remote: http://rubygems.org/
@@ -40,11 +38,12 @@ DEPENDENCIES
   sinatra
 ```
 
-Notice the "-x86-mingw32" in the version number of `mysql2`. Since Cloud Foundry runs on Linux machines, this would fail to install. To mitigate this, the Ruby Buildpack removes the `Gemfile.lock` and uses Bundler to resolve dependencies
+Notice the "-x86-mingw32" in the version number of `mysql2`. Since Cloud Foundry runs on Linux machines, this fails to install. To mitigate this,
+the Ruby Buildpack removes the `Gemfile.lock` and uses Bundler to resolve dependencies
 from the `Gemfile`.
 
 <p class="note"><strong>Note</strong>:
-Removing the <code>Gemfile.lock</code> will cause dependency versions to be resolved
+Removing the <code>Gemfile.lock</code> causes dependency versions to be resolved
 from the <code>Gemfile</code>. This could result in different versions being installed than
 those listed in the <code>Gemfile.lock</code>.
 </p>

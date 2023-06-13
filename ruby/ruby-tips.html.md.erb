@@ -1,14 +1,15 @@
 ---
-title: Tips for Ruby developers
+title: Additional information on Ruby buildpacks in Cloud Foundry
 owner: Buildpacks
 ---
 
-This page has information specific to deploying Rack, Rails, or Sinatra apps with Cloud Foundry.
+You can deploy Rack, Rails, or Sinatra apps with Cloud Foundry.
 
 
 ## <a id='bundler'></a> App bundling
 
-You must run Bundler to create a `Gemfile` and a `Gemfile.lock`. These files must be in your app before you push to Cloud Foundry.
+You must run Bundler to create a `Gemfile` and a `Gemfile.lock`.
+These files must be in your app before you push to Cloud Foundry.
 
 To download Bundler, see [Gem Bundler](http://gembundler.com/).
 
@@ -23,7 +24,7 @@ run HelloWorld.new
 ~~~
 
 
-## <a id='precompile'></a> Asset pre-compilation
+## <a id='precompile'></a> Asset pre compilation
 
 Cloud Foundry supports the Rails asset pipeline. If you do not precompile assets before deploying your app, Cloud Foundry precompiles them when staging the app. Precompiling before deploying reduces the time it takes to stage an app.
 
@@ -56,7 +57,9 @@ For more information about app manifests and supported attributes, see [Deployin
 
 ### <a id='migrate-ruby-db'></a> Example: Invoking a Rake database migration task at App startup
 
-Below is an example of migrating a database schema using a Rake task. For more information about migrating database schemas, see the [Migrate a Database Schema](../../devguide/services/index.html#migrating) section of the _Services Overview_ topic.
+See the following example of migrating a database schema using a Rake task.
+
+For more information about migrating database schemas, see the [Migrate a Database Schema](../../devguide/services/index.html#migrating) section of the _Services Overview_ topic.
 
 To migrate a database schema using a Rake task:
 
@@ -92,13 +95,14 @@ To migrate a database schema using a Rake task:
 
 ## <a id='workers'></a> Rails 3 worker tasks
 
-This section describes how to create and deploy an example Rails app that uses a worker library to defer a task that a separate app runs. It also describes how to scale the resources available to the worker app.
+Learn how to create and deploy an example Rails app that uses a worker library to defer a task that a separate app runs. It also describes how to scale the resources available to the worker app.
 
 <p class="note"><strong>Note:</strong> Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the app manifest, to suppress route creation.</p>
 
 ### <a id='worker-libs'></a> Choose a worker task library
 
-You must choose a worker task library. The table below summarizes the three main libraries available for Ruby/Rails:
+You must choose a worker task library. The following table summarizes the three main libraries
+available for Ruby/Rails:
 
 | Library | Description |
 | ------- | ----------- |
@@ -108,7 +112,7 @@ You must choose a worker task library. The table below summarizes the three main
 
 For other alternatives, see [Background Jobs](https://www.ruby-toolbox.com/categories/Background_Jobs) on The Ruby Toolbox.
 
-### <a id='example-app'></a> Create an example app
+### <a id='example-app'></a> Creating an example app
 
 The example app described in this section uses Sidekiq.
 
@@ -208,7 +212,7 @@ To create an example app:
     &lt;%= @things.inspect %&gt;
     </pre>
 
-#### <a id='deploy'></a> Deploy the app
+#### <a id='deploy'></a> Deploying the app
 
 You must deploy your example app twice for it to work, once as a Rails web app and once as a standalone Ruby app. One way to do this is to keep separate Cloud Foundry manifests for each app type.
 
@@ -254,7 +258,7 @@ To create separate manifests for each app type:
     ```
     If the cf CLI asks for a URL for the worker app, select **none**.
 
-### <a id='test'></a> Test the app
+### <a id='test'></a> Testing the app
 
 To test the app:
 

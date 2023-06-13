@@ -1,9 +1,9 @@
 ---
-title: Working with buildpacks
+title: Working with buildpacks in Cloud Foundry
 owner: Buildpacks
 ---
 
-This topic describes how buildpacks are structured and detected in Cloud Foundry.
+This topic tells you about how buildpacks are structured and detected in Cloud Foundry.
 
 ## <a id='buildpack-scripts'></a> Buildpack scripts
 
@@ -233,7 +233,7 @@ If you explicitly specify buildpacks, Cloud Foundry performs the following inter
 1. Runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
 1. Accepts any modification of the `deps`/`index` directory.
 1. Accepts any modification of the `cache` directory.
-1. May disallow modification of any other directories.
+1. Might disallow modification of any other directories.
 
 1. For the last buildpack, the platform:
 1. If `/bin/finalize` is present:

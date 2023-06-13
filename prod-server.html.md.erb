@@ -3,7 +3,7 @@ title: Configuring the production server
 owner: Buildpacks
 ---
 
-This topic describes how to configure a production server for your apps.
+You can configure a production server for your apps in Cloud Foundry.
 
 When you deploy an app, Cloud Foundry determines the command that is used to start the app through the following process:
 
@@ -19,8 +19,8 @@ depending on the buildpack:
 
 ## <a id="procfile"></a>Procfiles
 
-One reason to use a Procfile is to specify a start command for buildpacks when a default start command is not provided.
-Some buildpacks use Python, to work on a variety of frameworks and do not attempt to provide a default start command.
+Use a Procfile to specify a start command for buildpacks when a default start command is not provided.
+Some buildpacks use Python to work on a variety of frameworks and do not attempt to provide a default start command.
 
 Another reason to use a Procfile is to configure a production server for web apps.
 
@@ -50,21 +50,21 @@ However, due to differing behavior of buildpacks, it might not be suitable with 
 Procfiles can be used with the
 following buildpacks:
 
-* [Binary Buildpack](./binary/index.html)
+* [Binary buildpack](./binary/index.html)
 
-* [.NET Core Buildpack](./dotnet-core/index.html)
+* [.NET Core buildpack](./dotnet-core/index.html)
 
-* [Go Buildpack](./go/index.html)
+* [Go buildpack](./go/index.html)
 
-* [NGINX Buildpack](./nginx/index.html)
+* [NGINX buildpack](./nginx/index.html)
 
-* [Node.js Buildpack](./node/index.html)
+* [Node.js buildpack](./node/index.html)
 
-* [Python Buildpack](./python/index.html)
+* [Python buildpack](./python/index.html)
 
-* [R Buildpack](./r/index.html)
+* [R buildpack](./r/index.html)
 
-* [Ruby Buildpack](./ruby/index.html)
+* [Ruby buildpack](./ruby/index.html)
 
 ## <a id="specify-server"></a>Specifying a web server
 
@@ -80,7 +80,7 @@ For more information about configuring a web server for Rails apps, see [Configu
 ## <a id="config-ruby"></a>Configuring a Ruby web server
 
 Cloud Foundry uses the default standard Ruby web server library WEBrick for Ruby and Ruby on Rails apps.
-However, Cloud Foundry can support a more robust production web server, for example, Phusion Passenger, Puma, Thin, or Unicorn.
+However, Cloud Foundry can support a more robust production web server. For example, Phusion Passenger, Puma, Thin, or Unicorn.
 
 To instruct Cloud Foundry to use a web server other than WEBrick, use the following steps:
 

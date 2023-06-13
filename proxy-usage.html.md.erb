@@ -3,7 +3,7 @@ title: Using a proxy server
 owner: Buildpacks
 ---
 
-This topic describes how to use a proxy server with buildpacks for your application.
+You can use a proxy server with buildpacks for your application.
 
 ## <a id='proxy-usage'></a> Using a proxy server
 
@@ -55,9 +55,9 @@ A buildpack uses a proxy server if that buildpack contacts the internet during s
 
 ## <a id='unset-env-variable'></a> Un-setting environment variables
 
-Removing an environment variable from the application manifest YAML file is not sufficient to un-set the environment variable.
+Removing an environment variable from the application manifest YAML file is not sufficient to unset the environment variable.
 
-You must also un-set the environment variables with the Cloud Foundry Command Line Interface (cf CLI) `cf unset-env` command:
+You must also unset the environment variables with the Cloud Foundry Command Line Interface (cf CLI) `cf unset-env` command:
 
     ```console
     cf unset-env YOUR-APP ENV_VAR_NAME

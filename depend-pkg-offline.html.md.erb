@@ -3,23 +3,24 @@ title: Packaging dependencies for offline buildpacks
 owner: Buildpacks
 ---
 
-
-
-This topic describes the dependency storage options available to developers creating offline buildpacks.
+Learn about the dependency storage options that are available to you when creating offline buildpacks.
 
 ##<a id='offline-buildpacks'></a>About offline buildpacks
 
-Online, or uncached, buildpacks require an internet connection to download dependencies. For example, language interpreters, and compilers. Alternatively, you can create offline, or cached, buildpacks that are packaged with their dependencies. These offline buildpacks do not connect to the Internet when they are used to deploy Cloud Foundry apps.
+Online, or uncached, buildpacks require an internet connection to download dependencies.
+For example, language interpreters, and compilers. Alternatively, you can create offline, or cached, buildpacks that are packaged with their dependencies. These offline buildpacks do not connect to the Internet when they are used to deploy Cloud Foundry apps.
 
-<p class="note"><strong>Note</strong>: Offline buildpacks may contain proprietary dependencies that require distribution licensing or export control measures.</p>
+<p class="note"><strong>Note</strong>: Offline buildpacks might contain proprietary dependencies that require distribution licensing or export control measures.</p>
 
 You can find instructions for building offline packages in the `README.md` file for each buildpack repository. For example, see the [Java buildpack](https://github.com/cloudfoundry/java-buildpack#offline-package).
 
 ## <a id='package-directly'></a> Packaging dependencies in the buildpack
 
-The simple way to package dependencies for a custom buildpack is to keep the dependencies in your buildpack source. However, this is not recommended. Keeping the dependencies in your source consumes unnecessary space.
+A simple way to package dependencies for a custom buildpack is to keep the dependencies in your buildpack source.
+However, this is not recommended. Keeping the dependencies in your source consumes unnecessary space.
 
-To avoid keeping the dependencies in source control, load the dependencies into your buildpack, and provide a script for the operator to create a zipfile of the buildpack.
+To avoid keeping the dependencies in source control, load the dependencies into your buildpack, and
+provide a script for the operator to create a zipfile of the buildpack.
 
 For example, you might complete the following process:
 

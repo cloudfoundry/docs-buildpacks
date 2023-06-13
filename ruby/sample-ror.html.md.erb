@@ -1,40 +1,39 @@
 ---
-title: Deploy a sample Ruby on Rails app
+title: Deploying a sample Ruby on Rails app to Cloud Foundry
 list_style_none: true
 owner: Buildpacks
 ---
 
-
-
-This topic guides the reader through deploying a sample Ruby on Rails app to Cloud Foundry.
+Learn how you can deploy a sample Ruby on Rails app to Cloud Foundry.
 
 ##<a id='prerequisites'></a>Prerequisites
 
 In order to deploy a sample Ruby on Rails app, you must have the following:
 
-- A Cloud Foundry deployment
-- The [Cloud Foundry Command Line Interface](../../cf-cli/install-go-cli.html)
-- A Cloud Foundry username and password with **Space Developer** [permissions](../../concepts/roles.html#roles). See your [Org Manager](../../concepts/roles.html#roles) if you require permissions.
+- Cloud Foundry deployment
+- [Cloud Foundry Command Line Interface](../../cf-cli/install-go-cli.html)
+- Cloud Foundry username and password with **Space Developer** [permissions](../../concepts/roles.html#roles). See your [Org Manager](../../concepts/roles.html#roles) if you require permissions.
 
 ##<a id='clone'></a>Step 1: Clone the app
 
-Run the following terminal command to create a local copy of the cf-sample-app-rails.
+Run the following command to create a local copy of the cf-sample-app-rails.
 <pre class="terminal">
 $ git clone <span>https</span>://github.com/cloudfoundry-samples/cf-sample-app-rails.git
 </pre>
-The newly created directory contains a `manifest.yml` file, which assists CF with deploying the app. See [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#minimal-manifest) for more information.
+The newly created directory contains a `manifest.yml` file, which assists CF with deploying the app.
+See [Deploying with Application Manifests](../../devguide/deploy-apps/manifest.html#minimal-manifest) for more information.
 
 ##<a id='login'></a>Step 2: Log in and target the API endpoint
 
-1. Run the following terminal command to log in and target the API endpoint of your deployment.  <%= vars.api_endpoint_book %>
+1. Run the following command to log in and target the API endpoint of your deployment.  <%= vars.api_endpoint_book %>
 
     <pre class="terminal">$ cf login -a YOUR-API-ENDPOINT</pre>
 
-1. Use your credentials to log in, and to select a [Space and Org](../../concepts/roles.html).
+1. Use your credentials to log in, and select a [Space and Org](../../concepts/roles.html).
 
 ##<a id='service'></a>Step 3: Create a service instance
 
-Run the following terminal command to create a PostgreSQL service instance for the sample app.
+Run the following command to create a PostgreSQL service instance for the sample app.
 Our service instance is `rails-postgres`. It uses the `postgresql-10-odb` service and the `standalone` plan.
 For more information about the `postgresql-10-odb` service, see [Crunchy PostgreSQL](https://www.crunchydata.com/products/crunchy-postgresql-for-cloud-foundry/).
 
@@ -45,13 +44,18 @@ For more information about the `postgresql-10-odb` service, see [Crunchy Postgre
 
 ##<a id='deploy'></a>Step 4: Deploy the app
 
-Make sure you are in the `cf-sample-app-rails` directory. Run the following terminal command to deploy the app:
+Verify that you are in the `cf-sample-app-rails` directory. Run the following command to deploy the app:
 
 <pre class="terminal">$ cf push cf-sample-app-rails</pre>
 
-`cf push cf-sample-app-rails` creates a URL route to your application in the form HOST.DOMAIN. In this example, HOST is cf-sample-app-rails. Administrators specify the DOMAIN. For example, for the DOMAIN `<%=vars.app_domain%>`, running `cf push cf-sample-app-rails` creates the URL `cf-sample-app-rails.<%=vars.app_domain%>`.
+`cf push cf-sample-app-rails` creates a URL route to your application in the form HOST.DOMAIN.
+In this example, HOST is cf-sample-app-rails. Administrators specify the DOMAIN.
+For example, for the DOMAIN `<%=vars.app_domain%>`, running `cf push cf-sample-app-rails` creates the URL `cf-sample-app-rails.<%=vars.app_domain%>`.
 
-The example below shows the terminal output when deploying the `cf-sample-app-rails`. `cf push` uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then follows the information in the manifest to start one instance of the app with 256M of RAM. After the app starts, the output displays the health and status of the app.
+The following example shows the output when you deploy the `cf-sample-app-rails`. `cf push` uses the instructions in the manifest file to
+create the app, create and bind the route, and upload the app. It then follows the information in the
+manifest file to start one instance of the app with 256M of RAM. After the app starts, the output displays
+the health and status of the app.
 
 <pre class="terminal">
 $ cf push cf-sample-app-rails
@@ -100,9 +104,9 @@ buildpack: ruby
 
 <p class='note'><strong>Note</strong>: If you want to view log activity while the app deploys, launch a new terminal window and run <code>cf logs cf-sample-app-rails</code>.
 
-##<a id='bind'></a>Step 5: Bind the service instance
+##<a id='bind'></a>Step 5: Binding the service instance
 
-1. Run the command below to bind the service instance to the sample app. Once bound, environment variables are stored that allow the app to connect to the service after a `cf push`, `cf restage`, or `cf restart` command.
+1. Run the following command to bind the service instance to the sample app. Once bound, environment variables are stored that allow the app to connect to the service after a `cf push`, `cf restage`, or `cf restart` command.
 
   <pre class="terminal">
   $ cf bind-service cf-sample-app-rails rails-postgres
@@ -128,7 +132,8 @@ buildpack: ruby
 
 ##<a id='verify'></a>Step 6: Verify the app
 
-Verify that the app is running by browsing to the URL generated in the output of the previous step. In this example, navigating to `cf-sample-app-rails.<%=vars.app_domain%>` verifies that the app is running.
+Verify that the app is running by going to the URL generated in the output of the previous step.
+In this example, go to `cf-sample-app-rails.<%=vars.app_domain%>` to verify that the app is running.
 
 
 For more information about this topic, see [Pushing an App](../../devguide/deploy-apps/deploy-app.html).

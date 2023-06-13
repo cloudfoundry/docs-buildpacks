@@ -1,12 +1,11 @@
 ---
-title: Customizing and developing buildpacks
+title: Customizing and developing buildpacks in Cloud Foundry
 owner: Buildpacks
 ---
 
-
-
 Buildpacks enable you to package frameworks and runtime support for your application.
-Cloud Foundry provides system buildpacks and an interface for customizing existing buildpacks and developing new buildpacks.
+Cloud Foundry provides system buildpacks and an interface for customizing existing buildpacks and
+developing new buildpacks.
 
 ## <a id="create-buildpacks"></a>Customizing and creating buildpacks
 
@@ -24,13 +23,17 @@ For information about customizing an existing buildpack or creating your own, se
 ## <a id='maintain-buildpacks'></a>Maintaining buildpacks
 
 After you have modified an existing buildpack or created your own, it is necessary to maintain it.
+
 See the following topics to maintain your own buildpacks:
 
 * <a href="./merging_upstream.html" class="subnav">Merging from upstream buildpacks</a>
 * <a href="./upgrading_dependency_versions.html" class="subnav">Upgrading dependency versions</a>
 
-<p class="note"><strong>Note</strong>: To configure a production server for your web app, see <a href="./prod-server.html">Configuring a production server</a> topic.</p>
+<p class="note"><strong>Note</strong>: To configure a production server for your web app,
+see <a href="./prod-server.html">Configuring a production server</a>.</p>
 
 ## <a id="using-ci"></a>Using CI for buildpacks
 
-For information about updating and releasing a new version of a Cloud Foundry buildpack through the Cloud Foundry Buildpacks Team Concourse pipeline, see <a href="./buildpack-ci-index.html" class="subnav">Using CI for buildpacks</a>. You can use this as a model when working with Concourse to build and release new versions of your own buildpacks.
+For information about updating and releasing a new version of a Cloud Foundry buildpack through
+the Cloud Foundry Buildpacks Team Concourse pipeline, see <a href="./buildpack-ci-index.html" class="subnav">Using CI for buildpacks</a>.
+You can use this as a model when working with Concourse to build and release new versions of your own buildpacks.

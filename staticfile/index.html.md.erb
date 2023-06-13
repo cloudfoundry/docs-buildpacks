@@ -3,9 +3,11 @@ title: Staticfile buildpack
 owner: Buildpacks
 ---
 
-You can configure and use the Staticfile buildpack in Cloud Foundry
+You can configure and use the Staticfile buildpack in Cloud Foundry.
 
-**Staticfile app**: An app or content that requires no backend code other than the NGINX webserver, which the buildpack provides. Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
+**Staticfile app**: An app or content that requires no backend code other than the
+NGINX webserver, which the buildpack provides.
+Examples of staticfile apps are front-end JavaScript apps, static HTML content, and HTML/JavaScript forms.
 
 **Staticfile buildpack**: The buildpack that provides runtime support for staticfile apps and apps with back ends hosted elsewhere.
 To find which version of NGINX the current Staticfile buildpack uses, see [Staticfile buildpack release notes](https://github.com/cloudfoundry/staticfile-buildpack/releases).
@@ -24,7 +26,8 @@ NGINX requires 20&nbsp;MB of RAM to serve static assets. When using the Staticfi
 
 ## <a id='configure'></a>Configure the buildpack
 
-This section describes configuration options that are available for the Staticfile buildpack. If you need to make configuration changes to NGINX that are not listed in the table, use the NGINX Buildpack instead of the Staticfile buildpack. For more information, see [NGINX Buildpack](../nginx/index.html).
+This section describes configuration options that are available for the Staticfile buildpack.
+If you need to make configuration changes to NGINX that are not listed in the table, use the NGINX Buildpack instead of the Staticfile buildpack. For more information, see [NGINX Buildpack](../nginx/index.html).
 
 ### <a id='staticfile'></a> Staticfile file configuration
 
@@ -153,10 +156,7 @@ Use the following instructions to make other configuration changes.
 
 #### <a name="basic-authentication"></a> Basic authentication
 
-You can enable basic authentication for your app or website. A sample basic authentication dialog box is shown below:
-
-<img src="../images/basicauth.png">
-
+You can enable basic authentication for your app or website.
 You can create a hashed username and password pair for each user by using a site like <a href="http://www.htaccesstools.com/htpasswd-generator/">Htpasswd Generator</a>.
 
 **Configuration**

@@ -1,16 +1,17 @@
 ---
-title: Creating custom buildpacks
+title: Creating custom buildpacks for Cloud Foundry
 owner: Buildpacks
 ---
 
-This topic describes how to create custom buildpacks for Cloud Foundry.
+You can create custom buildpacks for Cloud Foundry.
 
 For more information about how buildpacks work, see [How Buildpacks Work](understand-buildpacks.html).
 
 
 ## <a id='packaging-custom-buildpacks'></a> Packaging custom buildpacks
 
-Cloud Foundry buildpacks can work with limited or no internet connectivity. The Buildpack Packager gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments. For more information, see the [Buildpack Packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) repository on GitHub.
+Cloud Foundry buildpacks can work with limited or no internet connectivity.
+The Buildpack Packager gives the same flexibility to custom buildpacks, enabling them to work in partially or completely disconnected environments. For more information, see the [Buildpack Packager](https://github.com/cloudfoundry/libbuildpack/tree/master/packager) repository on GitHub.
 
 ### <a id='use-buildpack-packager'></a> Using the Buildpack Packager
 
@@ -69,7 +70,8 @@ For more information, see [Buildpack Packager v2.3.0](https://github.com/cloudfo
 
 The Buildpack Packager script validates this object according to the following rules:
 
-* You can create at most one entry under `default_versions` for a single dependency. The following example causes Buildpack Packager to fail with an error because the manifest specifies two default versions for the same `go` dependency.
+* You can create at most one entry under `default_versions` for a single dependency.
+The following example causes Buildpack Packager to fail with an error because the manifest file specifies two default versions for the same `go` dependency.
 
     ```
     default_versions:
@@ -99,9 +101,11 @@ The Buildpack Packager script validates this object according to the following r
 
 ## <a id='contract'></a> Core buildpack communication contract
 
-This section describes the communication contract followed by the Cloud Foundry core buildpacks. This contract enables buildpacks to interact with one another, so that developers can use multiple buildpacks with their apps.
+Learn about the communication contract followed by the Cloud Foundry core buildpacks.
+This contract enables buildpacks to interact with one another, so that you can use multiple buildpacks with
+your apps.
 
-Buildpack developers must ensure their custom buildpacks follow the contract.
+You must ensure your custom buildpacks follow the contract.
 
 This section uses the following placeholders:
 
@@ -150,7 +154,8 @@ For the last buildpack:
 
 ## <a id='deploying-with-custom-buildpacks'></a> Deploying apps with a custom buildpack
 
-Once a custom buildpack has been created and pushed to a public Git repository, the Git URL can be passed through the cf CLI when pushing an app.
+Once a custom buildpack has been created and pushed to a public Git repository,
+the Git URL can be passed through the cf CLI when pushing an app.
 
 For example, you can use a buildpack that has been pushed to GitHub by running:
 
@@ -212,4 +217,5 @@ The app is then deployed to Cloud Foundry, and the buildpack is cloned from the 
 <%= vars.disable_custom %>
 
 
-<p class="note"><strong>Note:</strong> A common development practice for custom buildpacks is to fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, see <a href="https://help.github.com/articles/syncing-a-fork">Syncing a fork</a> in the GitHub documentation.</p>
+<p class="note"><strong>Note:</strong> A common development practice for custom buildpacks is to
+fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your custom buildpack, see <a href="https://help.github.com/articles/syncing-a-fork">Syncing a fork</a> in the GitHub documentation.</p>

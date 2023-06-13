@@ -1,19 +1,21 @@
 ---
-title: Releasing a new buildpack version
+title: Releasing a new Cloud Foundry buildpack version
 owner: Buildpacks
 ---
 
-
-
-This topic describes how to update and release a new version of a Cloud Foundry (CF) buildpack through the CF Buildpacks Team Concourse [pipeline](https://buildpacks.ci.cf-app.com/). Concourse is a continuous integration (CI) tool for software development teams. This is the process used by the CF Buildpacks Team and other CF buildpack development teams. You can use this process as a model for using Concourse to build and release new versions of your own buildpacks.
+You can update and release a new version of a Cloud Foundry (CF) buildpack through the
+CF Buildpacks Team Concourse [pipeline](https://buildpacks.ci.cf-app.com/). Concourse is a continuous
+integration (CI) tool for software development teams. This is the process used by the CF Buildpacks Team and
+other CF buildpack development teams. You can use this process as a model for using Concourse to build and
+release new versions of your own buildpacks.
 
 The Concourse pipelines for Cloud Foundry buildpacks are located in the [buildpacks-ci](http://github.com/cloudfoundry/buildpacks-ci) GitHub repository.
 
 ## <a id="releasing-a-new-buildpack-version"></a>Releasing a new buildpack version
 
-To release a new buildpack version, perform the following:
+To release a new buildpack version, do the following:
 
-1. Make sure you download the `buildpacks-ci` repository:
+1. Download the `buildpacks-ci` repository:
   <pre class="terminal">
   $ git clone https<span>:</span>//github.com/cloudfoundry/buildpacks-ci.git
   </pre>
@@ -48,7 +50,7 @@ into relevant changes. For more information, see [Modify Changelogs](#changelogs
   $ git push origin develop
   </pre>
 
-## <a id="concourse"></a>Concourse Buildpack Workflow
+## <a id="concourse"></a>Concourse buildpack workflow
 
 If `buildpacks-ci` is not deployed to Concourse, manually add
 a Git tag to the buildpack, and mark the tag as a release on GitHub.
