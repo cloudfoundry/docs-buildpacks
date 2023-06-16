@@ -1,9 +1,9 @@
 ---
-title: Using Java Native Image
+title: Using Java Native Image in Cloud Foundry
 owner: Java
 ---
 
-Learn how to build your Java apps with native image support and deploy those apps to Cloud Foundry.
+You can build your Java apps with native image support and deploy those apps to Cloud Foundry.
 
 A growing number of Java users are building Java apps using support for native images.
 For more information, see [Native Image](https://www.graalvm.org/reference-manual/native-image/) in the GraalVM documentation.
@@ -18,12 +18,12 @@ To build your app that is suitable for running on Cloud Foundry you can do one o
 - [Build Using Native Build Tools](#native-build-tools)
 
 
-## <a id="cloud-native-buildpacks"></a>Build using Cloud Native Buildpacks
+## <a id="cloud-native-buildpacks"></a>Building using Cloud Native buildpacks
 
 Cloud Native Buildpacks include support for building native image apps.
 You can pass in your source code or a compiled JAR and Cloud Native Buildpacks installs the required tools and builds a compatible image.
 
-### <a id="cnb-example-build"></a>Example build Using Cloud Native Buildpacks
+### <a id="cnb-example-build"></a>Using Cloud Native buildpacks example
 
 1. Clone the example repository from GitHub:
 
@@ -41,7 +41,7 @@ You can pass in your source code or a compiled JAR and Cloud Native Buildpacks i
 
 For more information about building with Cloud Native Buildpacks, see [Getting Started](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-buildpacks) in the Spring Native documentation.
 
-### <a id="cnb-example-deploy"></a>Deploy using Cloud Native Buildpacks
+### <a id="cnb-example-deploy"></a>Deploying using Cloud Native buildpacks
 
 This section describes how to deploy a Java app with native image support using Cloud Native Buildpacks.
 
