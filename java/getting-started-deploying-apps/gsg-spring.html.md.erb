@@ -11,7 +11,7 @@ This guide walks you through deploying a Spring app to Cloud Foundry. You can ch
 
 If you experience a problem following the steps, see the <%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_spring</code> to clone the <code>pong_matcher_spring</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
+<p class="tip"><strong>Sample app step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_spring</code> to clone the <code>pong_matcher_spring</code> app from GitHub, and follow the instructions in the Sample app step sections.</p>
 
 <p class="note"><strong>Note</strong>: Ensure that your Spring app runs locally before continuing with this procedure.</p>
 
@@ -54,7 +54,7 @@ The following table lists build script information for Gradle and Maven and prov
 </tr>
 </table>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pom.xml</code> file contains the dependencies for the <code>pong_matcher_spring</code> sample app, as the example below shows.
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>pom.xml</code> file contains the dependencies for the <code>pong_matcher_spring</code> sample app, as the example below shows.
 </p>
 
 ```xml
@@ -105,7 +105,7 @@ $ cf push -m 128M
 
 When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The Cloud Foundry Java buildpack uses settings declared in the sample app to allocate 1 GB of memory to the app.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The Cloud Foundry Java buildpack uses settings declared in the sample app to allocate 1 GB of memory to the app.</p>
 
 ### Step 3: Provide a JDBC driver
 
@@ -114,13 +114,13 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>pong_matcher_spring</code> sample app, the <code>src/main/resources/application.yml</code> file declares the JDBC driver, and the <code>pom.xml</code> file includes the JDBC driver as a dependency.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. In the <code>pong_matcher_spring</code> sample app, the <code>src/main/resources/application.yml</code> file declares the JDBC driver, and the <code>pom.xml</code> file includes the JDBC driver as a dependency.</p>
 
 ### Step 4: Configure service connections for a Spring app
 
 Cloud Foundry provides extensive support for creating and binding a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information about creating and binding a service connection for your app, refer to [Configuring Service Connections](../configuring-service-connections.html).
 
-<div class="tip"><strong>Sample App Step: Create a Service Instance</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
+<div class="tip"><strong>Sample app step: Create a Service Instance</strong><br />Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
 
 <pre class="terminal">
 $ cf create-service cleardb spark mysql
@@ -129,7 +129,7 @@ OK
 </pre>
 </div>
 
-<div class="tip"><strong>Sample App Step: Bind a Service Instance</strong><br />You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
+<div class="tip"><strong>Sample app step: Bind a Service Instance</strong><br />You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
 
 <pre class="terminal">
 ---
@@ -146,7 +146,7 @@ You can specify deployment options in a manifest file `manifest.yml` that the `c
 
 Refer to the [Deploying with Application Manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_spring</code> sample app does not require any additional configuration to deploy the app.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_spring</code> sample app does not require any additional configuration to deploy the app.</p>
 
 ### Step 6: Log in and target the API endpoint
 
@@ -160,7 +160,7 @@ Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 
 <%=vars.gen_GSG%>
 
-  <p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
+  <p class="tip"><strong>Sample app step</strong><br />You must do this step to run the sample app.</p>
 
 ### Step 7: Deploying your app
 
@@ -191,16 +191,19 @@ If you want to view log activity while the app deploys, launch a new terminal wi
 
 Once your app deploys, go to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
-**Sample App Step**
+**Sample app step**
 1. Run `brew install maven`.
 1. Change to the `app` directory, and run `mvn package` to build the app.
 1. Run `cf push pong_matcher_spring -n HOSTNAME` to push the app.
 Example: `cf push pong_matcher_spring -n my-spring-app`.
 
+<p class="note"><strong>Note</strong>: This example works for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must be set using the <code>routes</code> property in the manifest.
+</p>
 <p class="note"><strong>Note</strong>: You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 </p>
 
 The following example shows the terminal output of deploying the <code>pong_matcher_spring</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>mysql</code> service and starts one instance of the app with 1 GB of memory. After the app starts, the output displays the health and status of the app.
+<strong>Note</strong>: This example works for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must be set using the <code>routes</code> property in the manifest.
 
 <pre class="terminal">
 $ cf push pong_matcher_spring -n spring1119
@@ -252,9 +255,9 @@ urls: spring1119.cfapps.io
 
 Use the cf <%=vars.dev_console_2%> to review information and administer your app and your Cloud Foundry account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
-See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
+See [Manage your application with the cf CLI](#cli-manage) for more information. <%=vars.dev_console_4%>
 
-<p class="tip"><strong>Sample App Step</strong><br />
+<p class="tip"><strong>Sample app step</strong><br />
 To test the sample app, do the following:
 <br /><br />
 1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
@@ -319,7 +322,4 @@ If you specify a `Content-Encoding` header of `gzip` but do not specify a `Conte
 
 ### App requires a unique URL
 
-Cloud Foundry requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and Cloud Foundry cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
-
-* `-n` to assign a different HOST name for the app.
-* `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
+Cloud Foundry requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and Cloud Foundry cannot successfully deploy the app. You can fix this issue by running `cf push` with the `--random-route` flag to create a unique URL. Using `--random-route` to create a URL that includes the app name and random words might create a long URL, depending on the number of words that the app name includes.

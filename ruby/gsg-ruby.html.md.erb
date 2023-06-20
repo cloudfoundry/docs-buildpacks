@@ -8,10 +8,10 @@ owner: Buildpacks
 Learn about deploying a Ruby app to
 Cloud Foundry.
 If you experience a problem following the steps, check the
-<%=vars.known_issues%> topic, or refer to the [Troubleshooting Application Deployment and Health](./../../devguide/deploy-apps/troubleshoot-app-health.html)
+<%=vars.known_issues%> topic, or refer to the [Troubleshooting application deployment and health](./../../devguide/deploy-apps/troubleshoot-app-health.html)
 topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_ruby.git</code> to clone the <code>pong_matcher_ruby</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
+<p class="tip"><strong>Sample app step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_ruby.git</code> to clone the <code>pong_matcher_ruby</code> app from GitHub, and follow the instructions in the Sample app step sections.</p>
 
 <p class="note"><strong>Note</strong>: Ensure that your Ruby app runs locally before continuing with this procedure.</p>
 
@@ -80,7 +80,7 @@ To create a service instance:
     Choose a `SERVICE` and `PLAN` from the list, and provide a unique name for the
     `SERVICE-INSTANCE`.
 
-    <p class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 30mb redis</code>. This creates a service instance named <code>redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.</p>
+    <p class="tip"><strong>Sample app step</strong><br />Run <code>cf create-service rediscloud 30mb redis</code>. This creates a service instance named <code>redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.</p>
 
     <pre class="terminal">
     $ cf create-service rediscloud 30mb redis
@@ -109,11 +109,11 @@ Alternately, you can configure the deployment manifest file by adding a
 `services` block to the `applications` block and specifying the service
 instance.
 For more information and an example on service binding using a manifest, see the
-Sample App Step.
+Sample app step.
 
 <%=vars.dev_console_5%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>manifest.yml</code> for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.</p>
 
 ```yaml
 services:
@@ -130,7 +130,7 @@ You can specify app deployment options in a manifest that the `cf push` command 
 
 Cloud Foundry uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, Cloud Foundry can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configuring a Production Server](../prod-server.html) topic for help configuring a server other than WEBrick.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for <code>pong_matcher_ruby</code> does not require any additional configuration to deploy the app.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>manifest.yml</code> file for <code>pong_matcher_ruby</code> does not require any additional configuration to deploy the app.</p>
 
 ### Step 3: Log in and target the API endpoint
 
@@ -144,7 +144,7 @@ The API endpoint is <%=vars.api_endpoint%>.
 
 <%=vars.gen_GSG%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You must do this step to run the sample app.</p>
+<p class="tip"><strong>Sample app step</strong><br />You must do this step to run the sample app.</p>
 
 ### Step 4: Deploy an app
 
@@ -178,7 +178,8 @@ Once your app deploys, browse to your app URL.
 Search for the `urls` field in the `App started` block in the output of the `cf push` command.
 Use the URL to access your app online.
 
-<p class="tip"><strong>Sample App Step</strong><br />Run <code>cf push pong_matcher_ruby -n HOST_NAME</code>.<br /><br />Example: <code>cf push pong_matcher_ruby -n pongmatch-ex12</code> <br /><br />The example below shows the terminal output of deploying the <code>pong_matcher_ruby</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>redis</code> service and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.</p>
+<p class="tip"><strong>Sample app step</strong><br />Run <code>cf push pong_matcher_ruby -n HOST_NAME</code>.<br /><br />Example: <code>cf push pong_matcher_ruby -n pongmatch-ex12</code> <br /><br />The example below shows the terminal output of deploying the <code>pong_matcher_ruby</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>redis</code> service and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.<br />
+<strong>Note</strong>: These examples work for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must be set using the <code>routes</code> property in the manifest.</p>
 
 <p class="note"><strong>Note</strong>: The <code>pong_matcher_ruby</code> app does not include a web interface. To interact with the  <code>pong_matcher_ruby</code> app, see the interaction instructions on GitHub: <a href="https://github.com/cloudfoundry-samples/pong_matcher_ruby">https://github.com/cloudfoundry-samples/pong_matcher_ruby</a>.</p>
 
@@ -274,10 +275,4 @@ Cloud Foundry requires that each app that you deploy has a unique
 URL.
 Otherwise, the new app URL collides with an existing app URL and
 Cloud Foundry cannot successfully deploy the app.
-You can resolve this issue by running `cf push` with either of the following
-flags to create a unique URL:
-
-* `-n` to assign a different HOST name for the app.
-* `--random-route` to create a URL that includes the app name and random words.
-Using this option might create a long URL, depending on the number of words that
-the app name includes.
+You can fix this issue by running `cf push` with the `--random-route` flag to create a unique URL. Using `--random-route` to create a URL that includes the app name and random words might create a long URL, depending on the number of words that the app name includes.

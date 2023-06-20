@@ -8,7 +8,7 @@ owner: Java
 This information walks you through deploying a Ratpack app to Cloud Foundry.
 If you experience a problem following the steps, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample App Step sections.</p>
+<p class="tip"><strong>Sample app step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample app step sections.</p>
 
 <p class="note"><strong>Note</strong>: Ensure that your Ratpack app runs locally before continuing with this procedure.</p>
 
@@ -43,7 +43,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
 </tr>
 </table>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app, as the example below shows.
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app, as the example below shows.
 </p>
 
 ```
@@ -72,7 +72,7 @@ $ cf push -m 128M
 
 When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.</p>
 
 ### Step 3: Provide a JDBC driver
 
@@ -81,13 +81,13 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> sample app does not require a JDBC driver.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> sample app does not require a JDBC driver.</p>
 
 ### Step 4: (Optional) Configure a Procfile
 
 Use a Procfile to declare required runtime processes for your web app and to specify your web server. For more information, see the [Configuring a Production Server](../../prod-server.html) topic.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.</p>
 
 ### Step 5: Create and bind a service instance for a Ratpack application
 
@@ -135,7 +135,7 @@ For more information about creating and using service instances, refer to the [S
       <li><code>SERVICE-INSTANCE</code> is a unique name you provide for the service instance.</li>
     </ul>
 
-<div class="tip"><strong>Sample App Step</strong><br />Run <code>cf create-service rediscloud 30mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.
+<div class="tip"><strong>Sample app step</strong><br />Run <code>cf create-service rediscloud 30mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses the <code>rediscloud</code> service and the <code>30mb</code> plan, as the example below shows.
 
 <pre class="terminal">
 $ cf create-service rediscloud 30mb baby-redis
@@ -160,7 +160,7 @@ Alternately, you can configure the deployment manifest file by adding a `service
 
 <%=vars.dev_console_5%>
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
 
 <pre class="terminal">
 ---
@@ -175,9 +175,9 @@ applications:
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
-Refer to the [Deploying with Application Manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
+Refer to [Deploying with application manifests](../../../devguide/deploy-apps/manifest.html) for more information.
 
-<p class="tip"><strong>Sample App Step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_groovy</code> sample app does not require any additional configuration to deploy the app.</p>
+<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_groovy</code> sample app does not require any additional configuration to deploy the app.</p>
 
 ### Step 7: Log in and target the API endpoint
 
@@ -191,7 +191,7 @@ Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 
 <%=vars.gen_GSG%>
 
-  <p class="tip"><strong>Sample App Step</strong><br />You must perform this step to run the sample app.</p>
+  <p class="tip"><strong>Sample app step</strong><br />You must perform this step to run the sample app.</p>
 
 ### Step 8: Deploy the app
 
@@ -221,15 +221,18 @@ If you want to view log activity while the app deploys, launch a new terminal wi
 
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
-**Sample App Step**
+**Sample app step**
 1. Change to the `app` directory, and run `./gradlew distZip` to build the app.
 1. Run `cf push pong_matcher_groovy -n HOST-NAME` to push the app.
 Example: `cf push pong_matcher_groovy -n groovy-ratpack-app`
 
+<p class="note"><strong>Note</strong>: This example is valid for cf CLI v6. In cf CLI v7 and onwards, the <code>-n</code> flag is not supported. The host name must be specified in the manifest, using the <code>routes</code> attribute.
+</p>
 <p class="note"><strong>Note</strong>: You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 </p>
 
 The following example shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
+**Note:** This example is valid for cf CLI v6. In cf CLI v7 and onwards, the `-n` flag is not supported. The host name must be specified in the manifest, using the `routes` attribute.
 
 <pre class="terminal">
 $ cf push pong_matcher_groovy -n groovy-ratpack-app
@@ -283,7 +286,7 @@ Use the cf <%=vars.dev_console_2%> to review information and administer your app
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-<div class="tip"><strong>Sample App Step</strong><br />
+<div class="tip"><strong>Sample app step</strong><br />
 To test the sample app, do the following:
 <br /><br />
 1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
@@ -343,7 +346,4 @@ Even when the deploy fails, the app might exist on Cloud Foundry. Run `cf apps` 
 
 ### App requires a unique URL
 
-Cloud Foundry requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and Cloud Foundry cannot successfully deploy the app. You can fix this issue by running `cf push` with either of the following flags to create a unique URL:
-
-* `-n` to assign a different HOST name for the app.
-* `--random-route` to create a URL that includes the app name and random words. Using this option might create a long URL, depending on the number of words that the app name includes.
+Cloud Foundry requires that each app that you deploy have a unique URL. Otherwise, the new app URL collides with an existing app URL and Cloud Foundry cannot successfully deploy the app. You can fix this issue by running `cf push` with the `--random-route` flag to create a unique URL. Using `--random-route` to create a URL that includes the app name and random words might create a long URL, depending on the number of words that the app name includes.
