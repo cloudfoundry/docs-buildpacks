@@ -18,7 +18,7 @@ If you create a file named `Staticfile` and locate it in the build directory of 
 the Staticfile buildpack when you push your app.
 
 The `Staticfile` file can be an empty file, or it can contain configuration settings for your app.
-For more information, see [Configuring the Buildpack](#configure) and [Pushing an App](#push_app).
+For more information, see [Configuring the buildpack](#configure) and [Pushing an App](#push_app).
 
 ## <a id='memory'></a> Memory usage
 
@@ -27,7 +27,7 @@ NGINX requires 20&nbsp;MB of RAM to serve static assets. When using the Staticfi
 ## <a id='configure'></a>Configure the buildpack
 
 This section describes configuration options that are available for the Staticfile buildpack.
-If you need to make configuration changes to NGINX that are not listed in the table, use the NGINX Buildpack instead of the Staticfile buildpack. For more information, see [NGINX Buildpack](../nginx/index.html).
+If you need to make configuration changes to NGINX that are not listed in the table, use the NGINX buildpack instead of the Staticfile buildpack. For more information, see [NGINX buildpack](../nginx/index.html).
 
 ### <a id='staticfile'></a> Staticfile file configuration
 
@@ -54,7 +54,8 @@ To configure these options, add the configuration property as a new line in your
       <code>directory: visible</code>
     </td>
     <td><strong>Directory list</strong>: Displays an HTML page that shows a directory index for your site. A sample of a directory list is shown here:<br>
-      <img src="../images/directory-index.png" ![alt-text="HTML page that shows a directory index"] style="margin: 20px"><br>
+    <img src="../images/directory-index.png"
+   ![alt-text="HTML page that shows a directory index"]"><br>
       If your site is missing an <code>index.html</code> file, your app displays a directory list instead of the standard 404 error page.
     </td>
   </tr>
