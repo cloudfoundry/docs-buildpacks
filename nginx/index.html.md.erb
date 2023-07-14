@@ -43,9 +43,9 @@ based on values known at start time.
 
 ### <a id='port'></a> Port
 
-Use `{{port}}` to set the port on which to listen. At start time, `{{port}}` will interpolate in the value of `$PORT`.
+Use `{{port}}` to set the port on which to listen. At start time, `{{port}}` interpolates in the value of `$PORT`.
 
-<p class="note"><strong>Note</strong>: You must use <code>{{port}}</code> in your <code>nginx.conf</code> file.</p>
+<p> You must use <code>{{port}}</code> in your <code>nginx.conf</code> file.</p>
 
 For example, to set an NGINX server to listen on `$PORT`, include the following in your `nginx.conf` file:
 
@@ -131,14 +131,14 @@ To load a built in module like `ngx_stream_module`, add the following line to th
 {{module "ngx_stream_module"}}
 ```
 
-<p class="note"><strong>Note</strong>: To name your modules directory something other than <code>modules</code>, use the NGINX <code>load_module</code> directive, providing a path to the module relative to the location of your <code>nginx.conf</code> file. For example:
+<p> To name your modules directory something other than <code>modules</code>, use the NGINX <code>load_module</code> directive, providing a path to the module relative to the location of your <code>nginx.conf</code> file. For example:
 <code>load_module some_module_dir/my_module.so</code></p>
 
 ### <a id='enabling-logging'></a> Enable logging
 
 By default, logging is deactivated in the NGINX buildpack. This helps optimize performance.
 
-If you configure NGINX to log to stdout or stderr, the logs will be captured by the Cloud Foundry logging subsystem.
+If you configure NGINX to log to stdout or stderr, the logs are captured by the Cloud Foundry logging subsystem.
 
 #### <a id='enabling-access-logs'></a> Logging access
 
@@ -182,7 +182,9 @@ Where:
   * `alert`
   * `emerg`
 
-<p class="note"><strong>Note</strong>: The log levels above are listed in the order of increasing severity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged. For example, the default level <code>error</code> will cause error, crit, alert, and emerg messages to be logged. If this parameter is omitted, then <code>error</code> is used. </p>
+<p> The log levels above are listed in the order of increasing severity. Setting a certain log level causes all messages of the specified and
+more severe log levels to be logged. For example, the default level <code>error</code> causes error, crit, alert, and emerg messages to be
+logged. If this parameter is omitted, then <code>error</code> is used. </p>
 
 Example:
 
@@ -211,7 +213,8 @@ The debugging log can be written to a cyclic memory buffer. Use the syntax shown
 error_log memory:32m debug;
 ```
 
-Logging to the memory buffer on the debug level does not have significant impact on performance, even under high load. In this case, the log can be extracted using a gdb script like the one shown below.
+Logging to the memory buffer on the debug level does not have significant impact on performance, even under high load. In this case, the
+log can be extracted using a gdb script like the one in the following example:
 
 ```
 set $log = ngx_cycle->log

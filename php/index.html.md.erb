@@ -43,8 +43,8 @@ The previous example creates and pushes a test application, **my-php-app**, to C
 Here's a breakdown of what happens when you run the example:
 
   - On your PC:
-    - It will create a new directory and one PHP file, which just invokes `phpinfo()`
-    - Run `cf` to push your application.  This will create a new application with a memory limit of 128M (more than enough here) and upload our test file.
+    - It creates a new directory and one PHP file, which just invokes `phpinfo()`
+    - Run `cf` to push your application.  This creates a new application with a memory limit of 128M (more than enough here) and upload our test file.
   - Within Cloud Foundry:
     - The buildpack is run.
     - Application files are copied to the `htdocs` folder.

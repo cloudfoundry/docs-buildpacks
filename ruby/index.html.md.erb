@@ -32,7 +32,7 @@ See the supported Ruby versions in the [release notes for the Ruby buildpack](ht
 
 You can specify specific versions of the Ruby runtime in the `Gemfile` for your app as described in the following sections.
 
-<p class="note"><strong>Note</strong>: If you don't specify a version of the Ruby runtime, the default Ruby version listed in the
+<p> If you don't specify a version of the Ruby runtime, the default Ruby version listed in the
 [buildpack manifest.yml file](https://github.com/cloudfoundry/ruby-buildpack/blob/950b2337ff8a7ac0a68f7420f48ddc4ae4764977/manifest.yml#L3-L5) is used.</p>
 
 ### <a id='mri_runtime'></a>MRI
@@ -47,7 +47,7 @@ With this example declaration in the `Gemfile`, if Ruby versions `2.2.4`, `2.2.5
 
 For more information about the `ruby` directive for Bundler Gemfiles, see the [Bundler documentation](http://bundler.io/gemfile_ruby.html).
 
-<p class="note"><strong>Note</strong>: If you use v1.6.18 or earlier, you must specify an exact version, such as <code>ruby '2.2.3'</code>.
+<p> If you use v1.6.18 or earlier, you must specify an exact version, such as <code>ruby '2.2.3'</code>.
 In <a href="https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.6.18">Ruby Buildpack v1.6.18</a> and earlier, Rubygems do not support version operators for the <code>ruby</code> directive. </p>
 
 ### <a id='jruby_runtime'></a>JRuby
@@ -85,7 +85,8 @@ Could not get translated url, exited with: DEPENDENCY_MISSING_IN_MANIFEST: ...
 Staging failed: Buildpack compilation step failed
 ```
 
-<p class="note"><strong>Note</strong>: The Ruby buildpack does not support the pessimistic version operator <code>~></code> on the Gemfile <code>ruby</code> directive for JRuby.</p>
+<p> The Ruby buildpack does not support the pessimistic version operator <code>~></code> on the
+Gemfile <code>ruby</code> directive for JRuby.</p>
 
 ## <a id='vendoring'></a>Vendor app dependencies
 

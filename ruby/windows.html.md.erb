@@ -3,7 +3,7 @@ title: Windows Gemfile support
 owner: Buildpacks
 ---
 
-Learn how you can handle Ruby buildpack dependencies on Windows machines.
+Learn how you can handle Ruby buildpack dependencies on Microsoft Windows machines.
 
 ## <a id='gemfiles'></a>Windows Gemfiles
 
@@ -42,8 +42,8 @@ Notice the "-x86-mingw32" in the version number of `mysql2`. Since Cloud Foundry
 the Ruby Buildpack removes the `Gemfile.lock` and uses Bundler to resolve dependencies
 from the `Gemfile`.
 
-<p class="note"><strong>Note</strong>:
-Removing the <code>Gemfile.lock</code> causes dependency versions to be resolved
+<p class="note important">
+<span class="note__title">Important</span> Removing the <code>Gemfile.lock</code> causes dependency versions to be resolved
 from the <code>Gemfile</code>. This could result in different versions being installed than
-those listed in the <code>Gemfile.lock</code>.
-</p>
+those listed in the <code>Gemfile.lock</code>.</p>
+

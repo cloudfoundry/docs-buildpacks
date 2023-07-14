@@ -122,7 +122,7 @@ $ npm install
 
 The `cf push` command uploads the vendored dependencies with the app.
 
-<p class='note'><strong>Note</strong>: For an app to run in a disconnected environment, it must vendor its dependencies and provide a lock file.</p>
+<p> For an app to run in a disconnected environment, it must vendor its dependencies and provide a lock file.</p>
 
 ### <a id='offline_environments'></a>Use in offline environments
 
@@ -136,8 +136,10 @@ documentation.
 
 This lock file informs the package manager of the exact versions of dependencies and transitive dependencies to look for when running `npm install` or `yarn install`. For this reason, you must keep `package.json`, the vendored `node_modules` directory, and your lock file synchronized to avoid network calls.
 
-<p class='note'><strong>Note</strong>: <code>package-lock.json</code> file is only supported by NPM 5.x and later. For earlier versions of NPM, provide a
-<a href="https://docs.npmjs.com/cli/v9/configuring-npm/npm-shrinkwrap-json?v=true">npm-shrinkwrap.json</a> file instead.
+<p class="note important">
+<span class="note__title">Important</span> The <code>package-lock.json</code> file is only supported by NPM 5.x and later. For earlier
+versions of NPM, provide a
+<a href="https://docs.npmjs.com/cli/v9/configuring-npm/npm-shrinkwrap-json?v=true">npm-shrinkwrap.json</a> file instead.</p>
 
 Versions 1.5.28 and later of the Node.js buildpack include the ability to use Yarn in offline mode.
 To do so, you must mirror the Yarn registry locally by providing an `npm-packages-offline-cache` directory:
@@ -153,13 +155,13 @@ $ yarn install
 
 When you push the app, the buildpack looks for an `npm-packages-offline-cache` directory at the top level of the app directory.
 If this directory exists, the buildpack runs Yarn in offline mode. Otherwise, it runs Yarn normally, which may require an Internet connection.
-You do not have to provide a `node_modules` directory when running Yarn in offline mode, as the offline cache will provide the dependencies.
+You do not have to provide a `node_modules` directory when running Yarn in offline mode, as the offline cache provides the dependencies.
 
 For more information about using an offline mirror with Yarn, see the [Yarn Blog](https://yarnpkg.com/blog/2016/11/24/offline-mirror).
 
 ### <a id='integrity-check'></a>Integrity check
 
-By default, the Node.js buildpack uses npm to download dependencies. Note that npm does not perform integrity checks of the downloaded packages, which is a [security risk](http://cwe.mitre.org/data/definitions/494.html).
+By default, the Node.js buildpack uses npm to download dependencies. Note, that npm does not perform integrity checks of the downloaded packages, which is a [security risk](http://cwe.mitre.org/data/definitions/494.html).
 
 If missing dependencies are detected, the buildpack runs `npm install` for non-vendored dependencies or `npm rebuild` for dependencies that are already vendored. This might result in code being downloaded and run without verification.
 

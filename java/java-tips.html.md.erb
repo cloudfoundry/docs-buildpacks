@@ -3,7 +3,7 @@ title: Using Cloud Foundry Java buildpack
 owner: Java
 ---
 
-This topic tells you how the Java buildpack can be used with Cloud Foundry.
+You can use the Java buildpack with Cloud Foundry.
 
 You can deploy a number of different JVM-based artifact types.
 For a more detailed explanation of what the Cloud Foundry Java Builpack supports, see [Additional Documentation](https://github.com/cloudfoundry/java-buildpack#additional-documentation) in the repository on GitHub.
@@ -110,7 +110,7 @@ If you require end-to-end HTTP/2, for example, because of gRPC, do the following
     - See <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.webserver.configure-http2">Configure HTTP/2</a> in the Spring Boot documentation.
     - If you are deploying a standard non-executable WAR file, you only need to make sure that you are using Java buildpack v4.43 or later. Starting with v4.43, the Java buildpack configures Apache Tomcat to accept HTTP/2 connections.
     - Other frameworks, including Play, Ratpack, and apps that use the distZip format, embed an HTTP server. You must configure these apps to enable HTTP/2, specifically H2C, clear-text. See your framework's documentation for enabling HTTP/2 and H2C.
-    <p class="note"><strong>Note</strong>: H2C is required because <%= vars.app_runtime_abbr %> uses Envoy to secure communications into the app container.</p>
+    <p> H2C is required because <%= vars.app_runtime_abbr %> uses Envoy to secure communications into the app container.</p>
 2. Configure the route to use the HTTP/2 protocol using either the cf CLI or the app manifest:
     - Using the cf CLI: `cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2`.
     - Using a `manifest.yml` file:
@@ -169,7 +169,10 @@ For example:
 
 Java apps with a `main()` method can be run provided that they are packaged as self-executable JARs. For more information, see [Java Main Container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-java_main.md) in the Cloud Foundry Java Buildpack repository on GitHub.
 
-<p class="note"><strong>Note:</strong> If your app is not web enabled, you must suppress route creation to avoid a <code>failed to start accepting connections</code> error. To suppress route creation, add <code>no-route: true</code> to the app manifest or use the <code>--no-route</code> flag with the <code>cf push</code> command. <br><br>For more information about the <code>no-route</code> attribute, see <a href="../../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.</p>
+<p> If your app is not web enabled, you must suppress route creation to avoid a <code>failed to start accepting connections</code> error.
+To suppress route creation, add <code>no-route: true</code> to the app manifest or use the
+<code>--no-route</code> flag with the <code>cf push</code> command. <br><br>For more information about the <code>no-route</code> attribute,
+see <a href="../../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.</p>
 
 ### <a id='java-main-maven'></a> Maven
 
@@ -315,7 +318,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
 #### <a id='garden-container'></a> Garden container
 
-<p class="note"><strong>Note:</strong> The solutions in this section require configuring the memory calculator, which is a sub-project of the Java buildpack that calculates suitable memory settings for Java apps when you push them. For more information, see the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">java-buildpack-memory-calculator</a> repository on GitHub. If you have questions about the memory calculator, you can ask them in the <strong>#java-buildpack</strong> channel of the <a href="https://slack.cloudfoundry.org/">Cloud Foundry Slack organization</a>.</p>
+<p> The solutions in this section require configuring the memory calculator, which is a sub project of the Java buildpack that calculates suitable memory settings for Java apps when you push them. For more information, see the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">java-buildpack-memory-calculator</a> repository on GitHub. If you have questions about the memory calculator, you can ask them in the <strong>#java-buildpack</strong> channel of the <a href="https://slack.cloudfoundry.org/">Cloud Foundry Slack organization</a>.</p>
 
 * **Error**: The Garden container terminates the Java process with the out of memory event. For example:
     <pre class="terminal">
@@ -346,7 +349,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
     <br><br>
     For more information about measuring how much native memory a Java app needs, see [Native Memory Tracking](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html) in the Java documentation. For more information about configuring the Java buildpack using the native setting, see [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md#memory) in the Cloud Foundry Java Buildpack on GitHub. For more information about the Process API, see [Class Process](https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html) in the Java documentation.
 
-* **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under heavy load, it uses a high number of threads. Each thread consumes some memory and if there are enough threads they will consume a significant amount of memory.
+* **Cause 2 - High thread count**: Java threads in the JVM can cause memory errors at the Garden level. When an app is under heavy load, it uses a high number of threads. Each thread consumes some memory, and, if there are enough threads, they consume a significant amount of memory.
 
 * **Solution 2**: Set the reserved memory for stack traces to the correct value for your app.
 <br>
@@ -365,7 +368,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
     <br><br>
     In this example, the overall memory amount reserved by the JVM for representing the stacks of Java threads is `800 * 512k = 400m`.
     <br><br>
-    The correct settings for `-Xss` and `stack_threads` depend on your app code, including the libraries it uses. Your app may technically have no upper limit, such as in the case of [cavalier usage]() of `CachedThreadPool` executors. However, you still must calculate the depth of the thread stacks and the amount of space the JVM should reserve for each of them. For more information, see [Executors.newCachedThreadPool() considered harmful](http://dev.bizo.com/2014/06/cached-thread-pool-considered-harmlful.html) on the Bizo website and the [newCachedThreadPool](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--) section of the _Class Executors_ topic in the Java documentation.
+    The correct settings for `-Xss` and `stack_threads` depend on your app code, including the libraries it uses. Your app may technically have no upper limit, such as in the case of [cavalier usage]() of `CachedThreadPool` executors. However, you still must calculate the depth of the thread stacks, and the amount of space the JVM reserves for each of them. For more information, see [Executors.newCachedThreadPool() considered harmful](http://dev.bizo.com/2014/06/cached-thread-pool-considered-harmlful.html) on the Bizo website and the [newCachedThreadPool](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--) section of the _Class Executors_ topic in the Java documentation.
 
 ### <a id='upload'></a> Troubleshoot failed upload
 
@@ -407,7 +410,7 @@ To set up remote debugging when using BOSH Lite or a <%= vars.app_runtime_abbr %
 
 1. Open your project in Eclipse.
 
-2. Right-click on your project, go to **Debug as** and pick **Debug Configurations**.
+2. Right-click your project, go to **Debug as** and pick **Debug Configurations**.
 
 3. Create a new **Remote Java Application**.
 
@@ -415,7 +418,8 @@ To set up remote debugging when using BOSH Lite or a <%= vars.app_runtime_abbr %
 
 5. Click **Debug**.
 
-The debugger should now be running. If you switch to the Debug perspective, you should see your app listed in the Debug panel, and it should say `Waiting for vm to connect at port`.
+The debugger is running. If you switch to the Debug perspective, you see your app listed in the Debug panel, and it
+says `Waiting for vm to connect at port`.
 
 Next, to push your app to <%= vars.app_runtime_abbr %> and instruct <%= vars.app_runtime_abbr %> to connect to the debugger running on your local machine:
 
@@ -433,7 +437,8 @@ Next, to push your app to <%= vars.app_runtime_abbr %> and instruct <%= vars.app
     cf push
     ```
 
-Upon completion, you should see that your app has started and is now connected to the debugger running in your IDE. You can now add breakpoints and interrogate the app just as you would if it were running locally.
+Upon completion, you can see that your app has started and is now connected to the debugger running in your IDE. You can now add
+breakpoints and interrogate the app just as you would if it were running locally.
 
 ### <a id='slow-start'></a> Slow starting Java or Grails apps
 
@@ -441,7 +446,7 @@ Some Java and Grails apps do not start quickly, and the health check for an app 
 
 The current Java buildpack implementation sets the Tomcat `bindOnInit` property to `false`. This prevents Tomcat from listening for HTTP requests until an app has fully deployed.
 
-If your app does not start quickly, the health check may fail because it checks the health of the app before the app can accept requests. By default, the health check fails after a timeout threshold of 60 seconds.
+If your app does not start quickly, the health check might fail because it checks the health of the app before the app can accept requests. By default, the health check fails after a timeout threshold of 60 seconds.
 
 To resolve this issue, run `cf push` with the `-t TIMEOUT-THRESHOLD` option to increase the timeout threshold. Run:
 
@@ -458,7 +463,8 @@ Where:
 * `YOUR-APP` is the name of your app.
 * `TIMEOUT-THRESHOLD` is the number of seconds to which you want to increase the timeout threshold.
 
-<p class="note"><strong>Note:</strong> The timeout threshold cannot exceed 180 seconds. Specifying a timeout threshold greater than 180 seconds results in the following error: <code>Server error, status code: 400, error code: 100001, message: The app is invalid: health_check_timeout maximum_exceeded</code></p>
+<p> The timeout threshold cannot exceed 180 seconds. Specifying a timeout threshold greater than 180 seconds results in the
+following error: <code>Server error, status code: 400, error code: 100001, message: The app is invalid: health_check_timeout maximum_exceeded</code></p>
 
 
 ## <a id='extension'></a> Extension

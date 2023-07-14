@@ -5,7 +5,7 @@ owner: Buildpacks
 
 You can update and release a new version of a Cloud Foundry (CF) buildpack through the
 CF Buildpacks Team Concourse [pipeline](https://buildpacks.ci.cf-app.com/). Concourse is a continuous
-integration (CI) tool for software development teams. This is the process used by the CF Buildpacks Team and
+integration (CI) tool for software development teams. This process is used by the CF Buildpacks Team and
 other CF buildpack development teams. You can use this process as a model for using Concourse to build and
 release new versions of your own buildpacks.
 
@@ -77,7 +77,7 @@ is deployed for testing in the `cf-release` pipeline is tested against that new 
 
 1. After the `cats` job has successfully completed, your project manager can include the new buildpacks in the `cf-release` repository and create the new buildpack BOSH release by manually starting the `ship-it` job.
 
-<p class="note"><strong>Note</strong>: If errors occur during this workflow, you might need to remove unwanted tags. For more information, see <a href="#dealing-with-unwanted-tags">Handle Unwanted Tags</a>.</p>
+<p> If errors occur during this workflow, you might need to remove unwanted tags. For more information, see <a href="#dealing-with-unwanted-tags">Handle Unwanted Tags</a>.</p>
 
 ## <a id="changelogs"></a>Modifying changelogs
 
@@ -92,6 +92,6 @@ layout, and content of a changelog. In general, changelogs follow these conventi
 
 If you encounter problems with the commit that contains the new version, change the target of the release tag by performing the following:
 
-1. Make sure the repository is in a valid state and is building successfully.
+1. Verify that the repository is in a valid state and is building successfully.
 1. Remove the tag from your local repository and from GitHub.
 1. Start a build. The pipeline build script tags the build again if it is successful.

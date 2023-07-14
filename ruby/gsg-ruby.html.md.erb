@@ -5,15 +5,15 @@ owner: Buildpacks
 
 <%=vars.GSG_intro_sentence%>
 
-Learn about deploying a Ruby app to
+Learn how to deploy a Ruby app to
 Cloud Foundry.
 If you experience a problem following the steps, check the
 <%=vars.known_issues%> topic, or refer to the [Troubleshooting application deployment and health](./../../devguide/deploy-apps/troubleshoot-app-health.html)
 topic.
 
-<p class="tip"><strong>Sample app step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_ruby.git</code> to clone the <code>pong_matcher_ruby</code> app from GitHub, and follow the instructions in the Sample app step sections.</p>
+<p> If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_ruby.git</code> to clone the <code>pong_matcher_ruby</code> app from GitHub, and follow the instructions in the Sample app step sections.</p>
 
-<p class="note"><strong>Note</strong>: Ensure that your Ruby app runs locally before continuing with this procedure.</p>
+<p> Ensure that your Ruby app runs locally before continuing with this procedure.</p>
 
 ## <a id="deploy"></a>Deploy a Ruby app
 
@@ -148,7 +148,7 @@ The API endpoint is <%=vars.api_endpoint%>.
 
 ### Step 4: Deploy an app
 
-<p class="note"><strong>Note</strong>: You must use the cf CLI to deploy apps.</p>
+<p> You must use the cf CLI to deploy apps.</p>
 
 Deploy your application by running the following command from the root directory of your application:
 
@@ -164,7 +164,7 @@ Your `DOMAIN` is`<%= vars.app_domain %>`.
 For example, `cf push my-app` creates the URL `my-app.<%= vars.app_domain %>`.
 
 The URL for your app must be unique from other apps that Cloud Foundry
-hosts or the push will fail.
+hosts or the push fails.
 Use the following options to help create a unique URL:
 
 * `-n` to assign a different HOST name for the app.
@@ -178,10 +178,18 @@ Once your app deploys, browse to your app URL.
 Search for the `urls` field in the `App started` block in the output of the `cf push` command.
 Use the URL to access your app online.
 
-<p class="tip"><strong>Sample app step</strong><br />Run <code>cf push pong_matcher_ruby -n HOST_NAME</code>.<br /><br />Example: <code>cf push pong_matcher_ruby -n pongmatch-ex12</code> <br /><br />The example below shows the terminal output of deploying the <code>pong_matcher_ruby</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>redis</code> service and follows the instructions in the manifest to start one instance of the app with 256M. After the app starts, the output displays the health and status of the app.<br />
-<strong>Note</strong>: These examples work for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must be set using the <code>routes</code> property in the manifest.</p>
+<p> Run <code>cf push pong_matcher_ruby -n HOST_NAME</code>.<br /><br />Example: <code>cf push
+pong_matcher_ruby -n pongmatch-ex12</code> <br /><br />The following example shows the terminal output of
+deploying the <code>pong_matcher_ruby</code> app. The n<code>cf push</code> command uses the instructions in
+the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to
+the <code>redis</code> service and follows the instructions in the manifest to start one instance of the
+app with 256M. After the app starts, the output displays the health and status of the app.<br />
 
-<p class="note"><strong>Note</strong>: The <code>pong_matcher_ruby</code> app does not include a web interface. To interact with the  <code>pong_matcher_ruby</code> app, see the interaction instructions on GitHub: <a href="https://github.com/cloudfoundry-samples/pong_matcher_ruby">https://github.com/cloudfoundry-samples/pong_matcher_ruby</a>.</p>
+<p> These examples work for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must
+be set using the <code>routes</code> property in the manifest.</p>
+
+<p> The <code>pong_matcher_ruby</code> app does not include a web interface. To interact with
+the  <code>pong_matcher_ruby</code> app, see the interaction instructions on GitHub: <a href="https://github.com/cloudfoundry-samples/pong_matcher_ruby">https://github.com/cloudfoundry-samples/pong_matcher_ruby</a>.</p>
 
 <pre class="terminal">
 $ cf push pong_matcher_ruby -n pongmatch-ex12
@@ -239,7 +247,8 @@ Run `cf help` to view a complete list of commands, grouped by task categories,
 and run `cf help COMMAND` for detailed information about a specific command.
 For more information about using the cf CLI, refer to the Cloud Foundry Command Line Interface (cf CLI) topics, especially the <%=vars.cli_v6%> topic.
 
-<p class="note"><strong>Note</strong>: You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
+<p> You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that
+only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 

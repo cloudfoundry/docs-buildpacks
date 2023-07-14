@@ -4,7 +4,7 @@ owner: Buildpacks
 ---
 
 
-Learn how to configure your .NET Framework apps for use with the Hosted Web Core (HWC) buildpack and how to push
+You can configure .NET Framework apps to use with the Hosted Web Core (HWC) buildpack and push
 your .NET Framework apps to <%= vars.windows_runtime_full %>.
 
 ## <a id='prerequisites'></a>Prerequisites
@@ -163,7 +163,7 @@ $ cf map-route app2 example.com --hostname app1 --path app2
 $ cf start app2
 </pre>
 
-<p class="note"><strong>Note</strong>: HWC-hosted apps use the <code>VCAP_APPLICATION</code> environment variable
+<p> HWC-hosted apps use the <code>VCAP_APPLICATION</code> environment variable
 to read out the bound app URIs. Any context path that exists underneath the root in the
 app's bound route corresponds to the <code>applicationHost.config</code>.</p>
 

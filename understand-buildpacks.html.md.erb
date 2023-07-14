@@ -19,14 +19,18 @@ The `bin/supply` and `bin/finalize` scripts replace the deprecated `bin/compile`
 
 The `bin/supply` script is required for non final buildpacks. The `bin/finalize` (or `bin/compile`) script is required for final buildpacks.
 
-<p class="note"><strong>Note:</strong> In this topic, the terms <em>non final buildpack</em> and <em>final buildpack</em>, or <em>last buildpack</em>, are used to describe the process of applying multiple buildpacks to an app.
+<p> In this topic, the terms <em>non final buildpack</em> and <em>final buildpack</em>, or
+<em>last buildpack</em>, are used to describe the process of applying
+multiple buildpacks to an app.
 
 For example:
 
  <code>cf push APP-NAME -b FIRST-BUILDPACK -b SECOND-BUILDPACK -b FINAL-BUILDPACK</code>.</p>
 
-<p class="note"><strong>Note:</strong> If you use only one buildpack for your app, this buildpack behaves as a final, or last, buildpack.</p>
- When using multi buildpack support, the last buildpack in the order is the final buildpack, and is able to make changes to the app and determine a start command. All other specified buildpacks are non final and supply only the dependencies.
+<p> If you use only one buildpack for your app, this buildpack behaves as a final, or last, buildpack.</p>
+ When using multi buildpack support, the last buildpack in the order is the final buildpack, and
+ is able to make changes to the app and determine a start command. All other specified buildpacks are non
+ final and supply only the dependencies.
 
 ### <a id='detect-script'></a> bin/detect
 
@@ -57,7 +61,8 @@ The following is an example of the detailed information returned by the Java bui
 java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
 ```
 
-<p class="note"><strong>Note:</strong> By default, Cloud Foundry detects only one buildpack. When you want to detect multiple buildpacks, you must explicitly specify them.</p>
+<p> By default, Cloud Foundry detects only one buildpack. When you want to detect multiple
+buildpacks, you must explicitly specify them.</p>
 
 For more information, see [Buildpack detection](#buildpack-detection).
 
@@ -122,7 +127,7 @@ The `finalize` script might find dependencies installed by the `supply` script o
 
 The `cache` directory provided to the `finalize` script is preserved even when the buildpack is upgraded or otherwise changes. The `supply` script of the same buildpack also has access to this cache directory.
 
-The following is an example of a simple `finalize` script:
+The following example shows a simple `finalize` script:
 
 ~~~console
 #!/usr/bin/env ruby
@@ -172,7 +177,8 @@ The `default_process_types` line indicates the type of app being run and the com
 
 At this time, only the `web` type of apps is supported.
 
-<p class="note"><strong>Note:</strong> To define environment variables for your buildpack, add a Bash script to the <code>.profile.d</code> directory in the root folder of your app.</p>
+<p> To define environment variables for your buildpack, add a Bash script to the <code>.profile.d</code>
+directory in the root folder of your app.</p>
 
 The following example shows what a `release` script for a Rack app might return:
 
@@ -181,7 +187,7 @@ default_process_types:
   web: bundle exec rackup config.ru -p $PORT
 ~~~
 
-<p class="note"><strong>Note:</strong> The <code>web</code> command runs as <code>bash -c COMMAND</code> when Cloud Foundry starts your app.</p>
+<p> The <code>web</code> command runs as <code>bash -c COMMAND</code> when Cloud Foundry starts your app.</p>
 
 ## <a id='droplet-filesystem'></a> Droplet filesystem
 
@@ -254,7 +260,7 @@ At the end of this process, the `deps` directory is included at the root of the 
 
 Cloud Foundry does buildpack detection if you do not specify one or more buildpacks in the app manifest or in the `cf push APP-NAME -b BUILDPACK-NAME` cf CLI command.
 
-<p class="note"><strong>Note:</strong> Cloud Foundry detects only one buildpack to use with the app.</p>
+<p> Cloud Foundry detects only one buildpack to use with the app.</p>
 
 If the platform performs detection, it:
 

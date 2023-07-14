@@ -3,7 +3,7 @@ title: Creating an extension buildpack for .NET apps
 owner: Buildpacks
 ---
 
-Learn how to write extension buildpacks for your .NET apps.
+You can write extension buildpacks for your .NET apps.
 
 Most .NET Framework apps are pushed with the [Hosted Web Core (HWC) buildpack](../hwc/index.html).
 
@@ -14,7 +14,7 @@ An extension buildpack supplies a custom set of .NET dependencies to an app's co
 You cannot add modules or extensions directly to the HWC buildpack.
 If the HWC buildpack lacks dependencies your app requires, <%= vars.recommended_by %> recommends that you create an extension buildpack containing the missing dependencies required by your app.
 
-<p class='note'><strong>Note:</strong> The HWC buildpack contains a number of built in HWC features. For example, the URL Rewrite and HTTP compression modules. Extensions should only provide additional functionality to your app. For more information about existing HWC features, see <a href="../hwc/index.html#features">Features</a> in <em>HWC Buildpack</em>.</p>
+<p> The HWC buildpack contains a number of built in HWC features. For example, the URL Rewrite and HTTP compression modules. Extensions should only provide additional functionality to your app. For more information about existing HWC features, see <a href="../hwc/index.html#features">Features</a> in <em>HWC Buildpack</em>.</p>
 
 For additional extension buildpack configuration and creation commands, see: [Creating a Custom Buildpack](http://engineering.pivotal.io/post/creating-a-custom-buildpack/) in the _Pivotal Engineering Journal_.
 
@@ -44,7 +44,7 @@ The [buildpack-packager](https://github.com/cloudfoundry/libbuildpack/tree/maste
     Where:
     <ul>
       <li><code>BUILDPACK-NAME</code> is the name of the buildpack you are creating.</li>
-      <li><code>BUILDPACK-DIRECTORY</code> is the directory where the boilerplate code will be written. If the directory does not exist, it is created by the <code>buildpack-packager init</code> process.</li>
+      <li><code>BUILDPACK-DIRECTORY</code> is the directory where the boilerplate code is written. If the directory does not exist, it is created by the <code>buildpack-packager init</code> process.</li>
     </ul>
 
 1. To activate direnv in your buildpack directory, run:
@@ -137,7 +137,7 @@ To build a cached extension buildpack artifact:
     buildpack-packager build -cached -stack STACK-NAME
     ```
     Where `STACK-NAME` is the pre-built operating system that can run apps.
-    <p class='note'><strong>Note:</strong> If the buildpack's <code>supply.go</code> script contains a mistake, <code>buildpack-packager</code> throws an error. You should not push your app with the new extension <code>buildpack</code> until after all local errors have been corrected. You must push your app to determine whether the new extension buildpack functions as intended.</p>
+    <p> If the buildpack's <code>supply.go</code> script contains a mistake, <code>buildpack-packager</code> throws an error. Don't push your app with the new extension <code>buildpack</code> until after all local errors have been corrected. You must push your app to determine whether the new extension buildpack functions as intended.</p>
 
 
 ## <a id='finish'></a> Step 4: Validating the extension buildpack
@@ -158,7 +158,7 @@ To push an app with the cached extension buildpack artifact:
       <li><code>EXT-BUILDPACK-URL</code> is the URL of the uploaded extension buildpack ZIP file.</li>
     </ul>
 
-If your extension buildpack does not include the correct dependencies, you will receive an error message.
+If your extension buildpack does not include the correct dependencies, you receive an error message.
 
 
 ## <a id='combine'></a> Step 5: Combine an extension buildpack with other features

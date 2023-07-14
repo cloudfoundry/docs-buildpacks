@@ -5,7 +5,7 @@ owner: Buildpacks
 
 You can modify the configuration file for your PHP buildpack.
 
-The PHP buildpack stores all of its default configuration settings in the [defaults](https://github.com/cloudfoundry/php-buildpack/tree/master/defaults) directory of the Cloud Foundry PHP Buildpack repository on GitHub.
+The PHP buildpack stores all default configuration settings in the [defaults](https://github.com/cloudfoundry/php-buildpack/tree/master/defaults) directory of the Cloud Foundry PHP Buildpack repository on GitHub.
 
 
 ## <a id="options"></a> options.json file
@@ -44,7 +44,7 @@ The buildpack automatically configures HTTPD, Nginx, and PHP for your app. This 
 
 The `.bp-config` directory in your app can contain configuration overrides for these components. Name the directories `httpd`, `nginx`, and `php`. <%= vars.recommended_by %> recommends that you use [php.ini.d](#php_ini_d) or [fpm.d](#fpm_d).
 
-<p class='note'><strong>Note:</strong> If you override the <code>php.ini</code> or <code>php-fpm.conf</code> files, many other forms of configuration do not work.</p>
+<p> If you override the <code>php.ini</code> or <code>php-fpm.conf</code> files, many other forms of configuration do not work.</p>
 
 For example:
 

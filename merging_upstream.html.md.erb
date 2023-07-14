@@ -34,8 +34,10 @@ To sync your forked buildpack with an upstream Cloud Foundry buildpack:
     $ git merge upstream/main
     </pre>
 
-    <p class="note"><strong>Note</strong>: When you merge upstream buildpacks, do not use <code>git rebase</code>.
+    <p class="note important">
+    <span class="note__title">Important</span> When you merge upstream buildpacks, do not use <code>git rebase</code>.
     This approach is not sustainable because you confront the same merge conflicts repeatedly.</p>
+
 
 5. Run the buildpack test suite to ensure that the upstream changes do not break anything.
 

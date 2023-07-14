@@ -44,7 +44,7 @@ applications:
     command: my-go-server
 ```
 
-If you do not specify a start command in a `Procfile`, in the manifest, or with the `-c` flag for `cf push`, the generated binary will be used as the start command. Example: `my-go-server`
+If you do not specify a start command in a `Procfile`, in the manifest, or with the `-c` flag for `cf push`, the generated binary is used as the start command. Example: `my-go-server`
 
 ### <a id='with_godep'></a>Push an app with Go modules
 
@@ -127,7 +127,7 @@ If you use [glide](https://github.com/Masterminds/glide) to specify or package y
 make sure that you have created a valid `glide.yml` file in the root directory of your app by running `glide init`.
 
 To vendor your dependencies before pushing, run `glide install`.
-This will generate a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies.
+This generates a `vendor` directory and a `glide.lock` file specifying the latest compatible versions of your dependencies.
 You must have a `glide.lock` file when pushing a vendored app. You do not need a `glide.lock` file when deploying a non-vendored app.
 
 ####<a id='glide_app'></a>Glide
@@ -160,7 +160,7 @@ If you use [dep](https://github.com/golang/dep) to specify or package your depen
 make sure that you have created a valid `Gopkg.toml` file in the root directory of your app by running `dep init`.
 
 To vendor your dependencies before pushing, run `dep ensure`.
-This will generate a `vendor` directory and a `Gopkg.lock` file specifying the latest compatible versions of your dependencies.
+This generates a `vendor` directory and a `Gopkg.lock` file specifying the latest compatible versions of your dependencies.
 You must have a `Gopkg.lock` file when pushing a vendored app. You do not need a `Gopkg.lock` file when deploying a non-vendored app.
 
 ####<a id='dep_app'></a>dep

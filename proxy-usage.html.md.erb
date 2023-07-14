@@ -11,12 +11,12 @@ You can assign proxy servers to environment variables. Proxy servers can be used
 
 A buildpack uses a proxy server if that buildpack contacts the internet during staging.
 
-<p class="note"><strong>Note:</strong> The binary buildpack does not use a proxy server because it does not access the internet during staging.
+<p> The binary buildpack does not use a proxy server because it does not access the internet during staging.
 </p>
 
 ## <a id='env-variable'></a> Setting environment variables
 
-<p class="note"><strong>Note</strong>: If you are using a Java buildpack, the <code>http_proxy</code> and <code>https_proxy</code> environment variables are not supported at runtime. The Java buildpack does not add the functionality to make proxies work at runtime.</p> To set your environment variables:
+<p> If you are using a Java buildpack, the <code>http_proxy</code> and <code>https_proxy</code> environment variables are not supported at runtime. The Java buildpack does not add the functionality to make proxies work at runtime.</p> To set your environment variables:
 
 1. Add the following to the `env` block of your application manifest YAML file:
 

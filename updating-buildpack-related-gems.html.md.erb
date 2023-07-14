@@ -14,7 +14,7 @@ The CF Buildpacks team uses the [gems-and-extensions pipeline](https://buildpack
 
 ## Running the update process
 
-<p class="note"><strong> Note</strong>: The following steps assume you are using a Concourse deployment of the <code>buildpacks-ci</code> pipelines.</p>
+<p> The following steps assume you are using a Concourse deployment of the <code>buildpacks-ci</code> pipelines.</p>
 
 At the end of the process, there is a new GitHub release. Updates are then applied to the buildpacks.
 
@@ -28,5 +28,5 @@ To update the version of either gem in a buildpack:
 3. Each of the buildpack pipelines, for example, the [go-buildpack pipeline,(<https://buildpacks.ci.cf-app.com/teams/main/pipelines/go-buildpack>)) has a job that watches for new releases of the gem. When a new release is detected, the buildpack's `cf.Gemfile` is updated to that release version.
 2. The commit made to the buildpack's `cf.Gemfile` starts the full integration test suite for that buildpack.
 
-<p class="note"><strong>Note</strong>: The final step starts all buildpack test suites simultaneously,
+<p> The final step starts all buildpack test suites simultaneously,
 and causes contention for available shared BOSH lite test environments.</p>

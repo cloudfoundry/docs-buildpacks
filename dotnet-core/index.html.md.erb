@@ -3,10 +3,10 @@ title: .NET Core buildpack
 owner: Buildpacks
 ---
 
-This topic tells you how to push Cloud Foundry apps to Linux Diego Cells using the .NET Core buildpack.
+You can push Cloud Foundry apps to Linux Diego Cells using the .NET Core buildpack.
 To find supported ASP.NET Core versions, see [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
-<p class='note'><strong>Note:</strong> The .NET Core buildpack can only be used to deploy apps to Linux Diego Cells.
+<p> The .NET Core buildpack can only be used to deploy apps to Linux Diego Cells.
 
 To deploy .NET Core apps to Windows Diego Cells, use the Binary buildpack.
 For more information about the Binary buildpack, see <a href="../binary/index.html">Binary Buildpack</a>.</p>
@@ -81,7 +81,7 @@ The source-based, non-published workflow ensures the buildpack can keep all your
 * [Use Non-Default Package Sources](#non-default-package-sources)
 * [Deactivate and Clear Your NuGet Package Cache](#disabling-nuget)
 
-<p class='note'><strong>Note:</strong> The source-based deployment workflow also uses the
+<p> The source-based deployment workflow also uses the
     <code>cf push</code> command to push source-based apps to Cloud Foundry.</p>
 
 ### <a id='multiple-projects'></a> Deploying apps with multiple projects
@@ -121,11 +121,11 @@ If you want to deploy an app that uses non-default package sources, you must spe
 
 ### <a id='disabling-nuget'></a> Deactivating and clearing your NuGet package cache
 
-You may need to deactivate NuGet package caching or clear NuGet packages cached in the staging environment in one of the following scenarios:
+You might need to deactivate NuGet package caching or clear NuGet packages cached in the staging environment in one of the following scenarios:
 
 * Your app fails to stage because it runs out of space, exceeding the maximum allowable disk quota.
 
-* You have added pre-release packages to test a new feature and then decided to revert back to the main NuGet feed. You may need to remove the packages you changed from the cache to avoid conflicts.
+* You have added pre-release packages to test a new feature and then decided to revert back to the main NuGet feed. You might need to remove the packages you changed from the cache to avoid conflicts.
 
 Deactivating  NuGet caching clears any existing NuGet dependencies from the staging cache and prevents the buildpack from adding NuGet dependencies to the staging cache.
 
@@ -186,7 +186,9 @@ For a self-contained deployment (SCD), you deploy your app, third-party dependen
 
 For information about SCDs, see [Self-contained deployments (SCD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/#self-contained-deployments-scd) in the Microsoft documentation.
 
-<p class="note"><strong>Note:</strong> <%= vars.company_name %> does not recommend using the SCD workflow. The buildpack is unable to keep dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
+<p class="note important">
+<span class="note__title">Important</span> <%= vars.company_name %> does not recommend using the SCD workflow. The buildpack is unable to keep
+dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
 
 When using the SCD workflow for deploying your app, you must:
 
@@ -224,7 +226,8 @@ The buildpack chooses what SDK to install based on the files present at the app 
 1. `global.json`
 1. `*.fsproj`
 
-<p class="note"><strong>Note:</strong> The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in both <code>global.json</code> and <code>buildpack.yml</code> files, make sure you specify the same versions in both files.</p>
+<p> The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in
+both <code>global.json</code> and <code>buildpack.yml</code> files, make sure you specify the same versions in both files.</p>
 
 
 ## <a id='dotnet-runtime'></a> Specify .NET Runtime versions
@@ -244,7 +247,8 @@ For example, the following configuration locks the runtime to 2.1:
 </PropertyGroup>
 ```
 
-<p class="note"><strong>Note:</strong> For source-based apps, specify a minor version of the .NET Runtime. Do not specify a patch version, because buildpacks contain only the two most recent patch versions of each minor version.</p>
+<p> For source-based apps, specify a minor version of the .NET Runtime. Do not specify a patch version, because buildpacks contain only
+the two most recent patch versions of each minor version.</p>
 
 ### <a id='dotnet-runtime-fdd'></a> Framework-dependent apps
 
@@ -267,7 +271,8 @@ For example:
 }
 ```
 
-<p class="note"><strong>Note:</strong> Set <code>applyPatches: false</code> in  <code>*.runtimeconfig.json</code> only if you want to pin your .NET Framework to a specific version. This prevents your app from receiving updates to the runtime version and assemblies.</p>
+<p> Set <code>applyPatches: false</code> in  <code>*.runtimeconfig.json</code> only if you want to pin your .NET Framework to a specific version. This prevents your
+app from receiving updates to the runtime version and assemblies.</p>
 
 
 ## <a id='offline'></a> Push an app in a disconnected environment
@@ -277,7 +282,7 @@ For offline environments, <%= vars.company_name %> recommends using the Framewor
 
 ## <a id='runtime-store'></a> Maintain ASP.NET Core assemblies
 
-<p class="note"><strong>Note:</strong> This section applies only to source-based and framework-dependent deployments.</p>
+<p> This section applies only to source-based and framework-dependent deployments.</p>
 
 For maintaining ASP.NET Core assemblies, <%= vars.company_name %> recommends one of these methods:
 
@@ -297,7 +302,8 @@ For maintaining ASP.NET Core assemblies, <%= vars.company_name %> recommends one
     	sdk: 2.0.x
     ```
 
-<p class="note"><strong>Note:</strong> <code>2.0.x</code> ASP.NET Core assemblies are released in the <code>2.1.200</code>-<code>2.1.299</code> SDK versions, and <code>2.1.x</code> assemblies are released in the <code>2.1.300</code> and higher SDK versions.</p>
+<p> <code>2.0.x</code> ASP.NET Core assemblies are released in the <code>2.1.200</code>-<code>2.1.299</code> SDK versions, and <code>2.1.x</code> assemblies are
+released in the <code>2.1.300</code> and higher SDK versions.</p>
 
 
 ## <a id='port'></a> Configuring the listen port
@@ -328,7 +334,7 @@ For C# apps, the following modifications activate the buildpack to pass the corr
     .UseConfiguration(config)
     ```
 
-    The `Main` method should now resemble the following example:
+    The `Main` method resembles the following example:
 
     ```c#
     public static void Main(string[] args)
@@ -369,6 +375,6 @@ With these changes, the `dotnet run` command copies your app `Views` to the buil
 
 If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in an `ld_library_path` directory at the app root.
 
-<p class="note"><strong>Note:</strong> You must keep these libraries up to date. They do not update automatically.</p>
+<p> You must keep these libraries up to date. They do not update automatically.</p>
 
 The .NET Core buildpack adds the directory `APP-ROOT/ld_library_path` to `LD_LIBRARY_PATH`, where `APP-ROOT` is the app root, so your app can access these libraries at runtime.

@@ -41,7 +41,7 @@ Based on this `VCAP_SERVICES`, Cloud Foundry creates the following
 
 Cloud Foundry uses the structure of the `VCAP_SERVICES` environment
 variable to populate `DATABASE_URL`.
-Any service containing a JSON object with the following form will be recognized
+Any service containing a JSON object with the following form is recognized
 by Cloud Foundry as a candidate for `DATABASE_URL`:
 
     {
@@ -60,7 +60,7 @@ Cloud Foundry uses the first candidate found to populate `DATABASE_URL`.
 
 Non Rails applications can also access the `DATABASE_URL` variable.
 
-If you have more than one service with credentials, only the first will be
+If you have more than one service with credentials, only the first is
 populated into `DATABASE_URL`.
 To access other credentials, you can inspect the `VCAP_SERVICES` environment
 variable.
@@ -83,7 +83,7 @@ Use the hash key for the service to obtain the connection credentials from
 
 ## <a id='migrate'></a>Seed or migrate database
 
-Before you can use your database the first time, you must create and populate or migrate it.
+Before you can use your database the first time, you must create and populate, or migrate it.
 
 For more information about migrating database schemas, see [Services Overview](../../devguide/services/index.html#migrating).
 
