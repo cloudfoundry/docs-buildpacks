@@ -1,17 +1,17 @@
 ---
-title: Sessions
+title: App session data
 owner: Buildpacks
 ---
 
 
-When your application has one instance, it's mostly safe to use the default session storage, which is the local file system.
-You can only see problems if your single instance crashes and the local file system goes away and you lose your sessions.
-For many applications, this works just fine, but you need to consider how this impacts your application.
+When your application has one instance, it's generally safe to use the default session storage, which is the local file system.
+You can only see problems if your single instance crashes, the local file system goes away, and you lose your sessions.
+For many applications, this works just fine, but you need to consider how this affects your application.
 
-If you have multiple application instances or you need a more robust solution for your application, then you want to use
-Redis or Memcached as a backup store for your session data.  The build pack supports both backups and when one is bound to your application it detects it and configures PHP to use it for session storage.
+If you have multiple application instances or you need a more robust solution for your application, use
+Redis or Memcached as a backup store for your session data. The buildpack supports both backups and when one is bound to your application, it detects it and configures PHP to use it for session storage.
 
-By default, there is no configuration necessary. To create a Redis or Memcached service, make sure the service name contains `redis-sessions` or `memcached-sessions` and then bind the service to the application.
+By default, there is no configuration necessary. To create a Redis or Memcached service, ensure that the service name contains `redis-sessions` or `memcached-sessions` and then bind the service to the application.
 
 Example:
 
