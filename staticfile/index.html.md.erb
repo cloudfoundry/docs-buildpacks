@@ -102,7 +102,7 @@ To configure these options, add the configuration property as a new line in your
       Alternatively, you can set the <code>FORCE_HTTPS</code> environment variable to <code>true</code>.
     </td>
     <td><strong>Force HTTPS</strong>: Forces all requests to be sent through HTTPS. This redirects non-HTTPS requests as HTTPS requests.
-      <p class="note"><strong>Note</strong>: Do not activate <code>FORCE_HTTPS</code> if you have a proxy server or load balancer loops. For example, if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p>
+      <p class="note important"><span class="note__title">Important</span>Do not activate <code>FORCE_HTTPS</code> if you have a proxy server or load balancer loops. For example, if you use <a href="https://support.cloudflare.com/hc/en-us/articles/200170416">Flexible SSL</a> with CloudFlare.</p>
     </td>
   </tr>
   <tr>
@@ -124,7 +124,7 @@ To configure these options, add the configuration property as a new line in your
       <code>http_strict_transport_security: true</code>
     </td>
     <td><strong>HTTP Strict Transport Security (HSTS)</strong>: Causes NGINX to respond to all requests with the header <code>Strict-Transport-Security: max-age=31536000</code>. This forces receiving browsers to make all subsequent requests over HTTPS. This setting defaults to a <code>max-age</code> of one year.
-      <p class="note"><strong>Note</strong>: Because this setting persists in browsers for a long time, only enable this setting after you ensure that you have completed your app configuration.</p>
+      <p class="note important"><span class="note__title">Important</span>This setting persists in browsers for a long time, so you must enable this setting only <em>after</em> you ensure that you have completed your app configuration.</p>
     </td>
   </tr>
   <tr>
@@ -132,7 +132,7 @@ To configure these options, add the configuration property as a new line in your
       <code>http_strict_transport_security_include_subdomains: true</code>
     </td>
     <td><strong>HSTS includes subdomains</strong>: Causes NGINX to respond to all requests with the following header: <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code><br> This forces browsers to make all subsequent requests over HTTPS including subdomains. This setting defaults to a <code>max-age</code> of one year.
-      <p class="note"><strong>Note</strong>: Setting this property to <code>true</code> also makes <code>http_strict_transport_security</code> default to true.</p>
+      <p class="note important"><span class="note__title">Important</span>Setting this property to <code>true</code> also makes <code>http_strict_transport_security</code> default to true.</p>
     </td>
   </tr>
   <tr>
@@ -142,7 +142,7 @@ To configure these options, add the configuration property as a new line in your
     <td><strong>HSTS preload</strong>: Causes NGINX to respond to all requests with the following
       header: <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code><br>
       This forces browsers to make all subsequent requests over HTTPS including subdomains and requests inclusion in browser-managed HSTS preload lists. For more information, see <a href="https://hstspreload.org">https://hstspreload.org</a>. This setting defaults to a <code>max-age</code> of one year.
-      <p class="note"><strong>Note</strong>: Setting this property to <code>true</code> also makes <code>http_strict_transport_security</code> and <code>http_strict_transport_security_include_subdomains</code> default to true.</p>
+      <p class="note important"><span class="note__title">Important</span>Setting this property to <code>true</code> also makes <code>http_strict_transport_security</code> and <code>http_strict_transport_security_include_subdomains</code> default to true.</p>
     </td>
   </tr>
 </table>
