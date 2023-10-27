@@ -1,1 +1,13 @@
-.idea/
+output
+final_app
+.bundle
+Gemfile.lock
+final_app/*
+cached_shas.yml
+**/.sass-cache/*
+bin
+vendor
+[#]*[#]
+.DS_Store
+.ruby-version
+.vscode/
