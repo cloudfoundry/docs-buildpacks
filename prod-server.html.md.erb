@@ -91,15 +91,15 @@ See your web server documentation for how to configure this file.
 
     The following example uses the Puma web server:
 
-        <pre class="terminal">
-            &#35; config/puma.rb
-            threads 8,32
-            workers 3
-
-            on_worker_boot do
-            # things workers do
-            end
-        </pre>
+    <pre class="terminal">
+        &#35; config/puma.rb
+        threads 8,32
+        workers 3
+        <br>
+        on_worker_boot do
+        # things workers do
+        end
+    </pre>
 
 1. In the root directory of your app, create a Procfile and add a command line for a `web` process type that points to your web server.
 For information about configuring the specific command for a process type, see your web server documentation.<br/><br/>
