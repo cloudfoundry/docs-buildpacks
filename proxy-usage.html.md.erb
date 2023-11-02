@@ -59,18 +59,18 @@ Removing an environment variable from the application manifest YAML file is not 
 
 You must also unset the environment variables with the Cloud Foundry Command Line Interface (cf CLI) `cf unset-env` command:
 
-    ```console
-    cf unset-env YOUR-APP ENV_VAR_NAME
-    ```
+```console
+cf unset-env YOUR-APP ENV_VAR_NAME
+```
 
 For example:
 
-    ```console
-    cf unset-env YOUR-APP https_proxy
-    ```
+```console
+cf unset-env YOUR-APP https_proxy
+```
 
-    Where:
-    <ul>
-      <li><code>YOUR-APP</code> is the name of your application.</li>
-      <li><code>ENV_VAR_NAME</code> is the name of the environment variable.</li>
-    </ul>
+Where:
+<ul>
+  <li><code>YOUR-APP</code> is the name of your application.</li>
+  <li><code>ENV_VAR_NAME</code> is the name of the environment variable.</li>
+</ul>
