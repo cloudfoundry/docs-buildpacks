@@ -1,5 +1,5 @@
 ---
-title: Updating buildpack related gems in Cloud Foundry
+title: Updating buildpack-related gems in Cloud Foundry
 owner: Buildpacks
 ---
 
@@ -25,8 +25,8 @@ To update the version of either gem in a buildpack:
 
     The `<gemname>-release` job starts and creates a new GitHub release of the gem.
 
-3. Each of the buildpack pipelines, for example, the [go-buildpack pipeline,(<https://buildpacks.ci.cf-app.com/teams/main/pipelines/go-buildpack>)) has a job that watches for new releases of the gem. When a new release is detected, the buildpack's `cf.Gemfile` is updated to that release version.
+3. Each of the buildpack pipelines, for example, the [go-buildpack pipeline](https://buildpacks.ci.cf-app.com/teams/main/pipelines/go-buildpack) has a job that watches for new releases of the gem. When a new release is detected, the buildpack's `cf.Gemfile` is updated to that release version.
 2. The commit made to the buildpack's `cf.Gemfile` starts the full integration test suite for that buildpack.
 
-<p> The final step starts all buildpack test suites simultaneously,
-and causes contention for available shared BOSH lite test environments.</p>
+The final step starts all buildpack test suites simultaneously,
+and causes contention for available shared BOSH lite test environments.
