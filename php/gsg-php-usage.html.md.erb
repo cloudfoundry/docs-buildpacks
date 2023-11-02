@@ -8,14 +8,13 @@ owner: Buildpacks
 Learn about deploying your PHP apps to Cloud Foundry.
 If you experience a problem deploying PHP apps, review the [Troubleshooting](#troubleshooting) section.
 
-## <a id="getting-started"></a>Getting started
 
-### Prerequisites
+## Prerequisites
 
 * Basic PHP knowledge
 * [Cloud Foundry Command Line Interface (cf CLI)](../../cf-cli/install-go-cli.html) installed on your workstation
 
-### A first PHP application
+## A first PHP application
 
 <pre class="terminal">
 $ mkdir my-php-app
@@ -56,7 +55,7 @@ If you select Apache as your web server, you can include `.htaccess` files with 
 
 Also, you can [provide your own Apache or Nginx configurations].
 
-### Prevent access To PHP files
+### Prevent access to PHP files
 
 The buildpack puts all of your files into a publicly accessible directory. In some cases, you might want to
 have PHP files that are not publicly accessible but are on the [include_path]. To do that, create a `lib` directory in your project folder and place your protected files there.

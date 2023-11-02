@@ -77,14 +77,10 @@ For a basic sample app, see [ASP.NET Core Getting Started App](https://github.co
 
 For a source-based, non-published deployment, you push your app's source code, not the output directory of the `dotnet publish` command.
 
-The source-based, non-published workflow ensures the buildpack can keep all your dependencies in sync and up to date. For additional information about using source-based, non-published deployments, see the following sections:
+The source-based, non-published workflow ensures the buildpack can keep all your dependencies in sync and up to date. See the following sections.
 
-* [Deploy Apps with Multiple Projects](#multiple-projects)
-* [Use Non-Default Package Sources](#non-default-package-sources)
-* [Deactivate and Clear Your NuGet Package Cache](#disabling-nuget)
-
-<p> The source-based deployment workflow also uses the
-    <code>cf push</code> command to push source-based apps to Cloud Foundry.</p>
+The source-based deployment workflow also uses the
+<code>cf push</code> command to push source-based apps to Cloud Foundry.
 
 ### <a id='multiple-projects'></a> Deploying apps with multiple projects
 

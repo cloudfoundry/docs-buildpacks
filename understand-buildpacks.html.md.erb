@@ -19,15 +19,17 @@ The `bin/supply` and `bin/finalize` scripts replace the deprecated `bin/compile`
 
 The `bin/supply` script is required for non final buildpacks. The `bin/finalize` (or `bin/compile`) script is required for final buildpacks.
 
-<p> In this topic, the terms <em>non final buildpack</em> and <em>final buildpack</em>, or
+In this topic, the terms <em>non final buildpack</em> and <em>final buildpack</em>, or
 <em>last buildpack</em>, are used to describe the process of applying
 multiple buildpacks to an app.
 
 For example:
 
- <code>cf push APP-NAME -b FIRST-BUILDPACK -b SECOND-BUILDPACK -b FINAL-BUILDPACK</code>.</p>
+```
+ <code>cf push APP-NAME -b FIRST-BUILDPACK -b SECOND-BUILDPACK -b FINAL-BUILDPACK</code>
+```
 
-<p> If you use only one buildpack for your app, this buildpack behaves as a final, or last, buildpack.</p>
+If you use only one buildpack for your app, this buildpack behaves as a final, or last, buildpack.
  When using multi buildpack support, the last buildpack in the order is the final buildpack, and
  is able to make changes to the app and determine a start command. All other specified buildpacks are non
  final and supply only the dependencies.

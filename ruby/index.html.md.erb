@@ -15,11 +15,11 @@ $ cf push MY-APP -b https://github.com/cloudfoundry/ruby-buildpack.git
 
 For more detailed information about deploying Ruby applications see the following topics:
 
-* <a href="./ruby-tips.html" class="subnav">Tips for Ruby Developers</a>
-* <a href="./deploying-apps-index.html" class="subnav">Getting Started Deploying Apps</a>
-* <a href="./rake-config.html" class="subnav">Configuring Rake Tasks for Deployed Apps</a>
-* <a href="./ruby-environment.html" class="subnav">Environment Variables Defined by the Ruby Buildpack</a>
-* <a href="./ruby-service-bindings.html" class="subnav">Configuring Service Connections for Ruby</a>
+* <a href="./ruby-tips.html" class="subnav">Tips for Ruby developers</a>
+* <a href="./deploying-apps-index.html" class="subnav">Getting started deploying apps</a>
+* <a href="./rake-config.html" class="subnav">Configuring Rake Tasks for deployed apps</a>
+* <a href="./ruby-environment.html" class="subnav">Environment variables defined by the Ruby buildpack</a>
+* <a href="./ruby-service-bindings.html" class="subnav">Configuring service connections for Ruby</a>
 * <a href="./windows.html" class="subnav">Support for Windows Gemfiles</a>
 
 See the source for the Ruby buildpack in the [Ruby buildpack repository](https://github.com/cloudfoundry/ruby-buildpack) on GitHub.
@@ -32,8 +32,8 @@ See the supported Ruby versions in the [release notes for the Ruby buildpack](ht
 
 You can specify specific versions of the Ruby runtime in the `Gemfile` for your app as described in the following sections.
 
-<p> If you don't specify a version of the Ruby runtime, the default Ruby version listed in the
-[buildpack manifest.yml file](https://github.com/cloudfoundry/ruby-buildpack/blob/950b2337ff8a7ac0a68f7420f48ddc4ae4764977/manifest.yml#L3-L5) is used.</p>
+If you don't specify a version of the Ruby runtime, the default Ruby version listed in the
+[buildpack manifest.yml file](https://github.com/cloudfoundry/ruby-buildpack/blob/950b2337ff8a7ac0a68f7420f48ddc4ae4764977/manifest.yml#L3-L5) is used.
 
 ### <a id='mri_runtime'></a>MRI
 
@@ -47,8 +47,8 @@ With this example declaration in the `Gemfile`, if Ruby versions `2.2.4`, `2.2.5
 
 For more information about the `ruby` directive for Bundler Gemfiles, see the [Bundler documentation](http://bundler.io/gemfile_ruby.html).
 
-<p> If you use v1.6.18 or earlier, you must specify an exact version, such as <code>ruby '2.2.3'</code>.
-In <a href="https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.6.18">Ruby Buildpack v1.6.18</a> and earlier, Rubygems do not support version operators for the <code>ruby</code> directive. </p>
+If you use v1.6.18 or earlier, you must specify an exact version, such as <code>ruby '2.2.3'</code>.
+In <a href="https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.6.18">Ruby Buildpack v1.6.18</a> and earlier, Rubygems do not support version operators for the <code>ruby</code> directive.
 
 ### <a id='jruby_runtime'></a>JRuby
 

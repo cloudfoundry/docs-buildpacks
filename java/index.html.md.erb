@@ -5,18 +5,10 @@ owner: Java
 
 You can use the Java buildpack with apps written in Grails, Play, Spring, or any other JVM-based language or framework.
 
-See the following topics for more information:
-
-* <a href="./java-tips.html" class="subnav">Tips for Java Developers</a>
-* <a href="./getting-started-deploying-apps/index.html" class="subnav">Getting Started Deploying Apps</a>
-* <a href="./configuring-service-connections.html" class="subnav">Configuring Service Connections</a>
-* <a href="./java-client.html" class="subnav">Cloud Foundry Java Client Library</a>
-* <a href="./java-native-image.html" class="subnav">Using Java Native Image</a>
-
 For information about specific versions, see [Java Buildpack Release Notes](https://github.com/cloudfoundry/java-buildpack/releases).
 You can find the source for the Java buildpack in the [Java buildpack repository](https://github.com/cloudfoundry/java-buildpack) on GitHub.
 
-## <a id='logging'></a> Buildpack and application logging ##
+## <a id='logging'></a> Buildpack and application logging
 
 The Java buildpack only runs during the staging process, and only logs
 staging information such as the downloaded components, configuration data, and work performed on your application by the buildpack.
@@ -36,7 +28,7 @@ Your application must write to STDOUT or STDERR for its logs to be included in
 the Loggregator stream.
 For more information about logging, see [App Logging in <%= vars.product_short %>](../../devguide/deploy-apps/streaming-logs.html).
 
-## <a id='bosh-trusted-cert'></a> BOSH Custom Trusted Certificate support
+## <a id='bosh-trusted-cert'></a> BOSH custom trusted certificate support
 
 Versions 3.7 and later of the Java buildpack support BOSH configured custom trusted certificates.
 For more information, see [Configuring Trusted Certificates](http://bosh.io/docs/trusted-certs.html) in the BOSH documentation.
