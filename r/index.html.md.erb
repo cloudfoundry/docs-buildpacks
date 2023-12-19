@@ -55,13 +55,16 @@ As of v1.1.21, the following packages are provided by the R buildpack:
 - plumber
 - shiny
 
-To specify additional packages needed by your app, provide the CRAN mirror and names of the packages inside your `r.yml` file. You can also specify the number of threads to use for parallel installation. For example:
+To specify additional packages needed by your app, provide the CRAN mirror and names of the packages inside your `r.yml` file. You can also specify the number of threads to use for parallel installation. Optionally, you can also specify the <a href="https://search.r-project.org/R/refmans/utils/html/install.packages.html#install.packages_:_dependencies">`dependencies` argument of `install.packages`</a>, which defaults to `TRUE` when left out. For example:
 
 ```
 ---
 packages:
   - cran_mirror: https://cran.r-project.org
     num_threads: 2
+    dependencies:
+    - Depends
+    - Imports
     packages:
       - name: stringr
       - name: jsonlite
