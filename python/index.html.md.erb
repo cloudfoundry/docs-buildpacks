@@ -113,7 +113,7 @@ $ pip download -r requirements.txt --no-binary=:none: -d vendor
 `cf push` uploads your vendored dependencies. The buildpack installs them directly from the `vendor/` directory.
 
 <p> To ensure proper installation of dependencies, <%= vars.recommended_by %> recommends binary vendored
-dependencies (wheels). The preceding <code>pip install</code> command achieves this.</p>
+dependencies (wheels). The preceding <code>pip download</code> command achieves this.</p>
 
 
 ## <a id='private-repos'></a> Private dependency repository
