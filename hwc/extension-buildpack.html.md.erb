@@ -14,7 +14,7 @@ An extension buildpack supplies a custom set of .NET dependencies to an app's co
 You cannot add modules or extensions directly to the HWC buildpack.
 If the HWC buildpack lacks dependencies your app requires, <%= vars.recommended_by %> recommends that you create an extension buildpack containing the missing dependencies required by your app.
 
-<p> The HWC buildpack contains a number of built in HWC features. For example, the URL Rewrite and HTTP compression modules. Extensions should only provide additional functionality to your app. For more information about existing HWC features, see <a href="../hwc/index.html#features">Features</a> in <em>HWC Buildpack</em>.</p>
+The HWC buildpack contains a number of built in HWC features. For example, the URL Rewrite and HTTP compression modules. Extensions should only provide additional functionality to your app. For more information about existing HWC features, see <a href="../hwc/index.html#features">Features</a> in <em>HWC Buildpack</em>.
 
 For additional extension buildpack configuration and creation commands, see the [Creating custom buildpacks](../custom.html).
 
@@ -138,7 +138,8 @@ To build a cached extension buildpack artifact:
     buildpack-packager build -cached -stack STACK-NAME
     ```
     Where `STACK-NAME` is the pre-built operating system that can run apps.
-    <p> If the buildpack's <code>supply.go</code> script contains a mistake, <code>buildpack-packager</code> throws an error. Don't push your app with the new extension <code>buildpack</code> until after all local errors have been corrected. You must push your app to determine whether the new extension buildpack functions as intended.</p>
+    
+    If the buildpack's <code>supply.go</code> script contains a mistake, <code>buildpack-packager</code> throws an error. Don't push your app with the new extension <code>buildpack</code> until after all local errors have been corrected. You must push your app to determine whether the new extension buildpack functions as intended.
 
 
 ## <a id='finish'></a> Step 4: Validating the extension buildpack

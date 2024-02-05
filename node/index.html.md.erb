@@ -122,7 +122,7 @@ $ npm install
 
 The `cf push` command uploads the vendored dependencies with the app.
 
-<p> For an app to run in a disconnected environment, it must vendor its dependencies and provide a lock file.</p>
+For an app to run in a disconnected environment, it must vendor its dependencies and provide a lock file.
 
 ### <a id='offline_environments'></a>Use in offline environments
 
@@ -140,7 +140,7 @@ This lock file informs the package manager of the exact versions of dependencies
 <span class="note__title"><strong>Important</strong></span>
 The <code>package-lock.json</code> file is only supported by NPM 5.x and later. For earlier
 versions of NPM, provide a
-<a href="https://docs.npmjs.com/cli/v9/configuring-npm/npm-shrinkwrap-json?v=true">npm-shrinkwrap.json</a> file instead.</p>
+<a href="https://docs.npmjs.com/cli/v9/configuring-npm/npm-shrinkwrap-json?v=true">npm-shrinkwrap.json</a> file instead.
 
 Versions 1.5.28 and later of the Node.js buildpack include the ability to use Yarn in offline mode.
 To do so, you must mirror the Yarn registry locally by providing an `npm-packages-offline-cache` directory:

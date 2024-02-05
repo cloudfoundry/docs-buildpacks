@@ -110,7 +110,7 @@ If you require end-to-end HTTP/2, for example, because of gRPC, do the following
     - See <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.webserver.configure-http2">Configure HTTP/2</a> in the Spring Boot documentation.
     - If you are deploying a standard non-executable WAR file, you only need to make sure that you are using Java buildpack v4.43 or later. Starting with v4.43, the Java buildpack configures Apache Tomcat to accept HTTP/2 connections.
     - Other frameworks, including Play, Ratpack, and apps that use the distZip format, embed an HTTP server. You must configure these apps to enable HTTP/2, specifically H2C, clear-text. See your framework's documentation for enabling HTTP/2 and H2C.
-    <p> H2C is required because <%= vars.app_runtime_abbr %> uses Envoy to secure communications into the app container.</p>
+      H2C is required because <%= vars.app_runtime_abbr %> uses Envoy to secure communications into the app container.
 2. Configure the route to use the HTTP/2 protocol using either the cf CLI or the app manifest:
     - Using the cf CLI: `cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2`.
     - Using a `manifest.yml` file:
@@ -169,10 +169,10 @@ For example:
 
 Java apps with a `main()` method can be run provided that they are packaged as self-executable JARs. For more information, see [Java Main Container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-java_main.md) in the Cloud Foundry Java Buildpack repository on GitHub.
 
-<p> If your app is not web enabled, you must suppress route creation to avoid a <code>failed to start accepting connections</code> error.
+If your app is not web enabled, you must suppress route creation to avoid a <code>failed to start accepting connections</code> error.
 To suppress route creation, add <code>no-route: true</code> to the app manifest or use the
 <code>--no-route</code> flag with the <code>cf push</code> command. <br><br>For more information about the <code>no-route</code> attribute,
-see <a href="../../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.</p>
+see <a href="../../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.
 
 ### <a id='java-main-maven'></a> Maven
 
@@ -318,7 +318,7 @@ A Java app may crash because of insufficient memory on the Garden container or t
 
 #### <a id='garden-container'></a> Garden container
 
-<p> The solutions in this section require configuring the memory calculator, which is a sub project of the Java buildpack that calculates suitable memory settings for Java apps when you push them. For more information, see the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">java-buildpack-memory-calculator</a> repository on GitHub. If you have questions about the memory calculator, you can ask them in the <strong>#java-buildpack</strong> channel of the <a href="https://slack.cloudfoundry.org/">Cloud Foundry Slack organization</a>.</p>
+The solutions in this section require configuring the memory calculator, which is a sub project of the Java buildpack that calculates suitable memory settings for Java apps when you push them. For more information, see the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">java-buildpack-memory-calculator</a> repository on GitHub. If you have questions about the memory calculator, you can ask them in the <strong>#java-buildpack</strong> channel of the <a href="https://slack.cloudfoundry.org/">Cloud Foundry Slack organization</a>.
 
 * **Error**: The Garden container terminates the Java process with the out of memory event. For example:
     <pre class="terminal">

@@ -97,7 +97,7 @@ To migrate a database schema using a Rake task:
 
 Learn how to create and deploy an example Rails app that uses a worker library to defer a task that a separate app runs. It also describes how to scale the resources available to the worker app.
 
-<p> Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the app manifest, to suppress route creation. If you are using cf CLI v7 or later, be aware that the <code>--no-route</code> flag no longer unbinds all existing routes associated with the app.</p>
+Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the app manifest, to suppress route creation. If you are using cf CLI v7 or later, be aware that the <code>--no-route</code> flag no longer unbinds all existing routes associated with the app.
 
 ### <a id='worker-libs'></a> Choose a worker task library
 
@@ -291,7 +291,7 @@ You can use this capability to populate an edge cache CDN or serve files directl
 
 If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in an `ld_library_path` directory at the app root.
 
-<p> You must keep these libraries up-to-date. They do not update automatically.</p>
+You must keep these libraries up-to-date. They do not update automatically.
 
 The Ruby buildpack automatically adds the directory `<app-root>/ld_library_path` to `LD_LIBRARY_PATH` so that your app can access these libraries at runtime.
 
