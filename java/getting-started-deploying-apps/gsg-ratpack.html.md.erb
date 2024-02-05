@@ -8,9 +8,9 @@ owner: Java
 This information walks you through deploying a Ratpack app to Cloud Foundry.
 If you experience a problem following the steps, check the <%=vars.known_issues%> topic or refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic.
 
-<p> Sample app step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample app step sections.</p>
+Sample app step</strong><br />If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_groovy.git</code> to clone the <code>pong_matcher_groovy</code> app from GitHub, and follow the instructions in the Sample app step sections.
 
-<p> Ensure that your Ratpack app runs locally before continuing with this procedure.</p>
+Ensure that your Ratpack app runs locally before continuing with this procedure.
 
 ##<a id='deploy-yourapp'></a>Deploy a Ratpack application
 
@@ -23,9 +23,9 @@ This section describes how to deploy a Ratpack application to Cloud Foundry.
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
 * JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
 
-<p> You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to Step 8: Configure the Deployment Manifest.</p>
+You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to Step 8: Configure the Deployment Manifest.
 
-### Step 1: Declare app dependencies
+### Step 1: (Optional) Declare app dependencies
 
 Declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle and Maven and provides documentation links for each build tool.
 
@@ -45,8 +45,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
 </tr>
 </table>
 
-<p> You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app, as the example below shows.
-</p>
+You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_groovy</code> sample app, as the example below shows.
 
 ```
 dependencies {
@@ -64,7 +63,7 @@ dependencies {
 }
 ```
 
-### Step 2: Allocate sufficient memory
+### Step 2: (Optional) Allocate sufficient memory
 
 Use the `cf push -m` command to specify the amount of memory that should be allocated to the application. Memory allocated this way is done in preset amounts of `64M`, `128M`, `256M`, `512M`, `1G`, or `2G`. For example:
 
@@ -74,22 +73,22 @@ $ cf push -m 128M
 
 When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
-<p> You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.</p>
+You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.
 
-### Step 3: Provide a JDBC driver
+### Step 3: (Optional) Provide a JDBC driver
 
 The Java buildpack does not bundle a JDBC driver with your application. If your application accesses a SQL RDBMS, you must do the following:
 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-<p> You can skip this step. The <code>pong_matcher_groovy</code> sample app does not require a JDBC driver.</p>
+You can skip this step. The <code>pong_matcher_groovy</code> sample app does not require a JDBC driver.
 
 ### Step 4: (Optional) Configure a Procfile
 
 Use a Procfile to declare required runtime processes for your web app and to specify your web server. For more information, see the [Configuring a Production Server](../../prod-server.html) topic.
 
-<p class="tip"><strong>Sample app step</strong><br />You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.</p>
+You can skip this step. The <code>pong_matcher_groovy</code> app does not require a Procfile.
 
 ### Step 5: Create and bind a service instance for a Ratpack application
 
@@ -147,7 +146,7 @@ OK
 </pre>
 </div>
 
-#### Bind a service instance
+#### (Optional) Bind a service instance
 
 When you bind an app to a service instance, Cloud Foundry writes information about the service instance to the `VCAP_SERVICES` app environment variable. The app can use this information to integrate with the service instance.
 
@@ -163,7 +162,7 @@ Alternately, you can configure the deployment manifest file by adding a `service
 
 <%=vars.dev_console_5%>
 
-<p> You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
+You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
 
 <pre class="terminal">
 ---
@@ -172,15 +171,14 @@ applications:
   services:
     - baby-redis
 </pre>
-</p>
 
-### Step 6: Configure the deployment manifest
+### Step 6: (Optional) Configure the deployment manifest
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
-Refer to [Deploying with application manifests](../../../devguide/deploy-apps/manifest.html) for more information.
+See [Deploying with application manifests](../../../devguide/deploy-apps/manifest.html) for more information.
 
-<p> You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_groovy</code> sample app does not require any additional configuration to deploy the app.</p>
+You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_groovy</code> sample app does not require any additional configuration to deploy the app.
 
 ### Step 7: Log in and target the API endpoint
 
@@ -194,11 +192,13 @@ Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 
 <%=vars.gen_GSG%>
 
-  <p class="tip"><strong>Sample app step</strong><br />You must perform this step to run the sample app.</p>
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+You must perform this step to run the sample app.</p>
 
 ### Step 8: Deploy the app
 
-<p> You must use the cf CLI to deploy apps.</p>
+You must use the cf CLI to deploy apps.
 
 From the root directory of your app, run the following command to deploy your application:
 
@@ -206,7 +206,7 @@ From the root directory of your app, run the following command to deploy your ap
 cf push APP-NAME -p PATH-TO-FILE.distZip
 ```
 
-<p> You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="../java-tips.html">Tips for Java Developers</a> topic.</p>
+You must deploy the <code>.distZip</code> artifact for a Ratpack app, and you must include the path to the <code>.distZip</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="../java-tips.html">Tips for Java Developers</a> topic.
 
 The `cf push` command creates a URL route to your application in the form `HOST.DOMAIN`,
 where `HOST` is your `APP-NAME` and `DOMAIN` is specified by your administrator.
@@ -229,11 +229,9 @@ Once your app deploys, browse to your app URL. Search for the `urls` field in th
 1. Run `cf push pong_matcher_groovy -n HOST-NAME` to push the app.
 Example: `cf push pong_matcher_groovy -n groovy-ratpack-app`
 
-<p> This example is valid for cf CLI v6. In cf CLI v7 and onwards, the <code>-n</code> flag is not supported. The host name must be specified in the manifest, using the <code>routes</code> attribute.
-</p>
+This example is valid for cf CLI v6. In cf CLI v7 and onwards, the <code>-n</code> flag is not supported. The host name must be specified in the manifest, using the <code>routes</code> attribute.
 
-<p> You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
-</p>
+You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
 The following example shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
 Note, this example is valid for cf CLI v6. In cf CLI v7 and onwards, the `-n` flag is not supported. The host name must be specified in the manifest, using the `routes` attribute.
@@ -290,7 +288,9 @@ Use the cf <%=vars.dev_console_2%> to review information and administer your app
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-<div class="tip"><strong>Sample app step</strong><br />
+<div class="note">
+<span class="note__title"><strong>Note</strong></span>
+<br />
 To test the sample app, do the following:
 <br /><br />
 1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
@@ -319,12 +319,15 @@ The last line of the output shows the <code>match_id</code>.
 <br /><br />
 6. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
 <br />
+<pre>
 <code>curl -v -H "Content-Type: application/json" -X POST $HOST/results -d '
 {
     "match_id":"MATCH_ID",
     "winner":"andrew",
     "loser":"navratilova"
-}'</code>
+}'
+</code>
+</pre>
 <br />
 You should receive a <code>201 Created</code> response.
 </div>
@@ -333,12 +336,12 @@ You should receive a <code>201 Created</code> response.
 
 Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the cf CLI, refer to the Cloud Foundry Command Line Interface (cf CLI) topics, especially the <%=vars.cli_v6%> topic.
 
-<p> You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
+You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 
 <%=vars.dev_console_note%>
-</p>
+
 
 ##<a id='troubleshoot'></a>Troubleshooting
 

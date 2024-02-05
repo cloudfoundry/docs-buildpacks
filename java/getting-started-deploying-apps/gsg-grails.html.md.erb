@@ -25,7 +25,7 @@ This section describes how to deploy a Grails application to Cloud Foundry.
 
 <p> You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7 as described in <em>Step 8: Configure the Deployment Manifest</em> of this topic.</p>
 
-### Step 1: Declare app dependencies
+### Step 1: (Optional) Declare app dependencies
 
 Declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle, Grails, and Maven, and provides documentation links for each build tool.
 
@@ -63,7 +63,7 @@ dependencies {
     }
 ```
 
-### Step 2: Allocate sufficient memory
+### Step 2: (Optional) Allocate sufficient memory
 
 Run the Cloud Foundry Command Line Interface (cf CLI) `cf push -m` command to specify the amount of memory that should be allocated to the application. Memory allocated this way is done in preset amounts of `64M`, `128M`, `256M`, `512M`, `1G`, or `2G`. For example:
 
@@ -78,7 +78,7 @@ When your app is running, you can use the `cf app APP-NAME` command to see memor
 You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_grails</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 1 GB to the app.
 </p>
 
-### Step 3: Provide a JDBC driver
+### Step 3: (Optional) Provide a JDBC driver
 
 The Java buildpack does not bundle a JDBC driver with your application. If your application accesses a SQL RDBMS, you must do the following:
 
@@ -114,7 +114,7 @@ Use a Procfile to declare required runtime processes for your web app and to spe
 
 <p class="note">
 <span class="note__title"><strong>Note</strong></span>
-ou can skip this step. The <code>pong_matcher_grails</code> app does not require a Procfile.</p>
+You can skip this step. The <code>pong_matcher_grails</code> app does not require a Procfile.</p>
 
 ### Step 5: Create and bind a service instance for a Grails application
 
@@ -172,7 +172,7 @@ OK
 </pre>
 </div>
 
-#### Bind a service instance
+#### (Optional) Bind a service instance
 
 When you bind an app to a service instance, Cloud Foundry writes information about the service instance to the `VCAP_SERVICES` app environment variable. The app can use this information to integrate with the service instance.
 
@@ -197,7 +197,7 @@ applications:
 </pre>
 </div>
 
-### Step 6: Configure the deployment manifest file
+### Step 6: (Optional) Configure the deployment manifest file
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
@@ -223,7 +223,7 @@ Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 <span class="note__title"><strong>Note</strong></span>
 You must do this step to run the sample app.</p>
 
-### Step 8: Deploying the application
+### Step 8: Deploy the application
 
 <p> You must use the cf CLI to deploy apps.</p>
 
@@ -251,7 +251,7 @@ If you want to view log activity while the app deploys, launch a new terminal wi
 
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
-<p class="note important">
+<div class="note important">
 <span class="note__title"><strong>Note</strong></span>
   <ol>
     <li>Change to the <code>app</code>directory, and run <code>./grailsw war</code> to build the app.</li>
@@ -261,7 +261,7 @@ Once your app deploys, browse to your app URL. Search for the `urls` field in th
     Example: <code>cf push pong_matcher_grails -n my-grails-app</code>
     <br /><br />
     <b>This example works for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must be set using the <code>routes</code> property in the manifest.</b>
-</p>
+</div>
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
@@ -325,7 +325,7 @@ urls: my-grails-app.cfapps.io
 </pre>
 
 
-### Step 9: Testing your deployed app
+### Step 9: Test your deployed app
 
 Use the cf <%=vars.dev_console_2%> to review information and administer your app and your Cloud Foundry account. For example, you can edit the `manifest.yml` to increase the number of app instances from 1 to 3, and redeploy the app with a new app name and host name.
 
