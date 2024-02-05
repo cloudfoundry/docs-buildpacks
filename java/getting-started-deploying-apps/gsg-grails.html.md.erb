@@ -48,10 +48,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
   </tr>
 </table>
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
 You can skip this step. The <code>pong_matcher_grails/app/grails-app/conf/BuildConfig.groovy</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app, as shown in the following example.
-</p>
 
 ```
 dependencies {
@@ -73,10 +70,7 @@ $ cf push -m 128M
 
 When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
 You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_grails</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 1 GB to the app.
-</p>
 
 ### Step 3: (Optional) Provide a JDBC driver
 
@@ -85,9 +79,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-You can skip this step. The <code>pong_matcher_grails</code> sample app declares a MySQL JDBC driver in the <code>pong_matcher_grails/app/grails-app/conf/DataSource.groovy</code> file because the app uses ClearDB, which is a database-as-service for MySQL-powered apps. The example below shows this declaration.</p>
+You can skip this step. The <code>pong_matcher_grails</code> sample app declares a MySQL JDBC driver in the <code>pong_matcher_grails/app/grails-app/conf/DataSource.groovy</code> file because the app uses ClearDB, which is a database-as-service for MySQL-powered apps. The example below shows this declaration.
 
 ```
 dataSource {
@@ -112,9 +104,7 @@ dataSource {
 
 Use a Procfile to declare required runtime processes for your web app and to specify your web server. For more information, see the [Configuring a Production Server](../../prod-server.html) topic.
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-You can skip this step. The <code>pong_matcher_grails</code> app does not require a Procfile.</p>
+You can skip this step. The <code>pong_matcher_grails</code> app does not require a Procfile.
 
 ### Step 5: Create and bind a service instance for a Grails application
 
@@ -184,8 +174,6 @@ Alternately, you can configure the deployment manifest file by adding a `service
 
 <%=vars.dev_console_5%>
 
-<div class="note">
-<span class="note__title"><strong>Note</strong></span>
 You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
 
 <pre class="terminal">
@@ -195,7 +183,6 @@ applications:
   services:
     - mysql
 </pre>
-</div>
 
 ### Step 6: (Optional) Configure the deployment manifest file
 
@@ -203,9 +190,7 @@ You can specify deployment options in the `manifest.yml` that the `cf push` comm
 
 Refer to the [Deploying with application manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app.</p>
+You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app.
 
 ### Step 7: Log in and target the API endpoint
 

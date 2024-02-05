@@ -115,10 +115,7 @@ Sample app step.
 
 <%=vars.dev_console_5%>
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-<br />
-You can skip this step. The <code>manifest.yml</code> for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.</p>
+You can skip this step. The <code>manifest.yml</code> for the sample app contains a <code>services</code> sub-block in the <code>applications</code> block, as the example below shows. This binds the <code>redis</code> service instance that you created in the previous step.
 
 ```yaml
 services:
@@ -135,10 +132,7 @@ You can specify app deployment options in a manifest that the `cf push` command 
 
 Cloud Foundry uses the default standard Ruby web server library, WEBrick, for Ruby and RoR apps. However, Cloud Foundry can support a more robust production web server, such as Phusion Passenger, Puma, Thin, or Unicorn. If your app requires a more robust web server, refer to the [Configuring a Production Server](../prod-server.html) topic for help configuring a server other than WEBrick.
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-<br />
-You can skip this step. The <code>manifest.yml</code> file for <code>pong_matcher_ruby</code> does not require any additional configuration to deploy the app.</p>
+You can skip this step. The <code>manifest.yml</code> file for <code>pong_matcher_ruby</code> does not require any additional configuration to deploy the app.
 
 ### Step 3: Log in and target the API endpoint
 

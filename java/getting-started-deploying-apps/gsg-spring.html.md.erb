@@ -58,11 +58,7 @@ The following table lists build script information for Gradle and Maven and prov
 </tr>
 </table>
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-<br />
-You can skip this step. The <code>pom.xml</code> file contains the dependencies for the <code>pong_matcher_spring</code> sample app, as the example below shows.
-</p>
+You can skip this step. The <code>pom.xml</code> file contains the dependencies for the <code>pong_matcher_spring</code> sample app, as the following example shows.
 
 ```xml
 <dependencies>
@@ -121,10 +117,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-<br />
-You can skip this step. In the <code>pong_matcher_spring</code> sample app, the <code>src/main/resources/application.yml</code> file declares the JDBC driver, and the <code>pom.xml</code> file includes the JDBC driver as a dependency.</p>
+You can skip this step. In the <code>pong_matcher_spring</code> sample app, the <code>src/main/resources/application.yml</code> file declares the JDBC driver, and the <code>pom.xml</code> file includes the JDBC driver as a dependency.
 
 ### Step 4: (Optional) Configure service connections for a Spring app
 
@@ -142,9 +135,6 @@ OK
 </pre>
 </div>
 
-<div class="note">
-<span class="note__title"><strong>Note</strong></span>
-<br />
 You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
 
 <pre class="terminal">
@@ -154,7 +144,6 @@ applications:
   services:
     - mysql
 </pre>
-</div>
 
 ### Step 5: Configure the deployment manifest
 
@@ -162,10 +151,7 @@ You can specify deployment options in a manifest file `manifest.yml` that the `c
 
 Refer to the [Deploying with Application Manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
 
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-<br />
-You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_spring</code> sample app does not require any additional configuration to deploy the app.</p>
+You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_spring</code> sample app does not require any additional configuration to deploy the app.
 
 ### Step 6: Log in and target the API endpoint
 
