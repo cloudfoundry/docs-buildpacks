@@ -37,8 +37,8 @@ For more information, see [Buildpack Packager](https://github.com/cloudfoundry/l
 
 After you have packaged the buildpack using Buildpack Packager, you can use the ZIP file locally, or share it with others by uploading it to any network location that is accessible to the CLI. You can can then specify the buildpack with the `-b` option when you push apps. For more information, see [Deploying Apps with a Custom Buildpack](#deploying-with-custom-buildpacks).
 
-<p> Offline buildpack packages might contain proprietary dependencies that require
-distribution licensing or export control measures. For more information about offline buildpacks, see <a href="depend-pkg-offline.html#offline-buildpacks">About Offline Buildpacks</a> section of the <em>Packaging dependencies for offline Buildpacks</em> topic.</p>
+Offline buildpack packages might contain proprietary dependencies that require
+distribution licensing or export control measures. For more information about offline buildpacks, see <a href="depend-pkg-offline.html#offline-buildpacks">About Offline Buildpacks</a> section of the <em>Packaging dependencies for offline Buildpacks</em> topic.
 
 ### <a id='specifying-default-versions'></a> Specifying a default version
 
@@ -217,13 +217,11 @@ Where:
 
 The app is then deployed to Cloud Foundry, and the buildpack is cloned from the repository and applied to the app.
 
-<p> If a buildpack is specified using <code>cf push -b</code>, the <code>detect</code> step is skipped. As a
-result, no buildpack <code>detect</code> scripts are run.</p>
-
+If a buildpack is specified using <code>cf push -b</code>, the <code>detect</code> step is skipped. As a
+result, no buildpack <code>detect</code> scripts are run.
 
 <%= vars.disable_custom %>
 
-
-<p> A common development practice for custom buildpacks is to
+A common development practice for custom buildpacks is to
 fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your
-custom buildpack, see <a href="https://help.github.com/articles/syncing-a-fork">Syncing a fork</a> in the GitHub documentation.</p>
+custom buildpack, see <a href="https://help.github.com/articles/syncing-a-fork">Syncing a fork</a> in the GitHub documentation.

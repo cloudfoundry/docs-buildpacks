@@ -63,8 +63,8 @@ The following is an example of the detailed information returned by the Java bui
 java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
 ```
 
-<p> By default, Cloud Foundry detects only one buildpack. When you want to detect multiple
-buildpacks, you must explicitly specify them.</p>
+By default, Cloud Foundry detects only one buildpack. When you want to detect multiple
+buildpacks, you must explicitly specify them.
 
 For more information, see [Buildpack detection](#buildpack-detection).
 
@@ -179,8 +179,8 @@ The `default_process_types` line indicates the type of app being run and the com
 
 At this time, only the `web` type of apps is supported.
 
-<p> To define environment variables for your buildpack, add a Bash script to the <code>.profile.d</code>
-directory in the root folder of your app.</p>
+To define environment variables for your buildpack, add a Bash script to the <code>.profile.d</code>
+directory in the root folder of your app.
 
 The following example shows what a `release` script for a Rack app might return:
 
@@ -189,7 +189,7 @@ default_process_types:
   web: bundle exec rackup config.ru -p $PORT
 ~~~
 
-<p> The <code>web</code> command runs as <code>bash -c COMMAND</code> when Cloud Foundry starts your app.</p>
+The <code>web</code> command runs as <code>bash -c COMMAND</code> when Cloud Foundry starts your app.
 
 ## <a id='droplet-filesystem'></a> Droplet filesystem
 
@@ -262,7 +262,7 @@ At the end of this process, the `deps` directory is included at the root of the 
 
 Cloud Foundry does buildpack detection if you do not specify one or more buildpacks in the app manifest or in the `cf push APP-NAME -b BUILDPACK-NAME` cf CLI command.
 
-<p> Cloud Foundry detects only one buildpack to use with the app.</p>
+Cloud Foundry detects only one buildpack to use with the app.
 
 If the platform performs detection, it:
 

@@ -10,7 +10,7 @@ Learn about the dependency storage options that are available to you when creati
 Online, or uncached, buildpacks require an internet connection to download dependencies.
 For example, language interpreters, and compilers. Alternatively, you can create offline, or cached, buildpacks that are packaged with their dependencies. These offline buildpacks do not connect to the Internet when they are used to deploy Cloud Foundry apps.
 
-<p> Offline buildpacks might contain proprietary dependencies that require distribution licensing or export control measures.</p>
+Offline buildpacks might contain proprietary dependencies that require distribution licensing or export control measures.
 
 You can find instructions for building offline packages in the `README.md` file for each buildpack repository. For example, see the [Java buildpack](https://github.com/cloudfoundry/java-buildpack#offline-package).
 
@@ -54,7 +54,7 @@ $ cf create-buildpack SomeBuildPackName ZippedBuildPackName.zip 1
 This is a variant of the [package dependencies in the buildpack](#package-directly) method. In this variation, the administrator edits a configuration file. For example, the `dependencies.yml` file to include a limited subset of the buildpack dependencies,
 packages, and uploads to the buildpack.
 
-<p> This approach is not recommended. See the Cons section for more information.</p>
+This approach is not recommended. See the Cons section for more information.
 
 The administrator completes the following steps:
 

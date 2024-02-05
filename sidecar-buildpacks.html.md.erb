@@ -16,7 +16,7 @@ The following defines the relevant fields of the `launch.yml` file in more detai
 
 * `type`: A key that is mapped to a individual command.
 
-  <p> It is possible for multiple buildpacks to write their own <code>launch.yml</code> files. If two of these files have the same <code>type</code> keys, the <code>launch.yml</code> file written last overwrites the previous commands of the same <code>type</code>.</p>
+  It is possible for multiple buildpacks to write their own <code>launch.yml</code> files. If two of these files have the same <code>type</code> keys, the <code>launch.yml</code> file written last overwrites the previous commands of the same <code>type</code>.
 
 * `command`: The command to be run in the container. Container health is dependent on this command. The container fails when the command is no longer running.
 
@@ -27,7 +27,7 @@ The following defines the relevant fields of the `launch.yml` file in more detai
 * `platforms`: A key specifying the data that must be read by a platform. For example, Cloud Foundry only reads data under the `cloudfoundry` key.
 
 * `sidecar_for`: A list of `types` that the `command` uses for a sidecar process.
-  <p> Each <code>type</code> requires a health check. The <code>command</code> cannot run until each health check is passed. The more <code>type</code>s that are listed, the more health checks are required. If any health check fails, the <code>command</code> does not run.</p>
+  Each <code>type</code> requires a health check. The <code>command</code> cannot run until each health check is passed. The more <code>type</code>s that are listed, the more health checks are required. If any health check fails, the <code>command</code> does not run.
 
 Example `launch.yml` file:
 
