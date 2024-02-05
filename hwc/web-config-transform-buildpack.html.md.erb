@@ -34,11 +34,10 @@ To leverage the .NET Framework Web Config Transform Extension Buildpack, complet
 1. [Add ASPNETCORE_ENV Variable to App Manifest](#add-aspnetcore-env).
 1. [Push the App by Parameterized Environment Name](#push-app).
 
-<p> This buildpack can inject appSettings and
-    connectionStrings regardless of whether the replacement tokens are present in the <code>Web.Release.Config</code> file.
-    For more information please see <a href="#special-behavior">Special Behavior for appSettings and connectionStrings</a>
-    sections.
-</p>
+This buildpack can inject appSettings and
+connectionStrings regardless of whether the replacement tokens are present in the <code>Web.Release.Config</code> file.
+For more information please see <a href="#special-behavior">Special Behavior for appSettings and connectionStrings</a>
+sections.
 
 ## <a id='tokenize'></a> Identifying environment dependent configurations and externalizations
 
@@ -58,7 +57,7 @@ by replacing hard-coded values with tokens following the format `#{configPath:ke
     For example, refer to the before and after tokenizing sample files, below:
 <br>
 
-    <p> Transform xml attributes and tokens are case-sensitive.</p>
+    Transform xml attributes and tokens are case-sensitive.
 
     **Before tokenizing**
 <br><br>
@@ -102,10 +101,10 @@ by replacing hard-coded values with tokens following the format `#{configPath:ke
 Perform the following steps to test your tokenizations by using environment variables in the Cloud Foundry app manifest
 to perform the token replacements.
 
-<p> Token replacements with environment variables is solely for testing purposes
-    to ensure your tokens are correctly replaced.
-    After validating using environment variables you will externalize your configuration settings
-    using git repositories and Spring Cloud Config Server in later steps.</p>
+Token replacements with environment variables is solely for testing purposes
+to ensure your tokens are correctly replaced.
+After validating using environment variables you will externalize your configuration settings
+using git repositories and Spring Cloud Config Server in later steps.
 
 ### <a id='create-manifest-app'></a> Creating a Cloud Foundry app manifest for your app
 
@@ -124,9 +123,8 @@ Ensure your application has a Cloud Foundry manifest file. If your application i
 
 To configure your workload's Cloud Foundry app manifest for token replacement, complete the following steps:
 
-<p> You must prepare your Cloud Foundry app manifest for token replacement with debug/development
+You must prepare your Cloud Foundry app manifest for token replacement with debug/development
 environment connection values.
-</p>
 
 1. Backup your app manifest file.
 
@@ -148,7 +146,6 @@ environment connection values.
         Ensure the new entry precedes the existing
         <code>hwc_buildpack</code> buildpacks entry.</p>
 
-
 1. Add `key:value` pairs to the manifest for each the Web Config file's tokenized settings.
 <br>
     For example, the following provides connection string values for a Web Config
@@ -165,10 +162,9 @@ environment connection values.
         "connectionStrings:MyDB": "Data Source=ReleaseSQLServer;Initial Catalog=MyReleaseDB;User ID=xxxx;Password=xxxx"
     ```
 
-    <p> Create as many <code>key:value</code> pair lines as are
-        needed by your application. The values you provide are your debug/development
-        environment's connection values.
-    </p>
+    Create as many <code>key:value</code> pair lines as are
+    needed by your application. The values you provide are your debug/development
+    environment's connection values.
 
 ## <a id='transformations'></a> Adding web config transformations
 
@@ -203,9 +199,8 @@ corresponding web config transformation files (`Web.Debug.Config`, `Web.Release.
     </configuration>
     ```
 
-    <p> For developer machine debugging, use the <code>Debug</code> configuration profile
-        and your <code>Web.Debug.config</code> for transformation.
-    </p>
+    For developer machine debugging, use the <code>Debug</code> configuration profile
+    and your <code>Web.Debug.config</code> for transformation.
 
 1.  Build and push the application to Cloud Foundry to verify that your config settings are properly transformed:
 
@@ -243,9 +238,9 @@ and "Production" environments, to hold your environment-specific settings. Name 
     * `YOUR-APPLICATION` is the identifier name for your application.
     * `APP-ENVIRONMENT` is the identifier name for a unique environment, such as "Development", "Debug" or "Production".
 
-    <p> Later you can use these app environment names as values for the
+    Later you can use these app environment names as values for the
     <code>ASPNETCORE_ENVIRONMENT</code> environment variable to target different environments.
-    </p>
+
   For example:
 <br>
     **sampleapp-Development.yaml**
@@ -266,10 +261,9 @@ and "Production" environments, to hold your environment-specific settings. Name 
 <br>
 1. Remove your configuration key:value pairs from the `env` section of your `manifest.yml`.
 
-    <p> The <code>manifest.yml</code> <code>env</code> section does not include
-        any configuration key:value pairs during the next step.
-    </p>
-
+    The <code>manifest.yml</code> <code>env</code> section does not include
+    any configuration key:value pairs during the next step.
+    
 ## <a id='create-spring-cloud-service'></a> Creating a configuration service for Spring Cloud config server
 
 The .NET Framework Web Config Transform Extension Buildpack requires a configuration file pointing to your transform configurations
@@ -301,8 +295,9 @@ Add a single entry to the JSON file for the uri to your configuration Git reposi
     * `ACCOUNT-ID` is your Git repository account ID.
     * `CONFIG-REPO` is the name of your configuration Git repository created in the step above.
 
-1. Save the text file as a JSON file, for example `config-server.json`.
-   <p> Ensure file is not BOM-encoded.</p>
+1. Save the text file as a JSON file, for example, `config-server.json`.
+   Ensure that the file is not BOM-encoded.
+
 1. To create a config server using `cf create service`, and your configuration file, run the following command:
 
     ```script

@@ -8,9 +8,9 @@ owner: Java
 This information walks you through deploying a Grails app to Cloud Foundry.
 If you experience a problem following the steps, refer to the <%=vars.known_issues%> or [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topics for more information.
 
-<p> If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_grails.git</code> to clone the <code>pong_matcher_grails</code> app from GitHub, and follow the instructions in the Sample app step sections.</p>
+If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_grails.git</code> to clone the <code>pong_matcher_grails</code> app from GitHub, and follow the instructions in the Sample app step sections.
 
-<p> Ensure that your Grails app runs locally before continuing with this procedure.</p>
+Ensure that your Grails app runs locally before continuing with this procedure.
 
 ##<a id='deploy-yourapp'></a>Deploy a Grails application
 
@@ -23,7 +23,7 @@ This section describes how to deploy a Grails application to Cloud Foundry.
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
 * JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
 
-<p> You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7 as described in <em>Step 8: Configure the Deployment Manifest</em> of this topic.</p>
+You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7 as described in <em>Step 8: Configure the Deployment Manifest</em> of this topic.
 
 ### Step 1: (Optional) Declare app dependencies
 
@@ -225,7 +225,7 @@ You must do this step to run the sample app.</p>
 
 ### Step 8: Deploy the application
 
-<p> You must use the cf CLI to deploy apps.</p>
+You must use the cf CLI to deploy apps.
 
 From the root directory of your application, run the following command to deploy your application:
 
@@ -233,7 +233,7 @@ From the root directory of your application, run the following command to deploy
 cf push APP-NAME -p PATH-TO-FILE.war
 ```
 
-<p> You must deploy the <code>.war</code> artifact for a Grails app, and you must include the path to the <code>.war</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="../java-tips.html#grails">Grails section</a> in the Tips for Java Developers topic.</p>
+You must deploy the <code>.war</code> artifact for a Grails app, and you must include the path to the <code>.war</code> file in the <code>cf push</code> command using the <code>-p</code> option if you do not declare the path in the <code>applications</code> block of the manifest file. For more information, refer to the <a href="../java-tips.html#grails">Grails section</a> in the Tips for Java Developers topic.
 
 The `cf push` command creates a URL route to your application in the form `HOST.DOMAIN`,
 where `HOST` is your `APP-NAME` and `DOMAIN` is specified by your administrator.
@@ -331,7 +331,9 @@ Use the cf <%=vars.dev_console_2%> to review information and administer your app
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-<p class="tip"><strong>Sample app step</strong><br />
+<div class="note">
+<span class="note__title"><strong>Note</strong></span>
+<br />
 To test the sample app, do the following:
 <br /><br />
 1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
@@ -360,26 +362,28 @@ The last line of the output shows the <code>match_id</code>.
 <br /><br />
 6. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
 <br />
+<pre>
 <code>curl -v -H "Content-Type: application/json" -X POST $HOST/results -d '
 {
     "match_id":"MATCH_ID",
     "winner":"andrew",
     "loser":"navratilova"
-}'</code>
+}'
+</code>
+</pre>
 <br />
 You receive a <code>201 Created</code> response.
-</p>
+</div>
 
 ##<a id='cli-manage'></a>Manage your application with the cf CLI
 
 Run the `cf help` command to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the cf CLI, refer to the Cloud Foundry Command Line Interface (cf CLI) topics, especially the <%=vars.cli_v6%> topic.
 
-<p> You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
+You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
 
 <code>error code: 10003, message: You are not authorized to perform the requested action</code>
 
 <%=vars.dev_console_note%>
-</p>
 
 ##<a id='troubleshoot'></a>Troubleshooting
 If your application fails to start, verify that the application starts in your local environment. Refer to the [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topic to learn more about troubleshooting.

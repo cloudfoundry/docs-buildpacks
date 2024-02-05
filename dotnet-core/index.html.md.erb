@@ -6,10 +6,10 @@ owner: Buildpacks
 You can push Cloud Foundry apps to Linux Diego Cells using the .NET Core buildpack.
 To find supported ASP.NET Core versions, see [.NET Core buildpack release notes](https://github.com/cloudfoundry/dotnet-core-buildpack/releases).
 
-<p> The .NET Core buildpack can only be used to deploy apps to Linux Diego Cells.
+The .NET Core buildpack can only be used to deploy apps to Linux Diego Cells.
 
 To deploy .NET Core apps to Windows Diego Cells, use the Binary buildpack.
-For more information about the Binary buildpack, see <a href="../binary/index.html">Binary Buildpack</a>.</p>
+For more information about the Binary buildpack, see <a href="../binary/index.html">Binary Buildpack</a>.
 
 Buildpacks provide needed dependencies to Cloud Foundry apps.
 Cloud Foundry automatically uses the .NET Core buildpack when one or more of the following conditions are met:
@@ -225,8 +225,8 @@ The buildpack chooses what SDK to install based on the files present at the app 
 1. `global.json`
 1. `*.fsproj`
 
-<p> The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in
-both <code>global.json</code> and <code>buildpack.yml</code> files, make sure you specify the same versions in both files.</p>
+The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in
+both <code>global.json</code> and <code>buildpack.yml</code> files, make sure you specify the same versions in both files.
 
 
 ## <a id='dotnet-runtime'></a> Specify .NET Runtime versions
@@ -246,8 +246,8 @@ For example, the following configuration locks the runtime to 2.1:
 </PropertyGroup>
 ```
 
-<p> For source-based apps, specify a minor version of the .NET Runtime. Do not specify a patch version, because buildpacks contain only
-the two most recent patch versions of each minor version.</p>
+For source-based apps, specify a minor version of the .NET Runtime. Do not specify a patch version, because buildpacks contain only
+the two most recent patch versions of each minor version.
 
 ### <a id='dotnet-runtime-fdd'></a> Framework-dependent apps
 
@@ -270,8 +270,8 @@ For example:
 }
 ```
 
-<p> Set <code>applyPatches: false</code> in  <code>*.runtimeconfig.json</code> only if you want to pin your .NET Framework to a specific version. This prevents your
-app from receiving updates to the runtime version and assemblies.</p>
+Set <code>applyPatches: false</code> in  <code>*.runtimeconfig.json</code> only if you want to pin your .NET Framework to a specific version. This prevents your
+app from receiving updates to the runtime version and assemblies.
 
 
 ## <a id='offline'></a> Push an app in a disconnected environment
@@ -281,7 +281,7 @@ For offline environments, <%= vars.company_name %> recommends using the Framewor
 
 ## <a id='runtime-store'></a> Maintain ASP.NET Core assemblies
 
-<p> This section applies only to source-based and framework-dependent deployments.</p>
+This section applies only to source-based and framework-dependent deployments.
 
 For maintaining ASP.NET Core assemblies, <%= vars.company_name %> recommends one of these methods:
 
@@ -301,8 +301,8 @@ For maintaining ASP.NET Core assemblies, <%= vars.company_name %> recommends one
     	sdk: 2.0.x
     ```
 
-<p> <code>2.0.x</code> ASP.NET Core assemblies are released in the <code>2.1.200</code>-<code>2.1.299</code> SDK versions, and <code>2.1.x</code> assemblies are
-released in the <code>2.1.300</code> and higher SDK versions.</p>
+<code>2.0.x</code> ASP.NET Core assemblies are released in the <code>2.1.200</code>-<code>2.1.299</code> SDK versions, and <code>2.1.x</code> assemblies are
+released in the <code>2.1.300</code> and higher SDK versions.
 
 
 ## <a id='port'></a> Configuring the listen port
@@ -374,6 +374,6 @@ With these changes, the `dotnet run` command copies your app `Views` to the buil
 
 If your app requires external shared libraries that are not provided by the rootfs or the buildpack, you must place the libraries in an `ld_library_path` directory at the app root.
 
-<p> You must keep these libraries up to date. They do not update automatically.</p>
+You must keep these libraries up to date. They do not update automatically.
 
 The .NET Core buildpack adds the directory `APP-ROOT/ld_library_path` to `LD_LIBRARY_PATH`, where `APP-ROOT` is the app root, so your app can access these libraries at runtime.

@@ -9,7 +9,7 @@ dependencies outside of the dependencies in the CF system buildpacks.
 
 ## <a id="buildpacks-team"></a>Cloud Foundry buildpacks team process
 
-<p> The procedures in this topic refer to the tools used by the CF buildpacks team, but they do not require the following specific tools. You can use any continuous integration (CI) system and workflow management tool to update dependencies in custom buildpacks.</p>
+The procedures in this topic refer to the tools used by the CF buildpacks team, but they do not require the following specific tools. You can use any continuous integration (CI) system and workflow management tool to update dependencies in custom buildpacks.
 
 The CF buildpacks team uses the following tools to update dependencies:
 
@@ -24,7 +24,7 @@ detects a new version of a tracked dependency in a buildpack, it creates a [Trac
 
 For all dependencies, you must build the binary from source or acquire the binary as a tarball from a trusted source. For most dependencies, the CF buildpacks team builds the binaries from source.
 
-<p> The following steps assume you are using a Concourse deployment of the <code>buildpacks-ci</code> pipelines and Pivotal Tracker.</p>
+The following steps assume you are using a Concourse deployment of the <code>buildpacks-ci</code> pipelines and Pivotal Tracker.
 
 To build the binary for a dependency:
 
@@ -68,13 +68,12 @@ To build the binary for a dependency:
     - version: 2.3.0
       sha256: ba5ba60e5f1aa21b4ef8e9bf35b9ddb57286cb546aac4b5a28c71f459467e507
     ```
+
     <p class="note important">
     <span class="note__title"><strong>Important</strong></span>
     Do not preface the version number with the name of the binary or
     language. For example, specify <code>2.3.0</code> for <code>version</code> instead of
     <code>ruby-2.3.0</code>.</p>
-
-
 
     You can enqueue builds for multiple versions at the same time.
     For example, to build both the Ruby 2.3.0 binary and the Ruby 2.3.1 binary, add the following to the YAML file:
@@ -103,14 +102,14 @@ To build the binary for a dependency:
 1. Pushing your changes initiates the binary building process, which you can  monitor at the [binary-builder pipeline](https://buildpacks.ci.cf-app.com/pipelines/binary-builder)
 of your own `buildpacks-ci` Concourse deployment. When the build completes, it adds a link to the Concourse build run to the Tracker story specified in the commit message for the new release.
 
-    <p> Binary builds are run by the Cloud Foundry <a href="https://github.com/cloudfoundry/binary-builder">Binary Builder</a> and the <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline.</p>
+    Binary builds are run by the Cloud Foundry <a href="https://github.com/cloudfoundry/binary-builder">Binary Builder</a> and the <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline.
 
 ## <a id="manifest-updates"></a>Updating buildpack manifests
 
 After you build the binary for a dependency that you want to access and download from a URL, follow the instructions to add the dependency version to the buildpack manifest
 
-<p> The following steps assume you are using a Concourse deployment of the <code>buildpacks-ci</code>
-pipelines and Pivotal Tracker.</p>
+The following steps assume you are using a Concourse deployment of the <code>buildpacks-ci</code>
+pipelines and Pivotal Tracker.
 
 To add the dependency version to the buildpack manifest, use these steps:
 
@@ -135,9 +134,9 @@ To add the dependency version to the buildpack manifest, use these steps:
     * Follow the current structure of the manifest. For example, if the manifest includes the two most recent patch versions for each minor version of the language, you can also include the two most recent patch versions for each minor version of the language, such as both `ruby-2.1.9` and `ruby-2.1.8`.
     * Copy the `uri` and the `md5` from the `build-BINARY-NAME` job that ran in the Concourse dependency-builds pipeline and add them to the manifest.
 
-    <p> In the PHP buildpack, you might see a <code>modules</code> line for each PHP dependency in
+    In the PHP buildpack, you might see a <code>modules</code> line for each PHP dependency in
     the manifest. Do not include this <code>modules</code> line in your new PHP dependency
-    entry. The <code>modules</code> line is added to the manifest by the <code>ensure-manifest-has-modules</code> Concourse job in the <code>php-buildpack</code> when you commit and push your changes. You can see this in the output logs of the <code>build-out</code> task.</p>
+    entry. The <code>modules</code> line is added to the manifest by the <code>ensure-manifest-has-modules</code> Concourse job in the <code>php-buildpack</code> when you commit and push your changes. You can see this in the output logs of the <code>build-out</code> task.
 
 2. Replace any other mentions of the old version number in the buildpack repository with the new version number. The CF buildpack team uses [Ag](https://github.com/ggreer/the_silver_searcher) for text searching.
 
@@ -175,7 +174,7 @@ __Godep__:
 * __Verified with__: The SHA256 of the source
 __Example__: [Automated enqueuing of binary build for Godep 72.](https://github.com/cloudfoundry/buildpacks-ci/commit/42a361193ea9a4c77a93451228c93bf96f78d50a)
 
-    <p> The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline automates the process of detecting, uploading, and updating Godep in the manifest.</p>
+    The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline automates the process of detecting, uploading, and updating Godep in the manifest.
 
 ### <a id="build-nodejs-buildpack"></a>Node.js buildpack
 
@@ -241,7 +240,7 @@ composer version, for example `1.0.2`, and put the appropriate `composer.phar` f
 
   For Composer `v1.0.2`, connect and create the `php/binaries/trusty/composer/1.0.2` directory. Then place the `composer.phar` file into that directory so the binary is available at `php/binaries/trusty/composer/1.0.2/composer.phar`.
 
-    <p> The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline automates the process of detecting, uploading, and updating Composer in the manifest.</p>
+  The <a href="https://github.com/cloudfoundry/buildpacks-ci">buildpacks-ci</a> <a href="https://github.com/cloudfoundry/buildpacks-ci/blob/master/pipelines/dependency-builds.yml.erb">dependency-builds</a> pipeline automates the process of detecting, uploading, and updating Composer in the manifest.
 
 * __Example__: [Automated enqueuing of binary build for Composer 1.1.2.](https://github.com/cloudfoundry/buildpacks-ci/commit/d51abbdb919ca51df86628b37366c55311b05f38)
 

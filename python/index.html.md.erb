@@ -56,9 +56,9 @@ To use the latest version of PIP, set the `BP_PIP_VERSION` environment variable 
   - Use `cf set-env`. See [set-env](https://cli.cloudfoundry.org/en-US/v6/set-env.html) in the Cloud Foundry CLI Reference Guide.
   - Set the PIP version in the app manifest. See _Environment Variables_ in [App Manifest Attribute Reference](../../devguide/deploy-apps/manifest-attributes.html#env-block).
 
-<p> Currently, only <code>latest</code> is supported when setting <code>BP_PIP_VERSION</code>. The buildpack
+Currently, only <code>latest</code> is supported when setting <code>BP_PIP_VERSION</code>. The buildpack
 does not provide multiple versions of its independent PIP dependency. You can inspect the buildpack's
-releases to determine which version of PIP is currently provided. See <a href="https://github.com/cloudfoundry/python-buildpack/releases">Python buildpack releases</a> on GitHub.</p>
+releases to determine which version of PIP is currently provided. See <a href="https://github.com/cloudfoundry/python-buildpack/releases">Python buildpack releases</a> on GitHub.
 
 ## <a id='start-command'></a> Specify a start command
 
@@ -93,7 +93,7 @@ if __name__ == "__main__":
   app.run(host='0.0.0.0', port=port)
 ```
 
-<p> The <code>PORT</code> variable is not visible in the GUI or the <code>cf env MY-APP</code> command.</p>
+The <code>PORT</code> variable is not visible in the GUI or the <code>cf env MY-APP</code> command.
 
 
 ## <a id='vendoring'></a> Vendor app dependencies
@@ -112,8 +112,8 @@ $ pip download -r requirements.txt --no-binary=:none: -d vendor
 
 `cf push` uploads your vendored dependencies. The buildpack installs them directly from the `vendor/` directory.
 
-<p> To ensure proper installation of dependencies, <%= vars.recommended_by %> recommends binary vendored
-dependencies (wheels). The preceding <code>pip download</code> command achieves this.</p>
+To ensure proper installation of dependencies, <%= vars.recommended_by %> recommends binary vendored
+dependencies (wheels). The preceding <code>pip download</code> command achieves this.
 
 
 ## <a id='private-repos'></a> Private dependency repository
