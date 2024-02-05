@@ -288,36 +288,33 @@ Use the cf <%=vars.dev_console_2%> to review information and administer your app
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-<div class="note">
-<span class="note__title"><strong>Note</strong></span>
-<br />
 To test the sample app, do the following:
 <br /><br />
 1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
 <br /><br />
-2. To clear the database from any previous tests, run:
+1. To clear the database from any previous tests, run:
 <br />
 <code>curl -v -X DELETE $HOST/all</code>
 <br />
 You should get a response of <code>200</code>.
 <br /><br />
-3. To request a match as "andrew", run:
+1. To request a match as "andrew", run:
 <br />
 <code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/firstrequest -d '{"player": "andrew"}'</code>
 <br />
 You should again get a response of <code>200</code>.
 <br /><br />
-4. To request a match as a different player, run:
+1. To request a match as a different player, run:
 <br />
 <code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/secondrequest -d '{"player": "navratilova"}'</code>
 <br /><br />
-5. To check the status of the first match request, run:
+1. To check the status of the first match request, run:
 <br />
 <code>curl -v -X GET $HOST/match_requests/firstrequest</code>
 <br />
 The last line of the output shows the <code>match_id</code>.
 <br /><br />
-6. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
+1. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
 <br />
 <pre>
 <code>curl -v -H "Content-Type: application/json" -X POST $HOST/results -d '
@@ -330,7 +327,6 @@ The last line of the output shows the <code>match_id</code>.
 </pre>
 <br />
 You should receive a <code>201 Created</code> response.
-</div>
 
 ##<a id='cli-manage'></a>Manage your application with the cf CLI
 
