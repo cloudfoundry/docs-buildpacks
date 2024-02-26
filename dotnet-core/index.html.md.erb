@@ -377,3 +377,38 @@ If your app requires external shared libraries that are not provided by the root
 You must keep these libraries up to date. They do not update automatically.
 
 The .NET Core buildpack adds the directory `APP-ROOT/ld_library_path` to `LD_LIBRARY_PATH`, where `APP-ROOT` is the app root, so your app can access these libraries at runtime.
+
+## <a id='ntlm-cflinuxfs4'></a> Known issue workaround: NTLM authentication failures on cflinuxfs4
+
+There is a [known issue](https://github.com/dotnet/runtime/issues/67353) in .NET Core related to NTLM authentication on Ubuntu 22.04, which may affect builds using the .NET Core buildpack on the Ubuntu 22.04-based `cflinuxfs4` stack. The issue is related to incompatibilities between OpenSSL 3.0 and the older cryptographic algorithms involved in NTLM authentication.
+
+In general, the best practice and recommended option would be to upgrade to an authentication protocol in the application that does not rely on using widely-discouraged legacy cryptographic algorithms.
+
+If you are affected by this issue, you may see failures with your .NET Core application running on the `cflinuxfs4` stack related to GSSAPI/NTLM, such as:
+```
+GSSAPI operation failed with error - Unspecified GSS failure. Minor code may provide more information (Crypto routine failure).
+```
+
+If upgrading to a different authentication protocol is not an option, the only workaround in the buildpack at this time is to load and activate the legacy provider in OpenSSL 3.
+To reiterate, using the legacy provider is considered insecure due to the deprecated/outdated algorithms that will be enabled. Users who leverage this workaround should be cognizant of the risk involved.
+
+Enabling the workaround can be achieved by:
+
+1. Ensure the .NET Core buildpack version is v2.4.24 or above
+
+1. Set the `BP_OPENSSL_ACTIVATE_LEGACY_PROVIDER` environement variable to `true` in the `manifest.yml` or via `cf set-env`
+
+1. Push the application
+
+These steps will add an `openssl.cnf` file to your application directory during the build that contains the following lines to load and activate the legacy SSL provider in OpenSSL 3 on the base image:
+    ```
+    [provider_sect]
+    default = default_sect
+    legacy = legacy_sect
+     
+    [default_sect]
+    activate = 1
+     
+    [legacy_sect]
+    activate = 1
+    ```
