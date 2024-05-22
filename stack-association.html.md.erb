@@ -73,6 +73,6 @@ See the following examples for managing buildpacks with the cf CLI. These exampl
 * **Updating or deleting a buildpack when another buildpack exists with the same name.** Both buildpacks have stack associations:
 	* You have two buildpacks named `my-buildpack`, one that is associated with `stack_a` and the other associated with `stack_b`. To delete the buildpack that uses `stack_a`, run `cf delete-buildpack my-buildpack -s stack_a`.
 * **Updating or deleting a buildpack when another buildpack exists with the same name.** One buildpack has a stack association, and the other buildpack has a `nil` stack:
-	* You have two buildpacks named `my-buildpack`, one associated with  `stack_a` and the other with no (`nil`) stack association:
+	* You have two buildpacks named `my-buildpack`, one associated with `stack_a` and the other with no (`nil`) stack association:
 		* To delete the buildpack that uses `stack_a`, run `cf delete-buildpack my-buildpack -s stack_a`.
 		* To delete the buildpack that is associated with the `nil` stack, run `cf delete-buildpack my-buildpack`.
