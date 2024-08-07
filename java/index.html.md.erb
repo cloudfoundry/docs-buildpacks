@@ -3,10 +3,25 @@ title: Java buildpack
 owner: Java
 ---
 
-You can use the Java buildpack with apps written in Grails, Play, Spring, or any other JVM-based language or framework.
+You can use the Java buildpack with apps written in Grails, Play, Spring, Spring Boot or any other JVM-based language or framework.
 
-For information about specific versions, see [Java Buildpack Release Notes](https://github.com/cloudfoundry/java-buildpack/releases).
-You can find the source for the Java buildpack in the [Java buildpack repository](https://github.com/cloudfoundry/java-buildpack) on GitHub.
+For information about specific versions, see [Java Buildpack Release Notes](TODO!!!! NO LONGER cloudfoundry/release-notes but SUpport Portal).
+You can find the source for the Java buildpack in the online version of the [Java buildpack]((TODO!!!! NO LONGER github source but online zip on SUpport Portal) on the Support Portal.
+Most configuration for the Java Buildpack can be found in the [OSS Readme](https://github.com/cloudfoundry/java-buildpack) on GitHub. 
+For specific TAS features and advanced instructions, read along.
+
+## Spring Boot 3.3 performance optimizations: AOT and CDS
+
+From Spring Boot 3.3, the Java Buildpack allows you to speed up your application start-time (up to 2x faster) and save memory (up to 1.5x less memory) using AOT and CDS optimizations
+
+### AOT enablement
+
+### CDS training run and classes caching
+
+### Caveats
+
+It is currently not supported to provide custom trainign run Java options along with AOT enablement; there is an [explanation of that current limitation on Github](TODO).
+
 
 ## <a id='logging'></a> Buildpack and application logging
 
