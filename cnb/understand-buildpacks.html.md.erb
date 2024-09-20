@@ -1,0 +1,26 @@
+---
+title: Working with Cloud Native in Cloud Foundry
+owner: Buildpacks
+---
+
+This topic tells you about how buildpacks are structured and detected in Cloud Foundry.
+
+## <a id='buildpack-scripts'></a> Buildpack scripts
+
+A buildpack repository might contain the following scripts in the `bin` directory:
+
+* `bin/detect` determines whether or not to apply the buildpack to an app.
+* `bin/build` is called if the buildpacks detect and builds the app including
+  * downloading dependencies
+  * actually building the app
+  * defining the start command
+
+You can use multiple buildpacks for your app
+
+For example:
+
+```
+ <code>cf push APP-NAME --lifecycle cnb -b FIRST-BUILDPACK -b SECOND-BUILDPACK</code>
+```
+
+In this case <em>all</em> buildpacks must `detect` and `build` is called in the given order.
