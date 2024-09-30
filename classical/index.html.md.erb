@@ -1,0 +1,49 @@
+---
+title: Classical buildpacks
+owner: Buildpacks
+---
+
+Buildpacks provide framework and runtime support for your apps. Buildpacks typically examine your apps to
+determine what dependencies to download and how to configure your apps to communicate with bound services.
+
+When you push an app, Cloud Foundry automatically detects an appropriate buildpack for it.
+This buildpack is used to compile or prepare your app for launch.
+
+Cloud Foundry deployments often have limited access to dependencies.
+This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.
+
+## <a id='using-buildpacks'></a> Using buildpacks
+
+The following topics discuss different usage scenarios for buildpacks in Cloud Foundry:
+
+* [How buildpacks work](understand-buildpacks.html)
+
+* [Stack association](stack-association.html)
+
+* [Pushing an app with multiple buildpacks](use-multiple-buildpacks.html)
+
+* [Using a proxy](proxy-usage.html)
+
+* [Supported binary dependencies](supported-binary-dependencies.html)
+
+* [Production server configuration](prod-server.html)
+
+## <a id='system-buildpacks'></a> Cloud Foundry Buildpacks
+
+For information about the existing buildpacks that Cloud Foundry supports, see [CF Buildpack Languages and Sources](system-buildpacks.html).
+
+## <a id='sidecar-buildpacks'></a> Sidecar buildpacks
+
+For information about deploying a sidecar buildpack, see [Sidecar buildpack](sidecar-buildpacks.html).
+
+## <a id='community-buildpacks'></a> Community buildpacks
+
+For a list of unsupported, community created buildpacks, see [Community created](https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks#community-created) section of the _Buildpack information for Cloud Foundry v2_ page in the cf-docs-contrib repository on GitHub.
+
+## <a id='developing-buildpacks'></a> Customizing and developing buildpacks
+
+For information about customizing existing buildpacks and developing new buildpacks, see [Customizing and developing buildpacks](./developing-buildpacks.html).
+
+## <a id='buildpack-ci'></a> Using continuous integration for buildpacks
+
+For information about updating and releasing a new version of a Cloud Foundry buildpack through the Cloud Foundry Buildpacks Team Concourse pipeline, see [Using CI for buildpacks](./buildpack-ci-index.html). You can use this topic as a model when working with Concourse to build, and release new versions of your own buildpacks.
