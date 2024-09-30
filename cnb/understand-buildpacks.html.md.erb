@@ -19,8 +19,13 @@ You can use multiple buildpacks for your app
 
 For example:
 
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+You must use cf CLI v9 or later.</p>
+
+
 ```
- <code>cf push APP-NAME --lifecycle cnb -b FIRST-BUILDPACK -b SECOND-BUILDPACK</code>
+ <code>cf push APP-NAME --lifecycle cnb -b docker://FIRST-BUILDPACK -b docker://SECOND-BUILDPACK</code>
 ```
 
 In this case <em>all</em> buildpacks must `detect` and `build` is called in the given order.
