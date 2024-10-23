@@ -1,0 +1,13 @@
+---
+title: Cloud Native Buildpacks
+owner: Buildpacks
+---
+
+Buildpacks provide framework and runtime support for your app. Buildpacks typically examine your app to
+determine what dependencies to download and how to start the application.
+
+Since there are no system buildpacks yet for Cloud Native Buildpacks, you have to specify what buildpack to use, i.e. what type of application you have. 
+
+Cloud Foundry deployments often have limited access to dependencies.
+This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.
+
