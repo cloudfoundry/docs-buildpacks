@@ -3,9 +3,11 @@ title: Cloud Foundry Buildpacks
 owner: Buildpacks
 ---
 
-Buildpacks provide framework and runtime support for your apps. Buildpacks typically examine your apps to
-determine what dependencies to download and how to configure your apps to communicate with bound services.
+Buildpacks were first conceived by Heroku in 2011. Since then, they have been adopted by Cloud Foundry and other PaaS such as Google App Engine, Gitlab, Knative, Deis, Dokku, and Drie. The [Cloud Native Buildpacks](https://buildpacks.io/) project was initiated by Pivotal and Heroku in January 2018 and joined the Cloud Native Computing Foundation in October 2018.
 
+Cloud Foundry supports two types of buildpacks:
 
-In Cloud Foundry, you can use 2 types of buildpacks. [The Classic Buildpacks](./classic.html) (aka `v2`) and the
-[Cloud Native Buildpacks](./cnb/index.html) (aka `v3`).
+- [The Classic Buildpacks](./classic.html)
+- [Cloud Native Buildpacks](./cnb/)
+
+If you find some missing features in the Classic Buildpacks, check the [Paketo](https://paketo.io/) project if there is a Cloud Native Buildpack available. For example [Java Native Image](https://www.graalvm.org/latest/reference-manual/native-image/) (GraalVM) is only supported with the respective [java-native-image](https://github.com/paketo-buildpacks/java-native-image) Cloud Native Buildpack.

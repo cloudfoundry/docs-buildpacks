@@ -3,11 +3,41 @@ title: Cloud Native Buildpacks
 owner: Buildpacks
 ---
 
-Buildpacks provide framework and runtime support for your app. Buildpacks typically examine your app to
-determine what dependencies to download and how to start the application.
+Cloud Native Buildpacks (CNBs) usually take your application source code and transform it into a container. If you are familiar with their concepts, there are some differences:
 
-Since there are no system buildpacks yet for Cloud Native Buildpacks, you have to specify what buildpack to use, i.e. what type of application you have. 
+- During build, instead of a container image, a droplet is produced. However, this should go unnoticed by the end user.
+- CNBs are not yet available as system buildpacks. Users always need to provide the list of buildpacks.
+- Using the new `lifecycle` property is currently only possible using a manifest.
+- Build- and run environment/image will be provided by the Cloud Foundry stack available on your platform (probably [cflinuxfs4](https://github.com/cloudfoundry/cflinuxfs4)).
+- Using stacks provided by Paketo is not possible at the moment.
+- Software Bill of Material (SBOM) is missing operating system packages and is not directly accessible.
 
-Cloud Foundry deployments often have limited access to dependencies.
-This limitation occurs when the deployment is behind a firewall, or when administrators want to use local mirrors and proxies. In these circumstances, Cloud Foundry provides a Buildpack Packager app. For more information, see the <a href="https://github.com/cloudfoundry/buildpack-packager">Buildpack Packager</a> repository on GitHub.
+## <a id='cnb-example'></a> Push an app
 
+- [Sample Node.js app](https://github.com/cloudfoundry-samples/cf-sample-app-nodejs)
+
+While this sample is shipped with using Classic Buildpacks, it can be easily build with CNBs by replacing `manifest.yaml`:
+
+```yaml
+---
+applications:
+- name: cf-nodejs
+  lifecycle: cnb
+  buildpacks:
+  - docker://gcr.io/paketo-buildpacks/nodejs
+  memory: 512M
+  instances: 1
+  random-route: true
+```
+
+Using the `lifecycle` property, the desired Buildpack variant can be selected. See the [reference section](../../devguide/deploy-apps/manifest-attributes.html#lifecycle) for more details. In this example, the [nodejs CNB](https://github.com/paketo-buildpacks/nodejs) container image is selected.
+
+## <a id='paketo-buildpacks'></a> Paketo Buildpacks
+
+The [Paketo](https://paketo.io/) community provides a large number of CNBs which can be easily used on Cloud Foundry. Popular examples include:
+
+- [Java](https://github.com/paketo-buildpacks/java)
+- [Node.js](https://github.com/paketo-buildpacks/nodejs)
+- [Go](https://github.com/paketo-buildpacks/go)
+- [Python](https://github.com/paketo-buildpacks/python)
+- [Ruby](https://github.com/paketo-buildpacks/ruby)
