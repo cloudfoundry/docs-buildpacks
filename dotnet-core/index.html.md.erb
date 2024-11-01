@@ -185,7 +185,6 @@ For a self-contained deployment (SCD), you deploy your app, third-party dependen
 For information about SCDs, see [Self-contained deployments (SCD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/#self-contained-deployments-scd) in the Microsoft documentation.
 
 <p class="note important">
-<span class="note__title"><strong>Important</strong></span>
 <%= vars.company_name %> does not recommend using the SCD workflow. The buildpack is unable to keep
 dependencies in sync and up to date for workflows that deploy a pre-published binary.</p>
 
@@ -393,7 +392,6 @@ GSSAPI operation failed with error - Unspecified GSS failure. Minor code may pro
 If you cannot upgrade to a different authentication protocol, the only workaround in the buildpack at this time is to load and activate the legacy provider in OpenSSL 3.
 
 <p class="note important">
-<span class="note__title">Important</span>
 Use of the legacy provider is not considered secure, because it enables deprecated or outdated algorithms. You should be aware of the risk involved in leveraging this workaround.
 </p>
 
@@ -401,9 +399,9 @@ To enable the workaround:
 
 1. Ensure that the .NET Core buildpack version is v2.4.24 or later
 
-1. Set the `BP_OPENSSL_ACTIVATE_LEGACY_PROVIDER` environment variable to `true` in the `manifest.yml` or using `cf set-env`
+2. Set the `BP_OPENSSL_ACTIVATE_LEGACY_PROVIDER` environment variable to `true` in the `manifest.yml` or using `cf set-env`
 
-1. Push the application
+3. Push the application
 
 These steps add an `openssl.cnf` file to your application directory during the build. This file contains the following lines, which load and activate the legacy SSL provider in OpenSSL 3 on the base image:
 

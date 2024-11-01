@@ -16,7 +16,6 @@ For more information about pushing apps, see [Pushing an App](../devguide/deploy
 To push an app with multiple buildpacks using the cf CLI:
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 You must use cf CLI v6.38 or later.</p>
 
 1. Ensure that you are using the cf CLI v6.38 or later by running:
@@ -26,7 +25,7 @@ You must use cf CLI v6.38 or later.</p>
     ```
     For more information about upgrading the cf CLI, see [Installing the cf CLI](../cf-cli/install-go-cli.html).
 
-1. To push your app with multiple buildpacks, specify each buildpack with a `-b` flag by running:
+2. To push your app with multiple buildpacks, specify each buildpack with a `-b` flag by running:
 
     ```console
     cf push YOUR-APP -b BUILDPACK-NAME-1 -b BUILDPACK-NAME-2 ... -b BUILDPACK-NAME-3

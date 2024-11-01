@@ -152,7 +152,6 @@ For more information about creating and using service instances, refer to the [S
     </ul>
 
 <div class="note">
-<span class="note__title"><strong>Note</strong></span>
 Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
 
 <pre class="terminal">
@@ -205,7 +204,6 @@ Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 <%= vars.gen_GSG %>
 
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 You must do this step to run the sample app.</p>
 
 ### Step 8: Deploy the application
@@ -237,7 +235,6 @@ If you want to view log activity while the app deploys, launch a new terminal wi
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
 <div class="note important">
-<span class="note__title"><strong>Note</strong></span>
   <ol>
     <li>Change to the <code>app</code>directory, and run <code>./grailsw war</code> to build the app.</li>
     <li>Run <code>cf push pong_matcher_grails -n HOST-NAME</code> to push the app.</li>

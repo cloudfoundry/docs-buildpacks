@@ -142,11 +142,10 @@ environment connection values.
     in your foundation. Confirm the buildpacks in your foundation by using `cf buildpacks`.
 
         <p class="note important">
-        <span class="note__title"><strong>Important</strong></span>
         Ensure the new entry precedes the existing
         <code>hwc_buildpack</code> buildpacks entry.</p>
 
-1. Add `key:value` pairs to the manifest for each the Web Config file's tokenized settings.
+2. Add `key:value` pairs to the manifest for each the Web Config file's tokenized settings.
 <br>
     For example, the following provides connection string values for a Web Config
     file's`#{connectionStrings:MyDB}` placeholder:
@@ -263,7 +262,7 @@ and "Production" environments, to hold your environment-specific settings. Name 
 
     The <code>manifest.yml</code> <code>env</code> section does not include
     any configuration key:value pairs during the next step.
-    
+
 ## <a id='create-spring-cloud-service'></a> Creating a configuration service for Spring Cloud config server
 
 The .NET Framework Web Config Transform Extension Buildpack requires a configuration file pointing to your transform configurations
