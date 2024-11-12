@@ -31,3 +31,36 @@ applications:
 ```
 
 Using the `lifecycle` property, the desired Buildpack variant can be selected. See the [reference section](../../devguide/deploy-apps/manifest-attributes.html#lifecycle) for more details. In this example, the [nodejs CNB](https://github.com/paketo-buildpacks/nodejs) container image is selected.
+
+### <a id='cnb-example-credentials'></a> Private Cloud Native Buildpacks
+
+<p class="note">
+You must use cf CLI v8.9.0 or later.
+</p>
+
+Cloud Native Buildpacks can be consumed from private registries, by using the `CF_CNB_REGISTRY_CREDS` environment variable, via two different ways: Username and password combination or a token:
+
+```bash
+export CF_CNB_REGISTRY_CREDS='{"<registry>": {"username":"<username>", "password":"<password>"}}'
+export CF_CNB_REGISTRY_CREDS='{"<registry>": {"token":"<token>"}}'
+```
+
+Example:
+
+```yaml
+---
+applications:
+- name: cf-nodejs
+  lifecycle: cnb
+  buildpacks:
+  - docker://my-registry-a.corp/nodejs
+  - docker://my-registry-b.corp/dynatrace
+  memory: 512M
+  instances: 1
+  random-route: true
+```
+
+```bash
+export CF_CNB_REGISTRY_CREDS='{"my-registry-a.corp": {"token":"aaaaaa"}, "my-registry-b.corp": {"token":"bbbbbb"}}'
+cf push
+```
