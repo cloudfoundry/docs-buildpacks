@@ -22,9 +22,8 @@ For example:
 <p class="note">
 You must use cf CLI v8 or later.</p>
 
-
 ```
- <code>cf push APP-NAME --lifecycle cnb -b docker://FIRST-BUILDPACK -b docker://SECOND-BUILDPACK</code>
+ cf push APP-NAME --lifecycle cnb -b docker://FIRST-BUILDPACK -b docker://SECOND-BUILDPACK
 ```
 
 In this case <em>all</em> buildpacks must `detect` and `build` is called in the given order.
