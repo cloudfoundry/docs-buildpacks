@@ -43,7 +43,7 @@ For information about deploying different types of .NET apps, follow the links i
 
 ## <a id='overview'></a> HWC buildpack overview
 
-The HWC buildpack provides a runtime server that uses the Hosted Web Core API for running .NET Framework applications in Windows Server containers. For more information, see [Hosted Web Core API Reference](https://msdn.microsoft.com/en-us/library/ms693832(v=vs.90).aspx) in the Microsoft documentation.
+The HWC buildpack provides a runtime server that uses the Hosted Web Core API for running .NET Framework applications in Windows Server containers. For more information, see [Hosted Web Core API Reference](https://learn.microsoft.com/iis/web-development-reference/native-code-api-reference/hosted-web-core-api-reference) in the Microsoft documentation.
 
 The HWC buildpack provides access to .NET Framework 4.5.1 and later, made available by the Windows root file system (rootfs).
 
@@ -99,13 +99,12 @@ Follow these steps to push your application:
 ## <a id='features'></a> Features
 
 You can use the following features with HWC buildpack:
-<ul>
-  <li>Context Path Routing</li>
-  <li>Shadow Copy Setting</li>
-  <li>Dynamic and Static HTTP Compression</li>
-  <li>URL Rewrite</li>
-  <li>Profile Scripts</li>
-</ul>
+
+* Context Path Routing
+* Shadow Copy Setting
+* Dynamic and Static HTTP Compression
+* URL Rewrite
+* Profile Scripts
 
 ### <a id='context-path'></a> Context path routing
 
@@ -138,11 +137,10 @@ To define a context path route, for example, `app1.example.com/app2`, run the fo
     ```
 
     Where:
-    <ul>
-      <li><code>TOP-LEVEL-APP-NAME</code> is your top-level app&#39;s name.</li>
-      <li><code>LOWER-LEVEL-APP-NAME</code> is your lower-level app&#39;s name.</li>
-      <li><code>APP-DOMAIN</code> is your site&#39;s public domain name.</li>
-    </ul>
+
+    * `TOP-LEVEL-APP-NAME` is your top-level app&#39;s name.
+    * `LOWER-LEVEL-APP-NAME` is your lower-level app&#39;s name.
+    * `APP-DOMAIN` is your site&#39;s public domain name.
 
 2. To start the secondary app, run the following command:
 
@@ -161,13 +159,13 @@ $ cf map-route app2 example.com --hostname app1 --path app2
 $ cf start app2
 </pre>
 
-HWC-hosted apps use the <code>VCAP_APPLICATION</code> environment variable
+HWC-hosted apps use the `VCAP_APPLICATION` environment variable
 to read out the bound app URIs. Any context path that exists underneath the root in the
-app's bound route corresponds to the <code>applicationHost.config</code>.
+app's bound route corresponds to the `applicationHost.config`.
 
 ### <a id='shadow-copy'></a> Shadow Copy setting
 
-[Shadow Copy](https://msdn.microsoft.com/en-us/library/ms228159(v=vs.100).aspx)
+[Shadow Copy](https://learn.microsoft.com/previous-versions/dotnet/netframework-4.0/ms228159(v=vs.100))
 is a hosting option that copies assemblies for an app in the `bin` directory
 to the app's temporary files directory. This feature is turned off and
 is unnecessary for apps running under Cloud Foundry. An app can override this
@@ -197,7 +195,7 @@ For information about configuring `.profile.bat` scripts, see [Configure Pre-Run
 
 A number of channels exist to assist you with using the HWC buildpack, or developing your own HWC buildpack.
 
-* **HWC Buildpack Repository in GitHub**: For more information about using and extending the HWC buildpack in the [HWC buildpack repository] see, (https://github.com/cloudfoundry/hwc-buildpack) in GitHub.
+* **HWC Buildpack Repository in GitHub**: For more information about using and extending the HWC buildpack in the [HWC buildpack repository] see, <https://github.com/cloudfoundry/hwc-buildpack> in GitHub.
 
 * **Release Notes**: For more information about this buildpack, see [HWC buildpack release page](https://github.com/cloudfoundry/hwc-buildpack/releases) in GitHub.
 
