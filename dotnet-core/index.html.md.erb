@@ -45,25 +45,26 @@ For information about deploying different types of .NET apps, follow the links i
   </tr>
 </table>
 
-
 ## <a id='pushing-apps'></a> Push a .NET Core app
 
 To push a .NET Core app to a Linux Diego Cell:
 
 1. Run:
 
-    ```
+    ```bash
     cf push APP-NAME
     ```
+
     Where `APP-NAME` is the name you want to give your app.
     <br>
     <br>
     If your Cloud Foundry deployment does not have the .NET Core buildpack installed or the installed version is out of date,
     run the same command with the `-b` option to specify the buildpack:
 
-    ```
+    ```bash
     cf push APP-NAME -b https://github.com/cloudfoundry/dotnet-core-buildpack.git
     ```
+
     Where `APP-NAME` is the name you want to give your app.
 
 1. Find the URL of your app in the output of the `cf push` command.
@@ -72,15 +73,13 @@ To push a .NET Core app to a Linux Diego Cell:
 
 For a basic sample app, see [ASP.NET Core Getting Started App](https://github.com/IBM-Bluemix/aspnet-core-helloworld) in GitHub.
 
-
 ## <a id='source-based'></a> Source-based, non-published deployments
 
 For a source-based, non-published deployment, you push your app's source code, not the output directory of the `dotnet publish` command.
 
 The source-based, non-published workflow ensures the buildpack can keep all your dependencies in sync and up to date. See the following sections.
 
-The source-based deployment workflow also uses the
-<code>cf push</code> command to push source-based apps to Cloud Foundry.
+The source-based deployment workflow also uses the `cf push` command to push source-based apps to Cloud Foundry.
 
 ### <a id='multiple-projects'></a> Deploying apps with multiple projects
 
@@ -92,7 +91,7 @@ To specify the main project in a multi-project deployment:
 
 1. Designate the main project's path by configuring the file, using the following format:
 
-    ```
+    ```text
     [config]
     project = PATH-TO-YOUR-MAIN-PROJECT
     ```
@@ -101,10 +100,11 @@ To specify the main project in a multi-project deployment:
     <br>
     For example:
 
-    ```
+    ```text
     [config]
     project = src/MyApp.Web/MyApp.Web.csproj
     ```
+
     In this example, by pointing to the `MyApp.Web` `*.csproj` file, `MyApp.Web` is configured as the main project.
 
 1. Save the revised `.deployment` file.
@@ -115,7 +115,7 @@ For example: Suppose your `.deployment` file is configured as previously noted a
 
 ### <a id='non-default-package-sources'></a> Use non-Default package sources
 
-If you want to deploy an app that uses non-default package sources, you must specify those package sources in the `NuGet.Config` file. For information about `NuGet.Config`, see [nuget.config reference](https://docs.microsoft.com/en-us/nuget/reference/nuget-config-file) in the Microsoft documentation.
+If you want to deploy an app that uses non-default package sources, you must specify those package sources in the `NuGet.Config` file. For information about `NuGet.Config`, see [nuget.config reference](https://learn.microsoft.com/nuget/reference/nuget-config-file) in the Microsoft documentation.
 
 ### <a id='disabling-nuget'></a> Deactivating and clearing your NuGet package cache
 
@@ -151,16 +151,16 @@ To deactivate NuGet package caching:
     ```console
     cf set-env APP-NAME CACHE_NUGET_PACKAGES false
     ```
+
     Where `APP-NAME` is the name of your app.
 
 For more information, see [Environment Variables](../../devguide/deploy-apps/manifest.html#env-block) in _Deploying with App Manifests_.
-
 
 ## <a id='framework-dependent'></a> Framework dependent deployments
 
 For a framework-dependent deployment (FDD), you deploy only your app and third-party dependencies. <%= vars.company_name %> recommends using this workflow if you deploy an app in an offline setting.
 
-For information about deploying FDDs, see [Framework-dependent deployments (FDD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/index#framework-dependent-deployments-fdd) in the Microsoft documentation.
+For information about deploying FDDs, see [Framework-dependent deployments (FDD)](https://learn.microsoft.com/dotnet/core/deploying/#framework-dependent-deployments-fdd) in the Microsoft documentation.
 
 Deploy a FDD using the buildpack:
 
@@ -169,6 +169,7 @@ Deploy a FDD using the buildpack:
     ```console
     dotnet publish [-f FRAMEWORK-NAME] [-c Release]
     ```
+
     Where `FRAMEWORK-NAME` is your target framework.
 
 1. Prepare to push your app with one of these methods:
@@ -177,12 +178,11 @@ Deploy a FDD using the buildpack:
 
 1. Push your app.
 
-
 ## <a id='self-contained'></a> Self contained deployments
 
 For a self-contained deployment (SCD), you deploy your app, third-party dependencies, and the version of .NET Core that you used to build your app.
 
-For information about SCDs, see [Self-contained deployments (SCD)](https://docs.microsoft.com/en-us/dotnet/core/deploying/#self-contained-deployments-scd) in the Microsoft documentation.
+For information about SCDs, see [Self-contained deployments (SCD)](https://learn.microsoft.com/dotnet/core/deploying/#self-contained-deployments-scd) in the Microsoft documentation.
 
 <p class="note important">
 <%= vars.company_name %> does not recommend using the SCD workflow. The buildpack is unable to keep
@@ -198,7 +198,6 @@ When using the SCD workflow for deploying your app, you must:
 
 * Include the specified runtime in the `RuntimeIdentifiers` section of the project file.
 
-
 ## <a id='dotnet-sdk'></a> Specify .NET Core SDKs
 
 To pin the .NET Core SDK to a specific version or version line, create a `buildpack.yml` file at the app root and add your SDK version in one of the following formats:
@@ -208,12 +207,12 @@ dotnet-core:
   sdk: 2.1.201
 ```
 
-```
+```yaml
 dotnet-core:
   sdk: 2.1.x
 ```
 
-```
+```yaml
 dotnet-core:
   sdk: 2.x
 ```
@@ -224,9 +223,8 @@ The buildpack chooses what SDK to install based on the files present at the app 
 1. `global.json`
 1. `*.fsproj`
 
-The app respects the SDK version specified in <code>global.json</code> at runtime. If you provide versions in
-both <code>global.json</code> and <code>buildpack.yml</code> files, make sure you specify the same versions in both files.
-
+The app respects the SDK version specified in `global.json` at runtime. If you provide versions in
+both `global.json` and `buildpack.yml` files, make sure you specify the same versions in both files.
 
 ## <a id='dotnet-runtime'></a> Specify .NET Runtime versions
 
@@ -269,14 +267,12 @@ For example:
 }
 ```
 
-Set <code>applyPatches: false</code> in  <code>*.runtimeconfig.json</code> only if you want to pin your .NET Framework to a specific version. This prevents your
+Set `applyPatches: false` in  `*.runtimeconfig.json` only if you want to pin your .NET Framework to a specific version. This prevents your
 app from receiving updates to the runtime version and assemblies.
-
 
 ## <a id='offline'></a> Push an app in a disconnected environment
 
 For offline environments, <%= vars.company_name %> recommends using the Framework-Dependent Deployment workflow. This workflow enables the deployed app to use the latest runtime provided by the offline buildpack.  For more information, see [Framework-Dependent Deployments](#framework-dependent) above.
-
 
 ## <a id='runtime-store'></a> Maintain ASP.NET Core assemblies
 
@@ -297,12 +293,11 @@ For maintaining ASP.NET Core assemblies, <%= vars.company_name %> recommends one
     ```yaml
     ---
     dotnet-core:
-    	sdk: 2.0.x
+     sdk: 2.0.x
     ```
 
-<code>2.0.x</code> ASP.NET Core assemblies are released in the <code>2.1.200</code>-<code>2.1.299</code> SDK versions, and <code>2.1.x</code> assemblies are
-released in the <code>2.1.300</code> and higher SDK versions.
-
+`2.0.x` ASP.NET Core assemblies are released in the `2.1.200`-`2.1.299` SDK versions, and `2.1.x` assemblies are
+released in the `2.1.300` and higher SDK versions.
 
 ## <a id='port'></a> Configuring the listen port
 
@@ -315,26 +310,27 @@ For C# apps, the following modifications activate the buildpack to pass the corr
 
 1. Add a `using` statement to the top of the file:
 
-    ```c#
+    ```csharp
     using Microsoft.Extensions.Configuration;
     ```
 
 1. Add the following lines before the line `var host = new WebHostBuilder()`:
 
-    ```c#
+    ```csharp
     var config = new ConfigurationBuilder()
         .AddCommandLine(args)
         .Build();
     ```
+
 1. Add the following line after `.UseKestrel()`:
 
-    ```c#
+    ```csharp
     .UseConfiguration(config)
     ```
 
     The `Main` method resembles the following example:
 
-    ```c#
+    ```csharp
     public static void Main(string[] args)
     {
         var config = new ConfigurationBuilder()
@@ -360,14 +356,13 @@ For C# apps, the following modifications activate the buildpack to pass the corr
     </PackageReference>
     ```
 
-    Where `VERSION` is the version of the package to use. For a list of valid versions, navigate to https://www.nuget.org.
+    Where `VERSION` is the version of the package to use. For a list of valid versions, navigate to <https://www.nuget.org>.
 
 1. If your app requires any other files at runtime, such as JSON configuration files, add them to the `include` section of `copyToOutput`.
 
 1. Save your changes.
 
 With these changes, the `dotnet run` command copies your app `Views` to the build output where the .NET CLI can find them.
-
 
 ## <a id='custom-libraries'></a>Add custom libraries
 
@@ -385,7 +380,7 @@ In general, the best practice and recommended option is to upgrade to an authent
 
 If you are affected by this issue, you might see failures with your .NET Core application running on the `cflinuxfs4` stack related to GSSAPI/NTLM, such as:
 
-```
+```text
 GSSAPI operation failed with error - Unspecified GSS failure. Minor code may provide more information (Crypto routine failure).
 ```
 
@@ -405,7 +400,7 @@ To enable the workaround:
 
 These steps add an `openssl.cnf` file to your application directory during the build. This file contains the following lines, which load and activate the legacy SSL provider in OpenSSL 3 on the base image:
 
-```
+```text
 [provider_sect]
 default = default_sect
 legacy = legacy_sect
