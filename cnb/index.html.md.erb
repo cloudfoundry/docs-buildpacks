@@ -6,7 +6,6 @@ owner: Buildpacks
 Cloud Native Buildpacks (CNBs) usually take your application source code and transform it into a container. If you are familiar with their concepts, there are some differences:
 
 - During build, instead of a container image, a droplet is produced. However, this should go unnoticed by the end user.
-- CNBs are not yet available as system buildpacks. Users always need to provide the list of buildpacks.
 - Using the new `lifecycle` property is currently only possible using a manifest.
 - Build- and run environment/image will be provided by the Cloud Foundry stack available on your platform (probably [cflinuxfs4](https://github.com/cloudfoundry/cflinuxfs4)).
 - Using stacks provided by Paketo is not possible at the moment.
@@ -31,6 +30,22 @@ applications:
 ```
 
 Using the `lifecycle` property, the desired Buildpack variant can be selected. See the [reference section](../../devguide/deploy-apps/manifest-attributes.html#lifecycle) for more details. In this example, the [nodejs CNB](https://github.com/paketo-buildpacks/nodejs) container image is selected.
+
+### <a id='cnb-example-system-buildpack'></a> System Cloud Native Buildpacks
+
+If system Cloud Native Buildpacks are installed and a buildpack for your app is not specified, Cloud Foundry will attempt to detect a suitable buildpack, similar to Classic Buildpacks. Otherwise, the particular CNBs you'd like to use can be specified by name:
+
+```yaml
+---
+applications:
+- name: cf-nodejs
+  lifecycle: cnb
+  buildpacks:
+  - node_buildpack
+  memory: 512M
+  instances: 1
+  random-route: true
+```
 
 ### <a id='cnb-example-credentials'></a> Private Cloud Native Buildpacks
 
