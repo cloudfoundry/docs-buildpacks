@@ -99,7 +99,7 @@ For more information, see [Groovy Container](https://github.com/cloudfoundry/jav
 To deploy Java apps that use HTTP/2, you must have:
 
 1. A Cloud Floundry foundation that has HTTP/2 support enabled. <%= vars.http2_admin_link %>
-2. Cloud Foundry Command-Line Interface (cf CLI) v8 or later. See [Upgrading to cf CLI v8](../../cf-cli/v8.html).
+2. Cloud Foundry Command-Line Interface (cf CLI) v8 or later. See [Upgrading to cf CLI v8](../../operating/cf-cli/cf-cli-v10.html).
 
 You can deploy any Java app and get automatic support for the HTTP/2 protocol without making any changes to your app.
 When a client connects through a route mapped to your Java apps over HTTP/2, the foundation transparently downgrades the protocol and communicates with your app over HTTP/1.1.
@@ -466,7 +466,7 @@ Where:
 * `TIMEOUT-THRESHOLD` is the number of seconds to which you want to increase the timeout threshold.
 
 The timeout threshold cannot exceed 180 seconds. Specifying a timeout threshold greater than 180 seconds causes the
-following error: 
+following error:
 
 ```
 Server error, status code: 400, error code: 100001, message: The app is invalid: health_check_timeout maximum_exceeded</code>
