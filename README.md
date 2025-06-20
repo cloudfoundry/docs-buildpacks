@@ -17,3 +17,14 @@ Use this section to specify spelling of special words for buildpacks:
 
 + Do not use variables to represent "product-names" in these files.
   The buildpacks are not proprietary but belong to Cloud Foundry.
+
+## Branches
+
+As of TPCF 10.2, there is a new branch of this repo, `tcf`.
+
+When making changes to master, also make cherry-picks to this branch, to keep it up to date.
+
+| Branch | Release |
+|--------|---------|
+| master | Cloud Foundry docs |
+| tcf    | TPCF docs, v10.2+  |
