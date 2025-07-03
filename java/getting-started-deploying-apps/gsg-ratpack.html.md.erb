@@ -20,7 +20,7 @@ This section describes how to deploy a Ratpack application to Cloud Foundry.
 
 * A Ratpack app that runs locally on your workstation
 * Intermediate to advanced Ratpack knowledge
-* The [Cloud Foundry Command Line Interface (cf CLI)](../../../operating/cf-cli/install-cf-cli.html)
+* The [Tanzu cf CLI](../../../operating/cf-cli/install-cf-cli.html)
 * JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
 
 You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to Step 8: Configure the Deployment Manifest.
@@ -197,7 +197,7 @@ You must perform this step to run the sample app.</p>
 
 ### Step 8: Deploy the app
 
-You must use the cf CLI to deploy apps.
+You must use the Tanzu cf CLI to deploy apps.
 
 From the root directory of your app, run the following command to deploy your application:
 
@@ -224,19 +224,21 @@ If you want to view log activity while the app deploys, launch a new terminal wi
 Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
 
 **Sample app step**
+
 1. Change to the `app` directory, and run `./gradlew distZip` to build the app.
-1. Run `cf push pong_matcher_groovy -n HOST-NAME` to push the app.
+
+2. Run `cf push pong_matcher_groovy` to push the app.
 Example: `cf push pong_matcher_groovy -n groovy-ratpack-app`
 
-This example is valid for cf CLI v6. In cf CLI v7 and onwards, the <code>-n</code> flag is not supported. The host name must be specified in the manifest, using the <code>routes</code> attribute.
+The host name must be specified in the manifest, using the <code>routes</code> attribute.
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
 The following example shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
-Note, this example is valid for cf CLI v6. In cf CLI v7 and onwards, the `-n` flag is not supported. The host name must be specified in the manifest, using the `routes` attribute.
+You must set the host name in the manifest, using the `routes` attribute.
 
 <pre class="terminal">
-$ cf push pong_matcher_groovy -n groovy-ratpack-app
+$ cf push pong_matcher_groovy
 Using manifest file /Users/example/workspace/pong_matcher_groovy/app/manifest.yml
 
 Creating app pong_matcher_groovy in org Cloud-Apps / space development as clouduser@example.com...
@@ -327,9 +329,9 @@ The last line of the output shows the <code>match_id</code>.
 <br />
 You should receive a <code>201 Created</code> response.
 
-##<a id='cli-manage'></a>Manage your application with the cf CLI
+## <a id='cli-manage'></a>Manage your application with the Tanzu cf CLI
 
-Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the cf CLI, refer to the Cloud Foundry Command Line Interface (cf CLI) topics, especially the <%=vars.cli_v6%> topic.
+Run `cf help` to view a complete list of commands, grouped by task categories, and run `cf help COMMAND` for detailed information about a specific command. For more information about using the cf CLI, refer to the Tanzu cf CLI topics.
 
 You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that only an administrator can run. If you are not an administrator, the following message displays for these types of commands:
 

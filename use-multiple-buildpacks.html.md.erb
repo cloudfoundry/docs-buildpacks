@@ -1,9 +1,9 @@
 ---
-title: Pushing an app with multiple buildpacks
+title: Pushing an app with multiple buildpacks using Tanzu cf CLI
 owner: Buildpacks
 ---
 
-You can push an app with multiple buildpacks using the Cloud Foundry Command Line Interface (cf CLI).
+You can push an app with multiple buildpacks using the Tanzu cf CLI.
 
 As an alternative to the cf CLI procedure, you can specify multiple
 buildpacks in your app manifest. This is not compatible with deprecated app manifest features. For more information, see <a href="../devguide/deploy-apps/manifest.html">Deploying with App Manifests</a>.
@@ -11,19 +11,19 @@ buildpacks in your app manifest. This is not compatible with deprecated app mani
 For more information about pushing apps, see [Pushing an App](../devguide/deploy-apps/deploy-app.html).
 
 
-## <a id='cfcli'></a> Specifying buildpacks with the cf CLI
+## <a id='cfcli'></a> Specifying buildpacks with the Tanzu cf CLI
 
 To push an app with multiple buildpacks using the cf CLI:
 
 <p class="note">
-You must use cf CLI v10 or later.</p>
+You must use Tanzu cf CLI v10 or later.</p>
 
-1. Ensure that you are using the cf CLI v10 or later by running:
+1. Ensure that you are using Tanzu cf CLI v10 or later by running:
 
     ```console
     cf version
     ```
-    For more information about upgrading the cf CLI, see [Installing the cf CLI](../operating/cf-cli/install-cf-cli.html).
+    For more information about upgrading the cf CLI, see [Installing the Tanzu cf CLI](../operating/cf-cli/install-cf-cli.html).
 
 2. To push your app with multiple buildpacks, specify each buildpack with a `-b` flag by running:
 
@@ -48,4 +48,4 @@ You must use cf CLI v10 or later.</p>
 
 For more information on multi buildpack order, see [How buildpacks work](understand-buildpacks.html).
 
-For more information about using the cf CLI, see [Using the Tanzu cf CLI](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/<%= vars.current_major_version %>/tpcf/cf-cli-install-cf-cli.html).
+For more information about using the Tanzu cf CLI, see [Using the Tanzu cf CLI](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform/tanzu-platform-for-cloud-foundry/<%= vars.current_major_version %>/tpcf/cf-cli-install-cf-cli.html).

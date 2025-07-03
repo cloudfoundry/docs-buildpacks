@@ -26,12 +26,12 @@ steps of the deployment process.
 * A Ruby 2.x application that runs locally on your workstation
 * [Bundler](http://bundler.io) configured on your workstation
 * Basic to intermediate Ruby knowledge
-* The [Cloud Foundry Command Line Interface (cf CLI)](../../operating/cf-cli/install-cf-cli.html) installed on your
+* The [Tanzu cf CLI](../../operating/cf-cli/install-cf-cli.html) installed on your
 workstation
 
 ###<a id="create-bind"></a>  Step 1: Create and bind a service instance for a Ruby app
 
-Use the cf CLI to configure a Redis Cloud managed service instance for an app. <%=vars.dev_console_1%>
+Use the Tanzu cf CLI to configure a Redis Cloud managed service instance for an app. <%=vars.dev_console_1%>
 
 Cloud Foundry supports the following types of service instances:
 
@@ -150,7 +150,7 @@ You must do this step to run the sample app.</p>
 
 ### Step 4: Deploy an app
 
-You must use the cf CLI to deploy apps.
+You must use the Tanzu cf CLI to deploy apps.
 
 Deploy your application by running the following command from the root directory of your application:
 
@@ -180,21 +180,20 @@ Once your app deploys, browse to your app URL.
 Search for the `urls` field in the `App started` block in the output of the `cf push` command.
 Use the URL to access your app online.
 
-Run <code>cf push pong_matcher_ruby -n HOST_NAME</code>.<br /><br />Example: <code>cf push
+Run <code>cf push pong_matcher_ruby</code>.<br /><br />Example: <code>cf push
 pong_matcher_ruby -n pongmatch-ex12</code> <br /><br />The following example shows the terminal output of
 deploying the <code>pong_matcher_ruby</code> app. The n<code>cf push</code> command uses the instructions in
 the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to
 the <code>redis</code> service and follows the instructions in the manifest to start one instance of the
 app with 256M. After the app starts, the output displays the health and status of the app.
 
-These examples work for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must
-be set using the <code>routes</code> property in the manifest.
+The hostname must be set using the <code>routes</code> property in the manifest.
 
 The <code>pong_matcher_ruby</code> app does not include a web interface. To interact with
 the <code>pong_matcher_ruby</code> app, see the interaction instructions on GitHub: <a href="https://github.com/cloudfoundry-samples/pong_matcher_ruby">https://github.com/cloudfoundry-samples/pong_matcher_ruby</a>.
 
 <pre class="terminal">
-$ cf push pong_matcher_ruby -n pongmatch-ex12
+$ cf push pong_matcher_ruby
 Using manifest file /Users/clouduser/workspace/pong_matcher_ruby/manifest.yml
 
 Creating app pong_matcher_ruby in org Cloud-Apps / space development as clouduser@example.com...
@@ -241,13 +240,13 @@ app and your account.
 For example, you could edit the `manifest.yml` to increase the number of app
 instances from 1 to 3, and redeploy the app with a new app name and host name.
 
-See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
+See the [Manage Your Application with the Tanzu cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-## <a id='cli-manage'></a>Manage your application with the cf CLI
+## <a id='cli-manage'></a>Manage your application with the Tanzu cf CLI
 
 Run `cf help` to view a complete list of commands, grouped by task categories,
 and run `cf help COMMAND` for detailed information about a specific command.
-For more information about using the cf CLI, refer to the Cloud Foundry Command Line Interface (cf CLI) topics, especially the <%=vars.cli_v6%> topic.
+For more information about using the cf CLI, refer to the Tanzu cf CLI topics.
 
 You cannot perform certain tasks in the <%=vars.dev_console_2%> because these are commands that
 only an administrator can run. If you are not an administrator, the following message displays for these types of commands:

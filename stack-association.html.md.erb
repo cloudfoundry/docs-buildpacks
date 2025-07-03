@@ -48,13 +48,11 @@ If you push apps to a deployment that has buildpacks with a missing stack record
 * If you push an app and specify a stack with `cf push app-name -s stack`, Cloud Foundry uses that stack. Otherwise, it uses the system default, `cflinuxfs4`.
 * You might see additional logging in the buildpack detection output of the `cf push` command when Cloud Foundry detects buildpacks without a stack record.
 
-## <a id='stack-cli'></a> Managing stack association with the cf CLI
+## <a id='stack-cli'></a> Managing stack association with the Tanzu cf CLI
 
 The cf CLI commands for managing buildpacks include functionality to support association between buildpacks and stacks. The `update-buildpack`, `rename-buildpack`, and `delete-buildpack` commands all include a `-s` flag for specifying a stack.
 
-The cf CLI v7 command removes the <code>cf rename-buildpack</code> command in favor of a <code>--rename</code> option for <code>cf update-buildpack</code>.
-
-When using buildpacks with the cf CLI, consider the following:
+When using buildpacks with the Tanzu cf CLI, consider the following:
 
 * You cannot upload a buildpack with `cf create-buildpack` if a buildpack of the same name already exists and has a missing stack record.
 * When using `cf create-buildpack`, you might inadvertently create a duplicate buildpack with a `nil` stack. `cf create-buildpack` does not prevent creation of buildpacks with no stack association.
@@ -63,7 +61,7 @@ When using buildpacks with the cf CLI, consider the following:
 
 ### <a id='examples-cli'></a> Scenario examples
 
-See the following examples for managing buildpacks with the cf CLI. These examples are applicable when running `cf update-buildpack` or `cf delete-buildpack`:
+See the following examples for managing buildpacks with the Tanzu cf CLI. These examples are applicable when running `cf update-buildpack` or `cf delete-buildpack`:
 
 * **Updating or deleting a uniquely-named buildpack:**
 	* You have a single buildpack named `my-buildpack`, and it is associated with `stack_a`. To delete the buildpack, run `cf delete-buildpack my-buildpack`.

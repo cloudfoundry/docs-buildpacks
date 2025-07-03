@@ -97,7 +97,7 @@ To migrate a database schema using a Rake task:
 
 Learn how to create and deploy an example Rails app that uses a worker library to defer a task that a separate app runs. It also describes how to scale the resources available to the worker app.
 
-Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the app manifest, to suppress route creation. If you are using cf CLI v7 or later, be aware that the <code>--no-route</code> flag no longer unbinds all existing routes associated with the app.
+Most worker tasks do not serve external requests. Use the <code>--no-route</code> flag with the <code>cf push</code> command, or <code>no-route: true</code> in the app manifest, to suppress route creation. Note that the <code>--no-route</code> flag no longer unbinds all existing routes associated with the app.
 
 ### <a id='worker-libs'></a> Choose a worker task library
 
@@ -258,7 +258,7 @@ To create separate manifests for each app type:
     cf push -f web-manifest.yml
     cf push -f worker-manifest.yml
     ```
-    If the cf CLI asks for a URL for the worker app, select **none**.
+    If the Tanzu cf CLI asks for a URL for the worker app, select **none**.
 
 ### <a id='test'></a> Testing the app
 

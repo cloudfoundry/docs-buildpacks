@@ -15,7 +15,7 @@ The binary buildpack does not use a proxy server because it does not access the 
 
 ## <a id='env-variable'></a> Setting environment variables
 
-If you are using a Java buildpack, the <code>http_proxy</code> and <code>https_proxy</code> environment variables are not supported at runtime. The Java buildpack does not add the functionality to make proxies work at runtime. 
+If you are using a Java buildpack, the <code>http_proxy</code> and <code>https_proxy</code> environment variables are not supported at runtime. The Java buildpack does not add the functionality to make proxies work at runtime.
 
 To set your environment variables:
 
@@ -35,7 +35,7 @@ To set your environment variables:
       <li><code>PORT</code> is the port number you are using for your proxy server.</li>
     </ul>
 
-1. Set the environment variables with the Cloud Foundry Command Line Interface (cf CLI) `cf set-env` command:
+2. Set the environment variables with the Tanzu cf CLI `cf set-env` command:
 
 
     ```console
@@ -58,7 +58,7 @@ To set your environment variables:
 
 Removing an environment variable from the application manifest YAML file is not sufficient to unset the environment variable.
 
-You must also unset the environment variables with the Cloud Foundry Command Line Interface (cf CLI) `cf unset-env` command:
+You must also unset the environment variables with the Tanzu cf CLI `cf unset-env` command:
 
 ```console
 cf unset-env YOUR-APP ENV_VAR_NAME

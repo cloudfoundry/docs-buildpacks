@@ -98,8 +98,8 @@ For more information, see [Groovy Container](https://github.com/cloudfoundry/jav
 
 To deploy Java apps that use HTTP/2, you must have:
 
-1. A Cloud Floundry foundation that has HTTP/2 support enabled. <%= vars.http2_admin_link %>
-2. Cloud Foundry Command-Line Interface (cf CLI) v8 or later. See [Upgrading to cf CLI v8](../../operating/cf-cli/cf-cli-v10.html).
+1. A Cloud Foundry foundation that has HTTP/2 support enabled. <%= vars.http2_admin_link %>
+2. Tanzu cf CLI v10 or later. See [Upgrading to Tanzu cf CLI v10](../../operating/cf-cli/cf-cli-v10.html).
 
 You can deploy any Java app and get automatic support for the HTTP/2 protocol without making any changes to your app.
 When a client connects through a route mapped to your Java apps over HTTP/2, the foundation transparently downgrades the protocol and communicates with your app over HTTP/1.1.
@@ -378,7 +378,7 @@ If your app fails to upload when you push it to <%= vars.app_runtime_abbr %>, it
 
 * **Connection issues**: App uploads can fail if you have a slow Internet connection, or if you upload from a location that is very remote from the target <%= vars.app_runtime_abbr %> instance. If an app upload takes a long time, your authorization token can expire before the upload completes. A workaround is to copy the WAR to a server that is closer to the <%= vars.app_runtime_abbr %> instance, and then push it from there.
 
-* **Out-of-date cf CLI client**: Upload of a large WAR is faster and therefore less likely to fail if you are using a recent version of the cf CLI. If you are using an older version of the cf CLI client to upload a large WAR, and having problems, try updating to the latest version of the cf CLI.
+* **Out-of-date cf CLI client**: Upload of a large WAR is faster and therefore less likely to fail if you are using a recent version of the cf CLI. If you are using an older version of the cf CLI client to upload a large WAR, and having problems, update to the latest version of the Tanzu cf CLI.
 
 * **Incorrect WAR targeting**: By default, `cf push` uploads everything in the current directory. For a Java app, `cf push` with no option flags uploads source code and other unnecessary files, in addition to the WAR. When you push a Java app, specify the path to the WAR by running:
 
