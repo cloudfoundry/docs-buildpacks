@@ -9,7 +9,6 @@ For more information about how buildpacks work, see [How Buildpacks Work](unders
 
 <% if vars.platform_code == 'PCF' %>
 <p class="note">
-<span class="note__title"><strong>Note</strong></span>
 Tanzu by Broadcom does not support the use of forked, modified, or custom-compiled variations of Tanzu or Paketo Cloud Native Buildpacks.
 The guidance below is supplementary and for informational purposes only.
 </p>
@@ -168,7 +167,7 @@ For the last buildpack:
 ## <a id='deploying-with-custom-buildpacks'></a> Deploying apps with a custom buildpack
 
 Once a custom buildpack has been created and pushed to a public Git repository,
-the Git URL can be passed through the Tanzu cf CLI when pushing an app.
+the Git URL can be passed through the cf CLI when pushing an app.
 
 For example, you can use a buildpack that has been pushed to GitHub by running:
 
