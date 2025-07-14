@@ -3,16 +3,17 @@ title: Creating custom buildpacks for Cloud Foundry
 owner: Buildpacks
 ---
 
-You can create custom buildpacks for Cloud Foundry.
-
+You can create custom buildpacks for Cloud Foundry.<br>
 For more information about how buildpacks work, see [How Buildpacks Work](understand-buildpacks.html).
 
-<% if vars.platform_code == 'PCF' %>
+<p class="note important">
+As of June 2025, new <%= vars.app_runtime_abbr %>-compatible versions of these buildpacks are developed commercially by VMware, and not as open-source software.
+</p>
+
 <p class="note">
 Tanzu by Broadcom does not support the use of forked, modified, or custom-compiled variations of Tanzu or Paketo Cloud Native Buildpacks.
 The guidance below is supplementary and for informational purposes only.
 </p>
-<% end %>
 
 
 ## <a id='packaging-custom-buildpacks'></a> Packaging custom buildpacks
