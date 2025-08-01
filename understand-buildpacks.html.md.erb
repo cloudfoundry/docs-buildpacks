@@ -237,24 +237,24 @@ Cloud Foundry skips buildpack detection if the developer specifies one or more b
 If you explicitly specify buildpacks, Cloud Foundry performs the following interactions:
 
 1. For each buildpack except the last buildpack, the platform:
-1. Creates the `deps`/`index` directory.
-1. Runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
-1. Accepts any modification of the `deps`/`index` directory.
-1. Accepts any modification of the `cache` directory.
-1. Might disallow modification of any other directories.
+    1. Creates the `deps`/`index` directory.
+    1. Runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
+    1. Accepts any modification of the `deps`/`index` directory.
+    1. Accepts any modification of the `cache` directory.
+    1. Might disallow modification of any other directories.
 
 1. For the last buildpack, the platform:
 1. If `/bin/finalize` is present:
-1. Creates the `deps`/`index` directory if it does not exist.
+    1. Creates the `deps`/`index` directory if it does not exist.
 1. If `/bin/supply` is present, runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
-1. Accepts any modification of the `deps`/`index` directory.
-1. Might disallow modification of the `build` directory.
-1. Runs `/bin/finalize` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
-1. Accepts any modification of the `build` directory.
+    1. Accepts any modification of the `deps`/`index` directory.
+    1. Might disallow modification of the `build` directory.
+    1. Runs `/bin/finalize` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
+    1. Accepts any modification of the `build` directory.
 1. If `/bin/finalize` is not present:
-1. Runs `/bin/compile` with the `build` and `cache` directories.
-1. Accepts any modification of the `build` directory.
-1. Runs `/bin/release` to determine staging information.
+    1. Runs `/bin/compile` with the `build` and `cache` directories.
+    1. Accepts any modification of the `build` directory.
+    1. Runs `/bin/release` to determine staging information.
 
 At the end of this process, the `deps` directory is included at the root of the droplet, adjacent to the `app` directory.
 
@@ -271,17 +271,16 @@ If the platform performs detection, it:
 1. Selects the first buildpack with a `/bin/detect` script that returns a zero exit status.
 
 1. If `/bin/finalize` is present:
-1. Creates the `deps`/`index` directory if it does not exist.
+    1. Creates the `deps`/`index` directory if it does not exist.
 1. If `/bin/supply` is present, runs `/bin/supply` with the `build`, `cache`, and `deps` directories and the buildpack `index`.
-1. Accepts any modification of the `deps`/`index` directory.
-1. Might disallow modification of the `build` directory.
-1. Runs `/bin/finalize` on the `build`, `cache`, and `deps` directories.
-1. Accepts any modification of the `build` directory.
+    1. Accepts any modification of the `deps`/`index` directory.
+    1. Might disallow modification of the `build` directory.
+    1. Runs `/bin/finalize` on the `build`, `cache`, and `deps` directories.
+    1. Accepts any modification of the `build` directory.
 
 1. If `/bin/finalize` is not present:
-1. Runs `/bin/compile` on the `build` and `cache` directories.
-1. Accepts any modification of the `build` directory.
-
-1. Runs `/bin/release` to determine staging information.
+    1. Runs `/bin/compile` on the `build` and `cache` directories.
+    1. Accepts any modification of the `build` directory.
+    1. Runs `/bin/release` to determine staging information.
 
 At the end of this process, the `deps` directory is included at the root of the droplet, adjacent to the `app` directory.
