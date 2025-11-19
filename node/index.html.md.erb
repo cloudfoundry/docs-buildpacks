@@ -109,6 +109,53 @@ By default, the Node.js buildpack assumes you are using npm. If you want to use
 [Yarn](https://yarnpkg.com/) instead, you must provide a `yarn.lock` in your top-level app
 directory. For more information on the Yarn lock file, see [yarn.lock](https://yarnpkg.com/lang/en/docs/yarn-lock/) in the Yarn documentation.
 
+## <a id='sealights_npm_script_injection'></a>Sealights integration: selecting an npm run script
+
+The Node.js buildpack supports automatic Sealights instrumentation during application startup.
+Previously, instrumentation was applied only when running the default `npm start` script.
+
+The buildpack now supports injecting Sealights into **any npm script** defined in your `package.json`, such as:
+
+- `npm run start-dev`
+- `npm run dev`
+- `npm run server`
+- any other custom run script
+
+### Configure a custom npm script for Sealights
+
+To specify which script Sealights should inject into, include an `npmRunScript` value under your Sealights user-provided service in `VCAP_SERVICES`.
+
+Example:
+
+```json
+{
+  "user-provided": [{
+    "name": "sealights-service",
+    "credentials": {
+      "token": "xxx",
+      "buildSessionId": "xxx",
+      "npmRunScript": "start-dev"
+    }
+  }]
+}
+```
+
+In this example, the buildpack injects Sealights into:
+
+```console
+npm run start-dev
+```
+
+### Backward compatibility
+
+If `npmRunScript` is **not** provided, the buildpack defaults to injecting Sealights into:
+
+```console
+npm start
+```
+
+This ensures full compatibility with existing applications without requiring changes to their configuration.
+
 ## <a id='vendoring'></a>Vendoring app dependencies
 
 To vendor dependencies for an app using the Node.js buildpack, run `npm install` (or `yarn install`, if you are using Yarn) from your app directory. This command vendors dependencies into the `node_modules` directory of your app directory.
