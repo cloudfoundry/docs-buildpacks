@@ -112,7 +112,7 @@ If you require end-to-end HTTP/2, for example, because of gRPC, do the following
     - Other frameworks, including Play, Ratpack, and apps that use the distZip format, embed an HTTP server. You must configure these apps to enable HTTP/2, specifically H2C, clear-text. See your framework's documentation for enabling HTTP/2 and H2C.
       H2C is required because <%= vars.app_runtime_abbr %> uses Envoy to secure communications into the app container.
 2. Configure the route to use the HTTP/2 protocol using either the cf CLI or the app manifest:
-    - Using the cf CLI: `cf map-route MY-APP EXAMPLE.COM --hostname host --destination-protocol http2`.
+    - Using the cf CLI: `cf map-route MY-APP EXAMPLE.COM --hostname host --app-protocol http2`.
     - Using a `manifest.yml` file:
 
         ```
@@ -146,7 +146,7 @@ For example:
 4. Map a route:
 
     ```
-    cf map-route spring-music EXAMPLE.COM --hostname spring-music --destination-protocol http2
+    cf map-route spring-music EXAMPLE.COM --hostname spring-music --app-protocol http2
     ```
 5. Validate:
 
