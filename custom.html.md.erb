@@ -1,7 +1,11 @@
 ---
-title: Creating custom buildpacks for Cloud Foundry
+title: Developing and customizing buildpacks in Cloud Foundry
 owner: Buildpacks
 ---
+
+Buildpacks enable you to package frameworks and runtime support for your application.
+Cloud Foundry provides system buildpacks and an interface for customizing existing buildpacks and
+developing new buildpacks.
 
 You can create custom buildpacks for Cloud Foundry.<br>
 For more information about how buildpacks work, see [How Buildpacks Work](understand-buildpacks.html).
@@ -10,11 +14,23 @@ For more information about how buildpacks work, see [How Buildpacks Work](unders
 As of June 2025, new <%= vars.app_runtime_abbr %>-compatible versions of these buildpacks are developed commercially by VMware, and not as open-source software.
 </p>
 
+<% if vars.platform_code == 'CF' %>
+<% else %>
 <p class="note">
 Tanzu by Broadcom does not support the use of forked, modified, or custom-compiled variations of Tanzu or Paketo Cloud Native Buildpacks.
 The guidance below is supplementary and for informational purposes only.
 </p>
+<% end %>
 
+## <a id="create-buildpacks"></a>Creating and customizing buildpacks
+
+If your application uses a language or framework that the Cloud Foundry system buildpacks do not support, do one of the following:
+
+* Use a [Cloud Foundry Community Buildpack](https://github.com/cloudfoundry-community/cf-docs-contrib/wiki/Buildpacks).
+* Use a [Heroku Third-Party Buildpack](https://devcenter.heroku.com/articles/third-party-buildpacks).
+* Customize an existing buildpack or create your own custom buildpack.
+
+For information about packaging dependencies for offline buildpacks, see [Packaging Dependencies for Offline Buildpacks](./depend-pkg-offline.html).
 
 ## <a id='packaging-custom-buildpacks'></a> Packaging custom buildpacks
 
@@ -232,3 +248,21 @@ result, no buildpack <code>detect</code> scripts are run.
 A common development practice for custom buildpacks is to
 fork existing buildpacks and sync subsequent patches from upstream. To merge upstream patches to your
 custom buildpack, see <a href="https://help.github.com/articles/syncing-a-fork">Syncing a fork</a> in the GitHub documentation.
+
+## <a id='maintain-buildpacks'></a>Maintaining buildpacks
+
+After you have modified an existing buildpack or created your own, it is necessary to maintain it.
+
+See the following topics to maintain your own buildpacks:
+
+* [Merging with upstream buildpacks](./merging_upstream.html.md.erb)
+* [Upgrading dependency versions](./upgrading_dependency_versions.html.md.erb)
+
+To configure a production server for your web app,
+see <a href="./prod-server.html">Configuring a production server</a>.
+
+## <a id="using-ci"></a>Using CI for buildpacks
+
+For information about updating and releasing a new version of a Cloud Foundry buildpack through
+the Cloud Foundry Buildpacks Team Concourse pipeline, see <a href="./buildpack-ci-index.html" class="subnav">Using CI for buildpacks</a>.
+You can use this as a model when working with Concourse to build and release new versions of your own buildpacks.
