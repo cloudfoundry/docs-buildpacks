@@ -237,21 +237,16 @@ Once your app deploys, browse to your app URL. Search for the `urls` field in th
 <div class="note important">
   <ol>
     <li>Change to the <code>app</code>directory, and run <code>./grailsw war</code> to build the app.</li>
-    <li>Run <code>cf push pong_matcher_grails -n HOST-NAME</code> to push the app.</li>
+    <li>Run <code>cf push pong_matcher_grails</code> to push the app.</li>
   </ol>
-    <br />
-    Example: <code>cf push pong_matcher_grails -n my-grails-app</code>
-    <br /><br />
-    <b>This example works for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must be set using the <code>routes</code> property in the manifest.</b>
 </div>
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
 The following example shows the terminal output of deploying the <code>pong_matcher_grails</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>mysql</code> service and follows the instructions in the manifest to start two instances of the app, allocating 1 GB of memory between the instances. After the instances start, the output displays their health and status.
-This example works for cf CLI v6. The `-n` flag is not supported for cf CLI v7/v8. Hostname must be set using the `routes` property in the manifest.
 
 <pre class="terminal">
-$ cf push pong_matcher_grails -n my-grails-app
+$ cf push pong_matcher_grails
 Using manifest file /Users/example/workspace/pong_matcher_grails/app/manifest.yml
 
 Creating app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...

@@ -169,7 +169,6 @@ The URL for your app must be unique from other apps that Cloud Foundry
 hosts or the push fails.
 Use the following options to help create a unique URL:
 
-* `-n` to assign a different HOST name for the app.
 * `--random-route` to create a URL that includes the app name and random words.
 * `cf help push` to view other options for this command.
 
@@ -180,15 +179,11 @@ Once your app deploys, browse to your app URL.
 Search for the `urls` field in the `App started` block in the output of the `cf push` command.
 Use the URL to access your app online.
 
-Run <code>cf push pong_matcher_ruby -n HOST_NAME</code>.<br /><br />Example: <code>cf push
-pong_matcher_ruby -n pongmatch-ex12</code> <br /><br />The following example shows the terminal output of
-deploying the <code>pong_matcher_ruby</code> app. The n<code>cf push</code> command uses the instructions in
+Run <code>cf push pong_matcher_ruby</code>.<br /><br />The following example shows the terminal output of
+deploying the <code>pong_matcher_ruby</code> app. The <code>cf push</code> command uses the instructions in
 the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to
 the <code>redis</code> service and follows the instructions in the manifest to start one instance of the
 app with 256M. After the app starts, the output displays the health and status of the app.
-
-These examples work for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must
-be set using the <code>routes</code> property in the manifest.
 
 The <code>pong_matcher_ruby</code> app does not include a web interface. To interact with
 the <code>pong_matcher_ruby</code> app, see the interaction instructions on GitHub: <a href="https://github.com/cloudfoundry-samples/pong_matcher_ruby">https://github.com/cloudfoundry-samples/pong_matcher_ruby</a>.
