@@ -215,7 +215,6 @@ For example, `cf push my-app` creates the URL `my-app.<%= vars.app_domain %>`.
 
 The URL for your app must be unique from other apps that Cloud Foundry hosts or the push fails. Use the following options to help create a unique URL:
 
-* `-n` to assign a different HOST name for the app
 * `--random-route` to create a URL that includes the app name and random words
 * `cf help push` to view other options for this command
 
@@ -225,18 +224,14 @@ Once your app deploys, browse to your app URL. Search for the `urls` field in th
 
 **Sample app step**
 1. Change to the `app` directory, and run `./gradlew distZip` to build the app.
-1. Run `cf push pong_matcher_groovy -n HOST-NAME` to push the app.
-Example: `cf push pong_matcher_groovy -n groovy-ratpack-app`
-
-This example is valid for cf CLI v6. In cf CLI v7 and onwards, the <code>-n</code> flag is not supported. The host name must be specified in the manifest, using the <code>routes</code> attribute.
+1. Run `cf push pong_matcher_groovy` to push the app.
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
 The following example shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
-Note, this example is valid for cf CLI v6. In cf CLI v7 and onwards, the `-n` flag is not supported. The host name must be specified in the manifest, using the `routes` attribute.
 
 <pre class="terminal">
-$ cf push pong_matcher_groovy -n groovy-ratpack-app
+$ cf push pong_matcher_groovy
 Using manifest file /Users/example/workspace/pong_matcher_groovy/app/manifest.yml
 
 Creating app pong_matcher_groovy in org Cloud-Apps / space development as clouduser@example.com...

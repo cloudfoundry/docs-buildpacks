@@ -198,17 +198,14 @@ Once your app deploys, go to your app URL. Search for the `urls` field in the `A
 
 1. Run `brew install maven`.
 1. Change to the `app` directory, and run `mvn package` to build the app.
-1. Run `cf push pong_matcher_spring -n HOSTNAME` to push the app.
-Example: `cf push pong_matcher_spring -n my-spring-app`.
+1. Run `cf push pong_matcher_spring` to push the app.
 
-This example works for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must be set using the <code>routes</code> property in the manifest.
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
-The following example shows the terminal output of deploying the <code>pong_matcher_spring</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>mysql</code> service and starts one instance of the app with 1 GB of memory. After the app starts, the output displays
-the health and status of the app. This example works for cf CLI v6. The <code>-n</code> flag is not supported for cf CLI v7/v8. Hostname must be set using the <code>routes</code> property in the manifest.
+The following example shows the terminal output of deploying the <code>pong_matcher_spring</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>mysql</code> service and starts one instance of the app with 1 GB of memory. After the app starts, the output displays the health and status of the app.
 
 <pre class="terminal">
-$ cf push pong_matcher_spring -n spring1119
+$ cf push pong_matcher_spring
 Using manifest file /Users/example/workspace/pong_matcher_spring/manifest.yml
 
 Creating app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
