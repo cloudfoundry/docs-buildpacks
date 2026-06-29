@@ -95,7 +95,7 @@ $ cf push MY-AWESOME-APP -s (cflinuxfs3|lucid64)
 Your platform operator can configure the platform to add the custom certificates into the application container.
 The custom trusted certificates are added to the `/etc/ssl/certs` directory and can be used by binary applications.
 
-For more information, see [Configuring Trusted System Certificates for Applications](https://docs.cloudfoundry.org/running/trusted-system-certificates.html).
+For more information, see [Configuring Trusted System Certificates for Applications](https://docs.cloudfoundry.org/devguide/deploy-apps/trusted-system-certificates.html).
 
 ## <a id='dotnet-console'></a>.NET apps
 
@@ -142,7 +142,7 @@ applications:
 
 **Console Apps**
 
-Console apps are not recommended to run on Cloud Foundry because they do not normally run as a single instance and are not highly available. If you need to run a console app on Cloud Foundry, see [Console Applications](https://tanzu.vmware.com/developer/cookbooks/dotnet/headless/) in the .NET Cookbook.
+Console apps are not recommended to run on Cloud Foundry because they do not normally run as a single instance and are not highly available.
 
 For information about deploying different types of .NET apps, follow the links in the table below.
 
