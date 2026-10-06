@@ -9,7 +9,37 @@ This library can read and parse `VCAP_SERVICES` and help you extract the informa
 There are a number of ways to implement this and all Java applications can use the library; it is not limited to specific frameworks.
 To get started, you must first add a dependency in your project for the library.
 
+## <a id='modules'></a>java-cfenv modules
+
+The `java-cfenv` project is split into several modules. Add only the modules that your app needs. Each module includes the modules it depends on.
+
+| Module | Description | Includes |
+|---|---|---|
+| `java-cfenv` | Core library. Parses `VCAP_SERVICES` and gives access to services and credentials through `CfEnv`. Works with any Java app. See [Java-only / No framework](#no-framework). | — |
+| `java-cfenv-jdbc` | Adds `CfJdbcEnv` to build JDBC URLs from database service bindings. See [JDBC support](#jdbc). | `java-cfenv` |
+| `java-cfenv-boot` | Spring Boot `EnvironmentPostProcessor` implementations that set Spring Boot properties, such as `spring.datasource.url`, from service bindings. See [Spring Boot](#spring-boot). | `java-cfenv`, `java-cfenv-jdbc` |
+| `java-cfenv-boot-pivotal-scs` | Spring Boot support for Spring Cloud Services, such as Config Server and Service Registry. | `java-cfenv-boot` |
+| `java-cfenv-boot-pivotal-sso` | Spring Boot support for the Single Sign-On service. | `java-cfenv-boot` |
+| `java-cfenv-boot-tanzu-genai` | Spring Boot support for GenAI services using Spring AI. | `java-cfenv-boot` |
+| `java-cfenv-all` | Single JAR that bundles `java-cfenv`, `java-cfenv-jdbc`, `java-cfenv-boot`, `java-cfenv-boot-pivotal-scs`, and `java-cfenv-boot-pivotal-sso`. It also activates the `cloud` Spring profile when the app runs on Cloud Foundry. This is the module that the Java buildpack adds to Spring Boot apps. | See description |
+| `java-cfenv-test-support` | Helpers for testing apps that use `java-cfenv`. Use in test scope only. | `java-cfenv` |
+
+### <a id='buildpack-auto'></a>java-cfenv added by the Java buildpack
+
+For Spring Boot 3.x and 4.x apps, the Java buildpack (v5) automatically adds `java-cfenv-all` at staging time, in the version that matches the Spring Boot major version.
+The buildpack does this only if the app does not already contain any `java-cfenv` JAR. If your app includes any `java-cfenv` module, the buildpack adds nothing and your app uses only the modules that it includes.
+
+To turn off the automatic installation, set `JBP_CONFIG_JAVA_CF_ENV: '{enabled: false}'` in the `env:` block of your `manifest.yml` file.
+
 ## <a id='dependencies'></a>Dependencies
+
+Choose the `java-cfenv` (or `java-cfenv-*` module) version that matches your Spring Boot version. All modules share the same version number:
+
+* `java-cfenv` 4.x for Spring Boot 4.x (`4.0.2` or later)
+* `java-cfenv` 3.x for Spring Boot 3.x (`3.5.3` or later)
+* `java-cfenv` 2.x for Spring Boot 2.x is end of life
+
+For more information, see the [compatibility matrix](https://github.com/pivotal-cf/java-cfenv#compatibility-matrix) in the java-cfenv repository on GitHub.
 
 The following examples show the dependency syntax for Maven and Gradle.
 
@@ -19,14 +49,14 @@ For Maven:
 <dependency>
   <groupId>io.pivotal.cfenv</groupId>
   <artifactId>java-cfenv</artifactId>
-  <version>2.4.0</version>
+  <version>4.0.2</version>
 </dependency>
 ```
 
 For Gradle:
 
 ```console
-implementation "io.pivotal.cfenv:java-cfenv:2.4.0"
+implementation "io.pivotal.cfenv:java-cfenv:4.0.2"
 ```
 
 ## <a id='no-framework'></a>Java-only / No framework
@@ -70,14 +100,14 @@ For Maven:
 <dependency>
   <groupId>io.pivotal.cfenv</groupId>
   <artifactId>java-cfenv-jdbc</artifactId>
-  <version>2.4.0</version>
+  <version>4.0.2</version>
 </dependency>
 ```
 
 For Gradle:
 
 ```console
-implementation "io.pivotal.cfenv:java-cfenv-jdbc:2.4.0"
+implementation "io.pivotal.cfenv:java-cfenv-jdbc:4.0.2"
 ```
 
 The entry point for this feature is the class `CfJdbcEnv`, which is a subclass of `CfEnv` and adds a few methods. The method `findJdbcService` heuristically looks at all services for known tags, labels, and names of common database services to create the URL.
@@ -146,14 +176,14 @@ For Maven:
 <dependency>
   <groupId>io.pivotal.cfenv</groupId>
   <artifactId>java-cfenv-boot</artifactId>
-  <version>2.4.0</version>
+  <version>4.0.2</version>
 </dependency>
 ```
 
 For Gradle:
 
 ```java
-implementation "io.pivotal.cfenv:java-cfenv-boot:2.4.0"
+implementation "io.pivotal.cfenv:java-cfenv-boot:4.0.2"
 ```
 
 The list of supported services are:
@@ -219,7 +249,7 @@ Spring Cloud Connectors support connections to multiple service instances.
 
 * <a id='migrating-code-modifications'></a>**Code modifications:**
 <br><br>
-The Java Buildpack injects the Spring Auto Reconfiguration module code into your application and overwrites your service configuration. This works well in some cases, but sometimes it causes problems.
+When enabled, the Java Buildpack injects the Spring Auto Reconfiguration module code into your application and overwrites your service configuration. This works well in some cases, but sometimes it causes problems. As of Java buildpack v5, Spring Auto Reconfiguration is deactivated by default.
 <br><br>
     With `java-cfenv`, there is no auto-reconfiguration magic. You can explicitly configure your services or you can use the [Spring Boot mappers](#spring-boot). The [Spring Boot mappers](#spring-boot) are the option most similar to previous operation. Note, that when things don't work, it's generally clearer what happened, and it's easier to debug the problem.
 <br><br>
@@ -233,7 +263,10 @@ The Spring Auto Reconfiguration module exposes a set of property placeholder val
 
 * <a id='migrating-cloud-profile'></a>**Spring Cloud Profile:**
 <br><br>
-The Spring Auto Reconfiguration module enables a Spring Profile called `cloud`, by default. Users have come to expect this behavior when deploying to Cloud Foundry. Without the Spring Auto Reconfiguration module, you do not get this behavior. Fortunately, you can enable it using one of these methods:
+The Spring Auto Reconfiguration module enables a Spring Profile called `cloud`, by default. Users have come to expect this behavior when deploying to Cloud Foundry.
+<br><br>
+    The `java-cfenv-all` module activates the `cloud` profile when running on Cloud Foundry. The other `java-cfenv` modules do not. If the Java buildpack [adds `java-cfenv-all` to your app](#buildpack-auto), no action is needed.
+    If your app includes its own `java-cfenv` modules other than `java-cfenv-all` (for example, only `java-cfenv-boot`), is not a Spring Boot 3.x or 4.x app, or you turned off the automatic `java-cfenv` installation, the `cloud` profile is not active. You can enable it using one of these methods:
   * Run `cf set-env <APP> SPRING_PROFILES_ACTIVE cloud`
   * Add `SPRING_PROFILES_ACTIVE: cloud` to the `env:` block in your `manifest.yml` file. This supplies the list of profiles for Spring to use.
 
@@ -252,31 +285,27 @@ The Java Buildpack generates warnings to help with migrating from Spring Cloud C
 
 * <a id='sar-installed'></a>**Spring Auto Reconfiguration installed:**
 <br><br>
-This is the message that is generated when the buildpack installs the Spring Auto Reconfiguration JAR. This happens by default, and notifies you that it is happening.
+As of Java buildpack v5, Spring Auto Reconfiguration is deactivated by default. The buildpack only installs the Spring Auto Reconfiguration JAR if you explicitly enable it with `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: true}'` and your app does not include `java-cfenv`. When it does, the buildpack generates this message:
 
     ```
-    [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Auto Reconfiguration and shaded Spring Cloud Connectors libraries are being installed. These projects have been deprecated, are no longer receiving updates, and should not be used going forward.
-    [SpringAutoReconfiguration]      WARN  If you are not using these libraries, set `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION='{enabled: false}'` to their installation and clear this warning message. The buildpack switches the default to deactivate by default after Aug 2022. Spring Auto Reconfiguration and its shaded Spring Cloud Connectors are removed from the buildpack after Dec 2022.
-    [SpringAutoReconfiguration]      WARN  If you are using these libraries, please migrate to java-cfenv immediately. See https://via.vmw.com/EhzD for migration instructions
+    **WARNING** ATTENTION: The Spring Auto Reconfiguration and shaded Spring Cloud Connectors libraries are being installed. These projects have been deprecated and are no longer receiving updates.
+    **WARNING** Spring Auto Reconfiguration is now DISABLED BY DEFAULT. You have explicitly enabled it via `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION='{enabled: true}'`. Please migrate to java-cfenv as soon as possible.
+    **WARNING** For migration instructions, see https://via.vmw.com/EiBW. Once you migrate to java-cfenv, these warnings will disappear.
     ```
 
-    How you resolve this depends on whether you are depending on the Auto Reconfiguration to occur.
+    To clear this message, migrate your application to the `java-cfenv` library:
 
-  * If your application depends on Auto Reconfiguration behavior, then you must make code changes in your application to use the `java-cfenv` library. See the instructions above for how to include the dependencies and how to access service information using this library.
+  * Make the code changes in your application to use the `java-cfenv` library. See the instructions above for how to include the dependencies and how to access service information using this library.
     After you have added `java-cfenv` to your classpath, the Java buildpack no longer installs the Auto Reconfiguration JAR and you no longer see this message.
-  * If your application is not depending on Auto Reconfiguration behavior, and has already been updated to `java-cfenv`, then this message is not generated. If your application does not use Auto Reconfiguration or `java-cfenv`, then you can either:
-    * Run `cf set-env <APP> JBP_CONFIG_SPRING_AUTO_RECONFIGURATION '{enabled: false}'`
-    * Add `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'` to the `env:` block in your `manifest.yml` file.
-
-        Alternatively, you can use a buildpack released after Aug 2022, after which this feature is no longer enabled by default.
+  * Then remove `JBP_CONFIG_SPRING_AUTO_RECONFIGURATION` from your app environment, for example with `cf unset-env <APP> JBP_CONFIG_SPRING_AUTO_RECONFIGURATION`, or from the `env:` block in your `manifest.yml` file.
 
 * <a id='scc-included'></a>**Spring Cloud Connectors present:**
 <br><br>
-The following message is generated when the buildpack detects that the Spring Cloud Connectors library is present on the classpath.
+When Spring Auto Reconfiguration is enabled, the following message is generated when the buildpack detects that the Spring Cloud Connectors library is present on the classpath.
     <pre class="terminal">
-    [SpringAutoReconfiguration]      WARN  ATTENTION: The Spring Cloud Connectors library is present in your application. This library has been in maintenance mode since July 2019 and stops receiving all updates after Dec 2022.
-    [SpringAutoReconfiguration]      WARN  Please migrate to java-cfenv immediately. See https://via.vmw.com/EhzD for migration instructions.
+    **WARNING** ATTENTION: The Spring Cloud Connectors library is present in your application. This library has been in maintenance mode since July 2019 and is no longer receiving updates.
+    **WARNING** Please migrate to java-cfenv immediately. See https://via.vmw.com/EiBW for migration instructions.
     </pre>
     When this message appears, it means that your application or one of its dependencies is including the Spring Cloud Connectors library. You must remove it and migrate to `java-cfenv`.
     <br><br>
-    After you have migrated to `java-cfenv`, and the Spring Cloud Connectors libraries are no longer on your classpath, this error no longer appears. There is no way to manually suppress this message.
+    After you have migrated to `java-cfenv`, and the Spring Cloud Connectors libraries are no longer on your classpath, this message no longer appears. It also does not appear when Spring Auto Reconfiguration is deactivated, which is the default.
