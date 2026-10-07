@@ -21,13 +21,13 @@ This section describes how to deploy a Grails application to Cloud Foundry.
 * A Grails app that runs locally on your workstation
 * Intermediate to advanced Grails knowledge
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
-* JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
+* JDK 17 or later configured on your workstation
 
-You can develop Grails applications in Groovy, Java 7 or 8, or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7 as described in <em>Step 8: Configure the Deployment Manifest</em> of this topic.
+You can develop Grails applications in Groovy, Java, or any JVM language. Grails 7 requires Java 17 or later. The Cloud Foundry Java buildpack uses Java 17 by default. Java 21 and 25 are also available. To select a different Java version, set the `BP_JAVA_VERSION` environment variable for your app, for example `BP_JAVA_VERSION: 21` in the `env:` block of your `manifest.yml` file. For more information, see the [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) documentation for the Java buildpack.
 
 ### Step 1: (Optional) Declare app dependencies
 
-Declare all the dependency tasks for your app in the build script of your chosen build tool. The table lists build script information for Gradle, Grails, and Maven, and provides documentation links for each build tool.
+Declare all the dependency tasks for your app in the build script of your chosen build tool. Grails 7 apps use Gradle. The table lists build script information for Gradle and Maven, and provides documentation links for each build tool.
 
 <table class="table">
   <thead>
@@ -41,23 +41,25 @@ Declare all the dependency tasks for your app in the build script of your chosen
     <td>Gradle</td><td><code>build.gradle</code></td><td><a href="http://www.gradle.org/docs/current/userguide/userguide.html">Gradle User Guide</a></td>
   </tr>
   <tr>
-    <td>Grails</td><td><code>BuildConfig.groovy</code></td><td><a href="http://grails.org/doc/latest/guide/conf.html">Grails: Configuration - Reference Documentation</a></td>
-  </tr>
-  <tr>
     <td>Maven</td><td><code>pom.xml</code></td><td><a href="http://maven.apache.org/guides/">Apache Maven Project Documentation</a></td>
   </tr>
 </table>
 
-You can skip this step. The <code>pong_matcher_grails/app/grails-app/conf/BuildConfig.groovy</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app, as shown in the following example.
+You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app. The following example shows part of the <code>dependencies</code> block.
 
 ```
 dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
-        // runtime 'mysql:mysql-connector-java:5.1.29'
-        // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
-        test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
-        runtime 'mysql:mysql-connector-java:5.1.33'
-    }
+    implementation platform("org.apache.grails:grails-bom:$grailsVersion")
+    implementation "org.apache.grails:grails-core"
+    implementation "org.apache.grails:grails-data-hibernate5"
+    ...
+    // JDBC drivers: H2 is the default (in-memory); MySQL and PostgreSQL are used
+    // when a database service is bound on Cloud Foundry.
+    runtimeOnly "com.h2database:h2"
+    runtimeOnly "com.mysql:mysql-connector-j"
+    runtimeOnly "org.postgresql:postgresql"
+    ...
+}
 ```
 
 ### Step 2: (Optional) Allocate sufficient memory
@@ -79,25 +81,19 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-You can skip this step. The <code>pong_matcher_grails</code> sample app declares a MySQL JDBC driver in the <code>pong_matcher_grails/app/grails-app/conf/DataSource.groovy</code> file because the app uses ClearDB, which is a database-as-service for MySQL-powered apps. The example below shows this declaration.
+You can skip this step. The <code>pong_matcher_grails</code> sample app includes the H2, MySQL, and PostgreSQL JDBC drivers. Without a bound database service, the app uses an in-memory H2 database.
+
+On Cloud Foundry, the Java buildpack automatically adds the `java-cfenv` library to Spring Boot 3.x and 4.x based apps, including Grails 7 apps. When a database service is bound, `java-cfenv` sets the Spring Boot `spring.datasource.*` properties from the service credentials. The sample app maps these properties to the GORM `dataSource` configuration in <code>grails-app/conf/application.yml</code>, as the following example shows.
 
 ```
-dataSource {
-    pooled = true
-    jmxExport = true
-    driverClassName = "com.mysql.jdbc.Driver"
-    dialect = org.hibernate.dialect.MySQL5InnoDBDialect
-    uri = new URI(System.env.DATABASE_URL ?: "mysql://foo:bar@localhost")
-    username = uri.userInfo ? uri.userInfo.split(":")[0] : ""
-    password = uri.userInfo ? uri.userInfo.split(":")[1] : ""
-    url = "jdbc:mysql://" + uri.host + uri.path
-
-    properties {
-        dbProperties {
-            autoReconnect = true
-        }
-    }
-}
+dataSource:
+  pooled: true
+  jmxExport: true
+  dbCreate: update
+  url: ${spring.datasource.url:jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE}
+  driverClassName: ${spring.datasource.driver-class-name:org.h2.Driver}
+  username: ${spring.datasource.username:sa}
+  password: ${spring.datasource.password:}
 ```
 
 ### Step 4: (Optional) Configure a Procfile
@@ -108,7 +104,7 @@ You can skip this step. The <code>pong_matcher_grails</code> app does not requir
 
 ### Step 5: Create and bind a service instance for a Grails application
 
-This section describes using the cf CLI to configure a ClearDB managed service instance for an app. <%=vars.dev_console_1%>
+This section describes using the cf CLI to configure a managed database service instance for an app. <%=vars.dev_console_1%>
 
 Cloud Foundry supports two types of service instances:
 
@@ -125,19 +121,7 @@ For more information about creating and using service instances, refer to the [S
     cf marketplace
     ```
 
-    The example shows two of the available managed database-as-a-service providers and their offered plans: `cleardb` database-as-a-service for MySQL-powered apps and `postgresql-10-odb` PostgreSQL as a Service.
-
-    <pre class="terminal">
-    $ cf marketplace
-    Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
-    OK
-
-    service             plans                                     description
-
-    cleardb             spark, boost, amp                         Highly available MySQL for your apps
-    postgresql-10-odb   standalone, standalone-replica, general   PostgreSQL as a Service
-
-    </pre>
+    The available services and plans depend on your Cloud Foundry installation.
 
 1. Create a service instance for your app by running:
 
@@ -153,13 +137,7 @@ For more information about creating and using service instances, refer to the [S
 
 <div class="note">
 <span class="note__title"><strong>Note</strong></span>
-Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as the example below shows.
-
-<pre class="terminal">
-$ cf create-service cleardb spark mysql
-Creating service mysql in org Cloud-Apps / space development as clouduser@example.com....
-OK
-</pre>
+The <code>pong_matcher_grails</code> sample app does not require a service instance. To use a persistent database instead of the in-memory H2 database, create a MySQL or PostgreSQL service instance, for example with <code>cf create-service SERVICE PLAN pong-db</code>.
 </div>
 
 #### (Optional) Bind a service instance
@@ -174,15 +152,12 @@ Alternately, you can configure the deployment manifest file by adding a `service
 
 <%=vars.dev_console_5%>
 
-You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
+You can skip this step. If you created a database service instance for the <code>pong_matcher_grails</code> sample app, bind it and restage the app after you deploy it in Step 8:
 
-<pre class="terminal">
----
-applications:
-...
-  services:
-    - mysql
-</pre>
+```console
+cf bind-service grailspong pong-db
+cf restage grailspong
+```
 
 ### Step 6: (Optional) Configure the deployment manifest file
 
@@ -235,75 +210,86 @@ The URL for your app must be unique from other apps that Cloud Foundry hosts or 
 
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
-Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
+Once your app deploys, browse to your app URL. Search for the `routes` field in the output of the `cf push` command. Use the URL to access your app online.
 
 <div class="note important">
 <span class="note__title"><strong>Important</strong></span>
   <ol>
-    <li>Change to the <code>app</code>directory, and run <code>./grailsw war</code> to build the app.</li>
-    <li>Run <code>cf push pong_matcher_grails</code> to push the app.</li>
+    <li>In the <code>pong_matcher_grails</code> directory, run <code>./gradlew assemble</code> to build the app.</li>
+    <li>Run <code>cf push</code> to push the app.</li>
   </ol>
 
 </div>
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
-The following example shows the terminal output of deploying the <code>pong_matcher_grails</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>mysql</code> service and follows the instructions in the manifest to start two instances of the app, allocating 1 GB of memory between the instances. After the instances start, the output displays their health and status.
+The following example shows the terminal output of deploying the <code>pong_matcher_grails</code> app, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects the <code>.war</code> file, installs the default Java 17 runtime and Tomcat, and adds `java-cfenv`. Then one instance of the app starts with 1 GB of memory. After the app starts, the output displays its health and status.
 
 <pre class="terminal">
-$ cf push pong_matcher_grails
-Using manifest file /Users/example/workspace/pong_matcher_grails/app/manifest.yml
+$ cf push
+Pushing app grailspong to org example-org / space development as user@example.com...
+Applying manifest file /Users/example/workspace/pong_matcher_grails/manifest.yml...
+Manifest applied
+Packaging files to upload...
+Uploading files...
+ 62.41 MiB / 62.41 MiB [=====================================================] 100.00% 3s
 
-Creating app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...
-OK
+Waiting for API to complete processing files...
 
-Creating route my-grails-app.cfapps.io...
-OK
+Staging app and tracing logs...
+   Downloading java_buildpack...
+   ...
+   -----> Java Buildpack version 5.1.0
+   -----> Supplying Java
+          Detected container: Tomcat
+          No JRE explicitly configured, using default: OpenJDK
+          Selected JRE: OpenJDK
+   -----> Installing OpenJDK
+          Installing OpenJDK (17.0.20+10)
+   -----> Installing openjdk 17.0.20+10
+          Detected Java major version: 17
+          Installing JVMKill Agent (1.17.0)
+   -----> Installing jvmkill 1.17.0
+          Installing Memory Calculator (4.2.0)
+   -----> Installing memory-calculator 4.2.0
+          Memory Calculator installed: Loaded Classes: 27043 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
+          OpenJDK installation complete
+   -----> Installing frameworks [Java CF Env, Client Certificate Mapper, Container Security Provider, Java Opts]
+   -----> Installing java-cfenv 3.5.3
+   -----> Installing client-certificate-mapper 2.1.0
+   -----> Installing container-security-provider 1.20.0
+          Installing Java Opts
+   -----> Supplying Tomcat
+   -----> Installing tomcat 10.1.60
+          Installed Tomcat (10.1.60)
+   -----> Installing tomcat-lifecycle-support 3.4.0
+   -----> Installing tomcat-access-logging-support 3.4.0
+   -----> Installing tomcat-logging-support 3.4.0
+   ...
+   -----> Finalizing Java
+          Finalizing container: Tomcat
+   ...
+          Java buildpack finalization complete
+   ...
+   Uploading droplet...
 
-Binding my-grails-app.cfapps.io to pong_matcher_grails...
-OK
+Waiting for app grailspong to start...
 
-Uploading pong_matcher_grails...
-Uploading app files from: /Users/example/workspace/pong_matcher_grails/app/target/pong_matcher_grails-0.1.war
-Uploading 4.8M, 704 files
-OK
-Binding service mysql to app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...
-OK
+Instances starting...
 
-Starting app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...
-OK
------> Downloaded app package (38M)
------> Java Buildpack Version: v2.5 | https://github.com/cloudfoundry/java-buildpack.git#840500e
------> Downloading Open Jdk JRE 1.8.0_25 from https://download.run.pivotal.io/openjdk/lucid/x86_64/openjdk-1.8.0_25.tar.gz (1.5s)
-       Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.1s)
------> Downloading Spring Auto Reconfiguration 1.5.0_RELEASE from https://download.run.pivotal.io/auto-reconfiguration/auto-reconfiguration-1.5.0_RELEASE.jar (0.0s)
-       Modifying /WEB-INF/web.xml for Auto Reconfiguration
------> Downloading Tomcat Instance 8.0.14 from https://download.run.pivotal.io/tomcat/tomcat-8.0.14.tar.gz (0.4s)
-       Expanding Tomcat to .java-buildpack/tomcat (0.1s)
------> Downloading Tomcat Lifecycle Support 2.4.0_RELEASE from https://download.run.pivotal.io/tomcat-lifecycle-support/tomcat-lifecycle-support-2.4.0_RELEASE.jar (0.0s)
------> Downloading Tomcat Logging Support 2.4.0_RELEASE from https://download.run.pivotal.io/tomcat-logging-support/tomcat-logging-support-2.4.0_RELEASE.jar (0.0s)
------> Downloading Tomcat Access Logging Support 2.4.0_RELEASE from https://download.run.pivotal.io/tomcat-access-logging-support/tomcat-access-logging-support-2.4.0_RELEASE.jar (0.0s)
+name:              grailspong
+requested state:   started
+routes:            grailspong.example.com
+stack:             cflinuxfs4
+buildpacks:
+	name             version   detect output   buildpack name
+	java_buildpack   5.1.0     java            java
 
------> Uploading droplet (83M)
-
-0 of 2 instances running, 2 starting
-0 of 2 instances running, 2 starting
-0 of 2 instances running, 2 starting
-2 of 2 instances running
-
-App started
-
-Showing health and status for app pong_matcher_grails in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-requested state: started
-instances: 2/2
-usage: 1G x 2 instances
-urls: my-grails-app.cfapps.io
-
-     state     since                    cpu    memory         disk
-#0   running   2014-11-10 05:07:33 PM   0.0%   686.4M of 1G   153.6M of 1G
-#1   running   2014-11-10 05:07:36 PM   0.0%   677.2M of 1G   153.6M of 1G
+type:            web
+instances:       1/1
+memory usage:    1024M
+     state     since                  cpu    memory           disk             details
+#0   running   2026-10-07T05:16:00Z   0.0%   305.8M of 1G     170.5M of 1G
 </pre>
 
 
@@ -315,7 +301,7 @@ See the [Manage Your Application with the cf CLI](#cli-manage) section for more 
 
 To test the sample app, do the following:
 <br /><br />
-1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
+1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app, including <code>https://</code>, for <code>SAMPLE-APP-URL</code>.
 <br /><br />
 2. To clear the database from any previous tests, run:
 <br />

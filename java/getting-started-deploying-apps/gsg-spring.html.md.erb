@@ -26,9 +26,9 @@ This section describes how to deploy your Spring application to Cloud Foundry.
 * A Spring app that runs locally on your workstation
 * Intermediate to advanced Spring knowledge
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
-* JDK 1.6, 1.7, or 1.8 for Java 6, 7, or 8 configured on your workstation
+* JDK 17 or later configured on your workstation
 
-The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to an earlier version. For more information, see <a href="../../custom.html">Creating custom buildpacks</a>.
+The Cloud Foundry Java buildpack uses Java 17 by default. Java 8, 11, 21, and 25 are also available. To select a different Java version, set the `BP_JAVA_VERSION` environment variable for your app, for example `BP_JAVA_VERSION: 21` in the `env:` block of your `manifest.yml` file. For more information, see the [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) documentation for the Java buildpack.
 
 ### Step 1: (Optional) Declare app dependencies
 
@@ -63,34 +63,33 @@ You can skip this step. The <code>pom.xml</code> file contains the dependencies 
 ```xml
 <dependencies>
     <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.flywaydb</groupId>
-        <artifactId>flyway-core</artifactId>
-    </dependency>
-    <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
+        <artifactId>spring-boot-starter-webmvc</artifactId>
     </dependency>
 
     <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
-        <scope>test</scope>
+        <scope>runtime</scope>
     </dependency>
     <dependency>
-        <groupId>com.jayway.jsonpath</groupId>
-        <artifactId>json-path</artifactId>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webmvc-test</artifactId>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -108,7 +107,7 @@ $ cf push -m 128M
 
 When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
-You can skip this step. The Cloud Foundry Java buildpack uses settings declared in the sample app to allocate 1 GB of memory to the app.
+You can skip this step. The <code>manifest.yml</code> file of the <code>pong_matcher_spring</code> sample app allocates 1 GB of memory to the app.
 
 ### Step 3: Provide a JDBC driver
 
@@ -117,32 +116,24 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-You can skip this step. In the <code>pong_matcher_spring</code> sample app, the <code>src/main/resources/application.yml</code> file declares the JDBC driver, and the <code>pom.xml</code> file includes the JDBC driver as a dependency.
+You can skip this step. The <code>pom.xml</code> file of the <code>pong_matcher_spring</code> sample app includes the H2, MySQL, and PostgreSQL JDBC drivers as dependencies. Spring Boot selects the driver that matches the database URL.
 
 ### Step 4: (Optional) Configure service connections for a Spring app
 
 Cloud Foundry provides extensive support for creating and binding a Spring application to services such as MySQL, PostgreSQL, MongoDB, Redis, and RabbitMQ. For more information about creating and binding a service connection for your app, refer to [Configuring Service Connections](../configuring-service-connections.html).
 
-<div class="note">
-<span class="note__title"><strong>Note</strong></span>
-Run <code>cf create-service cleardb spark mysql</code>. This creates a service instance named <code>mysql</code> that uses the <code>cleardb</code> service and the <code>spark</code> plan, as this example shows.
+For Spring Boot 3.x and 4.x apps, the Java buildpack automatically adds the `java-cfenv` library. It sets the Spring Boot `spring.datasource.*` properties from a bound database service and activates the `cloud` Spring profile. Your app does not need Cloud Foundry specific code or configuration for this.
 
-<pre class="terminal">
-$ cf create-service cleardb spark mysql
-Creating service mysql in org Cloud-Apps / space development as a.user@example.com....
-OK
-</pre>
-</div>
+You can skip this step. Without a bound database service, the <code>pong_matcher_spring</code> sample app uses an in-memory H2 database, which loses its data when the app restarts. To use a persistent database, create a MySQL or PostgreSQL service instance, bind it to the app, and restage the app after you deploy it in Step 7:
 
-You can skip this step because the service instance is already bound. Open the <code>manifest.yml</code> file in a text editor to view the bound service instance information. Locate the file in the app root directory and search for the <code>services</code> sub-block in the <code>applications</code> block, as the example below shows.
+```console
+cf marketplace
+cf create-service SERVICE PLAN pong-db
+cf bind-service springpong pong-db
+cf restage springpong
+```
 
-<pre class="terminal">
----
-applications:
-...
-  services:
-    - mysql
-</pre>
+Where `SERVICE` and `PLAN` are a MySQL or PostgreSQL service and plan from the output of `cf marketplace`.
 
 ### Step 5: Configure the deployment manifest
 
@@ -193,62 +184,76 @@ Use the following options to help create a unique URL:
 
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
-Once your app deploys, go to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
+Once your app deploys, go to your app URL. Search for the `routes` field in the output of the `cf push` command. Use the URL to access your app online.
 
 #### Sample app step
 
-1. Run `brew install maven`.
-1. Change to the `app` directory, and run `mvn package` to build the app.
-1. Run `cf push pong_matcher_spring` to push the app.
+1. In the `pong_matcher_spring` directory, run `./mvnw package` to build the app.
+1. Run `cf push` to push the app.
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
-The following example shows the terminal output of deploying the <code>pong_matcher_spring</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>mysql</code> service and starts one instance of the app with 1 GB of memory. After the app starts, the output displays the health and status of the app.
+The following example shows the terminal output of deploying the <code>pong_matcher_spring</code> app, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects a Spring Boot app, installs the default Java 17 runtime, and adds `java-cfenv`. Then one instance of the app starts with 1 GB of memory. After the app starts, the output displays the health and status of the app.
 
 <pre class="terminal">
-$ cf push pong_matcher_spring
-Using manifest file /Users/example/workspace/pong_matcher_spring/manifest.yml
+$ cf push
+Pushing app springpong to org example-org / space development as user@example.com...
+Applying manifest file /Users/example/workspace/pong_matcher_spring/manifest.yml...
+Manifest applied
+Packaging files to upload...
+Uploading files...
+ 54.03 MiB / 54.03 MiB [=====================================================] 100.00% 3s
 
-Creating app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
-OK
+Waiting for API to complete processing files...
 
-Creating route spring1119.cfapps.io...
-OK
+Staging app and tracing logs...
+   Downloading java_buildpack...
+   ...
+   -----> Java Buildpack version 5.1.0
+   -----> Supplying Java
+          Detected container: Spring Boot
+          No JRE explicitly configured, using default: OpenJDK
+          Selected JRE: OpenJDK
+   -----> Installing OpenJDK
+          Installing OpenJDK (17.0.20+10)
+   -----> Installing openjdk 17.0.20+10
+          Detected Java major version: 17
+          Installing JVMKill Agent (1.17.0)
+   -----> Installing jvmkill 1.17.0
+          Installing Memory Calculator (4.2.0)
+   -----> Installing memory-calculator 4.2.0
+          Memory Calculator installed: Loaded Classes: 25631 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
+          OpenJDK installation complete
+   -----> Installing frameworks [Java CF Env, Client Certificate Mapper, Container Security Provider, Java Opts]
+   -----> Installing java-cfenv 4.0.2
+   -----> Installing client-certificate-mapper 2.1.0
+   -----> Installing container-security-provider 1.20.0
+          Installing Java Opts
+   -----> Supplying Spring Boot
+   -----> Finalizing Java
+          Finalizing container: Spring Boot
+   ...
+          Java buildpack finalization complete
+   ...
+   Uploading droplet...
 
-Binding spring1119.cfapps.io to pong_matcher_spring...
-OK
+Waiting for app springpong to start...
 
-Uploading pong_matcher_spring...
-Uploading app files from: /Users/example/workspace/pong_matcher_spring/target/pong-matcher-spring-1.0.0.BUILD-SNAPSHOT.jar
-Uploading 797.5K, 116 files
-OK
-Binding service mysql to app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
-OK
+Instances starting...
 
-Starting app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
-OK
------> Downloaded app package (25M)
------> Downloading Open Jdk JRE 1.8.0_25 from https://download.run.pivotal.io/openjdk/lucid/x86_64/openjdk-1.8.0_25.tar.gz (1.2s)
-       Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.1s)
------> Downloading Spring Auto Reconfiguration 1.5.0_RELEASE from https://download.run.pivotal.io/auto-reconfiguration/auto-reconfiguration-1.5.0_RELEASE.jar (0.1s)
+name:              springpong
+requested state:   started
+routes:            springpong.example.com
+stack:             cflinuxfs4
+buildpacks:
+	name             version   detect output   buildpack name
+	java_buildpack   5.1.0     java            java
 
------> Uploading droplet (63M)
-
-0 of 1 instances running, 1 starting
-1 of 1 instances running
-
-App started
-
-Showing health and status for app pong_matcher_spring in org Cloud-Apps / space development as a.user@example.com...
-OK
-
-requested state: started
-instances: 1/1
-usage: 1G x 1 instances
-urls: spring1119.cfapps.io
-
-     state     since                    cpu    memory         disk
-#0   running   2014-11-19 12:29:27 PM   0.0%   553.6M of 1G   127.4M of 1G
+type:            web
+instances:       1/1
+memory usage:    1024M
+     state     since                  cpu    memory           disk             details
+#0   running   2026-10-06T20:55:10Z   0.0%   210.4M of 1G     160.2M of 1G
 </pre>
 
 ### Step 8: Test your deployed app
@@ -259,13 +264,13 @@ See [Manage your application with the cf CLI](#cli-manage) for more information.
 
 Sample app step: To test the sample app, do the following:
 <br /><br />
-1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
+1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app, including <code>https://</code>, for <code>SAMPLE-APP-URL</code>.
 <br /><br />
 1. To clear the database from any previous tests, run:
 <br />
 <code>curl -v -X DELETE $HOST/all</code>
 <br />
-You should get a response of <code:>200</code>.
+You should get a response of <code>200</code>.
 <br /><br />
 1. To request a match as "andrew", run:
 <br />
