@@ -197,12 +197,22 @@ The following example shows the terminal output of deploying the <code>pong_matc
 
 <pre class="terminal">
 $ cf push
-Pushing app springpong to org example-org / space development as user@example.com...
+Pushing app springpong to org example-org / space development as user@example.com ...
 Applying manifest file /Users/example/workspace/pong_matcher_spring/manifest.yml...
+
+Updating with these attributes...
+  ---
+  applications:
++ - name: springpong
+    path: /Users/example/workspace/pong_matcher_spring/target/pong-matcher-spring-1.0.0.jar
+    memory: 1G
++   default-route: true
++   buildpacks:
++   - java_buildpack
 Manifest applied
 Packaging files to upload...
 Uploading files...
- 54.03 MiB / 54.03 MiB [=====================================================] 100.00% 3s
+ 44.78 MiB / 44.78 MiB [=====================================================] 100.00% 2s
 
 Waiting for API to complete processing files...
 
@@ -211,29 +221,40 @@ Staging app and tracing logs...
    ...
    -----> Java Buildpack version 5.1.0
    -----> Supplying Java
-          Detected container: Spring Boot
-          No JRE explicitly configured, using default: OpenJDK
-          Selected JRE: OpenJDK
+   Detected container: Spring Boot
+   No JRE explicitly configured, using default: OpenJDK
+   Selected JRE: OpenJDK
    -----> Installing OpenJDK
-          Installing OpenJDK (17.0.20+10)
+   Installing OpenJDK (17.0.20+10)
    -----> Installing openjdk 17.0.20+10
-          Detected Java major version: 17
-          Installing JVMKill Agent (1.17.0)
+   Detected Java major version: 17
+   Installing JVMKill Agent (1.17.0)
    -----> Installing jvmkill 1.17.0
-          Installing Memory Calculator (4.2.0)
+   Installing Memory Calculator (4.2.0)
    -----> Installing memory-calculator 4.2.0
-          Memory Calculator installed: Loaded Classes: 25631 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
-          OpenJDK installation complete
+   Memory Calculator installed: Loaded Classes: 25631 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
+   OpenJDK installation complete
    -----> Installing frameworks [Java CF Env, Client Certificate Mapper, Container Security Provider, Java Opts]
    -----> Installing java-cfenv 4.0.2
    -----> Installing client-certificate-mapper 2.1.0
    -----> Installing container-security-provider 1.20.0
-          Installing Java Opts
+   Installing Java Opts
    -----> Supplying Spring Boot
+   Loaded supply config: container=Spring Boot jre=OpenJDK version=17.0.20+10
    -----> Finalizing Java
-          Finalizing container: Spring Boot
-   ...
-          Java buildpack finalization complete
+   Finalizing container: Spring Boot
+   -----> Finalizing JRE: OpenJDK
+   -----> Finalizing OpenJDK configuration
+   Configuring JVMKill Agent
+   Configuring Memory Calculator
+   OpenJDK finalization complete
+   -----> Finalizing frameworks [Java CF Env, Client Certificate Mapper, Container Security Provider, Java Opts]
+   Configured Container Security Provider for runtime (priority 17)
+   -----> Configuring Java Opts
+   Configured user JAVA_OPTS for runtime (priority 99)
+   -----> Finalizing Spring Boot
+   -----> Writing release configuration
+   Java buildpack finalization complete
    ...
    Uploading droplet...
 
@@ -244,16 +265,19 @@ Instances starting...
 name:              springpong
 requested state:   started
 routes:            springpong.example.com
-stack:             cflinuxfs4
+last uploaded:     Thu 08 Oct 07:19:39 CEST 2026
+stack:             cflinuxfs5
 buildpacks:
-	name             version   detect output   buildpack name
-	java_buildpack   5.1.0     java            java
+        name             version   detect output   buildpack name
+        java_buildpack   5.1.0     java            java
 
 type:            web
+sidecars:
 instances:       1/1
 memory usage:    1024M
-     state     since                  cpu    memory           disk             details
-#0   running   2026-10-06T20:55:10Z   0.0%   210.4M of 1G     160.2M of 1G
+start command:   CALCULATED_MEMORY=$($DEPS_DIR/0/jre/bin/java-buildpack-memory-calculator-4.2.0 ...) && ... org.springframework.boot.loader.launch.JarLauncher
+     state     since                  cpu    memory         disk           logging        cpu entitlement   details   ready
+#0   running   2026-10-08T05:19:58Z   0.1%   245.6M of 1G   236.7M of 1G   0B/s of 0B/s   9.2%                        true
 </pre>
 
 ### Step 8: Test your deployed app
