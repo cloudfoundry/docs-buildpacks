@@ -229,10 +229,23 @@ The following example shows the terminal output of deploying the <code>pong_matc
 $ cf push
 Pushing app grailspong to org example-org / space development as user@example.com...
 Applying manifest file /Users/example/workspace/pong_matcher_grails/manifest.yml...
+
+Updating with these attributes...
+  ---
+  applications:
++ - name: grailspong
++   instances: 1
+    path: /Users/example/workspace/pong_matcher_grails/build/libs/pong_matcher_grails-0.1.war
+    memory: 1G
++   default-route: true
++   buildpacks:
++   - java_buildpack
++   env:
++     BP_JAVA_VERSION: 21
 Manifest applied
 Packaging files to upload...
 Uploading files...
- 62.41 MiB / 62.41 MiB [=====================================================] 100.00% 3s
+ 20.58 MiB / 20.58 MiB [=====================================================] 100.00% 1s
 
 Waiting for API to complete processing files...
 
@@ -241,55 +254,71 @@ Staging app and tracing logs...
    ...
    -----> Java Buildpack version 5.1.0
    -----> Supplying Java
-          Detected container: Tomcat
-          No JRE explicitly configured, using default: OpenJDK
-          Selected JRE: OpenJDK
+   Detected container: Tomcat
+   No JRE explicitly configured, using default: OpenJDK
+   Selected JRE: OpenJDK
    -----> Installing OpenJDK
-          Installing OpenJDK (21.0.12+10)
+   Installing OpenJDK (21.0.12+10)
    -----> Installing openjdk 21.0.12+10
-          Detected Java major version: 21
-          Installing JVMKill Agent (1.17.0)
+   Detected Java major version: 21
+   Installing JVMKill Agent (1.17.0)
    -----> Installing jvmkill 1.17.0
-          Installing Memory Calculator (4.2.0)
+   Installing Memory Calculator (4.2.0)
    -----> Installing memory-calculator 4.2.0
-          Memory Calculator installed: Loaded Classes: 27067 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
-          OpenJDK installation complete
+   Memory Calculator installed: Loaded Classes: 27067 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
+   OpenJDK installation complete
    -----> Installing frameworks [Java CF Env, Client Certificate Mapper, Container Security Provider, Java Opts]
    -----> Installing java-cfenv 4.0.2
    -----> Installing client-certificate-mapper 2.1.0
    -----> Installing container-security-provider 1.20.0
-          Installing Java Opts
+   Installing Java Opts
    -----> Supplying Tomcat
    -----> Installing tomcat 10.1.60
-          Installed Tomcat (10.1.60)
+   Installed Tomcat (10.1.60)
+   Access logging disabled by default (use JBP_CONFIG_TOMCAT to enable)
    -----> Installing tomcat-lifecycle-support 3.4.0
    -----> Installing tomcat-access-logging-support 3.4.0
    -----> Installing tomcat-logging-support 3.4.0
+   Installing Cloud Foundry-optimized Tomcat configuration defaults
    ...
+   Loaded supply config: container=Tomcat jre=OpenJDK version=21.0.12+10
    -----> Finalizing Java
-          Finalizing container: Tomcat
-   ...
-          Java buildpack finalization complete
+   Finalizing container: Tomcat
+   -----> Finalizing JRE: OpenJDK
+   -----> Finalizing OpenJDK configuration
+   Configuring JVMKill Agent
+   Configuring Memory Calculator
+   OpenJDK finalization complete
+   -----> Finalizing frameworks [Java CF Env, Client Certificate Mapper, Container Security Provider, Java Opts]
+   Configured Container Security Provider for runtime (priority 17)
+   -----> Configuring Java Opts
+   Configured user JAVA_OPTS for runtime (priority 99)
+   -----> Finalizing Tomcat
+   Created ROOT.xml with docBase pointing to application directory
+   -----> Writing release configuration
+   Java buildpack finalization complete
    ...
    Uploading droplet...
 
 Waiting for app grailspong to start...
 
-Instances starting...
 
 name:              grailspong
 requested state:   started
 routes:            grailspong.example.com
-stack:             cflinuxfs4
+last uploaded:     Thu 08 Oct 13:50:37 CEST 2026
+stack:             cflinuxfs5
 buildpacks:
-	name             version   detect output   buildpack name
-	java_buildpack   5.1.0     java            java
+        name             version   detect output   buildpack name
+        java_buildpack   5.1.0     java            java
 
 type:            web
+sidecars:
 instances:       1/1
 memory usage:    1024M
-     state     since                  cpu    memory           disk             details
-#0   running   2026-10-07T05:16:00Z   0.0%   305.8M of 1G     170.5M of 1G
+start command:   CALCULATED_MEMORY=$($DEPS_DIR/0/jre/bin/java-buildpack-memory-calculator-4.2.0 ...) && ... $CATALINA_HOME/bin/catalina.sh run
+     state     since                  cpu    memory         disk           logging        cpu entitlement   details   ready
+#0   running   2026-10-08T14:29:28Z   0.2%   331.3M of 1G   287.9M of 1G   0B/s of 0B/s   11.8%                       true
 </pre>
 
 
