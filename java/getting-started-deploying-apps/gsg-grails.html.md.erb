@@ -23,7 +23,11 @@ This section describes how to deploy a Grails application to Cloud Foundry.
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
 * JDK 21 or later configured on your workstation
 
-You can develop Grails applications in Groovy, Java, or any JVM language. Grails 8 requires Java 21 or later. The Cloud Foundry Java buildpack uses Java 17 by default. Java 21 and 25 are also available. To select a different Java version, set the `BP_JAVA_VERSION` environment variable for your app, for example `BP_JAVA_VERSION: 21` in the `env:` block of your `manifest.yml` file. The <code>pong_matcher_grails</code> sample app sets `BP_JAVA_VERSION: 21` in its manifest. For more information, see the [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) documentation for the Java buildpack.
+You can develop Grails applications in Groovy, Java, or any JVM language. Grails 8 requires Java 21 or later. The Cloud Foundry Java buildpack uses Java 17 by default. Java 21 and 25 are also available. To select a different Java version, set the `BP_JAVA_VERSION` environment variable for your app, for example `BP_JAVA_VERSION: 21` in the `env:` block of your `manifest.yml` file. For more information, see the [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) documentation for the Java buildpack.
+
+Grails 8 is based on Spring Boot 4, which requires Servlet 6.1 (Tomcat 11). For `.war` files, the Java buildpack uses Tomcat 10.1 by default. To select Tomcat 11, set `JBP_CONFIG_TOMCAT: '{ tomcat: { version: 11.+ } }'` in the `env:` block of your `manifest.yml` file. For more information, see the [Tomcat container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-tomcat.md) documentation for the Java buildpack.
+
+The <code>pong_matcher_grails</code> sample app sets both `BP_JAVA_VERSION: 21` and `JBP_CONFIG_TOMCAT` in its manifest.
 
 ### Step 1: (Optional) Declare app dependencies
 
@@ -165,7 +169,7 @@ You can specify deployment options in the `manifest.yml` that the `cf push` comm
 
 Refer to the [Deploying with application manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
 
-You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app. It already sets `BP_JAVA_VERSION: 21` in the `env:` block, because Grails 8 requires Java 21.
+You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app. It already sets `BP_JAVA_VERSION` and `JBP_CONFIG_TOMCAT` in the `env:` block to select Java 21 and Tomcat 11, which Grails 8 requires.
 
 ### Step 7: Log in and target the API endpoint
 
@@ -223,7 +227,7 @@ Once your app deploys, browse to your app URL. Search for the `routes` field in 
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
-The following example shows the terminal output of deploying the <code>pong_matcher_grails</code> app, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects the <code>.war</code> file, installs the Java 21 runtime selected by `BP_JAVA_VERSION` and Tomcat, and adds `java-cfenv`. Then one instance of the app starts with 1 GB of memory. After the app starts, the output displays its health and status.
+The following example shows the terminal output of deploying the <code>pong_matcher_grails</code> app, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects the <code>.war</code> file, installs the Java 21 runtime and Tomcat 11 selected in the manifest, and adds `java-cfenv`. Then one instance of the app starts with 1 GB of memory. After the app starts, the output displays its health and status.
 
 <pre class="terminal">
 $ cf push
@@ -242,6 +246,7 @@ Updating with these attributes...
 +   - java_buildpack
 +   env:
 +     BP_JAVA_VERSION: 21
++     JBP_CONFIG_TOMCAT: '{ tomcat: { version: 11.+ } }'
 Manifest applied
 Packaging files to upload...
 Uploading files...
@@ -273,8 +278,8 @@ Staging app and tracing logs...
    -----> Installing container-security-provider 1.20.0
    Installing Java Opts
    -----> Supplying Tomcat
-   -----> Installing tomcat 10.1.60
-   Installed Tomcat (10.1.60)
+   -----> Installing tomcat 11.0.26
+   Installed Tomcat (11.0.26)
    Access logging disabled by default (use JBP_CONFIG_TOMCAT to enable)
    -----> Installing tomcat-lifecycle-support 3.4.0
    -----> Installing tomcat-access-logging-support 3.4.0
