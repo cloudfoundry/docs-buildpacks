@@ -21,13 +21,13 @@ This section describes how to deploy a Grails application to Cloud Foundry.
 * A Grails app that runs locally on your workstation
 * Intermediate to advanced Grails knowledge
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
-* JDK 17 or later configured on your workstation
+* JDK 21 or later configured on your workstation
 
-You can develop Grails applications in Groovy, Java, or any JVM language. Grails 7 requires Java 17 or later. The Cloud Foundry Java buildpack uses Java 17 by default. Java 21 and 25 are also available. To select a different Java version, set the `BP_JAVA_VERSION` environment variable for your app, for example `BP_JAVA_VERSION: 21` in the `env:` block of your `manifest.yml` file. For more information, see the [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) documentation for the Java buildpack.
+You can develop Grails applications in Groovy, Java, or any JVM language. Grails 8 requires Java 21 or later. The Cloud Foundry Java buildpack uses Java 17 by default. Java 21 and 25 are also available. To select a different Java version, set the `BP_JAVA_VERSION` environment variable for your app, for example `BP_JAVA_VERSION: 21` in the `env:` block of your `manifest.yml` file. The <code>pong_matcher_grails</code> sample app sets `BP_JAVA_VERSION: 21` in its manifest. For more information, see the [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) documentation for the Java buildpack.
 
 ### Step 1: (Optional) Declare app dependencies
 
-Declare all the dependency tasks for your app in the build script of your chosen build tool. Grails 7 apps use Gradle. The table lists build script information for Gradle and Maven, and provides documentation links for each build tool.
+Declare all the dependency tasks for your app in the build script of your chosen build tool. Grails 8 apps use Gradle. The table lists build script information for Gradle and Maven, and provides documentation links for each build tool.
 
 <table class="table">
   <thead>
@@ -83,7 +83,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 
 You can skip this step. The <code>pong_matcher_grails</code> sample app includes the H2, MySQL, and PostgreSQL JDBC drivers. Without a bound database service, the app uses an in-memory H2 database.
 
-On Cloud Foundry, the Java buildpack automatically adds the `java-cfenv` library to Spring Boot 3.x and 4.x based apps, including Grails 7 apps. When a database service is bound, `java-cfenv` sets the Spring Boot `spring.datasource.*` properties from the service credentials. The sample app maps these properties to the GORM `dataSource` configuration in <code>grails-app/conf/application.yml</code>, as the following example shows.
+On Cloud Foundry, the Java buildpack automatically adds the `java-cfenv` library to Spring Boot 3.x and 4.x based apps, including Grails 8 apps. When a database service is bound, `java-cfenv` sets the Spring Boot `spring.datasource.*` properties from the service credentials. The sample app maps these properties to the GORM `dataSource` configuration in <code>grails-app/conf/application.yml</code>, as the following example shows.
 
 ```
 dataSource:
@@ -165,7 +165,7 @@ You can specify deployment options in the `manifest.yml` that the `cf push` comm
 
 Refer to the [Deploying with application manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
 
-You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app.
+You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app. It already sets `BP_JAVA_VERSION: 21` in the `env:` block, because Grails 8 requires Java 21.
 
 ### Step 7: Log in and target the API endpoint
 
@@ -223,7 +223,7 @@ Once your app deploys, browse to your app URL. Search for the `routes` field in 
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
-The following example shows the terminal output of deploying the <code>pong_matcher_grails</code> app, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects the <code>.war</code> file, installs the default Java 17 runtime and Tomcat, and adds `java-cfenv`. Then one instance of the app starts with 1 GB of memory. After the app starts, the output displays its health and status.
+The following example shows the terminal output of deploying the <code>pong_matcher_grails</code> app, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects the <code>.war</code> file, installs the Java 21 runtime selected by `BP_JAVA_VERSION` and Tomcat, and adds `java-cfenv`. Then one instance of the app starts with 1 GB of memory. After the app starts, the output displays its health and status.
 
 <pre class="terminal">
 $ cf push
@@ -245,17 +245,17 @@ Staging app and tracing logs...
           No JRE explicitly configured, using default: OpenJDK
           Selected JRE: OpenJDK
    -----> Installing OpenJDK
-          Installing OpenJDK (17.0.20+10)
-   -----> Installing openjdk 17.0.20+10
-          Detected Java major version: 17
+          Installing OpenJDK (21.0.12+10)
+   -----> Installing openjdk 21.0.12+10
+          Detected Java major version: 21
           Installing JVMKill Agent (1.17.0)
    -----> Installing jvmkill 1.17.0
           Installing Memory Calculator (4.2.0)
    -----> Installing memory-calculator 4.2.0
-          Memory Calculator installed: Loaded Classes: 27043 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
+          Memory Calculator installed: Loaded Classes: 27067 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
           OpenJDK installation complete
    -----> Installing frameworks [Java CF Env, Client Certificate Mapper, Container Security Provider, Java Opts]
-   -----> Installing java-cfenv 3.5.3
+   -----> Installing java-cfenv 4.0.2
    -----> Installing client-certificate-mapper 2.1.0
    -----> Installing container-security-provider 1.20.0
           Installing Java Opts
