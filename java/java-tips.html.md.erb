@@ -13,25 +13,59 @@ For a more detailed explanation of what the Cloud Foundry Java Builpack supports
 
 For information about using, configuring, and extending the Cloud Foundry Java buildpack, see the [Cloud Foundry Java Buildpack](https://github.com/cloudfoundry/java-buildpack) repository on GitHub.
 
+<p class="note">
+<strong>Note</strong>: As of v5.1.0, the Java buildpack is a rewrite in Go (previously Ruby), per
+<a href="https://github.com/cloudfoundry/community/blob/main/toc/rfc/rfc-0050-java-buildpack-migration-to-golang.md">RFC-0050</a>.
+The Go buildpack aims for behavioral parity with the Ruby buildpack it replaces, but some
+details differ; see the
+<a href="https://github.com/cloudfoundry/java-buildpack/blob/main/RUBY_VS_GO_BUILDPACK_COMPARISON.md">Ruby vs. Go buildpack comparison</a>
+for a full breakdown. The last version of the docs describing the Ruby buildpack (v4.x) is
+archived at this
+<a href="https://github.com/cloudfoundry/docs-buildpacks/tree/a475367b92eea48640c72c96dae9e7ac31bc7525/java">pre-v5 commit</a>.
+</p>
+
 
 ## <a id='design'></a> Java buildpack design
 
 The Java buildpack can convert artifacts that run on the JVM into executable apps. It does this by identifying one of the supported artifact types (Grails, Groovy, Java, Play Framework, Spring Boot, and Servlet) and downloading all additional dependencies needed to run. It also analyzes the collection of services bound to the app and downloads any dependencies related to those services.
 
-For example, pushing a WAR file that is bound to a PostgreSQL database and New Relic for performance monitoring shows output like this:
+For example, pushing a WAR file that is bound to a PostgreSQL database and an OpenTelemetry collector for observability shows output like this:
 
 <pre class="terminal">
------> Java Buildpack v4.50 | https://github.com/cloudfoundry/java-buildpack#e1d6dbc
------> Downloading Jvmkill Agent 1.16.0_RELEASE from https://java-buildpack.cloudfoundry.org/jvmkill/bionic/x86_64/jvmkill-1.16.0-RELEASE.so (0.1s)
------> Downloading Open Jdk JRE 1.8.0_342 from https://java-buildpack.cloudfoundry.org/openjdk/bionic/x86_64/bellsoft-jre8u342%2B7-linux-amd64.tar.gz (0.6s)
-Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.3s)
-JVM DNS caching deactivated in lieu of BOSH DNS caching
------> Downloading Open JDK Like Memory Calculator 3.13.0_RELEASE from https://java-buildpack.cloudfoundry.org/memory-calculator/bionic/x86_64/memory-calculator-3.13.0-RELEASE.tar.gz (0.1s)
-Loaded Classes: 21014, Threads: 250
------> Downloading Client Certificate Mapper 1.11.0_RELEASE from https://java-buildpack.cloudfoundry.org/client-certificate-mapper/client-certificate-mapper-1.11.0-RELEASE.jar (0.0s)
------> Downloading Container Security Provider 1.19.0_RELEASE from https://java-buildpack.cloudfoundry.org/container-security-provider/container-security-provider-1.19.0-RELEASE.jar (0.1s)
-Exit status 0
+-----> Java Buildpack version 5.1.0
+-----> Supplying Java
+       Detected container: Tomcat
+       No JRE explicitly configured, using default: OpenJDK
+       Selected JRE: OpenJDK
+-----> Installing OpenJDK
+       Installing OpenJDK (17.0.20+10)
+-----> Installing openjdk 17.0.20+10
+       Download [https://buildpacks.cloudfoundry.org/dependencies/openjdk/openjdk_17.0.20%2B10_linux_x64_cflinuxfs4_42fe5962.tgz]
+       Detected Java major version: 17
+       Installing JVMKill Agent (1.17.0)
+-----> Installing jvmkill 1.17.0
+       Installing Memory Calculator (4.2.0)
+-----> Installing memory-calculator 4.2.0
+       Memory Calculator installed: Loaded Classes: 14775 (auto-detected), Threads: 250 (default), Headroom: 0% (default)
+       OpenJDK installation complete
+       OpenTelemetry service detected!
+-----> Installing frameworks [PostgreSQL JDBC, Client Certificate Mapper, Container Security Provider, Java Opts, OpenTelemetry Javaagent]
+-----> Installing postgresql-jdbc 42.7.13
+-----> Installing client-certificate-mapper 2.1.0
+-----> Installing container-security-provider 1.20.0
+-----> Installing open-telemetry-javaagent 2.31.1
+-----> Supplying Tomcat
+-----> Installing tomcat 10.1.60
+       Installed Tomcat (10.1.60)
+...
+-----> Finalizing Java
+...
+       Java buildpack finalization complete
 </pre>
+
+The JRE is installed under <code>$DEPS_DIR/&lt;idx&gt;/jre</code> and exposed to the app through
+the <code>$JAVA_HOME</code> environment variable; do not hardcode a path such as the Ruby
+buildpack's former <code>.java-buildpack/open_jdk_jre</code>, which no longer exists.
 
 
 ## <a id='configuration'></a> Configuration
@@ -287,7 +321,7 @@ If you do not allocate sufficient memory to a Java app when you deploy it, it ma
 * Stack size per Thread
 * JVM overhead
 
-The `config/open_jdk_jre.yml` file of the Java buildpack contains default memory size and weighting settings for the JRE. For an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app, see [Open JDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) in the Cloud Foundry Java Buildpack on GitHub.
+The Java buildpack has built-in memory calculator defaults (for example, 250 threads and 0% headroom; the loaded class count is detected from the app). Override them with the `memory_calculator` settings of the `JBP_CONFIG_OPEN_JDK_JRE` environment variable, for example `JBP_CONFIG_OPEN_JDK_JRE: '{ memory_calculator: { stack_threads: 200 } }'`. For an explanation of JRE memory sizes and weightings and how the Java buildpack calculates and allocates memory to the JRE for your app, see [Open JDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) in the Cloud Foundry Java Buildpack on GitHub.
 
 To configure memory-related JRE options for your app, you can override the default memory settings of your buildpack as described in [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) with the properties listed in the Open JDK JRE README in the Cloud Foundry Java Buildpack on GitHub. For more information about configuring manifests, see [Deploying with App Manifests](../../devguide/deploy-apps/manifest.html).
 
@@ -474,58 +508,24 @@ Server error, status code: 400, error code: 100001, message: The app is invalid:
 
 ## <a id='extension'></a> Extension
 
-The Java buildpack can also be easily extended. It creates abstractions for three types of components (containers, frameworks, and JREs) to allow users to easily add functionality. In addition to these abstractions, there are a number of utility classes for simplifying typical buildpack behaviors.
+The Java buildpack can also be easily extended. It creates abstractions for three types of components (containers, frameworks, and JREs) to allow users to easily add functionality. In addition to these abstractions, there are a number of helper functions for simplifying typical buildpack behaviors.
 
-As an example, the New Relic framework looks like this:
+Each component implements a small Go interface. For example, every framework (such as the OpenTelemetry Java agent) implements:
 
 ```
-class NewRelicAgent < JavaBuildpack::Component::VersionedDependencyComponent
+type Framework interface {
+	// Detect returns the framework name if this framework should be included
+	Detect() (string, error)
 
-  # @macro base_component_compile
-  def compile
-    FileUtils.mkdir_p logs_dir
+	// Supply installs the framework (runs during the supply phase)
+	Supply() error
 
-    download_jar
-    @droplet.copy_resources
-  end
-
-  # @macro base_component_release
-  def release
-    @droplet.java_opts
-    .add_javaagent(@droplet.sandbox + jar_name)
-    .add_system_property('newrelic.home', @droplet.sandbox)
-    .add_system_property('newrelic.config.license_key', license_key)
-    .add_system_property('newrelic.config.app_name', "'#{application_name}'")
-    .add_system_property('newrelic.config.log_file_path', logs_dir)
-  end
-
-  protected
-
-  # @macro versioned_dependency_component_supports
-  def supports?
-    @application.services.one_service? FILTER, 'licenseKey'
-  end
-
-  private
-
-  FILTER = /newrelic/.freeze
-
-  def application_name
-    @application.details['application_name']
-  end
-
-  def license_key
-    @application.services.find_service(FILTER)['credentials']['licenseKey']
-  end
-
-  def logs_dir
-    @droplet.sandbox + 'logs'
-  end
-
-end
+	// Finalize performs final framework configuration (runs during the finalize phase)
+	Finalize() error
+}
 ```
 
-For more information, see [Design](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/design.md), [Extending](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/extending.md), and [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
+For more information, see [Design](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/design.md), [Implementing Frameworks](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/IMPLEMENTING_FRAMEWORKS.md), and [Configuration and Extension](https://github.com/cloudfoundry/java-buildpack#configuration-and-extension) in the Cloud Foundry Java Buildpack repository on GitHub.
 
 
 ## <a id='env-var'></a> Environment variables
