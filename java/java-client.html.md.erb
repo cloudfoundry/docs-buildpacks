@@ -5,8 +5,7 @@ owner: Java
 
 You can use the Cloud Foundry Java Client Library to manage an account on a Cloud Foundry instance.
 
-Cloud Foundry Java Client Library v1.1.x works with apps using Spring v4.x, and
-Cloud Foundry Java Client Library v1.0.x work with apps using Spring v3.x. Both versions are available in the [Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub.
+The Cloud Foundry Java Client Library is available in the [Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub. The library uses a reactive design based on [Project Reactor](https://projectreactor.io/).
 
 
 ## <a id='adding-the-library'></a> Adding the Java Client Library
@@ -18,138 +17,97 @@ For more information about how to add the Cloud Foundry Java Client Library as d
 
 ### <a id='maven'></a> Maven
 
-Add the `cloudfoundry-client-reactor` dependency (formerly known as `cloudfoundry-client-spring`) to your `pom.xml` as follows:
+Add the `cloudfoundry-client-reactor` and `cloudfoundry-operations` dependencies to your `pom.xml` as follows:
 
 ```
 <dependencies>
     <dependency>
         <groupId>org.cloudfoundry</groupId>
         <artifactId>cloudfoundry-client-reactor</artifactId>
-        <version>2.0.0.BUILD-SNAPSHOT</version>
+        <version>VERSION</version>
     </dependency>
     <dependency>
         <groupId>org.cloudfoundry</groupId>
         <artifactId>cloudfoundry-operations</artifactId>
-        <version>2.0.0.BUILD-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-        <groupId>io.projectreactor</groupId>
-        <artifactId>reactor-core</artifactId>
-        <version>2.5.0.BUILD-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-        <groupId>io.projectreactor</groupId>
-        <artifactId>reactor-netty</artifactId>
-        <version>2.5.0.BUILD-SNAPSHOT</version>
+        <version>VERSION</version>
     </dependency>
     ...
 </dependencies>
 ```
 
-The artifacts can be found in the Spring release and snapshot repositories:
-
-```
-<repositories>
-    <repository>
-        <id>spring-releases</id>
-        <name>Spring Releases</name>
-        <url>http://repo.spring.io/release</url>
-    </repository>
-    ...
-</repositories>
-```
-```
-<repositories>
-    <repository>
-        <id>spring-snapshots</id>
-        <name>Spring Snapshots</name>
-        <url>http://repo.spring.io/snapshot</url>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-    </repository>
-    ...
-</repositories>
-```
+Where `VERSION` is the latest release of the library, for example `5.18.0.RELEASE`. The artifacts are available in Maven Central.
 
 ### <a id='gradle'></a> Gradle
 
-Add the `cloudfoundry-client-reactor` dependency to your `build.gradle` file as follows:
+Add the `cloudfoundry-client-reactor` and `cloudfoundry-operations` dependencies to your `build.gradle` file as follows:
 
 ```
 dependencies {
-    compile 'org.cloudfoundry:cloudfoundry-client-reactor:2.0.0.BUILD-SNAPSHOT'
-    compile 'org.cloudfoundry:cloudfoundry-operations:2.0.0.BUILD-SNAPSHOT'
-    compile 'io.projectreactor:reactor-core:2.5.0.BUILD-SNAPSHOT'
-    compile 'io.projectreactor:reactor-netty:2.5.0.BUILD-SNAPSHOT'
+    implementation 'org.cloudfoundry:cloudfoundry-client-reactor:VERSION'
+    implementation 'org.cloudfoundry:cloudfoundry-operations:VERSION'
     ...
 }
 ```
 
-The artifacts can be found in the Spring release and snapshot repositories:
-
-```
-repositories {
-    maven { url 'http://repo.spring.io/release' }
-    ...
-}
-```
-```
-repositories {
-    maven { url 'http://repo.spring.io/snapshot' }
-    ...
-}
-```
+Where `VERSION` is the latest release of the library, for example `5.18.0.RELEASE`. The artifacts are available in Maven Central.
 
 
 ## <a id='sample-code'></a> Sample code
 
-The following is a very simple sample app that connects to a Cloud Foundry instance, logs in, and displays some information about the Cloud Foundry account. When running the program, provide the Cloud Foundry target API endpoint, along with a valid user name and password as command-line parameters.
+The following is a simple sample app that connects to a Cloud Foundry instance, logs in, and displays some information about a space. When running the program, provide the Cloud Foundry API host (for example, `api.example.com`), a valid user name and password, and the org and space as command-line parameters.
 
 ```
-import org.cloudfoundry.client.lib.CloudCredentials;
-import org.cloudfoundry.client.lib.CloudFoundryClient;
-import org.cloudfoundry.client.lib.domain.CloudApplication;
-import org.cloudfoundry.client.lib.domain.CloudService;
-import org.cloudfoundry.client.lib.domain.CloudSpace;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
+import org.cloudfoundry.operations.CloudFoundryOperations;
+import org.cloudfoundry.operations.DefaultCloudFoundryOperations;
+import org.cloudfoundry.reactor.DefaultConnectionContext;
+import org.cloudfoundry.reactor.client.ReactorCloudFoundryClient;
+import org.cloudfoundry.reactor.tokenprovider.PasswordGrantTokenProvider;
 
 public final class JavaSample {
 
     public static void main(String[] args) {
-        String target = args[0];
-        String user = args[1];
+        String apiHost = args[0];
+        String username = args[1];
         String password = args[2];
+        String organization = args[3];
+        String space = args[4];
 
-        CloudCredentials credentials = new CloudCredentials(user, password);
-        CloudFoundryClient client = new CloudFoundryClient(credentials, getTargetURL(target));
-        client.login();
+        DefaultConnectionContext connectionContext = DefaultConnectionContext.builder()
+            .apiHost(apiHost)
+            .build();
+
+        PasswordGrantTokenProvider tokenProvider = PasswordGrantTokenProvider.builder()
+            .username(username)
+            .password(password)
+            .build();
+
+        ReactorCloudFoundryClient cloudFoundryClient = ReactorCloudFoundryClient.builder()
+            .connectionContext(connectionContext)
+            .tokenProvider(tokenProvider)
+            .build();
+
+        CloudFoundryOperations operations = DefaultCloudFoundryOperations.builder()
+            .cloudFoundryClient(cloudFoundryClient)
+            .organization(organization)
+            .space(space)
+            .build();
 
         System.out.printf("%nSpaces:%n");
-        for (CloudSpace space : client.getSpaces()) {
-            System.out.printf("  %s\t(%s)%n", space.getName(), space.getOrganization().getName());
-        }
+        operations.spaces().list()
+            .doOnNext(s -> System.out.printf("  %s%n", s.getName()))
+            .blockLast();
 
         System.out.printf("%nApplications:%n");
-        for (CloudApplication application : client.getApplications()) {
-            System.out.printf("  %s%n", application.getName());
-        }
+        operations.applications().list()
+            .doOnNext(a -> System.out.printf("  %s\t(%s)%n", a.getName(), a.getRequestedState()))
+            .blockLast();
 
-        System.out.printf("%nServices%n");
-        for (CloudService service : client.getServices()) {
-            System.out.printf("  %s\t(%s)%n", service.getName(), service.getLabel());
-        }
-    }
+        System.out.printf("%nServices:%n");
+        operations.services().listInstances()
+            .doOnNext(s -> System.out.printf("  %s\t(%s)%n", s.getName(), s.getService()))
+            .blockLast();
 
-    private static URL getTargetURL(String target) {
-        try {
-            return URI.create(target).toURL();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("The target URL is not valid: " + e.getMessage());
-        }
+        connectionContext.dispose();
     }
 
 }
@@ -158,5 +116,4 @@ public final class JavaSample {
 For more details about the Cloud Foundry Java Client Library, see the
 [Cloud Foundry Java Client Library](https://github.com/cloudfoundry/cf-java-client) repository on GitHub.
 
-To view the
-objects that you can query and inspect, see [domain package](https://github.com/cloudfoundry/cf-java-client/tree/main/cloudfoundry-client/src/main/java/org/cloudfoundry/client/v2/domains) in the cloudfoundry/cf-java-client repository on GitHub.
+To view the operations and objects that you can use, see the [cloudfoundry-operations Javadoc](https://javadoc.io/doc/org.cloudfoundry/cloudfoundry-operations).
