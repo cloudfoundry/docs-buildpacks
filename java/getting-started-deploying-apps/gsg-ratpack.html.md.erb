@@ -21,9 +21,11 @@ This section describes how to deploy a Ratpack application to Cloud Foundry.
 * A Ratpack app that runs locally on your workstation
 * Intermediate to advanced Ratpack knowledge
 * The [Cloud Foundry Command Line Interface (cf CLI)](../../../cf-cli/install-go-cli.html)
-* JDK 1.7 or 1.8 for Java 7 or 8 configured on your workstation
+* A JDK configured on your workstation that matches the Java version your app targets
 
-You can develop Ratpack applications in Java 7 or 8 or any JVM language. The Cloud Foundry Java buildpack uses JDK 1.8, but you can modify the buildpack and the manifest for your app to compile to JDK 1.7. Refer to Step 8: Configure the Deployment Manifest.
+You can develop Ratpack applications in Java or any JVM language. The Cloud Foundry Java buildpack uses Java 17 by default. Java 8, 11, 21, and 25 are also available. To select a different Java version, set the `BP_JAVA_VERSION` environment variable for your app, for example `BP_JAVA_VERSION: 21` in the `env:` block of your `manifest.yml` file. For more information, see the [OpenJDK JRE](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/jre-open_jdk_jre.md) documentation for the Java buildpack.
+
+The Java buildpack runs Ratpack apps that are packaged with the Gradle `distZip` task. It detects them as Dist ZIP apps and starts them with the start script in the `bin` directory. For more information, see the [Dist ZIP container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-dist_zip.md) documentation for the Java buildpack.
 
 ### Step 1: (Optional) Declare app dependencies
 
@@ -73,7 +75,7 @@ $ cf push -m 128M
 
 When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
-You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 512 MB to the app.
+You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_groovy</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 768 MB to the app.
 
 ### Step 3: (Optional) Provide a JDBC driver
 
@@ -109,20 +111,7 @@ For more information about creating and using service instances, refer to the [S
     cf marketplace
     ```
 
-    The example shows two of the available managed database-as-a-service providers and their offered plans: `postgresql-10-odb` PostgreSQL as a Service and `rediscloud` Enterprise-Class Redis for Developers.
-
-    <pre class="terminal">
-    $ cf marketplace
-    Getting services from marketplace in org Cloud-Apps / space development as clouduser@example.com...
-    OK
-
-    service            plans                                      description
-
-    postgresql-10-odb  standalone, standalone-replica, general    PostgreSQL as a Service
-
-    rediscloud         30mb, 100mb, 1gb, 10gb, 50gb               Enterprise-Class Redis for Developers
-
-    </pre>
+    The available services and plans depend on your Cloud Foundry installation.
 
 1. Create a service instance for your app by running:
 
@@ -136,14 +125,7 @@ For more information about creating and using service instances, refer to the [S
       <li><code>SERVICE-INSTANCE</code> is a unique name you provide for the service instance.</li>
     </ul>
 
-Run <code>cf create-service rediscloud 30mb baby-redis</code>. This creates a service instance named <code>baby-redis</code> that uses
-the <code>rediscloud</code> service and the <code>30mb</code> plan, as the following example shows.
-
-<pre class="terminal">
-$ cf create-service rediscloud 30mb baby-redis
-Creating service baby-redis in org Cloud-Apps / space development as clouduser@example.com....
-OK
-</pre>
+The <code>pong_matcher_groovy</code> sample app requires a Redis service instance named <code>groovy-db</code>. The app reads the Redis credentials from the <code>rediscloud</code> entry in <code>VCAP_SERVICES</code>. For example, run <code>cf create-service rediscloud 30mb groovy-db</code> to create a service instance that uses the <code>rediscloud</code> service and the <code>30mb</code> plan.
 </div>
 
 #### (Optional) Bind a service instance
@@ -169,7 +151,7 @@ You can skip this step because the service instance is already bound. Open the <
 applications:
 ...
   services:
-    - baby-redis
+    - groovy-db
 </pre>
 
 ### Step 6: (Optional) Configure the deployment manifest
@@ -222,59 +204,65 @@ The URL for your app must be unique from other apps that Cloud Foundry hosts or 
 
 If you want to view log activity while the app deploys, launch a new terminal window and run `cf logs APP-NAME`.
 
-Once your app deploys, browse to your app URL. Search for the `urls` field in the `App started` block in the output of the `cf push` command. Use the URL to access your app online.
+Once your app deploys, browse to your app URL. Search for the `routes` field in the output of the `cf push` command. Use the URL to access your app online.
 
 **Sample app step**
-1. Change to the `app` directory, and run `./gradlew distZip` to build the app.
-1. Run `cf push pong_matcher_groovy` to push the app.
+1. In the `pong_matcher_groovy` directory, run `./gradlew distZip` to build the app.
+1. Run `cf push` to push the app.
 
 You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
-The following example shows the terminal output of deploying the <code>pong_matcher_groovy</code> app. <code>cf push</code> uses the instructions in the manifest file to create the app, create and bind the route, and upload the app. It then binds the app to the <code>baby-redis</code> service and follows the instructions in the manifest to start one instance of the app with 512 MB. After the app starts, the output displays the health and status of the app.
+The following example shows the terminal output of deploying the <code>pong_matcher_groovy</code> app, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, upload the app, and bind the app to the <code>groovy-db</code> service. The Java buildpack detects the app as a Dist ZIP app and installs the default Java 17 runtime. Then one instance of the app starts with 768 MB. After the app starts, the output displays the health and status of the app.
 
 <pre class="terminal">
-$ cf push pong_matcher_groovy
-Using manifest file /Users/example/workspace/pong_matcher_groovy/app/manifest.yml
+$ cf push
+Pushing app ratpackpong to org example-org / space development as user@example.com...
+Applying manifest file /Users/example/workspace/pong_matcher_groovy/manifest.yml...
+Manifest applied
+Packaging files to upload...
+Uploading files...
+ ...
 
-Creating app pong_matcher_groovy in org Cloud-Apps / space development as clouduser@example.com...
-OK
+Waiting for API to complete processing files...
 
-Creating route groovy-ratpack-app.cfapps.io...
-OK
+Staging app and tracing logs...
+   ...
+   -----> Java Buildpack version 5.1.0
+   -----> Supplying Java
+          Detected container: Dist ZIP
+          No JRE explicitly configured, using default: OpenJDK
+          Selected JRE: OpenJDK
+   -----> Installing OpenJDK
+          Installing OpenJDK (17.0.20+10)
+   ...
+   -----> Installing frameworks [Client Certificate Mapper, Container Security Provider, Java Opts]
+   ...
+   -----> Supplying Dist ZIP
+   ...
+   -----> Finalizing Dist ZIP
+          DistZip Finalize: Starting (startScript=bin/application)
+   ...
+          Java buildpack finalization complete
+   ...
+   Uploading droplet...
 
-Binding groovy-ratpack-app.cfapps.io to pong_matcher_groovy...
-OK
+Waiting for app ratpackpong to start...
 
-Uploading pong_matcher_groovy...
-Uploading app files from: /Users/example/workspace/pong_matcher_groovy/app/build/distributions/app.zip
-Uploading 138.2K, 18 files
-OK
-Binding service baby-redis to app pong_matcher_groovy in org Cloud-Apps / space development as clouduser@example.com...
-OK
+Instances starting...
 
-Starting app pong_matcher_groovy in org Cloud-Apps / space development as clouduser@example.com...
-OK
------> Downloaded app package (12M)
-Cloning into '/tmp/buildpacks/java-buildpack'...
------> Java Buildpack Version: 9e096be | https://github.com/cloudfoundry/java-buildpack#9e096be
-       Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.3s)
------> Uploading droplet (49M)
+name:              ratpackpong
+requested state:   started
+routes:            ratpackpong.example.com
+stack:             cflinuxfs4
+buildpacks:
+	name             version   detect output   buildpack name
+	java_buildpack   5.1.0     java            java
 
-0 of 1 instances running, 1 starting
-1 of 1 instances running
-
-App started
-
-Showing health and status for app pong_matcher_groovy in org Cloud-Apps / space development as clouduser@example.com...
-OK
-
-requested state: started
-instances: 1/1
-usage: 512M x 1 instances
-urls: groovy-ratpack-app.cfapps.io
-
-     state     since                    cpu    memory           disk
-#0   running   2014-10-28 04:48:58 PM   0.0%   193.5M of 512M   111.7M of 1G
+type:            web
+instances:       1/1
+memory usage:    768M
+     state     since                  cpu    memory           disk             details
+#0   running   2026-10-07T05:50:00Z   0.0%   180.2M of 768M   120.4M of 1G
 </pre>
 <br>
 
@@ -286,7 +274,7 @@ See the [Manage Your Application with the cf CLI](#cli-manage) section for more 
 
 To test the sample app, do the following:
 <br /><br />
-1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app for <code>SAMPLE-APP-URL</code>.
+1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app, including <code>https://</code>, for <code>SAMPLE-APP-URL</code>.
 <br /><br />
 1. To clear the database from any previous tests, run:
 <br />
