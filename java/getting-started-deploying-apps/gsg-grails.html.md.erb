@@ -8,8 +8,6 @@ owner: Java
 This information walks you through deploying a Grails app to Cloud Foundry.
 If you experience a problem following the steps, refer to the <%=vars.known_issues%> or [Troubleshooting Application Deployment and Health](./../../../devguide/deploy-apps/troubleshoot-app-health.html) topics for more information.
 
-If you want to go through this tutorial using the sample app, run <code>git clone https://github.com/cloudfoundry-samples/pong_matcher_grails.git</code> to clone the <code>pong_matcher_grails</code> app from GitHub, and follow the instructions in the Sample app step sections.
-
 Ensure that your Grails app runs locally before continuing with this procedure.
 
 ##<a id='deploy-yourapp'></a>Deploy a Grails application
@@ -27,7 +25,7 @@ You can develop Grails applications in Groovy, Java, or any JVM language. Grails
 
 Grails 8 is based on Spring Boot 4, which requires Servlet 6.1 (Tomcat 11). For `.war` files, the Java buildpack uses Tomcat 10.1 by default. To select Tomcat 11, set `JBP_CONFIG_TOMCAT: '{ tomcat: { version: 11.+ } }'` in the `env:` block of your `manifest.yml` file. For more information, see the [Tomcat container](https://github.com/cloudfoundry/java-buildpack/blob/main/docs/container-tomcat.md) documentation for the Java buildpack.
 
-The <code>pong_matcher_grails</code> sample app sets both `BP_JAVA_VERSION: 21` and `JBP_CONFIG_TOMCAT` in its manifest.
+The manifest example in Step 6 shows both settings.
 
 ### Step 1: (Optional) Declare app dependencies
 
@@ -49,7 +47,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
   </tr>
 </table>
 
-You can skip this step. The <code>build.gradle</code> file contains the dependencies for the <code>pong_matcher_grails</code> sample app. The following example shows part of the <code>dependencies</code> block.
+The following example shows part of the <code>dependencies</code> block of a <code>build.gradle</code> file for a Grails 8 app.
 
 ```
 dependencies {
@@ -76,7 +74,7 @@ $ cf push -m 128M
 
 When your app is running, you can use the `cf app APP-NAME` command to see memory utilization.
 
-You can skip this step. In the <code>manifest.yml</code> of the <code>pong_matcher_grails</code> sample app, the <code>memory</code> sub-block of the <code>applications</code> block allocates 1 GB to the app.
+To set the memory in your manifest file instead, add the `memory` field to the `applications` block, for example `memory: 1G`.
 
 ### Step 3: (Optional) Provide a JDBC driver
 
@@ -85,9 +83,9 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-You can skip this step. The <code>pong_matcher_grails</code> sample app includes the H2, MySQL, and PostgreSQL JDBC drivers. Without a bound database service, the app uses an in-memory H2 database.
+For example, the <code>build.gradle</code> file shown in Step 1 includes the H2, MySQL, and PostgreSQL JDBC drivers. If you do not bind a database service, an app that includes the H2 driver uses an in-memory H2 database.
 
-On Cloud Foundry, the Java buildpack automatically adds the `java-cfenv` library to Spring Boot 3.x and 4.x based apps, including Grails 8 apps. When a database service is bound, `java-cfenv` sets the Spring Boot `spring.datasource.*` properties from the service credentials. The sample app maps these properties to the GORM `dataSource` configuration in <code>grails-app/conf/application.yml</code>, as the following example shows.
+On Cloud Foundry, the Java buildpack automatically adds the `java-cfenv` library to Spring Boot 3.x and 4.x based apps, including Grails 8 apps. When a database service is bound, `java-cfenv` sets the Spring Boot `spring.datasource.*` properties from the service credentials. To use them, map these properties to the GORM `dataSource` configuration in <code>grails-app/conf/application.yml</code>, as the following example shows.
 
 ```
 dataSource:
@@ -104,7 +102,7 @@ dataSource:
 
 Use a Procfile to declare required runtime processes for your web app and to specify your web server. For more information, see the [Configuring a Production Server](../../prod-server.html) topic.
 
-You can skip this step. The <code>pong_matcher_grails</code> app does not require a Procfile.
+You can skip this step if your app does not require a Procfile.
 
 ### Step 5: Create and bind a service instance for a Grails application
 
@@ -141,7 +139,7 @@ For more information about creating and using service instances, refer to the [S
 
 <div class="note">
 <span class="note__title"><strong>Note</strong></span>
-The <code>pong_matcher_grails</code> sample app does not require a service instance. To use a persistent database instead of the in-memory H2 database, create a MySQL or PostgreSQL service instance, for example with <code>cf create-service SERVICE PLAN pong-db</code>.
+If your app uses the in-memory H2 database, it does not require a service instance. To use a persistent database instead, create a MySQL or PostgreSQL service instance.
 </div>
 
 #### (Optional) Bind a service instance
@@ -152,15 +150,15 @@ Most services support bindable service instances. Refer to your service provider
 
 You can bind a service to an application with the command `cf bind-service APPLICATION SERVICE-INSTANCE`.
 
-Alternately, you can configure the deployment manifest file by adding a `services` sub-block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see the Sample App step.
+Alternately, you can configure the deployment manifest file by adding a `services` sub-block to the `applications` block and specifying the service instance. For more information and an example on service binding using a manifest, see [Configuring Service Connections](../configuring-service-connections.html).
 
 <%=vars.dev_console_5%>
 
-You can skip this step. If you created a database service instance for the <code>pong_matcher_grails</code> sample app, bind it and restage the app after you deploy it in Step 8:
+If you created a database service instance, bind it and restage the app after you deploy it in Step 8:
 
 ```console
-cf bind-service grailspong pong-db
-cf restage grailspong
+cf bind-service APP-NAME SERVICE-INSTANCE
+cf restage APP-NAME
 ```
 
 ### Step 6: (Optional) Configure the deployment manifest file
@@ -169,7 +167,18 @@ You can specify deployment options in the `manifest.yml` that the `cf push` comm
 
 Refer to the [Deploying with application manifests](../../../devguide/deploy-apps/manifest.html) topic for more information.
 
-You can skip this step. The <code>manifest.yml</code> file for the <code>pong_matcher_grails</code> sample app does not require any additional configuration to deploy the app. It already sets `BP_JAVA_VERSION` and `JBP_CONFIG_TOMCAT` in the `env:` block to select Java 21 and Tomcat 11, which Grails 8 requires.
+For a Grails 8 app, set `BP_JAVA_VERSION` and `JBP_CONFIG_TOMCAT` in the `env:` block to select Java 21 and Tomcat 11, which Grails 8 requires. The following example shows a <code>manifest.yml</code> file.
+
+```yaml
+---
+applications:
+- name: my-grails-app
+  memory: 1G
+  path: build/libs/my-grails-app-0.1.war
+  env:
+    BP_JAVA_VERSION: 21
+    JBP_CONFIG_TOMCAT: '{ tomcat: { version: 11.+ } }'
+```
 
 ### Step 7: Log in and target the API endpoint
 
@@ -182,11 +191,6 @@ cf login -a API-ENDPOINT
 Where `API-ENDPOINT` is <%= vars.api_endpoint %>.
 
 <%= vars.gen_GSG %>
-
-<p class="note">
-<span class="note__title"><strong>Note</strong></span>
-You must do this step to run the sample app.
-</p>
 
 ### Step 8: Deploy the application
 
@@ -216,30 +220,26 @@ If you want to view log activity while the app deploys, launch a new terminal wi
 
 Once your app deploys, browse to your app URL. Search for the `routes` field in the output of the `cf push` command. Use the URL to access your app online.
 
-<div class="note important">
-<span class="note__title"><strong>Important</strong></span>
-  <ol>
-    <li>In the <code>pong_matcher_grails</code> directory, run <code>./gradlew assemble</code> to build the app.</li>
-    <li>Run <code>cf push</code> to push the app.</li>
-  </ol>
+For example, build your app and then push it:
 
-</div>
+1. In the root directory of your app, run `./gradlew assemble` to build the app.
+1. Run `cf push` to push the app.
 
-You do not have to include the <code>-p</code> flag when you deploy the sample app. The sample app manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
+You do not have to include the <code>-p</code> flag if the manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
-The following example shows the terminal output of deploying the <code>pong_matcher_grails</code> app, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects the <code>.war</code> file, installs the Java 21 runtime and Tomcat 11 selected in the manifest, and adds `java-cfenv`. Then one instance of the app starts with 1 GB of memory. After the app starts, the output displays its health and status.
+The following example shows the terminal output of deploying a Grails app named <code>my-grails-app</code>, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects the <code>.war</code> file, installs the Java 21 runtime and Tomcat 11 selected in the manifest, and adds `java-cfenv`. Then one instance of the app starts with 1 GB of memory. After the app starts, the output displays its health and status.
 
 <pre class="terminal">
 $ cf push
-Pushing app grailspong to org example-org / space development as user@example.com...
-Applying manifest file /Users/example/workspace/pong_matcher_grails/manifest.yml...
+Pushing app my-grails-app to org example-org / space development as user@example.com...
+Applying manifest file /Users/example/workspace/my-grails-app/manifest.yml...
 
 Updating with these attributes...
   ---
   applications:
-+ - name: grailspong
++ - name: my-grails-app
 +   instances: 1
-    path: /Users/example/workspace/pong_matcher_grails/build/libs/pong_matcher_grails-0.1.war
+    path: /Users/example/workspace/my-grails-app/build/libs/my-grails-app-0.1.war
     memory: 1G
 +   default-route: true
 +   buildpacks:
@@ -305,12 +305,12 @@ Staging app and tracing logs...
    ...
    Uploading droplet...
 
-Waiting for app grailspong to start...
+Waiting for app my-grails-app to start...
 
 
-name:              grailspong
+name:              my-grails-app
 requested state:   started
-routes:            grailspong.example.com
+routes:            my-grails-app.example.com
 last uploaded:     Thu 08 Oct 13:50:37 CEST 2026
 stack:             cflinuxfs5
 buildpacks:
@@ -333,45 +333,7 @@ Use the cf <%=vars.dev_console_2%> to review information and administer your app
 
 See the [Manage Your Application with the cf CLI](#cli-manage) section for more information. <%=vars.dev_console_4%>
 
-To test the sample app, do the following:
-<br /><br />
-1. To export the test host, run <code>export HOST=SAMPLE-APP-URL</code>, substituting the URL for your app, including <code>https://</code>, for <code>SAMPLE-APP-URL</code>.
-<br /><br />
-2. To clear the database from any previous tests, run:
-<br />
-<code>curl -v -X DELETE $HOST/all</code>
-<br />
-You should get a response of <code>200</code>.
-<br /><br />
-3. To request a match as "andrew", run:
-<br />
-<code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/firstrequest -d '{"player": "andrew"}'</code>
-<br />
-You should again get a response of <code>200</code>.
-<br /><br />
-4. To request a match as a different player, run:
-<br />
-<code>curl -v -H "Content-Type: application/json" -X PUT $HOST/match_requests/secondrequest -d '{"player": "navratilova"}'</code>
-<br /><br />
-5. To check the status of the first match request, run:
-<br />
-<code>curl -v -X GET $HOST/match_requests/firstrequest</code>
-<br />
-The last line of the output shows the <code>match_id</code>.
-<br /><br />
-6. Replace <code>MATCH_ID</code> with the <code>match_id</code> value from the previous step in the following command:
-<br />
-<pre>
-<code>curl -v -H "Content-Type: application/json" -X POST $HOST/results -d '
-{
-    "match_id":"MATCH_ID",
-    "winner":"andrew",
-    "loser":"navratilova"
-}'
-</code>
-</pre>
-<br />
-You receive a <code>201 Created</code> response.
+To test the app, open the URL from the `routes` field in your browser, or run `curl` against it.
 
 ##<a id='cli-manage'></a>Manage your application with the cf CLI
 
