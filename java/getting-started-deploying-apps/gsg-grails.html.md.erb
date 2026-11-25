@@ -161,7 +161,7 @@ cf bind-service APP-NAME SERVICE-INSTANCE
 cf restage APP-NAME
 ```
 
-### Step 6: (Optional) Configure the deployment manifest file
+### Step 6: Configure the deployment manifest file
 
 You can specify deployment options in the `manifest.yml` that the `cf push` command uses when deploying your app.
 
@@ -176,7 +176,7 @@ applications:
   memory: 1G
   path: build/libs/my-grails-app-0.1.war
   env:
-    BP_JAVA_VERSION: 21
+    BP_JAVA_VERSION: '21'
     JBP_CONFIG_TOMCAT: '{ tomcat: { version: 11.+ } }'
 ```
 

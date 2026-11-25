@@ -112,7 +112,7 @@ The Java buildpack does not bundle a JDBC driver with your application. If your 
 * Include the appropriate driver in your application.
 * Create a dependency task for the driver in the build script for your build tool or IDE.
 
-For example, the <code>pom.xml</code> file shown in Step 1 includes the H2, MySQL, and PostgreSQL JDBC drivers as dependencies. Spring Boot selects the driver that matches the database URL.
+If your app accesses a SQL database, add a driver. For example, the <code>pom.xml</code> file shown in Step 1 includes the H2, MySQL, and PostgreSQL JDBC drivers as dependencies. Spring Boot selects the driver that matches the database URL.
 
 ### Step 4: (Optional) Configure service connections for a Spring app
 
@@ -149,6 +149,8 @@ applications:
   memory: 1G
   path: target/my-spring-app-1.0.0.jar
 ```
+
+The `path` value above is for a Maven build. For a Gradle build, the archive is in the `build/libs` directory, for example `build/libs/my-spring-app-1.0.0.jar`.
 
 ### Step 6: Log in and target the API endpoint
 
