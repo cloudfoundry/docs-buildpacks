@@ -45,7 +45,7 @@ Declare all the dependency tasks for your app in the build script of your chosen
 </tr>
 </table>
 
-The following example shows a <code>build.gradle</code> file for a Ratpack app that uses the Ratpack Gradle plugin and the Jedis Redis client.
+You can skip this step if your build script already declares all dependencies. The following example shows a <code>build.gradle</code> file for a Ratpack app that uses the Ratpack Gradle plugin and the Jedis Redis client.
 
 ```
 plugins {
@@ -122,7 +122,7 @@ For more information about creating and using service instances, refer to the [S
       <li><code>SERVICE-INSTANCE</code> is a unique name you provide for the service instance.</li>
     </ul>
 
-If your app uses a service, such as Redis, create a service instance for it. Your app reads the service credentials from the `VCAP_SERVICES` environment variable. The Java buildpack does not configure Ratpack apps for services.
+If your app uses a service, such as Redis, create a service instance for it. Your app reads the service credentials from the `VCAP_SERVICES` environment variable. The Java buildpack does not automatically configure the connection to the service for Ratpack apps, so your app must read the credentials itself.
 
 #### (Optional) Bind a service instance
 
@@ -165,6 +165,8 @@ applications:
   memory: 768M
   path: build/distributions/my-ratpack-app.zip
 ```
+
+The name of the `.zip` file depends on your project name and version. If your Gradle build sets a version, the file is named `NAME-VERSION.zip`.
 
 ### Step 7: Log in and target the API endpoint
 
@@ -210,7 +212,7 @@ For example, build your app and then push it:
 1. In the root directory of your app, run `./gradlew distZip` to build the app.
 1. Run `cf push` to push the app.
 
-You do not have to include the <code>-p</code> flag if the manifest declares the path to the archive that <code>cf push</code> uses to upload the app files.
+You do not have to include the <code>-p</code> flag if the manifest from Step 6 declares the path to the archive that <code>cf push</code> uses to upload the app files.
 
 The following example shows the terminal output of deploying a Ratpack app named <code>my-ratpack-app</code>, shortened for readability. <code>cf push</code> uses the instructions in the manifest file to create the app, create and map the route, and upload the app. The Java buildpack detects the app as a Dist ZIP app and installs the default Java 17 runtime. Then one instance of the app starts with 768 MB. After the app starts, the output displays the health and status of the app.
 
