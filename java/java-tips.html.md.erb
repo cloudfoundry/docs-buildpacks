@@ -142,7 +142,7 @@ If you require end-to-end HTTP/2, for example, because of gRPC, do the following
 
 1. Enable HTTP/2 support in the app:
     - See <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.webserver.configure-http2">Configure HTTP/2</a> in the Spring Boot documentation.
-    - If you are deploying a standard non-executable WAR file, you only need to make sure that you are using Java buildpack v4.43 or later. Starting with v4.43, the Java buildpack configures Apache Tomcat to accept HTTP/2 connections.
+    - If you are deploying a standard non-executable WAR file, you do not need to configure Tomcat. The Java buildpack configures Apache Tomcat to accept HTTP/2 connections. This applies to Java buildpack v4.43 and later, including v5.
     - Other frameworks, including Play, Ratpack, and apps that use the distZip format, embed an HTTP server. You must configure these apps to enable HTTP/2, specifically H2C, clear-text. See your framework's documentation for enabling HTTP/2 and H2C.
       H2C is required because <%= vars.app_runtime_abbr %> uses Envoy to secure communications into the app container.
 2. Configure the route to use the HTTP/2 protocol using either the cf CLI or the app manifest:
