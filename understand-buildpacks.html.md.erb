@@ -55,12 +55,12 @@ else
 end
 ~~~
 
-The buildpack `detect` script output provides additional details by the buildpack developer. This includes buildpack version information and a list of configured frameworks and their associated versions.
+The buildpack `detect` script output provides additional details by the buildpack developer. For example, this can be the buildpack name and version information.
 
-The following is an example of the detailed information returned by the Java buildpack:
+The following is an example of the information returned by the Java buildpack v5.1.4 for a Java app:
 
 ```ssh
-java-buildpack=v3.0-https://github.com/cloudfoundry/java-buildpack.git#3bd15e1 open-jdk-jre=1.8.0_45 spring-auto-reconfiguration=1.7.0_RELEASE tomcat-access-logging-support=2.4.0_RELEASE tomcat-instance=8.0.21 tomcat-lifecycle-support=2.4.0_RELEASE ...
+java 5.1.4
 ```
 
 By default, Cloud Foundry detects only one buildpack. When you want to detect multiple
